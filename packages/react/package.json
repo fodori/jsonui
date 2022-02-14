@@ -8,6 +8,23 @@
     "dist"
   ],
   "types": "dist/index.d.ts",
+  "author": "Istvan Fodor <fodori@jsonui.org>",
+  "contributors": [],
+  "bugs": {
+    "url": "https://github.com/fodori/jsonui/issues"
+  },
+  "homepage": "https://github.com/fodori/jsonui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fodori/jsonui.git"
+  },
+  "description": "Json markup language to define User Interface",
+  "keywords": [
+    "react",
+    "react-component",
+    "ui",
+    "json"
+  ],
   "scripts": {
     "rollup": "rollup -c",
     "start-module": "microbundle watch --jsx React.createElement --external none",
