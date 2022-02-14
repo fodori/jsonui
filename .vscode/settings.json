@@ -1,0 +1,17 @@
+{
+    "editor.formatOnSave": true,
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        {
+            "language": "typesscript",
+            "autofix": true
+        },
+        {
+            "language": "typesscriptreact",
+            "autofix": true
+        },
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.configPath": ".prettierrc"
+}

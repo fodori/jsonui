@@ -1,0 +1,137 @@
+This is a description how this monorepo created.
+The goal is to create a monorepo to store a react and a react native module or library to make n open source project
+https://andreasheissenberger.medium.com/monorepo-setup-for-javascript-typescript-and-react-1-4-71d37c395b67
+
+delete git repo history
+git checkout --orphan tmp-master # create a temporary branch
+git add -A  # Add all files and commit them
+git commit -m 'Add files'
+git branch -D main # Deletes the master branch
+git branch -m main # Rename the current branch to master
+git push -f origin main # Force push master branch to Git server
+
+
+
+#created a git repo(jsonui-0) and cloned it
+git clone jsonui-0.....
+cd jsonui-0
+yarn init -yp
+echo "node_modules" > .gitignore
+yarn add lerna microbundle --dev -W
+yarn lerna init --independent
+
+mkdir -p packages/jsonui-common/src
+cd packages/jsonui-common
+yarn init -y
+cd packages
+yarn create react-app jsonui-react --template typescript
+mkdir -p packages/jsonui-react/src
+cd packages/jsonui-react
+yarn init -y
+cd ~/
+yarn config set workspaces-experimental true
+yarn lerna add @jsonui/core --scope=@jsonui/react
+yarn workspace @jsonui/react run start 
+yarn workspace @jsonui/core run start
+yarn lerna add ajv jsonpointer immer traverse lodash jsonata redux-persist redux key-value-replace url --scope=@jsonui/core
+yarn lerna add react-redux react-router-dom @emotion/react lodash redux redux-persist traverse batchflow --scope=@jsonui/react
+
+yarn lerna add eslint-config-airbnb -D --scope=@jsonui/react
+yarn lerna add eslint-config-prettier -D --scope=@jsonui/react
+yarn lerna add eslint-plugin-import -D --scope=@jsonui/react
+yarn lerna add eslint-plugin-jsx-a11y -D --scope=@jsonui/react
+yarn lerna add eslint-plugin-prettier -D --scope=@jsonui/react
+yarn lerna add eslint-plugin-react -D --scope=@jsonui/react
+yarn lerna add eslint-plugin-react-hooks -D --scope=@jsonui/react
+yarn lerna add husky -D --scope=@jsonui/react
+yarn lerna add lint-staged -D --scope=@jsonui/react
+yarn lerna add prettier -D --scope=@jsonui/react
+yarn lerna add redux-devtools -D --scope=@jsonui/react
+
+
+
+yarn lerna add ajv --scope=@jsonui/react
+yarn lerna add jsonpointer --scope=@jsonui/react
+yarn lerna add immer --scope=@jsonui/react
+yarn lerna add traverse --scope=@jsonui/react
+yarn lerna add jsonata --scope=@jsonui/react
+yarn lerna add redux-persist--scope=@jsonui/react
+yarn lerna add key-value-replace --scope=@jsonui/react
+yarn lerna add url --scope=@jsonui/react
+         
+yarn lerna add @typescript-eslint/parser -D --scope=@jsonui/react
+yarn lerna add @typescript-eslint/eslint-plugin -D --scope=@jsonui/react
+          
+          yarn lerna add eslint-plugin-react@^7.28.0 -D --scope=@jsonui/react
+          yarn lerna add @typescript-eslint/eslint-plugin@latest -D --scope=@jsonui/react 
+          yarn lerna add eslint-config-airbnb@latest -D --scope=@jsonui/react
+          yarn lerna add eslint@^8.2.0 -D --scope=@jsonui/react
+          yarn lerna add eslint-plugin-import@^2.25.3 -D --scope=@jsonui/react
+          yarn lerna add eslint-plugin-jsx-a11y@^6.5.1 -D --scope=@jsonui/react
+          yarn lerna add eslint-plugin-react-hooks@^4.3.0 -D --scope=@jsonui/react
+          yarn lerna add @typescript-eslint/parser@latest -D --scope=@jsonui/react
+
+
+
+yarn lerna add @typescript-eslint/parser -D --scope=@jsonui/core
+yarn lerna add @typescript-eslint/eslint-plugin -D --scope=@jsonui/core
+yarn lerna add eslint-plugin-react@^7.28.0 -D --scope=@jsonui/core
+yarn lerna add @typescript-eslint/eslint-plugin@latest -D --scope=@jsonui/core 
+yarn lerna add eslint-config-airbnb@latest -D --scope=@jsonui/core
+yarn lerna add eslint@^8.2.0 -D --scope=@jsonui/core
+yarn lerna add eslint-plugin-import@^2.25.3 -D --scope=@jsonui/core
+yarn lerna add eslint-plugin-jsx-a11y@^6.5.1 -D --scope=@jsonui/core
+yarn lerna add eslint-plugin-react-hooks@^4.3.0 -D --scope=@jsonui/core
+yarn lerna add react --scope=@jsonui/core
+
+cd packages
+yarn create react-app test-react --template typescript
+/*
+reactn
+test-react
+testReactNative
+testReactNativeWeb
+*/
+//TODO
+remove _names
+noChildren is not configurable
+ 
+yarn lerna add @jsonui/react --scope=@jsonui/test-react
+
+yarn lerna add rollup -D --scope=@jsonui/react
+yarn lerna add @rollup/plugin-node-resolve -D --scope=@jsonui/react
+yarn lerna add @rollup/plugin-typescript -D --scope=@jsonui/react
+yarn lerna add @rollup/plugin-commonjs -D --scope=@jsonui/react
+yarn lerna add rollup-plugin-dts -D --scope=@jsonui/react
+
+yarn lerna add @types/traverse -D --scope=@jsonui/core
+yarn lerna add @rollup/plugin-json -D --scope=@jsonui/react
+
+// added react native project
+have created outside, because an error on create time
+
+npx react-native init testReactNative --template react-native-template-typescript
+and than copy testReactNative to packages
+delete node_modules folder in the testReactNative
+have changed all path in ios and android directory from ../node_modules to ../../../node_modules
+
+yarn workspace @jsonui/testReactNative run start
+
+N/A: version "N/A -> N/A" is not yet installed.
+nvm alias default node
+
+yarn lerna add react-native-web --scope=jsonui-test-react-native-web
+yarn lerna add babel-plugin-react-native-web -D --scope=jsonui-test-react-native-web
+
+
+
+yarn lerna add @react-native-async-storage/async-storage --scope=@jsonui/reactnative
+yarn lerna add @emotion/native --scope=@jsonui/reactnative
+yarn lerna add react-native -D --scope=@jsonui/reactnative
+
+
+
+yarn lerna add @jsonui/reactnative --scope=testreactnative
+yarn lerna add @react-native-async-storage/async-storage --scope=testreactnative
+
+yarn lerna add react-native-extended-stylesheet --scope=@jsonui/reactnative

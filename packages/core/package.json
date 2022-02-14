@@ -1,0 +1,39 @@
+{
+  "name": "@jsonui/core",
+  "version": "0.0.1",
+  "license": "MIT",
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.module.mjs",
+  "unpkg": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "start": "microbundle watch --jsx React.createElement",
+    "build": "microbundle build --jsx React.createElement",
+    "lint": "eslint src --ext .jsx,.js,.tsx,.ts"
+  },
+  "dependencies": {
+    "ajv": "^8.9.0",
+    "immer": "^9.0.12",
+    "jsonata": "^1.8.5",
+    "jsonpointer": "^5.0.0",
+    "key-value-replace": "^3.0.0",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
+    "traverse": "^0.6.6"
+  },
+  "devDependencies": {
+    "@types/traverse": "^0.6.32",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0"
+  }
+}

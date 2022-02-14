@@ -1,0 +1,20 @@
+{
+  "name": "jsonui-0",
+  "version": "0.0.0",
+  "repository": "git@github.com:fodori/jsonui-0.git",
+  "author": "Istvan Fodor <fodori@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "startReact": "yarn workspace @jsonui/react run start",
+    "startCore": "yarn workspace @jsonui/core run start",
+    "startTestReact": "yarn workspace jsonui-test-react run start"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0",
+    "microbundle": "^0.14.2"
+  }
+}
