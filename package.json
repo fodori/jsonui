@@ -1,8 +1,8 @@
 {
-  "name": "jsonui-0",
+  "name": "jsonui",
   "version": "0.0.0",
-  "repository": "git@github.com:fodori/jsonui-0.git",
-  "author": "Istvan Fodor <fodori@gmail.com>",
+  "repository": "git@github.com:fodori/jsonui.git",
+  "author": "Istvan Fodor <fodori@jsonui.org>",
   "license": "MIT",
   "private": true,
   "workspaces": [

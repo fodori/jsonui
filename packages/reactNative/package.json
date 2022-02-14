@@ -1,6 +1,23 @@
 {
   "name": "@jsonui/reactnative",
   "version": "0.0.1",
+  "author": "Istvan Fodor <fodori@jsonui.org>",
+  "contributors": [],
+  "bugs": {
+    "url": "https://github.com/fodori/jsonui/issues"
+  },
+  "homepage": "https://github.com/fodori/jsonui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fodori/jsonui.git"
+  },
+  "description": "Json markup language to define User Interface",
+  "keywords": [
+    "react",
+    "react-component",
+    "ui",
+    "json"
+  ],
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

@@ -1,13 +1,6 @@
 {
   "name": "@jsonui/react",
   "version": "0.0.1",
-  "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
-  "types": "dist/index.d.ts",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
   "bugs": {
@@ -25,6 +18,13 @@
     "ui",
     "json"
   ],
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
   "scripts": {
     "rollup": "rollup -c",
     "start-module": "microbundle watch --jsx React.createElement --external none",

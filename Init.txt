@@ -12,9 +12,9 @@ git push -f origin main # Force push master branch to Git server
 
 
 
-#created a git repo(jsonui-0) and cloned it
-git clone jsonui-0.....
-cd jsonui-0
+#created a git repo(jsonui) and cloned it
+git clone jsonui.....
+cd jsonui
 yarn init -yp
 echo "node_modules" > .gitignore
 yarn add lerna microbundle --dev -W
