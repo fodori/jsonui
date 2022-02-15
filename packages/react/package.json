@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/react",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
   "bugs": {
@@ -40,16 +40,14 @@
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
-    "@jsonui/core": "^0.0.2",
+    "@jsonui/core": "*",
     "batchflow": "^0.4.0",
     "jsonata": "^1.8.5",
     "lodash": "^4.17.21",
     "react-redux": "^7.2.6",
-    "react-router-dom": "^6.2.1",
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
-    "typescript": "^4.5.4",
-    "web-vitals": "^2.1.4"
+    "typescript": "^4.5.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
@@ -98,5 +96,5 @@
       "last 1 safari version"
     ]
   },
-  "gitHead": "cb93890447bc3e505aac207fdcf6e28b7f7a2815"
+  "gitHead": "9f589c3715ecde529bf062c361243d3069b9a4fc"
 }
