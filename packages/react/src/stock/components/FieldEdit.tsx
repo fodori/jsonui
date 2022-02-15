@@ -1,5 +1,5 @@
 import React from 'react'
-import { isArray } from 'lodash'
+import isArray from 'lodash/isArray'
 
 function CFieldEdit(props: any) {
   const handleChange = (event: any) => {

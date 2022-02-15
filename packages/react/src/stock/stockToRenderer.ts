@@ -1,4 +1,5 @@
-import { defaultsDeep, flattenDeep } from 'lodash'
+import defaultsDeep from 'lodash/defaultsDeep'
+import flattenDeep from 'lodash/flattenDeep'
 import { constants as c, Stock, I18n, stockFunctions as functions, jsonRefResolver } from '@jsonui/core'
 import additionalComponents from './components'
 

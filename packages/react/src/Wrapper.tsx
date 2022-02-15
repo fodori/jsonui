@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { ClassNames } from '@emotion/react'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { constants as c, wrapperUtil, util, StockContext, PathModifierContext, genAllStateProps, Stock, WrapperType } from '@jsonui/core'
 import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'

@@ -1,5 +1,6 @@
 import React from 'react'
-import { isArray, isObject } from 'lodash'
+import isArray from 'lodash/isArray'
+import isObject from 'lodash/isObject'
 
 function CFormResult({ value }: { value: any }) {
   return (
