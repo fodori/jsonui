@@ -125,20 +125,20 @@ We have 2 built-in function which can help to read and write your state manageme
 
 Let's see some example 
 
-####Read data
-#####Your data store Looks like:
+#### Read data
+##### Your data store Looks like:
 ```json
 { "users":[{"username": "John Doe"}] }
 ```
-#####Use */username* in text field
+##### Use */username* in text field
 ```json
 { "$comp": "Text", "$children": { "$modifier": "get", "store": "data", "path": "/users/0/username" } }  
 ```
 
 
-####Write data
+#### Write data
 
-#####When the user click on the button, it will modify the data
+##### When the user click on the button, it will modify the data
 ```json
 { "$comp": "Button", 
   "$children": "Change username", 
@@ -146,12 +146,12 @@ Let's see some example
 }  
 ```
 
-#####Data will be:
+##### Data will be:
 ```json
 { "users":[{"username": "John Doe2"}] }  
 ```
 
-#####A simple input field solution
+##### A simple input field solution
 ```json
 { "$comp": "Input",
   "value": { "$name": "get", "store": "questionnaire1", "path": "/firstName" },
@@ -166,9 +166,9 @@ You can manipulate the data when read or write it with [jsonata](https://jsonata
 }
 ```
 
-###Advanced technique
+### Advanced technique
 
-####Relative, absolute
+#### Relative, absolute
 
 You can use absolute, relative path and ./ ../ still works.
 few examples
@@ -180,11 +180,11 @@ few examples
 {  "path": "../../prevNumber" }
 ```
 
-####List
+#### List
 
 Somethimes we need to handle dynamic data for example a list.
 
-#####Your data store looks like:
+##### Your data store looks like:
 
 ```json
 { "subscribed": { "list":[{"name": "John Doe"}] } }
