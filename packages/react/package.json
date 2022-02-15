@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/react",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
   "bugs": {
@@ -96,5 +96,5 @@
       "last 1 safari version"
     ]
   },
-  "gitHead": "b91ff5fdb76c5afebd9c7d5e4409ebbffd88c070"
+  "gitHead": "c0e230d28781bd588fc836d2152090476e15474f"
 }
