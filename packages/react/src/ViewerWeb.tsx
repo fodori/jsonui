@@ -10,7 +10,7 @@ export interface DefaultValues {
 }
 export interface ViewerProps {
   viewDef: any
-  defaultValues: DefaultValues
+  defaultValues?: DefaultValues
   id?: string
   components?: any
   functions?: any

@@ -1,46 +1,206 @@
-# Getting Started with Create React App
+# JSONUI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a Json markup language to define User Interface as a canvas where you can draw with Json definition.
 
-## Available Scripts
+When you change the Json definition, the interface immediately reflects on what you defined/changed.
 
-In the project directory, you can run:
+Actually JSONUI is available for **react** and **react-native**. It will be able to integrate to 99% of the cross-platform environments, thanks for reactjs ecosystem
 
-### `npm start`
+The UI definition contains a layout definition and components configuration as well. The most important it has a built in **state management system**. Data can be **persistent** or not, depends on the name of the store.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Core concept
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Build a data driven UI. The "definition" is changeable by developer anytime and any reason.
+If you would like to build a remote controlled app or a form generator app, I hope you will love it.
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install @jsonui/react
 
-### `npm run build`
+yarn add @jsonui/react
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Basic Usage
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The `JsonUI` Component is a canvas and the `viewDef` parameter contains the UI definition in Json format.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```js
+import {JsonUI} from '@jsonui/react';
 
-### `npm run eject`
+const Canvas = () => <JsonUI viewDef={
+    { "$comp": "Text",
+      "$children": "Hello World",
+      "style": { "fontSize": 30 }
+    } />
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### How it works
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The Json Markup language has 3 important part
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### 1, Components
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The `"$comp"` key represents the name of a predefined react component. The predefined components:
 
-## Learn More
+- **View:** it's a simple `div` html tag
+- **Button:** it's a simple `button` html tag
+- **Fragment:** it's a simple `React.Fragment` component
+- **Image:** it's a simple `image` html tag
+- **Text:** it's a simple `p` html tag
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The props of the components are the same as in the normal react world.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The `"$children"` key represents the children of the component.
+It can be array, object or primitive like text, number, boolean
+
+```json
+{ "$comp": "Text", "$children": "Hello World" }
+{ "$comp": "Text", "$children": 124 }
+{ "$comp": "Text", "$children": [1,2,3] }
+{ "$comp": "Text", "$children": null }
+{ "$comp": "View", "$children": [
+   { "$comp": "Text", "$children": "Hello World" }
+  ]
+}
+```
+
+#### 2, Actions
+
+When the component has an interaction with user or a triggered event, the `"$action"` key will represent it, for example onClick, onChange or onPress
+
+```json
+{ "$comp": "Button", "$children": "Login", "onPress": { "$action": "navigate", "route": "LoginPage" } }
+```
+
+The action is really a predefined function when it will fire, when the event has triggered.
+
+#### 3, Modifiers
+
+The `"$action"` can add a dynamic value for properties or components. It's a function which will be called at render time of the component. Depends on environment data. For example JSONUI contains a basic internalisation solution.
+
+```json
+{ "$comp": "Text", "$children": "Hello World" }
+{ "$comp": "Text", "$children": { "$modifier": "t", "key": "Helló Világ" } }
+```
+
+### How can you customise it?
+
+Easily.
+
+```js
+
+const Canvas = () => <JsonUI viewDef={jsonData}
+  "components"={
+    {
+     nagivate: ({route}) => navigate(route)
+    }
+  }
+  "functions"={
+    {
+     t: ({key}) => t(key)
+    }
+  }/>
+```
+
+### State management or data storage
+
+The state management is another layer of the JSNOUI. It's represent a permissive and dynamic tree graf structure. Like a JSON file.
+Each app has a separated data space, based on the `id` param of `JsonUI` component.
+Each app has multiple `store` represent multiple data tree or separate storage.
+Actually the `data` store is persistent. (it will be configurable soon if there is interest in it)
+You can define unlimited data store. What you need is, just use a specific name in JSON Definition, and it will automatically create at the first use.
+JSONUI use [json-pointer](https://www.npmjs.com/package/json-pointer) to tell the `path` what kind of data we need.
+
+We have 2 built-in function which can help to read and write your state management.
+
+Let's see some example
+
+#### Read data
+
+##### Your data store Looks like:
+
+```json
+{ "users": [{ "username": "John Doe" }] }
+```
+
+##### Use _/username_ in text field
+
+```json
+{ "$comp": "Text", "$children": { "$modifier": "get", "store": "data", "path": "/users/0/username" } }
+```
+
+#### Write data
+
+##### When the user click on the button, it will modify the data
+
+```json
+{ "$comp": "Button", "$children": "Change username", "onPress": { "$modifier": "set", "store": "data", "path": "/users/0/username", "value": "John Doe 2" } }
+```
+
+##### Data will be:
+
+```json
+{ "users": [{ "username": "John Doe2" }] }
+```
+
+##### A simple input field solution
+
+```json
+{
+  "$comp": "Input",
+  "value": { "$name": "get", "store": "questionnaire1", "path": "/firstName" },
+  "onChange": { "$action": "set", "store": "questionnaire1", "path": "/firstName" }
+}
+```
+
+You can manipulate the data when read or write it with [jsonata](https://jsonata.org/).
+
+```json
+{ "$comp": "Text", "children": { "$modifier": "get", "store": "data", "path": "/prevNumber", "jsonataDef": "'Next Number: ' & (1+$)" } }
+```
+
+### Advanced technique
+
+#### Relative, absolute
+
+You can use absolute, relative path and ./ ../ still works.
+few examples
+
+```json
+{  "path": "/prevNumber" }
+{  "path": "prevNumber" }
+{  "path": "../prevNumber" }
+{  "path": "../../prevNumber" }
+```
+
+#### List
+
+Somethimes we need to handle dynamic data for example a list.
+
+##### Your data store looks like:
+
+```json
+{ "subscribed": { "list": [{ "name": "John Doe" }] } }
+```
+
+```json
+{
+  "$comp": "Fragment",
+  "isList": true,
+  "$pathModifiers": {
+    "data": { "path": "/subscribed/list" }
+  },
+  "listItem": {
+    "component": "Input",
+    "value": { "$modifier": "get", "store": "data", "path": "name" },
+    "onChange": { "$action": "set", "store": "data", "path": "name" }
+  }
+}
+```
+
+This little technique can change the relative path nestedly as well.
+
+## LICENSE [MIT](LICENSE)
+
+Copyright (c) 2022 Istvan Fodor.
