@@ -1,5 +1,5 @@
 import React from 'react'
-import { isArray } from 'lodash'
+import isArray from 'lodash/isArray'
 import { TextInput, Text } from 'react-native'
 
 function CFieldEdit(props: any) {

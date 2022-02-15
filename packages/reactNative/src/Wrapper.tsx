@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { constants as c, wrapperUtil, util, StockContext, PathModifierContext, genAllStateProps, Stock, WrapperType } from '@jsonui/core'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { Platform } from 'react-native'

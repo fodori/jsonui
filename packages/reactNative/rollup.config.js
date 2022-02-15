@@ -3,6 +3,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
 import json from '@rollup/plugin-json'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const packageJson = require('./package.json')
@@ -22,7 +23,7 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), json()],
+    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), json(), visualizer()],
     external: ['react', 'react-dom', 'react-native'],
   },
   {

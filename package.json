@@ -12,7 +12,8 @@
     "startReact": "yarn workspace @jsonui/react run start",
     "startCore": "yarn workspace @jsonui/core run start",
     "startTestReact": "yarn workspace jsonui-test-react run start",
-    "publish":"yarn lerna publish from-package"
+    "publish":"yarn lerna publish from-package",
+    "bootstrap":"yarn lerna bootstrap"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
