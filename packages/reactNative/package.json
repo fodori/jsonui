@@ -18,6 +18,9 @@
     "ui",
     "json"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -97,5 +100,5 @@
       "last 1 safari version"
     ]
   },
-  "gitHead": "cb93890447bc3e505aac207fdcf6e28b7f7a2815"
+  "gitHead": "b91ff5fdb76c5afebd9c7d5e4409ebbffd88c070"
 }
