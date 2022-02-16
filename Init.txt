@@ -138,3 +138,6 @@ yarn lerna add react-native-extended-stylesheet --scope=@jsonui/reactnative
 
 yarn lerna add rollup-plugin-visualizer -D --scope=@jsonui/react
 yarn lerna add rollup-plugin-visualizer -D --scope=@jsonui/reactnative
+
+yarn lerna add use-context-selector -D --scope=@jsonui/react
+yarn lerna add scheduler -D --scope=@jsonui/react
