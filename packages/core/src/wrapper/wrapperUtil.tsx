@@ -1,7 +1,5 @@
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
 import orderBy from 'lodash/orderBy'
-import isNumber from 'lodash/isNumber'
 import traverse from 'traverse'
 import * as c from 'utils/constants'
 import * as util from 'utils/util'
@@ -48,7 +46,7 @@ export const modifierBuilder = (props: PropsType, stock: InstanceType<typeof Sto
 export const pathModifierBuilder = (props: PropsType, pathModifier: PathModifiersType) => {
   const currentPaths: PathModifiersType = { ...(props.currentPaths as PathModifiersType) }
   let modified = false
-  if (pathModifier && !isEmpty(pathModifier)) {
+  if (pathModifier && Object.keys(pathModifier).length !== 0) {
     Object.keys(pathModifier).forEach((key: string) => {
       if (!!key && !!pathModifier[key] && pathModifier[key][c.PATHNAME] !== undefined && pathModifier[key][c.PATHNAME] !== null) {
         const path = pathModifier[key][c.PATHNAME]
@@ -81,11 +79,11 @@ export const getWrapperProps = (props: PropsType, parentComp?: any) => {
 }
 
 const genChildenFromListItem = (props: PropsType) => {
-  let { page = 0, listLength = 0, itemPerPage = c.PAGINATION_ITEM_PER_PAGE } = props
+  let { page = 0, listLength = 0, itemPerPage = c.PAGINATION_ITEM_PER_PAGE } = props as { page?: number; listLength?: number; itemPerPage?: number }
   const { listItem } = props
   const pathModifiers: PathModifiersType = props[c.PATH_MODIFIERS_KEY] as PathModifiersType
   const children: PropsType[] = []
-  if (isNumber(page) && isNumber(listLength) && isNumber(itemPerPage) && pathModifiers) {
+  if (util.isNumber(page) && util.isNumber(listLength) && util.isNumber(itemPerPage) && pathModifiers) {
     page = page >= 0 ? page : 0
     itemPerPage = itemPerPage >= 0 ? itemPerPage : 0
     listLength = listLength >= 0 ? listLength : 0

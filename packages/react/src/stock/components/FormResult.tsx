@@ -1,12 +1,11 @@
 import React from 'react'
-import isArray from 'lodash/isArray'
-import isObject from 'lodash/isObject'
+import { util } from '@jsonui/core'
 
 function CFormResult({ value }: { value: any }) {
   return (
     <>
       {value &&
-        isArray(value) &&
+        Array.isArray(value) &&
         value
           .filter((i) => i !== undefined && i !== null)
           .map((k, i) => (
@@ -19,8 +18,8 @@ function CFormResult({ value }: { value: any }) {
             </React.Fragment>
           ))}
       {value &&
-        !isArray(value) &&
-        isObject(value) &&
+        !Array.isArray(value) &&
+        util.isObject(value) &&
         Object.keys(value).map((k) => (
           <React.Fragment key={k}>
             <p style={{ fontSize: 16, fontWeight: 'bold' }}>

@@ -140,3 +140,5 @@ export const getStyleForWeb = (props: PropsType = {}, component: string) =>
 
 // TODO it have to be configurable
 export const noChildren = (component: string) => ['Image'].includes(component)
+
+export const isNumber = (a: any) => typeof a === 'number'

@@ -1,5 +1,4 @@
 import React from 'react'
-import isArray from 'lodash/isArray'
 
 function UHelperText(props: any) {
   const { helperText, fieldError, fieldErrors, propsHelperText } = props
@@ -8,7 +7,7 @@ function UHelperText(props: any) {
       <p {...propsHelperText}>
         {
           // eslint-disable-next-line no-nested-ternary
-          fieldError ? (isArray(fieldErrors) ? fieldErrors.join(',') : fieldErrors) : helperText
+          fieldError ? (Array.isArray(fieldErrors) ? fieldErrors.join(',') : fieldErrors) : helperText
         }
       </p>
     )

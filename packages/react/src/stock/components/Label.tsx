@@ -1,6 +1,4 @@
 import React from 'react'
-import isArray from 'lodash/isArray'
-import isEmpty from 'lodash/isEmpty'
 import { constants as c } from '@jsonui/core'
 
 const styles = {
@@ -61,13 +59,14 @@ export class InfoBox extends React.PureComponent {
     if (!component || component === '_PrimitiveProp') {
       return null
     }
-    if (filter && isArray(filter) && !isEmpty(filter) && !filter.includes(id)) {
+    if (filter && Array.isArray(filter) && Object.keys(filter).length !== 0 && !filter.includes(id)) {
       return null
     }
+    // const { children, stock, parentComp, ...newProps } = this.props
     return (
       <span style={styles.labelCont as React.CSSProperties}>
         <span style={styles.label}>
-          {/* {JSON.stringify(omit(this.props, ['children', 'stock', 'parentComp'])).replace(/,/g, '\n')} */}
+          {/* {JSON.stringify(newProps).replace(/,/g, '\n')} */}
           rendered: {this.counter}
         </span>
       </span>

@@ -1,5 +1,4 @@
 import defaultsDeep from 'lodash/defaultsDeep'
-import flattenDeep from 'lodash/flattenDeep'
 import { constants as c, Stock, I18n, stockFunctions as functions, jsonRefResolver } from '@jsonui/core'
 import additionalComponents from './components'
 
@@ -24,7 +23,7 @@ export const getStock = (stockInit: any, viewDef: any, Wrapper: any, reduxStore:
   })
 
   // get Validations
-  stock.validations = flattenDeep(jsonRefResolver.getRefs(c.REF_VALIDATES, viewDef))
+  stock.validations = jsonRefResolver.getRefs(c.REF_VALIDATES, viewDef).flat(Infinity)
   stock.registerFunction('t', (p) => i18n.t(p.keys, p.options))
   stock.registerFunction('test', () => 'Test is ok')
   return stock

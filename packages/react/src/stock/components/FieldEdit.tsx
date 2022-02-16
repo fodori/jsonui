@@ -1,5 +1,4 @@
 import React from 'react'
-import isArray from 'lodash/isArray'
 
 function CFieldEdit(props: any) {
   const handleChange = (event: any) => {
@@ -9,7 +8,7 @@ function CFieldEdit(props: any) {
   let error = !!fieldErrors
   let helperText = origHelpertext
   if (error && fieldErrors) {
-    helperText = fieldErrors && isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors
+    helperText = fieldErrors && Array.isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors
   }
   if (validation && value && validation.jsonataDef) {
     let isValid = true
@@ -25,7 +24,7 @@ function CFieldEdit(props: any) {
     }
     if (!isValid) {
       error = true
-      helperText = validation.fieldErrors && isArray(validation.fieldErrors) ? validation.fieldErrors.join(', ') : validation.fieldErrors
+      helperText = validation.fieldErrors && Array.isArray(validation.fieldErrors) ? validation.fieldErrors.join(', ') : validation.fieldErrors
     }
   }
   return (
