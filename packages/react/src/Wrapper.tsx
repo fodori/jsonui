@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { ClassNames } from '@emotion/react'
-import omit from 'lodash/omit'
 import { constants as c, wrapperUtil, util, StockContext, PathModifierContext, genAllStateProps, Stock, WrapperType } from '@jsonui/core'
 import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'
@@ -25,18 +24,15 @@ function Wrapper(props: any) {
       <ClassNames>
         {({ css, cx }) => {
           ownProps.className = newStyle ? cx(css(newStyle)) : undefined
+          const { parentComp, style, [c.STYLE_WEB_NAME]: _unused1, [c.V_COMP_NAME]: _unused2, [c.V_CHILDREN_NAME]: _unused3, ...newProps } = ownProps
           return pathModifiers ? (
             <PathModifierContext.Provider value={currentPaths as any}>
-              <Comp {...omit(ownProps, ['parentComp', 'style', c.STYLE_WEB_NAME, c.V_COMP_NAME, c.V_CHILDREN_NAME])}>
-                {util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}
-              </Comp>
+              <Comp {...newProps}>{util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}</Comp>
               {infobox && <InfoBox {...ownProps} />}
             </PathModifierContext.Provider>
           ) : (
             <>
-              <Comp {...omit(ownProps, ['parentComp', 'style', c.STYLE_WEB_NAME, c.V_COMP_NAME, c.V_CHILDREN_NAME])}>
-                {util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}
-              </Comp>
+              <Comp {...newProps}>{util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}</Comp>
               {infobox && <InfoBox {...ownProps} />}
             </>
           )

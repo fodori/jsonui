@@ -37,7 +37,8 @@
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     ],
-    "import/extensions": ["error", "always", { "ts": "never", "tsx": "never", "js": "never", "jsx": "never" }]
+    "import/extensions": ["error", "always", { "ts": "never", "tsx": "never", "js": "never", "jsx": "never" }],
+    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
   },
   "settings": {
     "react": { "pragma": "React", "version": "detect" },

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
-import omit from 'lodash/omit'
 import { constants as c, wrapperUtil, util, StockContext, PathModifierContext, genAllStateProps, Stock, WrapperType } from '@jsonui/core'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { Platform } from 'react-native'
@@ -25,20 +24,17 @@ function Wrapper(props: any) {
     Platform.OS === 'ios' || Platform.OS === 'android'
       ? (EStyleSheet.create({ style: { ...mergedStyle } }) || {}).style
       : EStyleSheet.create({ ...mergedStyle })
+  const { parentComp, style, [c.STYLE_WEB_NAME]: _unused1, [c.V_COMP_NAME]: _unused2, [c.V_CHILDREN_NAME]: _unused3, ...newProps } = ownProps
   return (
     <ErrorBoundary type="wrapper" id={id}>
       {pathModifiers ? (
         <PathModifierContext.Provider value={currentPaths as any}>
-          <Comp {...omit(ownProps, ['parentComp', c.STYLE_WEB_NAME, c.STYLE_RN_NAME, c.V_COMP_NAME, c.V_CHILDREN_NAME])}>
-            {util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}
-          </Comp>
+          <Comp {...newProps}>{util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}</Comp>
           {infobox && <InfoBox {...ownProps} />}
         </PathModifierContext.Provider>
       ) : (
         <>
-          <Comp {...omit(ownProps, ['parentComp', c.STYLE_WEB_NAME, c.STYLE_RN_NAME, c.V_COMP_NAME, c.V_CHILDREN_NAME])}>
-            {util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}
-          </Comp>
+          <Comp {...newProps}>{util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}</Comp>
           {infobox && <InfoBox {...ownProps} />}
         </>
       )}

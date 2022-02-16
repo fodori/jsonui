@@ -1,7 +1,6 @@
 import React from 'react'
 import isEmpty from 'lodash/isEmpty'
 import orderBy from 'lodash/orderBy'
-import omit from 'lodash/omit'
 import isNumber from 'lodash/isNumber'
 import traverse from 'traverse'
 import * as c from 'utils/constants'
@@ -11,8 +10,9 @@ import { PathModifiersType, PathModifierType, PathsType, PropsType, WrapperType 
 
 export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock>) => {
   const paths: PathsType = []
+  const { parentComp, ...propsNew } = props
   // eslint-disable-next-line func-names
-  traverse(omit(props, ['parentComp'])).forEach(function (x) {
+  traverse(propsNew).forEach(function (x) {
     if (
       !!x &&
       !!x[c.ACTION_KEY] &&
@@ -32,8 +32,9 @@ export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock
 
 export const modifierBuilder = (props: PropsType, stock: InstanceType<typeof Stock>) => {
   const paths: PathsType = []
+  const { parentComp, ...propsNew } = props
   // eslint-disable-next-line func-names
-  traverse(omit(props, ['parentComp'])).forEach(function (x) {
+  traverse(propsNew).forEach(function (x) {
     if (!!x && !!x[c.MODIFIER_KEY] && !c.REDUX_FUNCTIONS.includes(x[c.MODIFIER_KEY]) && !(this.path.length > 1 && this.path.includes(c.V_CHILDREN_NAME))) {
       paths.push({ path: this.path, level: this.level })
     }
@@ -123,15 +124,15 @@ export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof
 }
 
 export const getChildrensForRoot = (props: PropsType, children: any, Wrapper: WrapperType) => {
+  const { parentComp, [c.V_CHILDREN_NAME]: _notused, ...newParentComp } = props
   // eslint-disable-next-line no-nested-ternary
-  const parentComp = omit(props, [c.V_CHILDREN_NAME, 'parentComp'])
   return !!props && Array.isArray(children) ? (
     children.map((childrenItem, index) => {
       // eslint-disable-next-line react/no-array-index-key
-      return <Wrapper key={index} {...getWrapperProps(childrenItem, parentComp)} />
+      return <Wrapper key={index} {...getWrapperProps(childrenItem, newParentComp)} />
     })
   ) : (
-    <Wrapper {...getWrapperProps(children, parentComp)} />
+    <Wrapper {...getWrapperProps(children, newParentComp)} />
   )
 }
 

@@ -1,5 +1,4 @@
 import traverse from 'traverse'
-import omit from 'lodash/omit'
 import orderBy from 'lodash/orderBy'
 import * as c from '../../utils/constants'
 import * as util from '../../utils/util'
@@ -32,8 +31,9 @@ export const genAllStateProps = (globalState: any, props: PropsType) => {
   const { currentPaths } = props
   const result: PropsType = {}
   const paths: PathType[] = []
+  const { parentComp, ...propsNew } = props
   // eslint-disable-next-line func-names
-  traverse(omit(props, ['parentComp'])).forEach(function (x) {
+  traverse(propsNew).forEach(function (x) {
     if (!!x && !!x[c.MODIFIER_KEY] && x[c.MODIFIER_KEY] === 'get' && !(this.path.length > 1 && this.path.includes(c.V_CHILDREN_NAME))) {
       paths.push({ path: this.path, level: this.level })
     }

@@ -63,10 +63,11 @@ export class InfoBox extends React.PureComponent {
     if (filter && isArray(filter) && !isEmpty(filter) && !filter.includes(id)) {
       return null
     }
+    // const { children, stock, parentComp, ...newProps } = this.props
     return (
       <View style={styles.labelCont}>
         <Text style={styles.label}>
-          {/* {JSON.stringify(omit(this.props, ['children', 'stock', 'parentComp'])).replace(/,/g, '\n')} */}
+          {/* {JSON.stringify(newProps).replace(/,/g, '\n')} */}
           rendered: {this.counter}
         </Text>
       </View>
