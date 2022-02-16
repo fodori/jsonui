@@ -142,3 +142,5 @@ yarn lerna add rollup-plugin-visualizer -D --scope=@jsonui/reactnative
 yarn lerna add use-context-selector --scope=@jsonui/react
 yarn lerna add scheduler --scope=@jsonui/react
 yarn lerna add jest -D --scope=@jsonui/core
+yarn lerna add @types/jest -D --scope=@jsonui/core
+yarn lerna add ts-jest -D --scope=@jsonui/core
