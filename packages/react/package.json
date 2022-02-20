@@ -30,13 +30,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "rollup": "rollup -c",
-    "start-module": "microbundle watch --jsx React.createElement --external none",
-    "build-module": "microbundle build --jsx React.createElement --external none",
-    "lint": "eslint src --ext .jsx,.js,.tsx,.ts",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "lint": "eslint src --ext .jsx,.js,.tsx,.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -75,7 +69,6 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.2.1",
     "prettier": "^2.5.1",
-    "react-scripts": "5.0.0",
     "redux-devtools": "^3.7.0",
     "rollup": "^2.66.1",
     "rollup-plugin-dts": "^4.1.0",

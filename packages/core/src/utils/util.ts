@@ -10,33 +10,27 @@ import * as c from './constants'
 import { PropsType } from './types'
 
 export const jsonPointerGet = (json: any, path?: string) => {
-  if (json === null || json === undefined || path === null || path === undefined || typeof path !== 'string') return null
+  if (json === undefined || path === null || path === undefined || typeof path !== 'string') return undefined
   if (path === c.SEPARATOR /* || path === '' same effect */) return json
   try {
     return jsonpointer.get(json, path.startsWith(c.SEPARATOR) ? path : `${c.SEPARATOR}${path}`)
   } catch (e) {
-    return null
+    return undefined
   }
 }
 
 export const jsonPointerSet = (json: any, path?: string, value?: any) => {
-  if (json === null || json === undefined || path === null || path === undefined || typeof path !== 'string') return
+  if (json === undefined || path === null || path === undefined || typeof path !== 'string') return json
   if (path === c.SEPARATOR || path === '') {
-    // eslint-disable-next-line no-param-reassign
-    json = value
-    return
+    return value
   }
   try {
     jsonpointer.set(json, path.startsWith(c.SEPARATOR) ? path : `${c.SEPARATOR}${path}`, value)
+    return json
     // eslint-disable-next-line no-empty
-  } catch (e) {}
-}
-
-export const getCleanedTopic = (text: string | any) => {
-  if (!text || typeof text !== 'string' || text.length === 0 || text.length > 1024) {
-    return null
+  } catch (e) {
+    return json
   }
-  return text.replace(/[^0-9a-zA-Z]/g, '-')
 }
 
 export const pathArrayToPathString = (array: string[]) => array.map((i, index) => (Number.isInteger(i) ? `[${i}]` : `${index > 0 ? '.' : ''}${i}`)).join('')

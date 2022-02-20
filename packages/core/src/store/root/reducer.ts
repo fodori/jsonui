@@ -20,12 +20,14 @@ const validateNewState = (stock: InstanceType<typeof Stock>, newState: RootState
           const stateToBeValidated = util.jsonPointerGet(newState, `${c.SEPARATOR}${actionStore}${validateItem.path}`)
           const errors = validateJSON(validateItem.schema, actionStore, stateToBeValidated)
           // console.log('matched validator', `${c.SEPARATOR}${errors.store}${validateItem.path}`, errors)
-          util.jsonPointerSet(newState, `${c.SEPARATOR}${errors.store}${validateItem.path}`, errors.value)
+          // eslint-disable-next-line no-param-reassign
+          newState = util.jsonPointerSet(newState, `${c.SEPARATOR}${errors.store}${validateItem.path}`, errors.value)
         }
       }
     })
   }
 }
+
 const reducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case DATA_UPDATE: {
@@ -44,14 +46,17 @@ const reducer = (state = initialState, action: AnyAction) => {
               const jsonata = require('jsonata')
               const expression = jsonata(jsonataDef)
               const newValue = expression.evaluate(value)
-              util.jsonPointerSet(draft, absolutePathWithStoreKey, newValue)
+              // eslint-disable-next-line no-param-reassign
+              draft = util.jsonPointerSet(draft, absolutePathWithStoreKey, newValue)
             } catch (error) {
               // eslint-disable-next-line no-console
               console.error('jsonata error', error, jsonataDef)
-              util.jsonPointerSet(draft, absolutePathWithStoreKey, value)
+              // eslint-disable-next-line no-param-reassign
+              draft = util.jsonPointerSet(draft, absolutePathWithStoreKey, value)
             }
           } else {
-            util.jsonPointerSet(draft, absolutePathWithStoreKey, value)
+            // eslint-disable-next-line no-param-reassign
+            draft = util.jsonPointerSet(draft, absolutePathWithStoreKey, value)
           }
           // if validatior has match, need to validate it synchronously
           validateNewState(stock, draft, store, convertedPath)
