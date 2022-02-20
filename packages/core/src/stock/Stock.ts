@@ -1,8 +1,8 @@
-import React from 'react'
+import { ReactNode } from 'react'
 import { JsonUIFunctions, JsonUIFunctionType } from './appRootFunctions'
 
 interface JsonUIComponentsType {
-  [key: string]: React.ReactNode
+  [key: string]: ReactNode
 }
 
 interface NewStockType {
@@ -12,20 +12,20 @@ interface NewStockType {
 
 type InitType = (prop: NewStockType) => void
 type RegisterFunctionType = (key: string, value: JsonUIFunctionType) => void
-type RegisterComponentType = (key: string, value: React.ReactNode) => void
+type RegisterComponentType = (key: string, value: ReactNode) => void
 type CallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => void
-type GetComponentType = (componentName: string) => React.ReactNode
+type GetComponentType = (componentName: string) => ReactNode
 
 export default class Stock {
   stock: NewStockType
 
-  Wrapper: React.ReactNode
+  Wrapper: ReactNode
 
   reduxStore: any
 
   validations: any
 
-  constructor(newStock: NewStockType, Wrapper: React.ReactNode, reduxStore: any) {
+  constructor(newStock: NewStockType, Wrapper: ReactNode, reduxStore: any) {
     this.stock = {
       components: {} as JsonUIComponentsType,
       functions: {} as JsonUIFunctions,

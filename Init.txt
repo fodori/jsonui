@@ -144,3 +144,12 @@ yarn lerna add scheduler --scope=@jsonui/react
 yarn lerna add jest -D --scope=@jsonui/core
 yarn lerna add @types/jest -D --scope=@jsonui/core
 yarn lerna add ts-jest -D --scope=@jsonui/core
+
+
+yarn lerna add rollup -D --scope=@jsonui/core
+yarn lerna add @rollup/plugin-node-resolve -D --scope=@jsonui/core
+yarn lerna add @rollup/plugin-typescript -D --scope=@jsonui/core
+yarn lerna add @rollup/plugin-commonjs -D --scope=@jsonui/core
+yarn lerna add rollup-plugin-dts -D --scope=@jsonui/core
+yarn lerna add @rollup/plugin-json -D --scope=@jsonui/core
+yarn lerna add rollup-plugin-visualizer -D --scope=@jsonui/core
