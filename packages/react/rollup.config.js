@@ -4,9 +4,7 @@ import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
 import json from '@rollup/plugin-json'
 import { visualizer } from 'rollup-plugin-visualizer'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const packageJson = require('./package.json')
+import packageJson from './package.json'
 
 export default [
   {
@@ -15,12 +13,12 @@ export default [
       {
         file: packageJson.main,
         format: 'cjs',
-        sourcemap: false,
+        sourcemap: true,
       },
       {
         file: packageJson.module,
         format: 'esm',
-        sourcemap: false,
+        sourcemap: true,
       },
     ],
     plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), json(), visualizer()],
