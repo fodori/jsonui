@@ -187,24 +187,160 @@ test('jsonPointerGet test with  object', () => {
   expect(util.jsonPointerGet(json, '/testarray/assd')).toBe(undefined)
 })
 
-test('jsonPointerSet test with object', () => {
+test('jsonPointerSet test', () => {
   let json: any = null
-  util.jsonPointerSet(json, undefined, undefined)
+  json = util.jsonPointerSet(json, undefined, undefined)
   expect(json).toEqual(null)
-  json = undefined
-  util.jsonPointerSet(json, undefined, undefined)
-  expect(json).toEqual(undefined)
-  json = ''
-  util.jsonPointerSet(json, undefined, undefined)
-  expect(json).toEqual('')
-  json = ''
-  util.jsonPointerSet(json, undefined, 4)
-  expect(json).toEqual('')
-  json = ''
-  util.jsonPointerSet(json, undefined, null)
-  expect(json).toEqual('')
-  json = { a: 4 }
-  util.jsonPointerSet(json, '/', false)
 
+  json = undefined
+  json = util.jsonPointerSet(json, undefined, undefined)
+  expect(json).toEqual(undefined)
+
+  json = ''
+  json = util.jsonPointerSet(json, undefined, undefined)
+  expect(json).toEqual('')
+
+  json = ''
+  json = util.jsonPointerSet(json, undefined, 4)
+  expect(json).toEqual('')
+
+  json = ''
+  json = util.jsonPointerSet(json, undefined, null)
+  expect(json).toEqual('')
+
+  json = { a: 4 }
+  json = util.jsonPointerSet(json, '/', false)
   expect(json).toEqual(false)
+
+  json = 'aa'
+  json = util.jsonPointerSet(json, '/', {})
+  expect(json).toEqual({})
+
+  json = null
+  json = util.jsonPointerSet(json, '/', { aaa: 3 })
+  expect(json).toEqual({ aaa: 3 })
+
+  json = { aaa: 2 }
+  json = util.jsonPointerSet(json, '/', 5)
+  expect(json).toEqual(5)
+
+  json = { aaa: 2 }
+  json = util.jsonPointerSet(json, '/', 'qweqwe')
+  expect(json).toEqual('qweqwe')
+
+  json = { level1: { level2: { level3: { endlevel: false } } } }
+  json = util.jsonPointerSet(json, '/level1/level2', 'qweqwe')
+  expect(json).toEqual({ level1: { level2: 'qweqwe' } })
+
+  json = { level1: { level2: { level3: { endlevel: false } } } }
+  json = util.jsonPointerSet(json, 'level1/level2', 'qweqwe')
+  expect(json).toEqual({ level1: { level2: 'qweqwe' } })
+
+  json = { level1: { level2: { level3: { endlevel: false } } } }
+  json = util.jsonPointerSet(json, 'level1/level2', { level4: 'ok' })
+  expect(json).toEqual({ level1: { level2: { level4: 'ok' } } })
+
+  json = { level1: { level2: { level3: { endlevel: false } } } }
+  json = util.jsonPointerSet(json, 'level1/+', 'ok')
+  expect(json).toEqual({ level1: { level2: { level3: { endlevel: false } }, '+': 'ok' } })
+
+  json = { level1: { level2: [1, 5, 8] } }
+  json = util.jsonPointerSet(json, 'level1/level2/1', 'ok')
+  expect(json).toEqual({ level1: { level2: [1, 'ok', 8] } })
+
+  json = { level1: { level2: [1, 5, 8] } }
+  json = util.jsonPointerSet(json, 'level1/level2/0', 'ok')
+  expect(json).toEqual({ level1: { level2: ['ok', 5, 8] } })
+
+  json = { level1: { level2: [1, 5, 8] } }
+  json = util.jsonPointerSet(json, 'level1/level2/-', 'ok')
+  expect(json).toEqual({ level1: { level2: [1, 5, 8, 'ok'] } })
+
+  json = { level1: { level2: [] } }
+  json = util.jsonPointerSet(json, 'level1/level2/-', 'ok')
+  expect(json).toEqual({ level1: { level2: ['ok'] } })
+
+  json = { level1: { level2: [] } }
+  json = util.jsonPointerSet(json, 'level1/level2/1', { aaa: 3 })
+  expect(json).toEqual({ level1: { level2: [undefined, { aaa: 3 }] } })
+
+  json = { level1: { level2: [1, 4, { ccc: 6 }] } }
+  json = util.jsonPointerSet(json, 'level1/level2/2', { aaa: 3 })
+  expect(json).toEqual({ level1: { level2: [1, 4, { aaa: 3 }] } })
+
+  json = { level1: { level2: [1, 4, { ccc: 6 }] } }
+  json = util.jsonPointerSet(json, 'level1/level2/2', { aaa: 3 })
+  expect(json).toEqual({ level1: { level2: [1, 4, { aaa: 3 }] } })
+
+  json = { level1: { level2: [1, 4, { ccc: 6 }] } }
+  json = util.jsonPointerSet(json, 'level1/level2/1', { aaa: 3 })
+  expect(json).toEqual({ level1: { level2: [1, { aaa: 3 }, { ccc: 6 }] } })
+
+  // TODO means, we need to add a normalize function, to delete a key or array item from the listy if the value is undefined
+  json = { level1: { level2: [1, 4, { ccc: 6 }] } }
+  json = util.jsonPointerSet(json, 'level1/level2/2', undefined)
+  expect(json).toEqual({ level1: { level2: [1, 4, undefined] } })
+})
+
+test('pathArrayToPathString test', () => {
+  expect(util.pathArrayToPathString(['a', 'b', 'c', 'd'])).toBe('a.b.c.d')
+  expect(util.pathArrayToPathString(['a', '', 'c', 'd'])).toBe('a..c.d')
+  expect(util.pathArrayToPathString(['a', '1', 'c', 'd'])).toBe('a.1.c.d')
+  expect(util.pathArrayToPathString(['a', 1, 'c', 'd'])).toBe('a[1].c.d')
+})
+
+test('pathArrayToJsonPointer test', () => {
+  expect(util.pathArrayToJsonPointer(['a', 'b', 'c', 'd'])).toBe('/a/b/c/d')
+  expect(util.pathArrayToJsonPointer(['a', '', 'c', 'd'])).toBe('/a//c/d')
+  expect(util.pathArrayToJsonPointer(['a', '1', 'c', 'd'])).toBe('/a/1/c/d')
+  expect(util.pathArrayToJsonPointer(['a', 1, 'c', 'd'])).toBe('/a/1/c/d')
+})
+
+test('isOnlyObject test', () => {
+  expect(util.isOnlyObject(['a', 'b', 'c', 'e'])).toBe(false)
+  expect(util.isOnlyObject(null)).toBe(false)
+  expect(util.isOnlyObject(undefined)).toBe(false)
+  expect(util.isOnlyObject(false)).toBe(false)
+  expect(util.isOnlyObject(true)).toBe(false)
+  expect(util.isOnlyObject(224)).toBe(false)
+  expect(util.isOnlyObject('asd')).toBe(false)
+  expect(util.isOnlyObject({})).toBe(true)
+  expect(util.isOnlyObject({})).toBe(true)
+})
+
+// test('mergeDeep test', () => {
+//   const origarray = ['a', 'b', 'c', 'e']
+//   const origobj = { aa: 's', bb: 'w' }
+//   expect(util.mergeDeep(origarray)).toBe(origarray)
+//   expect(util.mergeDeep(origarray, 5)).toBe(origarray)
+//   expect(util.mergeDeep(origarray, '5')).toBe(origarray)
+//   expect(util.mergeDeep(origarray, undefined)).toBe(origarray)
+//   expect(util.mergeDeep(origarray, null)).toBe(origarray)
+//   expect(util.mergeDeep(origarray, false)).toBe(origarray)
+//   expect(util.mergeDeep(origarray, true)).toBe(origarray)
+
+//   expect(util.mergeDeep(origobj)).toBe(origobj)
+//   expect(util.mergeDeep(origobj, 5)).toBe(origobj)
+//   expect(util.mergeDeep(origobj, '5')).toBe(origobj)
+//   expect(util.mergeDeep(origobj, undefined)).toBe(origobj)
+//   expect(util.mergeDeep(origobj, null)).toBe(origobj)
+//   expect(util.mergeDeep(origobj, false)).toBe(origobj)
+//   expect(util.mergeDeep(origobj, true)).toBe(origobj)
+//   expect(util.mergeDeep(origobj, { aa: 'ee' })).toBe(origobj)
+// })
+
+test('mergePath test', () => {
+  const origarray = ['a', 'b', 'c', 'e']
+  const origobj = { level1: { level2: { ee: false } } }
+  expect(util.mergePath(origarray, 5)).toBe(origarray)
+  expect(util.mergePath(origarray, '5')).toBe(origarray)
+  expect(util.mergePath(origarray, undefined)).toBe(origarray)
+  expect(util.mergePath(origarray, null)).toBe(origarray)
+  expect(util.mergePath(origarray, false)).toBe(origarray)
+  expect(util.mergePath(origarray, true)).toBe(origarray)
+
+  expect(util.mergePath(origobj, { bb: 'tt' })).toEqual({ level1: { level2: { ee: false } }, bb: 'tt' })
+  expect(util.mergePath(origobj, { level1: 'tt' })).toEqual({ level1: 'tt' })
+  expect(util.mergePath(origobj, { 'level1/level2': 'tt' })).toEqual({ level1: { level2: 'tt' } })
+  expect(util.mergePath(origobj, { 'level1/level2': 'tt', anotherlevel: 3 })).toEqual({ anotherlevel: 3, level1: { level2: 'tt' } })
 })

@@ -33,17 +33,18 @@ export const jsonPointerSet = (json: any, path?: string, value?: any) => {
   }
 }
 
-export const pathArrayToPathString = (array: string[]) => array.map((i, index) => (Number.isInteger(i) ? `[${i}]` : `${index > 0 ? '.' : ''}${i}`)).join('')
+export const pathArrayToPathString = (array: (string | number)[]) =>
+  array.map((i, index) => (Number.isInteger(i) ? `[${i}]` : `${index > 0 ? '.' : ''}${i}`)).join('')
 
-export const pathArrayToJsonPointer = (array: string[]) => `/${array.join('/')}`
+export const pathArrayToJsonPointer = (array: (string | number)[]) => `/${array.join('/')}`
 
 /**
  * Simple object check.
  * @param item
  * @returns {boolean}
  */
-export function isObject(item: any) {
-  return item && typeof item === 'object' && !Array.isArray(item)
+export function isOnlyObject(item: any): boolean {
+  return !!item && typeof item === 'object' && !Array.isArray(item)
 }
 
 /**
@@ -55,10 +56,10 @@ export function mergeDeep(target: any, ...sources: any): any {
   if (!sources.length) return target
   const source = sources.shift()
 
-  if (isObject(target) && isObject(source)) {
+  if (isOnlyObject(target) && isOnlyObject(source)) {
     // eslint-disable-next-line no-restricted-syntax
     for (const key in source) {
-      if (isObject(source[key])) {
+      if (isOnlyObject(source[key])) {
         if (!target[key]) Object.assign(target, { [key]: {} })
         mergeDeep(target[key], source[key])
       } else {
@@ -72,9 +73,9 @@ export function mergeDeep(target: any, ...sources: any): any {
 
 export const mergePath = (target: any, newState: any) => {
   if (!newState || typeof newState !== 'object') return target
-  const newTarget = cloneDeep(target)
+  let newTarget = cloneDeep(target)
   Object.entries(newState).forEach(([key, value]) => {
-    jsonpointer.set(newTarget, key, value)
+    newTarget = jsonPointerSet(newTarget, key, value)
   })
   return newTarget
 }
