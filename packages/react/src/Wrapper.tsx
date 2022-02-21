@@ -1,9 +1,36 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { ClassNames } from '@emotion/react'
-import { constants as c, wrapperUtil, util, StockContext, PathModifierContext, genAllStateProps, Stock, WrapperType } from '@jsonui/core'
+import { constants as c, wrapperUtil, util, StockContext, PathModifierContext, genAllStateProps, Stock, WrapperType, PropsType } from '@jsonui/core'
 import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'
+
+const genStyle = (props: PropsType) => {
+  const { parentComp } = props
+  const style = { display: 'flex', flexDirection: 'column', ...(props.style as any), ...(props[c.STYLE_WEB_NAME] as any) }
+
+  if (style && style.borderWidth && !style.borderStyle) {
+    style.borderStyle = 'solid'
+  }
+  if (style && style.flex) {
+    if (
+      parentComp &&
+      (parentComp as any).style &&
+      (parentComp as any).style.flex &&
+      (parentComp as any).style.flex < 1
+      // if smaller or larger, noesn't matter
+    ) {
+      style.height = `100%`
+      style.width = `100%`
+    } else if (!style.height) {
+      style.height = `${style.flex * 100}%`
+    }
+  }
+  return style
+}
+
+export const getStyleForWeb = (props: PropsType = {}, component: string) =>
+  component === 'View' ? genStyle(props) : { ...(props.style as any), ...(props[c.STYLE_WEB_NAME] as any) }
 
 function Wrapper(props: any) {
   const { [c.V_COMP_NAME]: component, id, [c.PATH_MODIFIERS_KEY]: pathModifiers } = props
@@ -18,7 +45,7 @@ function Wrapper(props: any) {
     // eslint-disable-next-line no-throw-literal
     throw `The Component(${component}) is not available`
   }
-  const newStyle = ownProps.style || ownProps[c.STYLE_WEB_NAME] ? util.getStyleForWeb(ownProps, component) : undefined
+  const newStyle = ownProps.style || ownProps[c.STYLE_WEB_NAME] ? getStyleForWeb(ownProps, component) : undefined
   return (
     <ErrorBoundary type="wrapper" id={id}>
       <ClassNames>

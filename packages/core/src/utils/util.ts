@@ -1,13 +1,20 @@
 import jsonpointer from 'jsonpointer'
 import cloneDeep from 'lodash/cloneDeep'
-import drop from 'lodash/drop'
 import findIndex from 'lodash/findIndex'
 import pull from 'lodash/pull'
-import compact from 'lodash/compact'
-import findLastIndex from 'lodash/findLastIndex'
-import unset from 'lodash/unset'
 import * as c from './constants'
-import { PropsType } from './types'
+
+export const findLastIndex = (arr: any, func: any) => {
+  const reverseIdx = [...arr].reverse().findIndex(func)
+  return reverseIdx === -1 ? reverseIdx : arr.length - (reverseIdx + 1)
+}
+
+const drop = (arr: any[], n = 1) => arr.slice(n)
+
+// TODO it have to be configurable
+export const noChildren = (component: string) => ['Image'].includes(component)
+
+export const isNumber = (a: any) => typeof a === 'number'
 
 export const jsonPointerGet = (json: any, path?: string) => {
   if (json === undefined || path === null || path === undefined || typeof path !== 'string') return undefined
@@ -47,6 +54,42 @@ export function isOnlyObject(item: any): boolean {
   return !!item && typeof item === 'object' && !Array.isArray(item)
 }
 
+export const mergePath = (target: any, newState: any) => {
+  if (!newState || typeof newState !== 'object') return target
+  let newTarget = cloneDeep(target)
+  Object.entries(newState).forEach(([key, value]) => {
+    newTarget = jsonPointerSet(newTarget, key, value)
+  })
+  return newTarget
+}
+
+// eslint-disable-next-line import/prefer-default-export
+export const changeRelativePath = (path: string) => {
+  let pathArray = path.split(c.SEPARATOR)
+  // remove last /
+  if (pathArray && pathArray.length > 1 && pathArray[pathArray.length - 1] === '' && !(pathArray.length === 2 && pathArray[0] === '')) {
+    pathArray.pop()
+  }
+  // the last / is meaningful
+  const absolutepathIndex = findLastIndex(pathArray, (i: string) => i === '')
+  if (absolutepathIndex > 0) {
+    pathArray = drop(pathArray, absolutepathIndex)
+  }
+  // all . need to remove because is just pointing the prev level
+  pathArray = pull(pathArray, '.')
+  let count = 0
+  let relativepathIndex = -1
+  do {
+    count += 1
+    relativepathIndex = findIndex(pathArray, (i) => i === '..')
+    if (relativepathIndex !== -1) {
+      pathArray.splice(relativepathIndex, 1)
+      pathArray.splice(relativepathIndex - 1, 1)
+    }
+  } while (relativepathIndex !== -1 && count < 100)
+  return pathArray.join(c.SEPARATOR)
+}
+
 /**
  * Deep merge two objects.
  * @param target
@@ -70,70 +113,3 @@ export function mergeDeep(target: any, ...sources: any): any {
 
   return mergeDeep(target, ...sources)
 }
-
-export const mergePath = (target: any, newState: any) => {
-  if (!newState || typeof newState !== 'object') return target
-  let newTarget = cloneDeep(target)
-  Object.entries(newState).forEach(([key, value]) => {
-    newTarget = jsonPointerSet(newTarget, key, value)
-  })
-  return newTarget
-}
-
-// eslint-disable-next-line import/prefer-default-export
-export const changeRelativePath = (path: string) => {
-  let pathArray = path.split(c.SEPARATOR)
-  if (pathArray && pathArray.length > 1 && pathArray[pathArray.length - 1] === '') {
-    pathArray.pop()
-  }
-  const absolutepathIndex = findLastIndex(pathArray, (i) => i === '')
-  if (absolutepathIndex > 0) {
-    pathArray = drop(pathArray, absolutepathIndex)
-  }
-  pathArray = pull(pathArray, '.')
-  let count = 0
-  let relativepathIndex = -1
-  do {
-    count += 1
-    relativepathIndex = findIndex(pathArray, (i) => i === '..')
-    if (relativepathIndex !== -1) {
-      unset(pathArray, `[${relativepathIndex}]`)
-      unset(pathArray, `[${relativepathIndex - 1}]`)
-      pathArray = compact(pathArray)
-    }
-  } while (relativepathIndex !== -1 && count < 100)
-  return pathArray.join(c.SEPARATOR)
-}
-
-// changeRelativePath('111/22222/3333/./anything/../../start')
-
-const genStyle = (props: PropsType) => {
-  const { parentComp } = props
-  const style = { display: 'flex', flexDirection: 'column', ...(props.style as any), ...(props[c.STYLE_WEB_NAME] as any) }
-
-  if (style && style.borderWidth && !style.borderStyle) {
-    style.borderStyle = 'solid'
-  }
-  if (style && style.flex) {
-    if (
-      parentComp &&
-      (parentComp as any).style &&
-      (parentComp as any).style.flex &&
-      (parentComp as any).style.flex < 1
-      // if smaller or larger, noesn't matter
-    ) {
-      style.height = `100%`
-      style.width = `100%`
-    } else if (!style.height) {
-      style.height = `${style.flex * 100}%`
-    }
-  }
-  return style
-}
-export const getStyleForWeb = (props: PropsType = {}, component: string) =>
-  component === 'View' ? genStyle(props) : { ...(props.style as any), ...(props[c.STYLE_WEB_NAME] as any) }
-
-// TODO it have to be configurable
-export const noChildren = (component: string) => ['Image'].includes(component)
-
-export const isNumber = (a: any) => typeof a === 'number'

@@ -308,27 +308,6 @@ test('isOnlyObject test', () => {
   expect(util.isOnlyObject({})).toBe(true)
 })
 
-// test('mergeDeep test', () => {
-//   const origarray = ['a', 'b', 'c', 'e']
-//   const origobj = { aa: 's', bb: 'w' }
-//   expect(util.mergeDeep(origarray)).toBe(origarray)
-//   expect(util.mergeDeep(origarray, 5)).toBe(origarray)
-//   expect(util.mergeDeep(origarray, '5')).toBe(origarray)
-//   expect(util.mergeDeep(origarray, undefined)).toBe(origarray)
-//   expect(util.mergeDeep(origarray, null)).toBe(origarray)
-//   expect(util.mergeDeep(origarray, false)).toBe(origarray)
-//   expect(util.mergeDeep(origarray, true)).toBe(origarray)
-
-//   expect(util.mergeDeep(origobj)).toBe(origobj)
-//   expect(util.mergeDeep(origobj, 5)).toBe(origobj)
-//   expect(util.mergeDeep(origobj, '5')).toBe(origobj)
-//   expect(util.mergeDeep(origobj, undefined)).toBe(origobj)
-//   expect(util.mergeDeep(origobj, null)).toBe(origobj)
-//   expect(util.mergeDeep(origobj, false)).toBe(origobj)
-//   expect(util.mergeDeep(origobj, true)).toBe(origobj)
-//   expect(util.mergeDeep(origobj, { aa: 'ee' })).toBe(origobj)
-// })
-
 test('mergePath test', () => {
   const origarray = ['a', 'b', 'c', 'e']
   const origobj = { level1: { level2: { ee: false } } }
@@ -343,4 +322,44 @@ test('mergePath test', () => {
   expect(util.mergePath(origobj, { level1: 'tt' })).toEqual({ level1: 'tt' })
   expect(util.mergePath(origobj, { 'level1/level2': 'tt' })).toEqual({ level1: { level2: 'tt' } })
   expect(util.mergePath(origobj, { 'level1/level2': 'tt', anotherlevel: 3 })).toEqual({ anotherlevel: 3, level1: { level2: 'tt' } })
+})
+
+test('changeRelativePath test', () => {
+  expect(util.changeRelativePath('')).toBe('')
+  expect(util.changeRelativePath('/')).toBe('')
+  expect(util.changeRelativePath('/lev1/lev2/lev3/')).toBe('/lev1/lev2/lev3')
+  expect(util.changeRelativePath('/lev1/lev2/lev3')).toBe('/lev1/lev2/lev3')
+  expect(util.changeRelativePath('/lev1/lev2/lev3/.')).toBe('/lev1/lev2/lev3')
+  expect(util.changeRelativePath('/lev1/lev2/./lev3')).toBe('/lev1/lev2/lev3')
+  expect(util.changeRelativePath('/lev1/lev2/lev3/..')).toBe('/lev1/lev2')
+  expect(util.changeRelativePath('/lev1/lev2/lev3/../../')).toBe('/lev1')
+  expect(util.changeRelativePath('/lev1/lev2/lev3/../../levaaa')).toBe('/lev1/levaaa')
+  expect(util.changeRelativePath('/lev1/lev2/lev3/../../levaaa/../')).toBe('/lev1')
+  expect(util.changeRelativePath('/lev1/lev2/lev3/././levaaa/../')).toBe('/lev1/lev2/lev3')
+})
+
+test('mergeDeep test', () => {
+  expect(util.mergeDeep(['a', 'b', 'c', 'e'])).toEqual(['a', 'b', 'c', 'e'])
+  expect(util.mergeDeep(['a', 'b', 'c', 'e'], 5)).toEqual(['a', 'b', 'c', 'e'])
+  expect(util.mergeDeep(['a', 'b', 'c', 'e'], '5')).toEqual(['a', 'b', 'c', 'e'])
+  expect(util.mergeDeep(['a', 'b', 'c', 'e'], undefined)).toEqual(['a', 'b', 'c', 'e'])
+  expect(util.mergeDeep(['a', 'b', 'c', 'e'], null)).toEqual(['a', 'b', 'c', 'e'])
+  expect(util.mergeDeep(['a', 'b', 'c', 'e'], false)).toEqual(['a', 'b', 'c', 'e'])
+  expect(util.mergeDeep(['a', 'b', 'c', 'e'], true)).toEqual(['a', 'b', 'c', 'e'])
+
+  expect(util.mergeDeep({ aa: 's', bb: 'w' })).toEqual({ aa: 's', bb: 'w' })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, 5)).toEqual({ aa: 's', bb: 'w' })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, '5')).toEqual({ aa: 's', bb: 'w' })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, undefined)).toEqual({ aa: 's', bb: 'w' })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, null)).toEqual({ aa: 's', bb: 'w' })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, false)).toEqual({ aa: 's', bb: 'w' })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, true)).toEqual({ aa: 's', bb: 'w' })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, { aa: 'ee', cc: 3 })).toEqual({ aa: 'ee', bb: 'w', cc: 3 })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, { aa: 'ee', cc: 3 }, { cc: 'ww', tt: 6 })).toEqual({ aa: 'ee', bb: 'w', cc: 'ww', tt: 6 })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, { aa: { g: 7 }, cc: 3 })).toEqual({ aa: 's', bb: 'w', cc: 3 })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, { aa: undefined, cc: 3 })).toEqual({ aa: undefined, bb: 'w', cc: 3 })
+  expect(util.mergeDeep({ aa: 's', bb: 'w' }, { aa: null, cc: 3 })).toEqual({ aa: null, bb: 'w', cc: 3 })
+  expect(util.mergeDeep({ aa: 's', bb: { tt: 3 } }, { bb: { tt: 5 } })).toEqual({ aa: 's', bb: { tt: 5 } })
+  expect(util.mergeDeep({ aa: 's', bb: { tt: 3 } }, { bb: undefined })).toEqual({ aa: 's', bb: undefined })
+  expect(util.mergeDeep({ aa: 's', bb: { tt: 3 } }, { bb: null })).toEqual({ aa: 's', bb: null })
 })
