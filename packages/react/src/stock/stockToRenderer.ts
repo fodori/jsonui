@@ -1,8 +1,6 @@
 import defaultsDeep from 'lodash/defaultsDeep'
-import { constants as c, Stock, I18n, stockFunctions as functions, jsonRefResolver } from '@jsonui/core'
+import { constants as c, Stock, I18n, stockFunctions as functions, util } from '@jsonui/core'
 import additionalComponents from './components'
-
-const { collectJsonKeys } = jsonRefResolver
 
 // eslint-disable-next-line import/prefer-default-export
 export const getStock = (stockInit: any, viewDef: any, Wrapper: any, reduxStore: any) => {
@@ -19,11 +17,11 @@ export const getStock = (stockInit: any, viewDef: any, Wrapper: any, reduxStore:
       (navigator.languages && navigator.languages[0]) || // Chrome / Firefox
       navigator.language || // All browsers
       (navigator as any).userLanguage, // IE <= 10
-    resources: collectJsonKeys(c.REF_LOCALES, viewDef),
+    resources: util.collectObjMerge(c.REF_LOCALES, viewDef),
   })
 
   // get Validations
-  stock.validations = jsonRefResolver.getRefs(c.REF_VALIDATES, viewDef).flat(Infinity)
+  stock.validations = util.collectObjToArray(c.REF_VALIDATES, viewDef)
   stock.registerFunction('t', (p) => i18n.t(p.keys, p.options))
   stock.registerFunction('test', () => 'Test is ok')
   return stock

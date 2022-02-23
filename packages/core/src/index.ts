@@ -1,7 +1,6 @@
 import Stock from './stock/Stock'
 import * as wrapperUtil from './wrapper/wrapperUtil'
 import * as constants from './utils/constants'
-import * as jsonRefResolver from './utils/jsonRefResolver'
 import * as util from './utils/util'
 import I18n from './utils/I18n'
 import { StockContext, PathModifierContext } from './utils/contextHandler'
@@ -19,7 +18,6 @@ export {
   wrapperUtil,
   util,
   constants,
-  jsonRefResolver,
   StockContext,
   PathModifierContext,
   appRootFunctions,

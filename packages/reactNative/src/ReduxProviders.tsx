@@ -14,9 +14,8 @@ class Providers extends React.Component {
 
   constructor(props: { children: ReactNode }) {
     super(props)
-    const reducerConfig = { ...persistConfig, storage } // ersistConfig<CombinedState< root: any;}>, any, any, any>
+    const reducerConfig = { ...persistConfig, storage }
     const persistedReducer = persistReducer(reducerConfig, storeReducers)
-    // eslint-disable-next-line no-underscore-dangle
     this.store = createStore(persistedReducer)
     this.persistor = persistStore(this.store)
   }

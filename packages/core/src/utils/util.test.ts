@@ -1,15 +1,9 @@
 import * as util from './util'
 import * as c from './constants'
 
-test('isNumber test with number', () => {
+test('isNumber test', () => {
   expect(util.isNumber(2)).toBe(true)
-})
-
-test('isNumber test with null', () => {
   expect(util.isNumber(null)).toBe(false)
-})
-
-test('isNumber test with string', () => {
   expect(util.isNumber('0')).toBe(false)
 })
 
@@ -362,4 +356,151 @@ test('mergeDeep test', () => {
   expect(util.mergeDeep({ aa: 's', bb: { tt: 3 } }, { bb: { tt: 5 } })).toEqual({ aa: 's', bb: { tt: 5 } })
   expect(util.mergeDeep({ aa: 's', bb: { tt: 3 } }, { bb: undefined })).toEqual({ aa: 's', bb: undefined })
   expect(util.mergeDeep({ aa: 's', bb: { tt: 3 } }, { bb: null })).toEqual({ aa: 's', bb: null })
+})
+
+test('findLastIndex test', () => {
+  expect(util.findLastIndex(['a', 'b', 'c', 'e'], (i: any) => i === 'e')).toEqual(3)
+  expect(util.findLastIndex(['a', '', 'b', 'c', '', 'e'], (i: any) => i === '')).toEqual(4)
+  expect(util.findLastIndex(['', '', 'b', 'c', ''], (i: any) => i === '')).toEqual(4)
+  expect(util.findLastIndex(['a', 'b', 'c', 'e'], (i: any) => i === 'ee')).toEqual(-1)
+  expect(util.findLastIndex([], (i: any) => i === 'e')).toEqual(-1)
+})
+
+test('drop test', () => {
+  expect(util.drop(['a', 'b', 'c', 'e'], 1)).toEqual(['b', 'c', 'e'])
+  expect(util.drop(['a', 'b'], 1)).toEqual(['b'])
+  expect(util.drop(['a'], 1)).toEqual([])
+  expect(util.drop(['a'], 0)).toEqual(['a'])
+  expect(util.drop(['a', 'b', 'c', 'e'], 2)).toEqual(['c', 'e'])
+})
+
+test('collectObjMerge test', () => {
+  const json = { test: 999, level1: { test: { any: 7 }, '': 8, level2: { test: { any: 7 }, level3: { test: { another: 3, any: 8 } } } } }
+  const realisticJson = {
+    $locales: {
+      en: {
+        translation: {
+          'This is an e-mail placeholder': 'Just placeholder1',
+          Hi: 'Hi in English! 1',
+        },
+      },
+      hu: {
+        translation: {
+          'This is an e-mail placeholder': 'Ez egy helykitöltő1',
+          testhu1: 'Hogy vagy??',
+        },
+      },
+    },
+    level1: {
+      $locales: {
+        en: {
+          translation: {
+            'This is an e-mail placeholder': 'Just placeholder2',
+            Hi: 'Hi in English! 1',
+            testen2: 'Hogy vagy??',
+          },
+        },
+        hu: {
+          translation: {
+            'This is an e-mail placeholder': 'Ez egy helykitöltő2',
+            Hi: 'Hogy vagy??',
+            testhu3: 'Hogy vagy??',
+          },
+        },
+      },
+      level3: {
+        $locales: {
+          en: {
+            translation: {
+              'This is an e-mail placeholder': 'Just placeholder3',
+              Hi: 'Hi in English! 1',
+              testen4: 'Hogy vagy??',
+            },
+          },
+          hu: {
+            translation: {
+              'This is an e-mail placeholder': 'Ez egy helykitöltő3',
+              Hi: 'Hogy vagy??',
+            },
+          },
+        },
+      },
+    },
+  }
+  expect(util.collectObjMerge('test', json)).toEqual({ another: 3, any: 8 })
+  expect(util.collectObjMerge('any', json)).toEqual({})
+  expect(util.collectObjMerge('$locales', realisticJson)).toEqual({
+    en: {
+      translation: {
+        Hi: 'Hi in English! 1',
+        'This is an e-mail placeholder': 'Just placeholder3',
+        testen2: 'Hogy vagy??',
+        testen4: 'Hogy vagy??',
+      },
+    },
+    hu: {
+      translation: {
+        Hi: 'Hogy vagy??',
+        'This is an e-mail placeholder': 'Ez egy helykitöltő3',
+        testhu1: 'Hogy vagy??',
+        testhu3: 'Hogy vagy??',
+      },
+    },
+  })
+})
+
+test('collectObjToArray test', () => {
+  const json = { test: 999, level1: { test: { any: 7 }, '': 8, level2: { test: { any: 7 }, level3: { test: { another: 3, any: 8 } } } } }
+  const realisticJson = {
+    $validations: [
+      {
+        data: 1,
+        path: '/elso/masodik',
+        store: 'data',
+      },
+    ],
+    level1: {
+      $validations: [
+        {
+          data: 2,
+          path: '/elso/masodik',
+          store: 'data',
+        },
+      ],
+      level2: {
+        $validations: [
+          {
+            data: 3,
+            path: '/elso/harmadik',
+            store: 'data',
+          },
+        ],
+      },
+    },
+  }
+  expect(util.collectObjToArray('test', json)).toEqual([999, { any: 7 }, { any: 7 }, { another: 3, any: 8 }])
+  expect(util.collectObjToArray('any', json)).toEqual([7, 7, 8])
+  expect(util.collectObjToArray('$validations', realisticJson)).toEqual([
+    [
+      {
+        data: 1,
+        path: '/elso/masodik',
+        store: 'data',
+      },
+    ],
+    [
+      {
+        data: 2,
+        path: '/elso/masodik',
+        store: 'data',
+      },
+    ],
+    [
+      {
+        data: 3,
+        path: '/elso/harmadik',
+        store: 'data',
+      },
+    ],
+  ])
 })

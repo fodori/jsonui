@@ -2,14 +2,15 @@ import jsonpointer from 'jsonpointer'
 import cloneDeep from 'lodash/cloneDeep'
 import findIndex from 'lodash/findIndex'
 import pull from 'lodash/pull'
+import traverse from 'traverse'
 import * as c from './constants'
 
-export const findLastIndex = (arr: any, func: any) => {
+export const findLastIndex = (arr: any[], func: any) => {
   const reverseIdx = [...arr].reverse().findIndex(func)
   return reverseIdx === -1 ? reverseIdx : arr.length - (reverseIdx + 1)
 }
 
-const drop = (arr: any[], n = 1) => arr.slice(n)
+export const drop = (arr: any[], n = 1) => arr.slice(n)
 
 // TODO it have to be configurable
 export const noChildren = (component: string) => ['Image'].includes(component)
@@ -112,4 +113,33 @@ export function mergeDeep(target: any, ...sources: any): any {
   }
 
   return mergeDeep(target, ...sources)
+}
+
+export const collectObjMerge = (refConst: string, json: any) => {
+  const res = {}
+  if (refConst && json && typeof json === 'object') {
+    const refs: any[] = []
+    // eslint-disable-next-line func-names
+    traverse(json).forEach(function (x) {
+      if (x && !!x[refConst] && !!this && !this.circular) {
+        refs.push(x[refConst])
+      }
+    })
+    refs.filter((i) => !!i).forEach((i) => mergeDeep(res, i))
+  }
+  return res
+}
+
+export const collectObjToArray = (refConst: string, json: any) => {
+  if (refConst && json && typeof json === 'object') {
+    const refs: any[] = []
+    // eslint-disable-next-line func-names
+    traverse(json).forEach(function (x) {
+      if (x && !!x[refConst] && !!this && !this.circular) {
+        refs.push(x[refConst])
+      }
+    })
+    return refs
+  }
+  return []
 }
