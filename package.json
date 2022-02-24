@@ -14,7 +14,8 @@
     "startTestReact": "yarn workspace jsonui-test-react run start",
     "publish": "yarn lerna publish from-package",
     "bootstrap": "yarn lerna bootstrap",
-    "testCore": "yarn workspace @jsonui/core run test"
+    "testCore": "yarn workspace @jsonui/core run test",
+    "deployDocs": "rm -rf ./docs; mkdir docs; cp -R ./packages/docs-site/build/* ./docs/;"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
