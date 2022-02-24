@@ -19,7 +19,7 @@ function CFormResult({ value }: { value: any }) {
           ))}
       {value &&
         !Array.isArray(value) &&
-        util.isObject(value) &&
+        util.isOnlyObject(value) &&
         Object.keys(value).map((k) => (
           <React.Fragment key={k}>
             <p style={{ fontSize: 16, fontWeight: 'bold' }}>

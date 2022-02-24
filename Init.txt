@@ -153,3 +153,12 @@ yarn lerna add @rollup/plugin-commonjs -D --scope=@jsonui/core
 yarn lerna add rollup-plugin-dts -D --scope=@jsonui/core
 yarn lerna add @rollup/plugin-json -D --scope=@jsonui/core
 yarn lerna add rollup-plugin-visualizer -D --scope=@jsonui/core
+
+
+npx create-react-app docs-site jsonui-react --template typescript
+yarn lerna add @mui/material --scope=docs-site
+yarn lerna add @emotion/react --scope=docs-site
+yarn lerna add @emotion/styled --scope=docs-site
+yarn lerna add react-router --scope=docs-site
+yarn lerna add react-router-dom --scope=docs-site
+
