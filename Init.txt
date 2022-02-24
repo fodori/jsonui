@@ -162,3 +162,6 @@ yarn lerna add @emotion/styled --scope=docs-site
 yarn lerna add react-router --scope=docs-site
 yarn lerna add react-router-dom --scope=docs-site
 
+yarn add gh-pages --dev
+
+yarn lerna gh-pages --dev
