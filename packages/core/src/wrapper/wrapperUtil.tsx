@@ -79,8 +79,13 @@ export const getWrapperProps = (props: PropsType, parentComp?: any) => {
 }
 
 const genChildenFromListItem = (props: PropsType) => {
-  let { page = 0, listLength = 0, itemPerPage = c.PAGINATION_ITEM_PER_PAGE } = props as { page?: number; listLength?: number; itemPerPage?: number }
-  const { listItem } = props
+  let page = !!props[c.LIST_PAGE] && util.isNumber(props[c.LIST_PAGE]) ? (props[c.LIST_PAGE] as number) : 0
+  let listLength = !!props[c.LIST_LENGTH] && util.isNumber(props[c.LIST_LENGTH]) ? (props[c.LIST_LENGTH] as number) : 0
+  let itemPerPage =
+    !!props[c.LIST_ITEM_PER_PAGE_DEFAULT] && util.isNumber(props[c.LIST_ITEM_PER_PAGE_DEFAULT])
+      ? (props[c.LIST_ITEM_PER_PAGE_DEFAULT] as number)
+      : c.LIST_ITEM_PER_PAGE_DEFAULT
+  const listItem: any = props[c.LIST_ITEM]
   const pathModifiers: PathModifiersType = props[c.PATH_MODIFIERS_KEY] as PathModifiersType
   if (util.isNumber(page) && util.isNumber(listLength) && util.isNumber(itemPerPage) && pathModifiers) {
     const children: PropsType[] = []
@@ -115,7 +120,7 @@ export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof
   }
   modifierBuilder(newProps, stock)
   actionBuilder(newProps, stock)
-  if (newProps.isList) {
+  if (newProps[c.LIST_SEMAPHORE]) {
     newProps[c.V_CHILDREN_NAME] = genChildenFromListItem(newProps)
   }
 
