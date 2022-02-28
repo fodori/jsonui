@@ -29,12 +29,12 @@ function Wrapper(props: any) {
     <ErrorBoundary type="wrapper" id={id}>
       {pathModifiers ? (
         <PathModifierContext.Provider value={currentPaths as any}>
-          <Comp {...newProps}>{util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}</Comp>
+          <Comp {...newProps}>{wrapperUtil.generateChildren(ownProps, stock)}</Comp>
           {infobox && <InfoBox {...ownProps} />}
         </PathModifierContext.Provider>
       ) : (
         <>
-          <Comp {...newProps}>{util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}</Comp>
+          <Comp {...newProps}>{wrapperUtil.generateChildren(ownProps, stock)}</Comp>
           {infobox && <InfoBox {...ownProps} />}
         </>
       )}

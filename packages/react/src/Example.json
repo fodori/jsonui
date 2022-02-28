@@ -1,5 +1,12 @@
 {
   "$comp": "View",
   "style": { "marginTop": 10, "backgroundColor": "orange" },
-  "$children": [{ "$comp": "Text", "$children": "JsonUI test page v0.1", "style": { "textAlign": "center", "fontSize": 30, "margin": 5 } }]
+  "$children": [
+    { "$comp": "Text", "$children": "JsonUI test page v0.1", "style": { "textAlign": "center", "fontSize": 30, "margin": 5 } },
+    {
+      "$comp": "Image",
+      "style": { "width": 10, "height": 10 },
+      "src": "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+    }
+  ]
 }
