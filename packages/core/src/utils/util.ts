@@ -12,9 +12,6 @@ export const findLastIndex = (arr: any[], func: any) => {
 
 export const drop = (arr: any[], n = 1) => arr.slice(n)
 
-// TODO it have to be configurable
-export const noChildren = (component: string) => ['Image'].includes(component)
-
 export const isNumber = (a: any) => typeof a === 'number'
 
 export const jsonPointerGet = (json: any, path?: string) => {

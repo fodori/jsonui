@@ -29,9 +29,7 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "rollup": "rollup -c",
-    "start-module": "microbundle watch --jsx React.createElement --external none",
-    "build-module": "microbundle build --jsx React.createElement --external none",
+    "build": "rollup -c",
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts"
   },
   "dependencies": {

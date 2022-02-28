@@ -54,12 +54,12 @@ function Wrapper(props: any) {
           const { parentComp, style, [c.STYLE_WEB_NAME]: _unused1, [c.V_COMP_NAME]: _unused2, [c.V_CHILDREN_NAME]: _unused3, ...newProps } = ownProps
           return pathModifiers ? (
             <PathModifierContext.Provider value={currentPaths as any}>
-              <Comp {...newProps}>{util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}</Comp>
+              <Comp {...newProps}>{wrapperUtil.generateChildren(ownProps, stock)}</Comp>
               {infobox && <InfoBox {...ownProps} />}
             </PathModifierContext.Provider>
           ) : (
             <>
-              <Comp {...newProps}>{util.noChildren(component) ? undefined : wrapperUtil.generateChildren(ownProps, stock)}</Comp>
+              <Comp {...newProps}>{wrapperUtil.generateChildren(ownProps, stock)}</Comp>
               {infobox && <InfoBox {...ownProps} />}
             </>
           )

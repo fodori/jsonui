@@ -82,8 +82,8 @@ const genChildenFromListItem = (props: PropsType) => {
   let { page = 0, listLength = 0, itemPerPage = c.PAGINATION_ITEM_PER_PAGE } = props as { page?: number; listLength?: number; itemPerPage?: number }
   const { listItem } = props
   const pathModifiers: PathModifiersType = props[c.PATH_MODIFIERS_KEY] as PathModifiersType
-  const children: PropsType[] = []
   if (util.isNumber(page) && util.isNumber(listLength) && util.isNumber(itemPerPage) && pathModifiers) {
+    const children: PropsType[] = []
     page = page >= 0 ? page : 0
     itemPerPage = itemPerPage >= 0 ? itemPerPage : 0
     listLength = listLength >= 0 ? listLength : 0
@@ -103,8 +103,9 @@ const genChildenFromListItem = (props: PropsType) => {
         } as PathModifiersType,
       })
     }
+    return children.length > 0 ? children : undefined
   }
-  return children
+  return undefined
 }
 
 export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof Stock>) => {
@@ -124,14 +125,16 @@ export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof
 export const getChildrensForRoot = (props: PropsType, children: any, Wrapper: WrapperType) => {
   const { parentComp, [c.V_CHILDREN_NAME]: _notused, ...newParentComp } = props
   // eslint-disable-next-line no-nested-ternary
-  return !!props && Array.isArray(children) ? (
-    children.map((childrenItem, index) => {
+  if (!!props && Array.isArray(children)) {
+    return children.map((childrenItem, index) => {
       // eslint-disable-next-line react/no-array-index-key
       return <Wrapper key={index} {...getWrapperProps(childrenItem, newParentComp)} />
     })
-  ) : (
-    <Wrapper {...getWrapperProps(children, newParentComp)} />
-  )
+  }
+  if (!!props && !!children) {
+    return <Wrapper {...getWrapperProps(children, newParentComp)} />
+  }
+  return undefined
 }
 
 export const generateChildren = (props: PropsType, { Wrapper }: InstanceType<typeof Stock>) =>

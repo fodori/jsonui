@@ -29,7 +29,7 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "rollup": "rollup -c",
+    "build": "rollup -c",
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
