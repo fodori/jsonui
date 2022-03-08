@@ -78,39 +78,45 @@ export const getWrapperProps = (props: PropsType, parentComp?: any) => {
   return res
 }
 
-const genChildenFromListItem = (props: PropsType) => {
+const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Stock>) => {
   let page = !!props[c.LIST_PAGE] && util.isNumber(props[c.LIST_PAGE]) ? (props[c.LIST_PAGE] as number) : 0
-  let listLength = !!props[c.LIST_LENGTH] && util.isNumber(props[c.LIST_LENGTH]) ? (props[c.LIST_LENGTH] as number) : 0
-  let itemPerPage =
-    !!props[c.LIST_ITEM_PER_PAGE_DEFAULT] && util.isNumber(props[c.LIST_ITEM_PER_PAGE_DEFAULT])
-      ? (props[c.LIST_ITEM_PER_PAGE_DEFAULT] as number)
-      : c.LIST_ITEM_PER_PAGE_DEFAULT
+  let listLength = !!props[c.LIST_LENGTH] && util.isNumber(props[c.LIST_LENGTH]) ? (props[c.LIST_LENGTH] as number) : undefined
+  let itemPerPage = !!props[c.LIST_ITEM_PER_PAGE] && util.isNumber(props[c.LIST_ITEM_PER_PAGE]) ? (props[c.LIST_ITEM_PER_PAGE] as number) : undefined
   const listItem: any = props[c.LIST_ITEM]
-  const pathModifiers: PathModifiersType = props[c.PATH_MODIFIERS_KEY] as PathModifiersType
-  if (util.isNumber(page) && util.isNumber(listLength) && util.isNumber(itemPerPage) && pathModifiers) {
-    const children: PropsType[] = []
-    page = page >= 0 ? page : 0
-    itemPerPage = itemPerPage >= 0 ? itemPerPage : 0
-    listLength = listLength >= 0 ? listLength : 0
-    const offset = page * itemPerPage <= listLength ? page * itemPerPage : 0
-    const itemkey: string = Object.keys(pathModifiers)[0]
-    const firstItem: PathModifierType = pathModifiers[itemkey]
-    // eslint-disable-next-line no-plusplus
-    for (let i = offset; i < listLength && i < offset + itemPerPage; i++) {
-      children.push({
-        ...(listItem as PropsType),
-        [c.PATH_MODIFIERS_KEY]: {
-          ...(pathModifiers as PathModifiersType),
-          [Object.keys(pathModifiers)[0]]: {
-            ...(firstItem as PathModifierType),
-            path: i,
-          },
-        } as PathModifiersType,
-      })
+  if (!listItem) return undefined
+  const currentPaths = props.currentPaths as PathModifiersType
+  if (!currentPaths) return undefined
+  const store = Object.keys(currentPaths)[0]
+  if (!store) return undefined
+  const { path } = currentPaths[store]
+  if (currentPaths && !listLength) {
+    if (path) {
+      const list = stock.callFunction('get', { store, path })
+      listLength = !!list && Array.isArray(list as any[]) ? list.length : 0
     }
-    return children.length > 0 ? children : undefined
   }
-  return undefined
+  if (!itemPerPage) {
+    itemPerPage = listLength
+  }
+
+  page = Number.isInteger(page) && page >= 0 ? page : 0
+  itemPerPage = !!itemPerPage && Number.isInteger(itemPerPage) && itemPerPage >= 0 ? itemPerPage : 0
+  listLength = !!listLength && Number.isInteger(listLength) && listLength >= 0 ? listLength : 0
+  const offset = page * itemPerPage <= listLength ? page * itemPerPage : 0
+
+  const children: PropsType[] = []
+  // eslint-disable-next-line no-plusplus
+  for (let i = offset; i < listLength && i < offset + itemPerPage; i++) {
+    children.push({
+      ...(listItem as PropsType),
+      [c.PATH_MODIFIERS_KEY]: {
+        [store]: {
+          path: `.${c.SEPARATOR}${i}`,
+        },
+      } as PathModifiersType,
+    })
+  }
+  return children.length > 0 ? children : undefined
 }
 
 export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof Stock>) => {
@@ -121,7 +127,7 @@ export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof
   modifierBuilder(newProps, stock)
   actionBuilder(newProps, stock)
   if (newProps[c.LIST_SEMAPHORE]) {
-    newProps[c.V_CHILDREN_NAME] = genChildenFromListItem(newProps)
+    newProps[c.V_CHILDREN_NAME] = genChildenFromListItem(newProps, stock)
   }
 
   return newProps

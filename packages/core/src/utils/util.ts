@@ -43,11 +43,6 @@ export const pathArrayToPathString = (array: (string | number)[]) =>
 
 export const pathArrayToJsonPointer = (array: (string | number)[]) => `/${array.join('/')}`
 
-/**
- * Simple object check.
- * @param item
- * @returns {boolean}
- */
 export function isOnlyObject(item: any): boolean {
   return !!item && typeof item === 'object' && !Array.isArray(item)
 }

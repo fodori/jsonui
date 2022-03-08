@@ -23,3 +23,4 @@ export const LIST_PAGE = '$page'
 export const LIST_ITEM_PER_PAGE = '$itemPerPage'
 export const LIST_LENGTH = '$listLength'
 export const LIST_ITEM_PER_PAGE_DEFAULT = 10
+// TODO currentPaths maybe need to modify to ___currentPaths

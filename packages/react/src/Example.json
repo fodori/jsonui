@@ -9,19 +9,23 @@
       "src": "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
     },
     {
-      "component": "Fragment",
-      "$isList": true,
+      "$comp": "Fragment",
       "$pathModifiers": {
-        "data": { "path": "testList" }
+        "data": { "path": "level1" }
       },
-      "$page": { "$modifier": "get", "store": "data", "path": "../testTableActualPage" },
-      "$itemPerPage": 5,
-      "$listLength": { "$modifier": "get", "store": "data", "path": ".", "jsonataDef": "$count($)" },
-      "test": { "$modifier": "test" },
-      "$listItem": {
-        "component": "Text",
-        "children": { "$modifier": "get", "store": "data", "path": "address" }
-      }
+      "$children": [
+        {
+          "$comp": "Fragment",
+          "$isList": true,
+          "$pathModifiers": {
+            "data": { "path": "testList" }
+          },
+          "$listItem": {
+            "$comp": "Text",
+            "$children": { "$modifier": "get", "store": "data", "path": "." }
+          }
+        }
+      ]
     }
   ]
 }
