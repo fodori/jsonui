@@ -51,7 +51,15 @@ function Wrapper(props: any) {
       <ClassNames>
         {({ css, cx }) => {
           ownProps.className = newStyle ? cx(css(newStyle)) : undefined
-          const { parentComp, style, [c.STYLE_WEB_NAME]: _unused1, [c.V_COMP_NAME]: _unused2, [c.V_CHILDREN_NAME]: _unused3, ...newProps } = ownProps
+          const {
+            parentComp,
+            style,
+            [c.STYLE_WEB_NAME]: _unused1,
+            [c.V_COMP_NAME]: _unused2,
+            [c.V_CHILDREN_NAME]: _unused3,
+            [c.PATH_MODIFIERS_KEY]: _unused4,
+            ...newProps
+          } = ownProps
           return pathModifiers ? (
             <PathModifierContext.Provider value={currentPaths as any}>
               <Comp {...newProps}>{wrapperUtil.generateChildren(ownProps, stock)}</Comp>
