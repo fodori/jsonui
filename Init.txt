@@ -165,3 +165,14 @@ yarn lerna add react-router-dom --scope=docs-site
 yarn add gh-pages --dev
 
 yarn lerna gh-pages --dev
+
+yarn lerna add jest -D --scope=@jsonui/react
+yarn lerna add @types/jest -D --scope=@jsonui/react
+yarn lerna add ts-jest -D --scope=@jsonui/react
+yarn lerna add react-test-renderer -D --scope=@jsonui/react
+yarn lerna add enzyme -D --scope=@jsonui/react
+
+yarn lerna add babel-jest -D --scope=@jsonui/react
+yarn lerna add @babel/preset-env -D --scope=@jsonui/react
+yarn lerna add @babel/preset-react -D --scope=@jsonui/react
+  
