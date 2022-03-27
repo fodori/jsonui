@@ -11,7 +11,7 @@ function App() {
       <CssBaseline />
       <Grid container direction="column" justifyContent="center" alignItems="center">
         <Grid item>
-          <Typography variant="h1" style={{ fontWeight: 900 }}>
+          <Typography variant="h1" style={{ fontWeight: 900, opacity: '80%', color: 'darkslateblue' }}>
             JsonUI
           </Typography>
         </Grid>

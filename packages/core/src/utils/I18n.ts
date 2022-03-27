@@ -80,14 +80,17 @@ export default class I18n {
 
   getLocales = () => (this.language.includes('-') ? this.language.split('-') : this.language.split('_') || [])[0]
 
-  t = (key: string, options?: any, language?: string | null) => {
+  t = (key: any, options?: any, language?: string | null) => {
+    if (!(typeof key === 'string')) {
+      return key
+    }
     if (!this.resources || (!this.resources && !this.language && !language) || !this.resources[`${this.availableLanguageKey || language}`]) {
       return key
     }
     const value = this.resources[`${this.availableLanguageKey || language}`].translation[key]
-    if (!value) {
+    if (value === undefined) {
       if (this.nonExistsHandler && typeof this.nonExistsHandler === 'function') {
-        this.nonExistsHandler(key)
+        return this.nonExistsHandler(key)
       }
       return key
     }
