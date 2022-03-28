@@ -15,8 +15,7 @@
     "publish": "yarn lerna publish from-package",
     "bootstrap": "yarn lerna bootstrap",
     "testCore": "yarn workspace @jsonui/core run test",
-    "copyDocs": "rm -rf ./docs; mkdir docs; cp -R ./packages/docs-site/build/* ./docs/;",
-    "deployDocs": "gh-pages -d docs"
+    "copyDocs": "rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/;"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
