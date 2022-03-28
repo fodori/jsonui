@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import CssBaseline from '@mui/material/CssBaseline'
 import { HashRouter } from 'react-router-dom'
 import Typography from '@mui/material/Typography'
 import { Grid, Paper } from '@mui/material'
+import JSONInput from 'react-json-editor-ajrm'
+import { JsonUI } from '@jsonui/react'
+import locale from './react-json-editor-en'
+import exampleJson from './Example.json'
 
 function App() {
+  const [jsonVal, setJsonVal] = useState({
+    $comp: 'Text',
+    $children: 'Hello World',
+    style: {
+      textAlign: 'center',
+      fontSize: 60,
+    },
+  })
   return (
     <HashRouter>
       <CssBaseline />
@@ -35,6 +47,32 @@ function App() {
               <a href="https://www.npmjs.com/package/@jsonui/react">https://www.npmjs.com/package/@jsonui/react</a>
             </Typography>
           </Paper>
+        </Grid>
+
+        <Grid item style={{ marginTop: 40, width: '100%' }}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <JSONInput
+                placeholder={{
+                  $comp: 'Text',
+                  $children: 'Hello World',
+                  style: {
+                    textAlign: 'center',
+                    fontSize: 60,
+                  },
+                }}
+                theme="dark_vscode_tribute"
+                locale={locale}
+                height="550px"
+                width="100%"
+                onChange={(value: any) => setJsonVal(value.jsObject)}
+                waitAfterKeyPress={10}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <JsonUI viewDef={jsonVal} />
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </HashRouter>

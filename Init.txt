@@ -180,3 +180,7 @@ yarn lerna add ts-node -D --scope=@jsonui/react
 yarn lerna add @types/enzyme -D --scope=@jsonui/react
 yarn lerna add enzyme-adapter-react-16 -D --scope=@jsonui/react
 yarn lerna add @types/enzyme-adapter-react-16 -D --scope=@jsonui/react
+
+
+yarn lerna add react-json-editor-ajrm --scope=docs-site
+yarn lerna add @types/react-json-editor-ajrm -D --scope=docs-site
