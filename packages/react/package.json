@@ -63,6 +63,7 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "@types/enzyme": "^3.10.11",
     "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.178",
     "@types/node": "^16.11.19",
@@ -70,6 +71,7 @@
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.2.3",
     "enzyme": "^3.11.0",
@@ -91,7 +93,8 @@
     "rollup": "^2.66.1",
     "rollup-plugin-dts": "^4.1.0",
     "rollup-plugin-visualizer": "^5.5.4",
-    "ts-jest": "^27.1.4"
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.7.0"
   },
   "peerDependencies": {
     "react": "^17.0.2",

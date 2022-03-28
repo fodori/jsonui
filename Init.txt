@@ -175,4 +175,8 @@ yarn lerna add enzyme -D --scope=@jsonui/react
 yarn lerna add babel-jest -D --scope=@jsonui/react
 yarn lerna add @babel/preset-env -D --scope=@jsonui/react
 yarn lerna add @babel/preset-react -D --scope=@jsonui/react
-  
+jest--init
+yarn lerna add ts-node -D --scope=@jsonui/react
+yarn lerna add @types/enzyme -D --scope=@jsonui/react
+yarn lerna add enzyme-adapter-react-16 -D --scope=@jsonui/react
+yarn lerna add @types/enzyme-adapter-react-16 -D --scope=@jsonui/react
