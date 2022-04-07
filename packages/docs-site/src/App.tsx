@@ -7,7 +7,6 @@ import { Grid, Paper } from '@mui/material'
 import JSONInput from 'react-json-editor-ajrm'
 import { JsonUI } from '@jsonui/react'
 import locale from './react-json-editor-en'
-import exampleJson from './Example.json'
 
 function App() {
   const [jsonVal, setJsonVal] = useState({
@@ -48,7 +47,8 @@ function App() {
             </Typography>
           </Paper>
         </Grid>
-
+      </Grid>
+      <Grid container direction="row" justifyContent="center" alignItems="flex-start">
         <Grid item style={{ marginTop: 40, width: '100%' }}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
@@ -61,11 +61,14 @@ function App() {
                     fontSize: 60,
                   },
                 }}
+                height="150"
                 theme="dark_vscode_tribute"
                 locale={locale}
-                height="550px"
-                width="100%"
-                onChange={(value: any) => setJsonVal(value.jsObject)}
+                onChange={(value: any) => {
+                  if (!value.error) {
+                    setJsonVal(value.jsObject)
+                  }
+                }}
                 waitAfterKeyPress={10}
               />
             </Grid>

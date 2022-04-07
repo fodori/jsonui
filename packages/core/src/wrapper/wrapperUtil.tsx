@@ -1,9 +1,9 @@
 import React from 'react'
 import orderBy from 'lodash/orderBy'
 import traverse from 'traverse'
-import * as c from 'utils/constants'
-import * as util from 'utils/util'
-import Stock from 'stock/Stock'
+import * as c from '../utils/constants'
+import * as util from '../utils/util'
+import Stock from '../stock/Stock'
 import { PathModifiersType, PathsType, PropsType, WrapperType } from '../utils/types'
 
 export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock>) => {
