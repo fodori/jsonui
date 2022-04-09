@@ -1,6 +1,6 @@
 import React from 'react'
 
-function CFieldEdit(props: any) {
+function FieldEdit(props: any) {
   const handleChange = (event: any) => {
     props.onChange(event.target.value)
   }
@@ -36,4 +36,4 @@ function CFieldEdit(props: any) {
   )
 }
 
-export default CFieldEdit
+export default FieldEdit

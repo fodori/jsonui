@@ -1,7 +1,7 @@
 import React from 'react'
 
-function CView(props: any) {
+function View(props: any) {
   return <div {...props} style={undefined} />
 }
 
-export default CView
+export default View

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function UHelperText(props: any) {
+function HelperText(props: any) {
   const { helperText, fieldError, fieldErrors, propsHelperText } = props
   if (helperText || fieldError) {
     return (
@@ -15,4 +15,4 @@ function UHelperText(props: any) {
   return null
 }
 
-export default UHelperText
+export default HelperText

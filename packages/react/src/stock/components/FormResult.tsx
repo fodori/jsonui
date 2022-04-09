@@ -1,7 +1,7 @@
 import React from 'react'
 import { util } from '@jsonui/core'
 
-function CFormResult({ value }: { value: any }) {
+function FormResult({ value }: { value: any }) {
   return (
     <>
       {value &&
@@ -33,4 +33,4 @@ function CFormResult({ value }: { value: any }) {
   )
 }
 
-export default CFormResult
+export default FormResult

@@ -1,3 +1,3 @@
-const CFragment = ({ children }: { children: any }) => children
+const Fragment = ({ children }: { children: any }) => children
 
-export default CFragment
+export default Fragment

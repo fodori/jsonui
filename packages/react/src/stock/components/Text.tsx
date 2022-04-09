@@ -1,7 +1,7 @@
 import React from 'react'
 
-function CText(props: any) {
+function Text(props: any) {
   return <p {...props}>{props.value || props.children}</p>
 }
 
-export default CText
+export default Text
