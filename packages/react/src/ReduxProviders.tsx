@@ -16,17 +16,19 @@ class Providers extends React.Component {
 
   persistor: Persistor
 
-  constructor(props: { children: ReactNode; defaultValues?: DefaultValues }) {
+  disabledPersist: boolean
+
+  constructor(props: { children: ReactNode; defaultValues?: DefaultValues; disabledPersist?: boolean }) {
     super(props)
     const reducerConfig = { ...persistConfig, storage }
-    const persistedReducer = persistReducer(reducerConfig, storeReducers)
-    // eslint-disable-next-line no-underscore-dangle
+    this.disabledPersist = props.disabledPersist || false
+    const persistedReducer = this.disabledPersist ? storeReducers : persistReducer(reducerConfig, storeReducers)
     this.store = createStore(
       persistedReducer,
-      { root: props.defaultValues }
-      // (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+      { root: props.defaultValues },
+      // eslint-disable-next-line no-underscore-dangle
+      (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
     )
-    // TODO the createstore hs a param about initial data if we need to
     this.persistor = persistStore(this.store)
   }
 
@@ -34,9 +36,13 @@ class Providers extends React.Component {
     const { children } = this.props
     return (
       <Provider store={this.store}>
-        <PersistGate loading={null} persistor={this.persistor}>
-          {children}
-        </PersistGate>
+        {this.disabledPersist ? (
+          children
+        ) : (
+          <PersistGate loading={null} persistor={this.persistor}>
+            {children}
+          </PersistGate>
+        )}
       </Provider>
     )
   }

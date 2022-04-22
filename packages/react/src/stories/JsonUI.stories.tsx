@@ -19,10 +19,11 @@ export const FirstTest = Template.bind({})
 FirstTest.args = {
   viewDef,
   id: 'aaaa',
+  disabledPersist: true,
   defaultValues: {
     data: {
       level1: {
-        testList: ['oneeee', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'a11', 'a12', 'a13', 'a14'],
+        testList: ['oneeee5', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'a11', 'a12', 'a13', 'a14'],
       },
     },
   },
