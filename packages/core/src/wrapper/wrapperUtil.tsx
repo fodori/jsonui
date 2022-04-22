@@ -66,7 +66,14 @@ export const pathModifierBuilder = (props: PropsType, pathModifier: PathModifier
   return modified ? { currentPaths } : undefined
 }
 
-export const getWrapperProps = (props: PropsType, parentComp?: any) => {
+export const getWrapperProps = (props: PropsType, parentComp?: any): any => {
+  if (props && Array.isArray(props)) {
+    return {
+      [c.V_COMP_NAME]: 'Fragment',
+      [c.V_CHILDREN_NAME]: props,
+    }
+  }
+
   const res: PropsType = {
     ...(c.SIMPLE_DATA_TYPES.includes(typeof props) ? {} : props),
     parentComp,

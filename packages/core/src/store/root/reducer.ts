@@ -9,13 +9,7 @@ import Stock from '../../stock/Stock'
 
 export type RootStateType = any
 
-const initialState: RootStateType = {
-  data: {
-    level1: {
-      testList: ['one', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'a11', 'a12', 'a13', 'a14'],
-    },
-  },
-}
+const initialState: RootStateType = {}
 const validateNewState = (stock: InstanceType<typeof Stock>, newState: RootStateType, actionStore: string, actionPath: string) => {
   if (stock?.validations) {
     stock.validations.forEach((validateItem: ValidationType) => {

@@ -8,6 +8,7 @@ import ErrorBoundary from './ErrorBoundary'
 export interface DefaultValues {
   [key: string]: Record<string, object>
 }
+
 export interface ViewerProps {
   viewDef: any
   defaultValues?: DefaultValues
@@ -32,7 +33,7 @@ function Viewer({ viewDef, components, functions }: ViewerProps) {
 function ViewerWeb(props: ViewerProps) {
   return (
     <ErrorBoundary type="viewer">
-      <ReduxProviders>
+      <ReduxProviders defaultValues={props.defaultValues}>
         <Viewer {...props} />
       </ReduxProviders>
     </ErrorBoundary>
