@@ -11,14 +11,16 @@ export interface DefaultValues {
   [key: string]: Record<string, object>
 }
 
-class Providers extends React.Component {
+type MyProps = { children: ReactNode; defaultValues?: DefaultValues; disabledPersist?: boolean }
+
+class Providers extends React.Component<MyProps> {
   store: Store<any, AnyAction>
 
   persistor: Persistor
 
   disabledPersist: boolean
 
-  constructor(props: { children: ReactNode; defaultValues?: DefaultValues; disabledPersist?: boolean }) {
+  constructor(props: MyProps) {
     super(props)
     const reducerConfig = { ...persistConfig, storage }
     this.disabledPersist = props.disabledPersist || false
