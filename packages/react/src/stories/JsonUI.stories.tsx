@@ -40,4 +40,34 @@ FirstTest.argTypes = {
 
 FirstTest.parameters = { controls: { include: ['viewDef', 'id'] } }
 
+export const InputTest = Template.bind({})
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+InputTest.args = {
+  viewDef: {
+    $comp: 'Edit',
+    value: { $modifier: 'get', store: 'data', path: 'age' },
+    label: 'Field level validation',
+    helperText: "it's a child age",
+    onChange: { $action: 'set', store: 'data', path: 'age', jsonataDef: '$' },
+  },
+  id: 'aaaa',
+  disabledPersist: true,
+  defaultValues: {
+    data: {
+      age: 'Test',
+    },
+  } as any,
+}
+
+InputTest.argTypes = {
+  viewDef: {
+    control: {
+      type: 'object',
+    },
+  },
+  id: { control: { type: 'text' } },
+}
+
+InputTest.parameters = { controls: { include: ['viewDef', 'id'] } }
+
 export default JsonUIStory

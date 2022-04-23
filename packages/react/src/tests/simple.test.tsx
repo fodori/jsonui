@@ -2,8 +2,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { matchers } from '@emotion/jest'
-import { JsonUI } from './index'
-import Text from './stock/components/Text'
+import { JsonUI } from '../index'
+import Text from '../stock/components/Text'
 
 expect.extend(matchers)
 

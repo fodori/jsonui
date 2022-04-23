@@ -4,7 +4,7 @@ function FieldEdit(props: any) {
   const handleChange = (event: any) => {
     props.onChange(event.target.value)
   }
-  const { fieldErrors, validation, value, label, helperText: origHelpertext, ...ownProps } = props
+  const { fieldErrors, validation, value, label, helperText: origHelpertext, onChange, ...ownProps } = props
   let error = !!fieldErrors
   let helperText = origHelpertext
   if (error && fieldErrors) {
@@ -30,7 +30,7 @@ function FieldEdit(props: any) {
   return (
     <>
       <p style={{ fontSize: 20, color: error ? 'red' : undefined }}>{label}</p>
-      <input fullWidth {...ownProps} value={value || ''} onChange={handleChange} />
+      <input {...ownProps} value={value || ''} onChange={handleChange} />
       <p style={{ fontSize: 10, color: error ? 'red' : undefined }}>{helperText}</p>
     </>
   )
