@@ -7,16 +7,16 @@ import viewDef from '../Example.json'
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 
 const JsonUIStory = {
-  title: 'JsonUI/First Test',
+  title: 'JsonUI',
   component: JsonUI,
 } as ComponentMeta<typeof JsonUI>
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
 
-export const FirstTest = Template.bind({})
+export const TableTest = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-FirstTest.args = {
+TableTest.args = {
   viewDef,
   id: 'aaaa',
   disabledPersist: true,
@@ -29,7 +29,7 @@ FirstTest.args = {
   },
 }
 
-FirstTest.argTypes = {
+TableTest.argTypes = {
   viewDef: {
     control: {
       type: 'object',
@@ -38,7 +38,7 @@ FirstTest.argTypes = {
   id: { control: { type: 'text' } },
 }
 
-FirstTest.parameters = { controls: { include: ['viewDef', 'id'] } }
+TableTest.parameters = { controls: { include: ['viewDef', 'id'] } }
 
 export const InputTest = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
