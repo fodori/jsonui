@@ -27,15 +27,24 @@ const validateNewState = (stock: InstanceType<typeof Stock>, newState: RootState
 }
 
 const reducer = (state = initialState, action: AnyAction) => {
-  switch (action.type) {
+  switch (action?.type) {
     case DATA_UPDATE: {
-      const { store, path, value, jsonataDef, currentPaths, stock } = action.payload
+      const {
+        store = undefined,
+        path = undefined,
+        value = undefined,
+        jsonataDef = undefined,
+        currentPaths = undefined,
+        stock = undefined,
+      } = action?.payload || {}
       if (store && path) {
         const storekey = `${store}`
-        const convertedPath =
+        let convertedPath =
           currentPaths && currentPaths[storekey] && currentPaths[storekey].path
             ? util.changeRelativePath(`${currentPaths[storekey].path}${c.SEPARATOR}${path}`)
             : util.changeRelativePath(path)
+        convertedPath = convertedPath.startsWith(c.SEPARATOR) ? convertedPath : `${c.SEPARATOR}${convertedPath}`
+
         const absolutePathWithStoreKey = `${c.SEPARATOR}${storekey}${convertedPath}`
         const newState = produce(state, (draft: RootStateType) => {
           if (jsonataDef) {
