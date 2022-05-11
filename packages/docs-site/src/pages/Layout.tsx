@@ -18,6 +18,7 @@ import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import SportsEsports from '@mui/icons-material/SportsEsports'
+import MuiLink from '@mui/material/Link'
 import { ReactComponent as NpmIcon } from '../assets/npmIcon.svg'
 import { ReactComponent as JsonIcon } from '../assets/jsonIcon.svg'
 import { ReactComponent as ReactIcon } from '../assets/reactIcon.svg'
@@ -114,9 +115,12 @@ export default function Layout() {
                 <ListItemText>Json API</ListItemText>
               </MenuItem>
             </Menu>
-            <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'block', sm: 'block' } }}>
-              JsonUI
-            </Typography>
+            <MuiLink {...{ component: Link }} to="/" underline="none" color="inherit">
+              <Typography variant="h6" noWrap>
+                JsonUI
+              </Typography>
+            </MuiLink>
+
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
               <IconButton size="large" color="inherit" component="a" href="https://github.com/fodori/jsonui">

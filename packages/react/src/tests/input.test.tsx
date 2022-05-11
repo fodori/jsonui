@@ -32,3 +32,18 @@ test('Edit component test', () => {
     .simulate('change', { target: { value: 'test@example.com' } })
   expect(wrapper.find('input').at(0).prop('value')).toEqual('test@example.com')
 })
+/**
+ * TODO:
+ * - check rerenderer each data manipulation need 1 render
+ * - check actions (with param, with input param from event, with nested .... )
+ * - check modification  (with param, with input param from event, with nested .... )
+ * - check modification order for example redux vs. simple function
+ * - check asycn and sync functions as well
+ * - check children and no children component with children prop
+ * - check performance or memory leak???
+ * - check data manipulation with mutability situation
+ * - check error boundary how works
+ * - check persistent data how works after reload
+ * - test with app id and multiple instance how the persistent can work
+
+ * */
