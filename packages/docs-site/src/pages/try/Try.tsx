@@ -26,7 +26,6 @@ function Try() {
         setContent(md)
       })
   }, [])
-  console.log(content)
   return (
     <>
       <Grid item style={{ marginTop: 40, width: '100%' }}>

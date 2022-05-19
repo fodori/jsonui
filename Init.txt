@@ -188,3 +188,4 @@ yarn lerna add @emotion/jest -D --scope=@jsonui/react
 yarn lerna add @mui/icons-material --scope=docs-site
 yarn lerna add react-markdown --scope=docs-site
 yarn lerna add rehype-highlight --scope=docs-site
+yarn lerna add remark-gfm --scope=docs-site
