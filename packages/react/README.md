@@ -149,7 +149,7 @@ Let's see some example
 ```json
 {
   "$comp": "Input",
-  "value": { "$name": "get", "store": "questionnaire1", "path": "/firstName" },
+  "value": { "$modifier": "get", "store": "questionnaire1", "path": "/firstName" },
   "onChange": { "$action": "set", "store": "questionnaire1", "path": "/firstName" }
 }
 ```

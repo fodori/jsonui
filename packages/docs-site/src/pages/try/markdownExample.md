@@ -188,7 +188,7 @@ Let's see some example
 {
   "$comp": "Input",
   "value": {
-    "$name": "get",
+    "$modifier": "get",
     "store": "questionnaire1",
     "path": "/firstName"
   },
