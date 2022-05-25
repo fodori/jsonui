@@ -1,45 +1,48 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react'
-import { Grid } from '@mui/material'
+import React, { useState } from 'react'
+import { Grid, Typography } from '@mui/material'
 import JSONInput from 'react-json-editor-ajrm'
 import { JsonUI } from '@jsonui/react'
-import ReactMarkdown from 'react-markdown'
-import rehypeHighlight from 'rehype-highlight'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
 import locale from '../../react-json-editor-en'
-import eee from './markdownExample.md'
+import testHello from './testHello.json'
+import testButton from './testButton.json'
 
 function Try() {
-  const [jsonVal, setJsonVal] = useState({
-    $comp: 'Text',
-    $children: 'Hello World',
-    style: {
-      textAlign: 'center',
-      fontSize: 60,
-    },
-  })
-  const [content, setContent] = useState('')
+  const tries = [
+    { name: 'Hello World', content: testHello, help: 'Simple Text' },
+    { name: 'Button', content: testButton, help: 'Button Text' },
+  ]
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [jsonVal, setJsonVal] = useState(tries[selectedIndex].content)
 
-  useEffect(() => {
-    fetch(eee)
-      .then((res) => res.text())
-      .then((md) => {
-        setContent(md)
-      })
-  }, [])
+  const handleSetSelectedIndex = (event: any) => {
+    setJsonVal(tries[event.target.value].content)
+    setSelectedIndex(event.target.value)
+  }
   return (
     <>
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Examples</InputLabel>
+        <Select labelId="demo-simple-select-label" id="demo-simple-select" value={selectedIndex} label="Selected Index" onChange={handleSetSelectedIndex}>
+          {tries.map((item, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <MenuItem value={index} key={index}>
+              {item.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      {/* {JSON.stringify(tries?.[selectedIndex]?.content)} */}
+      <Typography variant="subtitle1">{tries?.[selectedIndex]?.help}</Typography>
       <Grid item style={{ marginTop: 40, width: '100%' }}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <JSONInput
-              placeholder={{
-                $comp: 'Text',
-                $children: 'Hello World',
-                style: {
-                  textAlign: 'center',
-                  fontSize: 60,
-                },
-              }}
+              placeholder={tries[selectedIndex].content}
               height="150"
               theme="dark_vscode_tribute"
               locale={locale}
@@ -56,7 +59,6 @@ function Try() {
           </Grid>
         </Grid>
       </Grid>
-      <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{content}</ReactMarkdown>
     </>
   )
 }

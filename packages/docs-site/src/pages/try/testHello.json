@@ -1,0 +1,8 @@
+{
+  "$comp": "Text",
+  "$children": "Hello World",
+  "style": {
+    "textAlign": "center",
+    "fontSize": 60
+  }
+}

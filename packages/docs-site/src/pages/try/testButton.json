@@ -1,0 +1,10 @@
+{
+  "$comp": "Button",
+  "$children": "Change username",
+  "onPress": {
+    "$modifier": "set",
+    "store": "data",
+    "path": "/users/0/username",
+    "value": "John Doe 2"
+  }
+}

@@ -2,13 +2,13 @@
 
 ```bash
 npm install @jsonui/react
-
+or
 yarn add @jsonui/react
 ```
 
 ## Basic Usage
 
-The `JsonUI` Component is a canvas and the `viewDef` parameter contains the UI definition in Json format.
+The `JsonUI` Component is a canvas and the `viewDef` parameter is a definition of content in Json format.
 
 ```js
 import {JsonUI} from '@jsonui/react';
@@ -20,22 +20,21 @@ const Canvas = () => <JsonUI viewDef={
     } />
 ```
 
-### Props
+## Props
 
-| Name              | Type                                             | Description                                                                                                                                   |
-| :---------------- | :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| `viewDef`         | `any`                                            | It should be a serializable json format . [more info](./api-json)                                                                             |
-| `defaultValues`   | `[key: string]: Record<string, object>`          | initial values, the key will be the name of the store. tha value can be primitive, array, object                                              |
-| `id`              | `string`                                         | this is the id of the data. It can separate if you would like to use miltiple instance or you would like to separate apps with same instance. |
-| `components`      | `[key: string]: Record<string, React.ReactNode>` | List of React components. The key will be the name of the component.                                                                          |
-| `functions`       | `[key: string]: ()=>any`                         | List of function to use for modifier or for action                                                                                            |
-| `disabledPersist` | `boolean`                                        | default is `false`. When it true, we store app data persistently.                                                                             |
+| Name              | Type                              | Description                                                                                                                                 |
+| :---------------- | :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| `viewDef`         | `any`                             | It should be a serializable non cyclic object/array/primitive values . [more info](./api-json)                                              |
+| `defaultValues`   | `Record<string, object>`          | initial values of stores, the key will be the name of the store. tha value can be the initial value of the store when the JsonUI will start |
+| `components`      | `Record<string, React.ReactNode>` | List of React components. The key will be the name of the component and it will be available for use in `viewDef` definition.               |
+| `functions`       | `[key: string]: ()=>any`          | List of function to use for `$modifier` or for `$action`. It will be available for use in `viewDef` definition.                             |
+| `disabledPersist` | `boolean`                         | default is `false`. When it false, we store app data persistently.                                                                          |
 
-#### viewDef
+### viewDef
 
-The `viewDef` is main parameter it's contains the ui definitions and the business logic of your JsonUI. It's usually a JSON structure or object structure which can come from an api response for example.
+The `viewDef` is the most important property. it's contains the ui definitions and the business logic. It's usually a JSON structure or object structure which can come from an api response or a predefined Json file for example.
 
-#### defaultValues
+### defaultValues
 
 If the JsonUI need to initialize data what the JsonUI is working on. The `defaultValues` should a name of the store and the data of it. For example if the name of the store is `questionnaire` and the initial data is a profile data.
 
@@ -59,11 +58,7 @@ It will ba able to access with this example:
 }
 ```
 
-#### id
-
-The `id` is the key of the persistent store. It can store multiple different dataset for multiple application driven by `id` For example if the id of FormA will be id="FormA" and the id of FormB will be id="FormB" then these forms can work on a different namespace doesn't matter what
-
-#### components
+### components
 
 This is the way to add more components. For example to add MUI Switch component:
 
@@ -82,7 +77,7 @@ const MySwitch = (...props)=><Switch {...props}>
 />
 ```
 
-#### functions
+### functions
 
 This is the way to add more functions. For example:
 
@@ -99,7 +94,7 @@ return (
       component: 'Button',
       onClick: { $action: 'MyFunction' },
     }}
-    components={{ Switch: MySwitch }}
+    functions={{ Switch: MySwitch }}
   />
 )
 ```
@@ -108,6 +103,14 @@ return (
 
 By default the `disabledPersist` is true and store the a specific name of store. At the moment, just one datastore is persistent which is `data`. Means everything which is stored in `data` should be persistent (data will be available after that when the application will be restarted). Everything else not. If `disabledPersist` is false, the all built in persistency mechanism disabled.
 
-## LICENSE [MIT](LICENSE)
+## Predefined components
+
+?????????????????????????
+
+## Predefined functions
+
+?????????????????????????
+
+#### LICENSE [MIT](LICENSE)
 
 Copyright (c) 2022 Istvan Fodor.
