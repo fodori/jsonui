@@ -192,4 +192,18 @@ Somethimes we need to handle dynamic data for example a list.
 }
 ```
 
+### Data structure
+
+### multiple stores
+
+### path
+
+### path modifier
+
+### data listener on multiple place
+
+### jsonata in set or in get
+
+### few layout example with view and grid def
+
 This little technique can change the relative path nestedly as well.

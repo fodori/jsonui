@@ -85,6 +85,10 @@ By default the `disabledPersist` is true and store the a specific name of store.
 
 ## Predefined functions
 
+### redux mechanism
+
+### persist mechanism
+
 #### LICENSE [MIT](LICENSE)
 
 Copyright (c) 2022 Istvan Fodor.
