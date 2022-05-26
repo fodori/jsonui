@@ -80,12 +80,6 @@ export default function Layout() {
                 </ListItemIcon>
                 <ListItemText>Homepage</ListItemText>
               </MenuItem>
-              <MenuItem onClick={handleClose} {...{ component: Link }} to="/concept">
-                <ListItemIcon>
-                  <SportsEsports fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Concept</ListItemText>
-              </MenuItem>
               <MenuItem onClick={handleClose} {...{ component: Link }} to="/try">
                 <ListItemIcon>
                   <SportsEsports fontSize="small" />

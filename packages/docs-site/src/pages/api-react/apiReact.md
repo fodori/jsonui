@@ -1,33 +1,11 @@
-## Installation
-
-```bash
-npm install @jsonui/react
-or
-yarn add @jsonui/react
-```
-
-## Basic Usage
-
-The `JsonUI` Component is a canvas and the `viewDef` parameter is a definition of content in Json format.
-
-```js
-import {JsonUI} from '@jsonui/react';
-
-const Canvas = () => <JsonUI viewDef={
-    { "$comp": "Text",
-      "$children": "Hello World",
-      "style": { "fontSize": 30 }
-    } />
-```
-
 ## Props
 
 | Name              | Type                              | Description                                                                                                                                 |
 | :---------------- | :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
 | `viewDef`         | `any`                             | It should be a serializable non cyclic object/array/primitive values . [more info](./api-json)                                              |
 | `defaultValues`   | `Record<string, object>`          | initial values of stores, the key will be the name of the store. tha value can be the initial value of the store when the JsonUI will start |
-| `components`      | `Record<string, React.ReactNode>` | List of React components. The key will be the name of the component and it will be available for use in `viewDef` definition.               |
-| `functions`       | `[key: string]: ()=>any`          | List of function to use for `$modifier` or for `$action`. It will be available for use in `viewDef` definition.                             |
+| `components`      | `Record<string, React.ReactType>` | List of React components. The key will be the name of the component and it will be available for use in `viewDef` definition.               |
+| `functions`       | `Record<string, () => any>`       | List of function to use for `$modifier` or for `$action`. It will be available for use in `viewDef` definition.                             |
 | `disabledPersist` | `boolean`                         | default is `false`. When it false, we store app data persistently.                                                                          |
 
 ### viewDef
