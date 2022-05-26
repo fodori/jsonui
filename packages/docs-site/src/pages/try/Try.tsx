@@ -10,11 +10,13 @@ import Select from '@mui/material/Select'
 import locale from '../../react-json-editor-en'
 import testHello from './testHello.json'
 import testButton from './testButton.json'
+import testInput from './testInput.json'
 
 function Try() {
   const tries = [
     { name: 'Hello World', content: testHello, help: 'Simple Text' },
     { name: 'Button', content: testButton, help: 'Button Text' },
+    { name: 'Edit Field', content: testInput, help: 'Edit Field example' },
   ]
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [jsonVal, setJsonVal] = useState(tries[selectedIndex].content)
@@ -55,7 +57,7 @@ function Try() {
             />
           </Grid>
           <Grid item xs={6}>
-            <JsonUI viewDef={jsonVal} />
+            <JsonUI viewDef={jsonVal} disabledPersist />
           </Grid>
         </Grid>
       </Grid>

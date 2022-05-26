@@ -133,7 +133,7 @@ Let's see some example
 
 ```json
 {
-  "$comp": "Input",
+  "$comp": "Edit",
   "value": { "$modifier": "get", "store": "questionnaire1", "path": "/firstName" },
   "onChange": { "$action": "set", "store": "questionnaire1", "path": "/firstName" }
 }
@@ -185,7 +185,7 @@ Somethimes we need to handle dynamic data for example a list.
     "data": { "path": "/subscribed/list" }
   },
   "listItem": {
-    "component": "Input",
+    "component": "Edit",
     "value": { "$modifier": "get", "store": "data", "path": "name" },
     "onChange": { "$action": "set", "store": "data", "path": "name" }
   }
