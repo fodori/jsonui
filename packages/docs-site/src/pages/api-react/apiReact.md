@@ -83,11 +83,19 @@ By default the `disabledPersist` is true and store the a specific name of store.
 
 ## Predefined components
 
+TODO:
+
 ## Predefined functions
+
+TODO:
 
 ### redux mechanism
 
+TODO:
+
 ### persist mechanism
+
+TODO:
 
 #### LICENSE [MIT](LICENSE)
 
