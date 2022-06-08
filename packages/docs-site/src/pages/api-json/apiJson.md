@@ -185,7 +185,7 @@ Somethimes we need to handle dynamic data for example a list.
     "data": { "path": "/subscribed/list" }
   },
   "listItem": {
-    "component": "Edit",
+    "$comp": "Edit",
     "value": { "$modifier": "get", "store": "data", "path": "name" },
     "onChange": { "$action": "set", "store": "data", "path": "name" }
   }
@@ -194,16 +194,30 @@ Somethimes we need to handle dynamic data for example a list.
 
 ### Data structure
 
+TODO:
+
 ### multiple stores
+
+TODO:
 
 ### path
 
+TODO:
+
 ### path modifier
+
+TODO:
 
 ### data listener on multiple place
 
+TODO:
+
 ### jsonata in set or in get
 
+TODO:
+
 ### few layout example with view and grid def
+
+TODO:
 
 This little technique can change the relative path nestedly as well.
