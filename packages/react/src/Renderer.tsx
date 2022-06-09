@@ -7,29 +7,29 @@ import Wrapper from './Wrapper'
 import ErrorBoundary from './ErrorBoundary'
 
 interface RendererProps {
-  viewDef: any
+  model: any
   stockInit: any
   reduxStore: Store<any, AnyAction>
 }
 
-const Renderer = ({ viewDef, stockInit, reduxStore }: RendererProps) => {
-  const stock = useMemo(() => getStock(stockInit, viewDef, Wrapper, reduxStore), [stockInit, viewDef, reduxStore])
+const Renderer = ({ model, stockInit, reduxStore }: RendererProps) => {
+  const stock = useMemo(() => getStock(stockInit, model, Wrapper, reduxStore), [stockInit, model, reduxStore])
 
-  if (viewDef === undefined) {
+  if (model === undefined) {
     return null
   }
   return (
     <StockContext.Provider value={stock as any}>
       {/* eslint-disable-next-line react/jsx-no-constructed-context-values */}
       <PathModifierContext.Provider value={{}}>
-        <Wrapper {...wrapperUtil.getWrapperProps(viewDef)} />
+        <Wrapper {...wrapperUtil.getWrapperProps(model)} />
       </PathModifierContext.Provider>
     </StockContext.Provider>
   )
 }
 
 interface RendererFuncProps {
-  viewDef: any
+  model: any
   stockInit: any
 }
 

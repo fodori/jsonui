@@ -23,12 +23,12 @@ yarn add @jsonui/reactnative @react-native-async-storage/async-storage
 
 ## Basic Usage
 
-The `JsonUI` Component is a canvas and the `viewDef` parameter contains the UI definition in Json format.
+The `JsonUI` Component is a canvas and the `model` parameter contains the UI definition in Json format.
 
 ```js
 import {JsonUI} from '@jsonui/reactnative';
 
-const Canvas = () => <JsonUI viewDef={
+const Canvas = () => <JsonUI model={
     { "$comp": "Text",
       "$children": "Hello World",
       "style": { "fontSize": 30 }
@@ -90,7 +90,7 @@ Easily.
 
 ```js
 
-const Canvas = () => <JsonUI viewDef={jsonData}
+const Canvas = () => <JsonUI model={jsonData}
   "components"={
     {
      nagivate: ({route}) => navigate(route)

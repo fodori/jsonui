@@ -15,7 +15,7 @@ test('Text component test', () => {
   const wrapper = mount(
     <JsonUI
       disabledPersist
-      viewDef={[
+      model={[
         { $comp: 'Text', $children: { $modifier: 'get', store: 'data', path: '/age' } },
         {
           $comp: 'Button',

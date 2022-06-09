@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom'
 import { JsonUI } from '@jsonui/react'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
-import viewDef from './Example.json'
+import model from './Example.json'
 
 ReactDOM.render(
   <React.StrictMode>
-    <JsonUI viewDef={viewDef} />
+    <JsonUI model={model} />
   </React.StrictMode>,
   document.getElementById('root')
 )

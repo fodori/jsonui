@@ -57,11 +57,10 @@ function Try() {
             />
           </Grid>
           <Grid item xs={6}>
-            <JsonUI viewDef={jsonVal} disabledPersist />
+            <JsonUI model={jsonVal} disabledPersist />
           </Grid>
         </Grid>
       </Grid>
-      TODO: add all example to help understand data binding and add links from help page
     </>
   )
 }

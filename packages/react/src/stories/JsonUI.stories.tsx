@@ -2,7 +2,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { JsonUI } from '../index'
-import viewDef from '../Example.json'
+import model from '../Example.json'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 
@@ -17,7 +17,7 @@ const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
 export const TableTest = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TableTest.args = {
-  viewDef,
+  model,
   id: 'aaaa',
   disabledPersist: true,
   defaultValues: {
@@ -30,7 +30,7 @@ TableTest.args = {
 }
 
 TableTest.argTypes = {
-  viewDef: {
+  model: {
     control: {
       type: 'object',
     },
@@ -38,12 +38,12 @@ TableTest.argTypes = {
   id: { control: { type: 'text' } },
 }
 
-TableTest.parameters = { controls: { include: ['viewDef', 'id'] } }
+TableTest.parameters = { controls: { include: ['model', 'id'] } }
 
 export const InputTest = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 InputTest.args = {
-  viewDef: {
+  model: {
     $comp: 'Edit',
     value: { $modifier: 'get', store: 'data', path: 'age' },
     label: 'Field level validation',
@@ -60,7 +60,7 @@ InputTest.args = {
 }
 
 InputTest.argTypes = {
-  viewDef: {
+  model: {
     control: {
       type: 'object',
     },
@@ -68,6 +68,6 @@ InputTest.argTypes = {
   id: { control: { type: 'text' } },
 }
 
-InputTest.parameters = { controls: { include: ['viewDef', 'id'] } }
+InputTest.parameters = { controls: { include: ['model', 'id'] } }
 
 export default JsonUIStory

@@ -14,7 +14,7 @@ test('Edit component test', () => {
   const wrapper = mount(
     <JsonUI
       disabledPersist
-      viewDef={{
+      model={{
         $comp: 'Edit',
         id: 'id1',
         name: 'id1',

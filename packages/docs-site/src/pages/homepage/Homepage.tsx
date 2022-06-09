@@ -2,6 +2,7 @@
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import conceptImage from '../../assets/concept1.png'
+import stateContainer from '../../assets/state-container.svg'
 
 function App() {
   return (
@@ -26,15 +27,19 @@ function App() {
         <img src={conceptImage} alt="concept" />
       </div>
       <Typography variant="h4" sx={{ margin: 4, marginLeft: 0 }}>
-        Data store
+        State container
       </Typography>
       <Typography variant="subtitle1">
-        The data store based on Redux, but used a little bit unortodox way to support the idea behind JsonUI. The idea is to store data in separate stores and
-        access it via Json path definition. Each data store represent a graf based(how looks like json) storage. Each component can read/write data with
+        The state container based on Redux, but used a little bit unortodox way to support the idea behind JsonUI. The idea is to store data in separate stores
+        and access it via Json path definition. Each data store represent a graf based(how looks like json) storage. Each component can read/write data with
         publish/subscribe logic or simple get/set way. <br />
         When a component subscribed a data, it will rerender when the data changed. The data stores are independent from the UI, but how the application can
         access data it is defined in the json.
       </Typography>
+      <Typography variant="subtitle1" style={{ textAlign: 'center', margin: 20 }}>
+        <img src={stateContainer} alt="State container" width="80%" />
+      </Typography>
+
       <Typography variant="h4" sx={{ margin: 4, marginLeft: 0 }}>
         Data binding
       </Typography>
@@ -49,7 +54,7 @@ function App() {
       <Typography variant="h4" sx={{ margin: 4, marginLeft: 0 }}>
         Why is better than just use a program language?
       </Typography>
-      <Typography variant="subtitle1">
+      <Typography variant="subtitle1" sx={{ paddingBottom: 8 }}>
         Under the hood it use react. Just need to define components for your particular project after just need to use it and business logic need to define and
         job done.
         <br /> Send a model to the JsonUI canvas and the application immediately show it. Less thing need to test it, less developmint time, faster workflow.

@@ -8,35 +8,28 @@
  * @format
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-} from 'react-native';
+import React from 'react'
+import { SafeAreaView, ScrollView, StatusBar, useColorScheme } from 'react-native'
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {JsonUI} from '@jsonui/reactnative';
-import viewDef from './Example.json';
+import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { JsonUI } from '@jsonui/reactnative'
+import model from './Example.json'
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <JsonUI viewDef={viewDef} />
+      <ScrollView contentInsetAdjustmentBehavior="automatic" style={backgroundStyle}>
+        <JsonUI model={model} />
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-export default App;
+export default App

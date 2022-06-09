@@ -6,7 +6,7 @@ import Renderer from './Renderer'
 import ErrorBoundary from './ErrorBoundary'
 
 export interface ViewerProps {
-  viewDef: any
+  model: any
   defaultValues?: DefaultValues
   id?: string
   components?: any
@@ -14,7 +14,7 @@ export interface ViewerProps {
   disabledPersist?: boolean
 }
 
-function Viewer({ viewDef, components, functions }: ViewerProps) {
+function Viewer({ model, components, functions }: ViewerProps) {
   const stockInit = {
     components: { ...stockInitBasic.components, ...components },
     functions: {
@@ -24,7 +24,7 @@ function Viewer({ viewDef, components, functions }: ViewerProps) {
     },
   }
 
-  return <Renderer viewDef={viewDef} stockInit={stockInit} />
+  return <Renderer model={model} stockInit={stockInit} />
 }
 
 function ViewerWeb(props: ViewerProps) {

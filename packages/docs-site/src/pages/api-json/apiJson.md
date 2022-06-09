@@ -59,7 +59,7 @@ Easily.
 
 ```js
 
-const Canvas = () => <JsonUI viewDef={jsonData}
+const Canvas = () => <JsonUI model={jsonData}
   "components"={
     {
      nagivate: ({route}) => navigate(route)
@@ -191,33 +191,3 @@ Somethimes we need to handle dynamic data for example a list.
   }
 }
 ```
-
-### Data structure
-
-TODO:
-
-### multiple stores
-
-TODO:
-
-### path
-
-TODO:
-
-### path modifier
-
-TODO:
-
-### data listener on multiple place
-
-TODO:
-
-### jsonata in set or in get
-
-TODO:
-
-### few layout example with view and grid def
-
-TODO:
-
-This little technique can change the relative path nestedly as well.

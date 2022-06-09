@@ -2,15 +2,15 @@
 
 | Name              | Type                              | Description                                                                                                                                 |
 | :---------------- | :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
-| `viewDef`         | `any`                             | It should be a serializable non cyclic object/array/primitive values . [more info](./api-json)                                              |
+| `model`           | `any`                             | It should be a serializable non cyclic object/array/primitive values . [more info](./api-json)                                              |
 | `defaultValues`   | `Record<string, object>`          | initial values of stores, the key will be the name of the store. tha value can be the initial value of the store when the JsonUI will start |
-| `components`      | `Record<string, React.ReactType>` | List of React components. The key will be the name of the component and it will be available for use in `viewDef` definition.               |
-| `functions`       | `Record<string, () => any>`       | List of function to use for `$modifier` or for `$action`. It will be available for use in `viewDef` definition.                             |
+| `components`      | `Record<string, React.ReactType>` | List of React components. The key will be the name of the component and it will be available for use in `model` definition.                 |
+| `functions`       | `Record<string, () => any>`       | List of function to use for `$modifier` or for `$action`. It will be available for use in `model` definition.                               |
 | `disabledPersist` | `boolean`                         | default is `false`. When it false, we store app data persistently.                                                                          |
 
-### viewDef
+### model
 
-The `viewDef` is the most important property. it's contains the ui definitions and the business logic. It's usually a JSON structure or object structure which can come from an api response or a predefined Json file for example.
+The `model` is the most important property. it's contains the ui definitions and the business logic. It's usually a JSON structure or object structure which can come from an api response or a predefined Json file for example.
 
 ### defaultValues
 
@@ -18,7 +18,7 @@ If the JsonUI need to initialize data what the JsonUI is working on. The `defaul
 
 ```js
 <JsonUI
-  viewDef={...}
+  model={...}
   defaultValues={{ questionnaire:{ profile:{ firstname:'John', lastname:'Down' }}}}
 />
 ```
@@ -46,7 +46,7 @@ import Switch from '@mui/material/Switch';
 const MySwitch = (...props)=><Switch {...props}>
 
 <JsonUI
-  viewDef={{
+  model={{
     "component": "Switch",
     "checked": { "$modifier": "get", "store": "data", "path": "subscribe" },
     "onChange": { "$action": "set", "store": "data", "path": "subscribe" }
@@ -68,7 +68,7 @@ const MyFunction = () => {
 
 return (
   <JsonUI
-    viewDef={{
+    model={{
       component: 'Button',
       onClick: { $action: 'MyFunction' },
     }}
@@ -80,22 +80,6 @@ return (
 #### disabledPersist
 
 By default the `disabledPersist` is true and store the a specific name of store. At the moment, just one datastore is persistent which is `data`. Means everything which is stored in `data` should be persistent (data will be available after that when the application will be restarted). Everything else not. If `disabledPersist` is false, the all built in persistency mechanism disabled.
-
-## Predefined components
-
-TODO:
-
-## Predefined functions
-
-TODO:
-
-### redux mechanism
-
-TODO:
-
-### persist mechanism
-
-TODO:
 
 #### LICENSE [MIT](LICENSE)
 

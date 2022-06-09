@@ -3,7 +3,7 @@ import { constants as c, Stock, I18n, stockFunctions as functions, util } from '
 import additionalComponents from './components'
 
 // eslint-disable-next-line import/prefer-default-export
-export const getStock = (stockInit: any, viewDef: any, Wrapper: any, reduxStore: any) => {
+export const getStock = (stockInit: any, model: any, Wrapper: any, reduxStore: any) => {
   const stock = new Stock(
     defaultsDeep(stockInit, {
       components: additionalComponents,
@@ -17,11 +17,11 @@ export const getStock = (stockInit: any, viewDef: any, Wrapper: any, reduxStore:
       (navigator.languages && navigator.languages[0]) || // Chrome / Firefox
       navigator.language || // All browsers
       (navigator as any).userLanguage, // IE <= 10
-    resources: util.collectObjMerge(c.REF_LOCALES, viewDef),
+    resources: util.collectObjMerge(c.REF_LOCALES, model),
   })
 
   // get Validations
-  stock.validations = util.collectObjToArray(c.REF_VALIDATES, viewDef)
+  stock.validations = util.collectObjToArray(c.REF_VALIDATES, model)
   stock.registerFunction('t', (p) => i18n.t(p.keys, p.options))
   stock.registerFunction('test', () => 'Test is ok')
   return stock

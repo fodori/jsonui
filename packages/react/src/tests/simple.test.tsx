@@ -11,19 +11,19 @@ jest.mock('redux-persist/integration/react', () => ({
   PersistGate: ({ children }: any) => children,
 }))
 
-test('viewDef undefined', () => {
-  const wrapper = mount(<JsonUI viewDef={undefined} />)
+test('model undefined', () => {
+  const wrapper = mount(<JsonUI model={undefined} />)
   expect(wrapper).toEqual({})
 })
 
-test('viewDef null', () => {
-  const wrapper = mount(<JsonUI viewDef={null} />)
+test('model null', () => {
+  const wrapper = mount(<JsonUI model={null} />)
   expect(wrapper).toEqual({})
 })
 
 test('Text component test', () => {
   const wrapper = mount(
-    <JsonUI viewDef={{ $comp: 'Text', $children: 'JsonUI test page v0.1', id: 'id1', style: { textAlign: 'center', fontSize: 30, margin: 5 } }} />
+    <JsonUI model={{ $comp: 'Text', $children: 'JsonUI test page v0.1', id: 'id1', style: { textAlign: 'center', fontSize: 30, margin: 5 } }} />
   )
 
   expect(wrapper.find(Text)).toHaveLength(1)
@@ -32,10 +32,10 @@ test('Text component test', () => {
   expect(wrapper.find(Text).children().contains('JsonUI test page v0.1')).toEqual(true)
 })
 
-test('viewDef view and 2 text with style', () => {
+test('model view and 2 text with style', () => {
   const wrapper = mount(
     <JsonUI
-      viewDef={{
+      model={{
         $comp: 'View',
         $children: [
           { $comp: 'Text', $children: 'test111', id: 'id1', style: { textAlign: 'center', fontSize: 30, margin: 5 } },
@@ -61,7 +61,7 @@ test('viewDef view and 2 text with style', () => {
 test('simple array test with htext', () => {
   const wrapper = mount(
     <JsonUI
-      viewDef={[
+      model={[
         { $comp: 'Text', $children: 'test111', id: 'id1', style: { textAlign: 'center', fontSize: 30, margin: 5 } },
         { $comp: 'Text', $children: 'test2222', id: 'id2', style: { textAlign: 'left', fontSize: 37, margin: 5 } },
       ]}
