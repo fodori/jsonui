@@ -4,7 +4,7 @@ This is a Json markup language to define User Interface as a canvas where you ca
 
 When you change the Json definition, the interface immediately reflects on what you defined/changed.
 
-Actually JSONUI is available for **react** and **react-native**.  It will be able to integrate to 99% of the cross-platform environments, thanks for reactjs ecosystem
+Actually JSONUI is available for **react** and **react-native**. It will be able to integrate to 99% of the cross-platform environments, thanks for reactjs ecosystem
 
 The UI definition contains a layout definition and components configuration as well. The most important it has a built in **state management system**. Data can be **persistent** or not, depends on the name of the store.
 
@@ -14,13 +14,17 @@ Build a data driven UI. The "definition" is changeable by developer anytime and 
 If you would like to build a remote controlled app or a form generator app, I hope you will love it.
 
 ## Installation
+
 On react environment
+
 ```bash
 npm install @jsonui/react
 
 yarn add @jsonui/react
 ```
+
 On react-native environment
+
 ```bash
 npm install @jsonui/reactnative @react-native-async-storage/async-storage
 
@@ -29,16 +33,16 @@ yarn add @jsonui/reactnative @react-native-async-storage/async-storage
 
 ## Basic Usage
 
-The `JsonUI` Component is a canvas and the `viewDef` parameter contains the UI definition in Json format.
+The `JsonUI` Component is a canvas and the `model` parameter contains the UI definition in Json format.
 
 ```js
 import {JsonUI} from '@jsonui/reactnative';
 
-const Canvas = () => <JsonUI viewDef={
-    { "$comp": "Text", 
-      "$children": "Hello World", 
+const Canvas = () => <JsonUI model={
+    { "$comp": "Text",
+      "$children": "Hello World",
       "style": { "fontSize": 30 }
-    } />    
+    } />
 ```
 
 ### How it works
@@ -61,14 +65,14 @@ The `"$children"` key represents the children of the component.
 It can be array, object or primitive like text, number, boolean
 
 ```json
-{ "$comp": "Text", "$children": "Hello World" }  
-{ "$comp": "Text", "$children": 124 }  
-{ "$comp": "Text", "$children": [1,2,3] }  
-{ "$comp": "Text", "$children": null }   
+{ "$comp": "Text", "$children": "Hello World" }
+{ "$comp": "Text", "$children": 124 }
+{ "$comp": "Text", "$children": [1,2,3] }
+{ "$comp": "Text", "$children": null }
 { "$comp": "View", "$children": [
-   { "$comp": "Text", "$children": "Hello World" } 
-  ] 
-}  
+   { "$comp": "Text", "$children": "Hello World" }
+  ]
+}
 ```
 
 #### 2, Actions
@@ -76,11 +80,9 @@ It can be array, object or primitive like text, number, boolean
 When the component has an interaction with user or a triggered event, the `"$action"` key will represent it, for example onClick, onChange or onPress
 
 ```json
-{ "$comp": "Button", 
-  "$children": "Login", 
-  "onPress": { "$action": "navigate", "route": "LoginPage" }
-}  
+{ "$comp": "Button", "$children": "Login", "onPress": { "$action": "navigate", "route": "LoginPage" } }
 ```
+
 The action is really a predefined function when it will fire, when the event has triggered.
 
 #### 3, Modifiers
@@ -88,8 +90,8 @@ The action is really a predefined function when it will fire, when the event has
 The `"$action"` can add a dynamic value for properties or components. It's a function which will be called at render time of the component. Depends on environment data. For example JSONUI contains a basic internalisation solution.
 
 ```json
-{ "$comp": "Text", "$children": "Hello World" }  
-{ "$comp": "Text", "$children": { "$modifier": "t", "key": "Helló Világ" } }  
+{ "$comp": "Text", "$children": "Hello World" }
+{ "$comp": "Text", "$children": { "$modifier": "t", "key": "Helló Világ" } }
 ```
 
 ### How can you customise it?
@@ -98,7 +100,7 @@ Easily.
 
 ```js
 
-const Canvas = () => <JsonUI viewDef={jsonData} 
+const Canvas = () => <JsonUI model={jsonData}
   "components"={
     {
      nagivate: ({route}) => navigate(route)
@@ -108,7 +110,7 @@ const Canvas = () => <JsonUI viewDef={jsonData}
     {
      t: ({key}) => t(key)
     }
-  }/>    
+  }/>
 ```
 
 ### State management or data storage
@@ -122,48 +124,50 @@ JSONUI use [json-pointer](https://www.npmjs.com/package/json-pointer) to tell th
 
 We have 2 built-in function which can help to read and write your state management.
 
-
-Let's see some example 
+Let's see some example
 
 #### Read data
+
 ##### Your data store Looks like:
+
 ```json
-{ "users":[{"username": "John Doe"}] }
-```
-##### Use */username* in text field
-```json
-{ "$comp": "Text", "$children": { "$modifier": "get", "store": "data", "path": "/users/0/username" } }  
+{ "users": [{ "username": "John Doe" }] }
 ```
 
+##### Use _/username_ in text field
+
+```json
+{ "$comp": "Text", "$children": { "$modifier": "get", "store": "data", "path": "/users/0/username" } }
+```
 
 #### Write data
 
 ##### When the user click on the button, it will modify the data
+
 ```json
-{ "$comp": "Button", 
-  "$children": "Change username", 
-  "onPress": {"$modifier": "set", "store": "data", "path": "/users/0/username", "value":"John Doe 2" }
-}  
+{ "$comp": "Button", "$children": "Change username", "onPress": { "$modifier": "set", "store": "data", "path": "/users/0/username", "value": "John Doe 2" } }
 ```
 
 ##### Data will be:
+
 ```json
-{ "users":[{"username": "John Doe2"}] }  
+{ "users": [{ "username": "John Doe2" }] }
 ```
 
 ##### A simple input field solution
+
 ```json
-{ "$comp": "Input",
+{
+  "$comp": "Input",
   "value": { "$name": "get", "store": "questionnaire1", "path": "/firstName" },
-  "onChange": { "$action": "set", "store": "questionnaire1", "path": "/firstName" },
+  "onChange": { "$action": "set", "store": "questionnaire1", "path": "/firstName" }
 }
 ```
+
 You can manipulate the data when read or write it with [jsonata](https://jsonata.org/).
 
 ```json
-{ "$comp": "Text",
-  "children": { "$modifier": "get", "store": "data", "path": "/prevNumber", "jsonataDef": "'Next Number: ' & (1+$)" }
-}
+{ "$comp": "Text", "children": { "$modifier": "get", "store": "data", "path": "/prevNumber", "jsonataDef": "'Next Number: ' & (1+$)" } }
 ```
 
 ### Advanced technique
@@ -187,25 +191,25 @@ Somethimes we need to handle dynamic data for example a list.
 ##### Your data store looks like:
 
 ```json
-{ "subscribed": { "list":[{"name": "John Doe"}] } }
+{ "subscribed": { "list": [{ "name": "John Doe" }] } }
 ```
 
 ```json
-{  "$comp": "Fragment",
-   "isList": true,
-   "$pathModifiers": {
-      "data": { "path": "/subscribed/list" }
-   },
-   "listItem": {
-      "component": "Input",
-      "value": { "$modifier": "get", "store": "data", "path": "name" },
-      "onChange": { "$action": "set", "store": "data", "path": "name" }
-   }
+{
+  "$comp": "Fragment",
+  "isList": true,
+  "$pathModifiers": {
+    "data": { "path": "/subscribed/list" }
+  },
+  "listItem": {
+    "component": "Input",
+    "value": { "$modifier": "get", "store": "data", "path": "name" },
+    "onChange": { "$action": "set", "store": "data", "path": "name" }
+  }
 }
 ```
 
 This little technique can change the relative path nestedly as well.
-
 
 ## LICENSE [MIT](LICENSE)
 

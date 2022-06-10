@@ -47,9 +47,17 @@ const MySwitch = (...props)=><Switch {...props}>
 
 <JsonUI
   model={{
-    "component": "Switch",
-    "checked": { "$modifier": "get", "store": "data", "path": "subscribe" },
-    "onChange": { "$action": "set", "store": "data", "path": "subscribe" }
+    "$comp": "Switch",
+    "checked": {
+      "$modifier": "get",
+      "store": "data",
+      "path": "subscribe"
+      },
+    "onChange": {
+      "$action": "set",
+    "store": "data",
+    "path": "subscribe"
+    }
   }}
   components={{ Switch: MySwitch }}
 />
