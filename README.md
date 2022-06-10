@@ -202,7 +202,7 @@ Somethimes we need to handle dynamic data for example a list.
     "data": { "path": "/subscribed/list" }
   },
   "listItem": {
-    "component": "Input",
+    "$comp": "Input",
     "value": { "$modifier": "get", "store": "data", "path": "name" },
     "onChange": { "$action": "set", "store": "data", "path": "name" }
   }

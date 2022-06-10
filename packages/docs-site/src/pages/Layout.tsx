@@ -132,7 +132,9 @@ export default function Layout() {
         </AppBar>
       </HideOnScroll>
       <Container sx={{ mt: 10 }}>
-        <Outlet />
+        <div style={{ paddingBottom: 40 }}>
+          <Outlet />
+        </div>
       </Container>
     </Box>
   )

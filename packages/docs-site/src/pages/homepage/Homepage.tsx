@@ -54,7 +54,7 @@ function App() {
       <Typography variant="h4" sx={{ margin: 4, marginLeft: 0 }}>
         Why is better than just use a program language?
       </Typography>
-      <Typography variant="subtitle1" sx={{ paddingBottom: 8 }}>
+      <Typography variant="subtitle1">
         Under the hood it use react. Just need to define components for your particular project after just need to use it and business logic need to define and
         job done.
         <br /> Send a model to the JsonUI canvas and the application immediately show it. Less thing need to test it, less developmint time, faster workflow.

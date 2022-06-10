@@ -41,26 +41,28 @@ It will ba able to access with this example:
 This is the way to add more components. For example to add MUI Switch component:
 
 ```js
-import Switch from '@mui/material/Switch';
+import Switch from '@mui/material/Switch'
 
-const MySwitch = (...props)=><Switch {...props}>
+const MySwitch = (...props) => <Switch {...props} />
 
-<JsonUI
-  model={{
-    "$comp": "Switch",
-    "checked": {
-      "$modifier": "get",
-      "store": "data",
-      "path": "subscribe"
+return (
+  <JsonUI
+    model={{
+      $comp: 'Switch',
+      checked: {
+        $modifier: 'get',
+        store: 'data',
+        path: 'subscribe',
       },
-    "onChange": {
-      "$action": "set",
-    "store": "data",
-    "path": "subscribe"
-    }
-  }}
-  components={{ Switch: MySwitch }}
-/>
+      onChange: {
+        $action: 'set',
+        store: 'data',
+        path: 'subscribe',
+      },
+    }}
+    components={{ Switch: MySwitch }}
+  />
+)
 ```
 
 ### functions
@@ -68,7 +70,7 @@ const MySwitch = (...props)=><Switch {...props}>
 This is the way to add more functions. For example:
 
 ```js
-import Switch from '@mui/material/Switch'
+import Button from '@mui/material/Button'
 
 const MyFunction = () => {
   console.log('Hello World')
@@ -77,10 +79,10 @@ const MyFunction = () => {
 return (
   <JsonUI
     model={{
-      component: 'Button',
+      $comp: 'Button',
       onClick: { $action: 'MyFunction' },
     }}
-    functions={{ Switch: MySwitch }}
+    functions={{ MyFunction }}
   />
 )
 ```
