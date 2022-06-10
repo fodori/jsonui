@@ -45,24 +45,7 @@ import Switch from '@mui/material/Switch'
 
 const MySwitch = (...props) => <Switch {...props} />
 
-return (
-  <JsonUI
-    model={{
-      $comp: 'Switch',
-      checked: {
-        $modifier: 'get',
-        store: 'data',
-        path: 'subscribe',
-      },
-      onChange: {
-        $action: 'set',
-        store: 'data',
-        path: 'subscribe',
-      },
-    }}
-    components={{ Switch: MySwitch }}
-  />
-)
+return <JsonUI components={{ Switch: MySwitch }} />
 ```
 
 ### functions
