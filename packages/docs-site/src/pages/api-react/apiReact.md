@@ -44,8 +44,21 @@ This is the way to add more components. For example to add MUI Switch component:
 import Switch from '@mui/material/Switch'
 
 const MySwitch = (...props) => <Switch {...props} />
+const model = {
+  $comp: 'Switch',
+  checked: {
+    $modifier: 'get',
+    store: 'data',
+    path: 'subscribe',
+  },
+  onChange: {
+    $action: 'set',
+    store: 'data',
+    path: 'subscribe',
+  },
+}
 
-return <JsonUI components={{ Switch: MySwitch }} />
+return <JsonUI model={model} components={{ Switch: MySwitch }} />
 ```
 
 ### functions
@@ -58,16 +71,12 @@ import Button from '@mui/material/Button'
 const MyFunction = () => {
   console.log('Hello World')
 }
+const model = {
+  $comp: 'Button',
+  onClick: { $action: 'MyFunction' },
+}
 
-return (
-  <JsonUI
-    model={{
-      $comp: 'Button',
-      onClick: { $action: 'MyFunction' },
-    }}
-    functions={{ MyFunction }}
-  />
-)
+return <JsonUI model={model} functions={{ MyFunction }} />
 ```
 
 #### disabledPersist
