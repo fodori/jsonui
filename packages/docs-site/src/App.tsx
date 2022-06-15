@@ -1,15 +1,15 @@
 import React from 'react'
 import './App.css'
 import CssBaseline from '@mui/material/CssBaseline'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import Router from './pages/router'
 
 function App() {
   return (
-    <BrowserRouter basename="/jsonui/">
+    <HashRouter>
       <CssBaseline />
       <Router />
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 

@@ -1,8 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import Typography from '@mui/material/Typography'
+import { styled } from '@mui/material/styles'
 import conceptImage from '../../assets/concept1.png'
 import stateContainer from '../../assets/state-container.svg'
+
+const FullSizeConceptImg = styled('img')`
+  width: 100%;
+  max-width: 837px;
+`
+
+const FullSizeStateContainerImg = styled('img')`
+  width: 100%;
+  max-width: 1092px;
+`
 
 function App() {
   return (
@@ -24,7 +35,7 @@ function App() {
         It's a good user interface for for example a server driven application.
       </Typography>
       <div style={{ textAlign: 'center', marginTop: 20, marginBottom: 10 }}>
-        <img src={conceptImage} alt="concept" />
+        <FullSizeConceptImg src={conceptImage} alt="concept" />
       </div>
       <Typography variant="h4" sx={{ margin: 4, marginLeft: 0 }}>
         State container
@@ -37,7 +48,7 @@ function App() {
         access data it is defined in the json.
       </Typography>
       <Typography variant="subtitle1" style={{ textAlign: 'center', margin: 20 }}>
-        <img src={stateContainer} alt="State container" width="80%" />
+        <FullSizeStateContainerImg src={stateContainer} alt="State container" width="80%" />
       </Typography>
 
       <Typography variant="h4" sx={{ margin: 4, marginLeft: 0 }}>
