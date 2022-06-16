@@ -23,7 +23,3 @@ const Canvas = () => <JsonUI model={
 ## Next Steps
 
 After when you see how works the JsonUI, you can write own component library and own functions to use.
-
-#### LICENSE [MIT](LICENSE)
-
-Copyright (c) 2022 Istvan Fodor.

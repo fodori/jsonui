@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react'
-import { Grid, Typography } from '@mui/material'
+import { Grid, Paper, Typography } from '@mui/material'
 import JSONInput from 'react-json-editor-ajrm'
 import { JsonUI } from '@jsonui/react'
 import InputLabel from '@mui/material/InputLabel'
@@ -40,25 +40,27 @@ function Try() {
       </FormControl>
       {/* {JSON.stringify(tries?.[selectedIndex]?.content)} */}
       <Typography variant="subtitle1">{tries?.[selectedIndex]?.help}</Typography>
-      <Grid item style={{ marginTop: 40, width: '100%' }}>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <JSONInput
-              placeholder={tries[selectedIndex].content}
-              height="150"
-              theme="dark_vscode_tribute"
-              locale={locale}
-              onChange={(value: any) => {
-                if (!value.error) {
-                  setJsonVal(value.jsObject)
-                }
-              }}
-              waitAfterKeyPress={10}
-            />
-          </Grid>
-          <Grid item xs={6}>
+
+      <Grid container spacing={2} direction="column" justifyContent="center" alignItems="stretch">
+        <Grid item xs={6}>
+          <Paper elevation={3} sx={{ p: 1 }}>
             <JsonUI model={jsonVal} disabledPersist />
-          </Grid>
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <JSONInput
+            placeholder={tries[selectedIndex].content}
+            height="150"
+            width="100%"
+            theme="dark_vscode_tribute"
+            locale={locale}
+            onChange={(value: any) => {
+              if (!value.error) {
+                setJsonVal(value.jsObject)
+              }
+            }}
+            waitAfterKeyPress={10}
+          />
         </Grid>
       </Grid>
     </>

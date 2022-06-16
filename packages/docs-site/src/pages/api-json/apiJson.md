@@ -1,9 +1,3 @@
-## Menu
-
-- [Components](/api-json#1--components)
-- [Actions](/api-json#2--actions)
-- [Modifiers](/api-json#3--modifiers)
-
 ### 1, Components
 
 The `"$comp"` key represents the name of a predefined react component. The predefined components:

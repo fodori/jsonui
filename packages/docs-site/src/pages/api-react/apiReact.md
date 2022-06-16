@@ -74,7 +74,3 @@ return <JsonUI model={model} functions={{ MyFunction }} />
 #### disabledPersist: _boolean_
 
 By default the `disabledPersist` is true and store the a specific name of store. At the moment, just one datastore is persistent which is `data`. Means everything which is stored in `data` should be persistent (data will be available after that when the application will be restarted). Everything else not. If `disabledPersist` is false, the all built in persistency mechanism disabled.
-
-#### LICENSE [MIT](LICENSE)
-
-Copyright (c) 2022 Istvan Fodor.
