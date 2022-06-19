@@ -2,8 +2,8 @@
 
 - add all example to help understand data binding and add links from help page
 - create some component library, for example MUI on web
-- create a api communication library under http protocol
-- create some application examples to see what the application is capable of.
+- create an api communication library under http protocol
+- create some application examples to see what the solution is capable of.
 
 ## api react
 

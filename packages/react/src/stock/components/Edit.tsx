@@ -1,8 +1,8 @@
 import React from 'react'
 
-function FieldEdit(props: any) {
+function Edit(props: any) {
   const handleChange = (event: any) => {
-    props.onChange(event.target.value)
+    props?.onChange(event.target.value)
   }
   const { fieldErrors, validation, value, label, helperText: origHelpertext, onChange, ...ownProps } = props
   let error = !!fieldErrors
@@ -36,4 +36,4 @@ function FieldEdit(props: any) {
   )
 }
 
-export default FieldEdit
+export default Edit
