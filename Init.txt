@@ -189,3 +189,8 @@ yarn lerna add @mui/icons-material --scope=docs-site
 yarn lerna add react-markdown --scope=docs-site
 yarn lerna add rehype-highlight --scope=docs-site
 yarn lerna add remark-gfm --scope=docs-site
+
+yarn lerna add react-simple-code-editor --scope=docs-site
+yarn lerna add prismjs --scope=docs-site
+yarn lerna add @types/prismjs -D --scope=docs-site
+yarn lerna add json-format --scope=docs-site

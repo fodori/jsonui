@@ -1,30 +1,49 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react'
-import { Grid, Paper, Typography } from '@mui/material'
-import JSONInput from 'react-json-editor-ajrm'
+import { Grid, ListItemText, Paper, Typography } from '@mui/material'
+// import JSONInput from 'react-json-editor-ajrm'
+import Editor from 'react-simple-code-editor'
 import { JsonUI } from '@jsonui/react'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import locale from '../../react-json-editor-en'
+import { highlight, languages } from 'prismjs/components/prism-core'
+import jsonFormat from 'json-format'
 import testHello from './testHello.json'
 import testButton from './testButton.json'
 import testInput from './testInput.json'
+import 'prismjs/components/prism-clike'
+import 'prismjs/components/prism-javascript'
+import 'prismjs/themes/prism.css' // Example style, you can use another
 
 function Try() {
   const tries = [
-    { name: 'Hello World', content: testHello, help: 'Simple Text' },
-    { name: 'Button', content: testButton, help: 'Button Text' },
-    { name: 'Edit Field', content: testInput, help: 'Edit Field example' },
+    { name: 'Hello World', content: testHello, help: 'Simple Text example' },
+    { name: 'Button', content: testButton, help: 'Button sample' },
+    { name: 'Edit Field', content: testInput, help: 'Edit Field example with setter and getter' },
   ]
+  const format = (str: string) => jsonFormat(str, { space: { size: 1 }, type: 'space' })
+
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [jsonVal, setJsonVal] = useState(tries[selectedIndex].content)
+  const [jsonVal, setJsonVal] = useState(format(tries[selectedIndex].content as any))
+  const [jsonValid, setJsonValid] = useState(tries[selectedIndex].content)
+  const [harError, setHasError] = useState(false)
 
   const handleSetSelectedIndex = (event: any) => {
-    setJsonVal(tries[event.target.value].content)
+    setJsonVal(format(tries[event.target.value].content as any))
+    setJsonValid(tries[event.target.value].content)
     setSelectedIndex(event.target.value)
   }
+  const isJsonString = (str: string) => {
+    try {
+      JSON.parse(str)
+    } catch (e) {
+      return false
+    }
+    return true
+  }
+
   return (
     <>
       <FormControl fullWidth>
@@ -33,34 +52,49 @@ function Try() {
           {tries.map((item, index) => (
             // eslint-disable-next-line react/no-array-index-key
             <MenuItem value={index} key={index}>
-              {item.name}
+              <ListItemText
+                primary={item.name}
+                secondary={
+                  <Typography sx={{ display: 'inline' }} component="span" variant="body2" color="text.primary">
+                    {item.help}
+                  </Typography>
+                }
+              />
             </MenuItem>
           ))}
         </Select>
       </FormControl>
-      {/* {JSON.stringify(tries?.[selectedIndex]?.content)} */}
+      <Typography variant="h6">{tries?.[selectedIndex]?.name}</Typography>
       <Typography variant="subtitle1">{tries?.[selectedIndex]?.help}</Typography>
 
       <Grid container spacing={2} direction="column" justifyContent="center" alignItems="stretch">
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Paper elevation={3} sx={{ p: 1 }}>
-            <JsonUI model={jsonVal} disabledPersist />
+            <JsonUI model={jsonValid} disabledPersist />
           </Paper>
         </Grid>
-        <Grid item xs={6}>
-          <JSONInput
-            placeholder={tries[selectedIndex].content}
-            height="150"
-            width="100%"
-            theme="dark_vscode_tribute"
-            locale={locale}
-            onChange={(value: any) => {
-              if (!value.error) {
-                setJsonVal(value.jsObject)
-              }
-            }}
-            waitAfterKeyPress={10}
-          />
+        <Grid item xs={12}>
+          <Paper elevation={3} sx={{ p: 1 }} style={{ border: harError ? '2px solid red' : '2px solid green' }}>
+            <Editor
+              value={jsonVal}
+              onValueChange={(code) => {
+                setJsonVal(code)
+                if (isJsonString(code)) {
+                  setHasError(false)
+                  setJsonValid(JSON.parse(code))
+                } else {
+                  setHasError(true)
+                }
+              }}
+              highlight={(code) => highlight(code, languages.js)}
+              padding={0}
+              style={{
+                fontFamily: '"Fira code", "Fira Mono", monospace',
+                fontSize: 12,
+                outline: 'transparent',
+              }}
+            />
+          </Paper>
         </Grid>
       </Grid>
     </>

@@ -9,6 +9,7 @@
     "packages/*"
   ],
   "scripts": {
+    "buildweb": "yarn workspace @jsonui/core run build; yarn workspace @jsonui/react run build;",
     "startReact": "yarn workspace @jsonui/react run start",
     "startCore": "yarn workspace @jsonui/core run start",
     "startTestReact": "yarn workspace jsonui-test-react run start",

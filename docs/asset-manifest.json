@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/jsonui/static/css/main.3a7623f2.css",
-    "main.js": "/jsonui/static/js/main.c3b5c7fa.js",
+    "main.css": "/jsonui/static/css/main.3643fe0e.css",
+    "main.js": "/jsonui/static/js/main.5e727631.js",
     "static/js/415.1b4aafa4.chunk.js": "/jsonui/static/js/415.1b4aafa4.chunk.js",
     "static/media/concept1.png": "/jsonui/static/media/concept1.795270afba6b3e0df8b0.png",
     "static/media/state-container.svg": "/jsonui/static/media/state-container.d8e2aaae4b598894aa5b83a6b18b7b24.svg",
@@ -12,12 +12,12 @@
     "static/media/gettingStarted.md": "/jsonui/static/media/gettingStarted.a145ac494ab370b82374.md",
     "static/media/reactIcon.svg": "/jsonui/static/media/reactIcon.3479b3da95a89e6164c19c68548634c8.svg",
     "static/media/npmIcon.svg": "/jsonui/static/media/npmIcon.88ec0340907035293c941f0564ebd437.svg",
-    "main.3a7623f2.css.map": "/jsonui/static/css/main.3a7623f2.css.map",
-    "main.c3b5c7fa.js.map": "/jsonui/static/js/main.c3b5c7fa.js.map",
+    "main.3643fe0e.css.map": "/jsonui/static/css/main.3643fe0e.css.map",
+    "main.5e727631.js.map": "/jsonui/static/js/main.5e727631.js.map",
     "415.1b4aafa4.chunk.js.map": "/jsonui/static/js/415.1b4aafa4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3a7623f2.css",
-    "static/js/main.c3b5c7fa.js"
+    "static/css/main.3643fe0e.css",
+    "static/js/main.5e727631.js"
   ]
 }
