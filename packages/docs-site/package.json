@@ -2,7 +2,7 @@
   "name": "docs-site",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/jsonui/",
+  "homepage": "/",
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
