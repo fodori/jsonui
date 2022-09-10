@@ -10,12 +10,9 @@
   ],
   "scripts": {
     "buildweb": "yarn workspace @jsonui/core run build; yarn workspace @jsonui/react run build;",
-    "startReact": "yarn workspace @jsonui/react run start",
-    "startCore": "yarn workspace @jsonui/core run start",
     "startTestReact": "yarn workspace jsonui-test-react run start",
     "publish": "yarn lerna publish from-package",
     "bootstrap": "yarn lerna bootstrap",
-    "testCore": "yarn workspace @jsonui/core run test",
     "copyDocs": "yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/;"
   },
   "devDependencies": {
