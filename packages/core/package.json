@@ -56,5 +56,5 @@
     "rollup-plugin-visualizer": "^5.5.4",
     "ts-jest": "^27.1.3"
   },
-  "gitHead": "114bfde08c68bb604f99f047119a5d0eb2ad9e06"
+  "gitHead": "b22ae9005949d476a52810578a00fc05283304d0"
 }
