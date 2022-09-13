@@ -194,3 +194,9 @@ yarn lerna add react-simple-code-editor --scope=docs-site
 yarn lerna add prismjs --scope=docs-site
 yarn lerna add @types/prismjs -D --scope=docs-site
 yarn lerna add json-format --scope=docs-site
+
+# publish new version, from main repo
+yarn lerna version --no-private
+# commit and push everything
+npm login
+yarn lerna publish from-package
