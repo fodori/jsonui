@@ -5,6 +5,7 @@
   "source": "src/index.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
+  "homepage": "http://www.jsonui.org/",
   "files": [
     "dist"
   ],
