@@ -31,8 +31,8 @@ function App() {
         Core concept
       </Typography>
       <Typography variant="subtitle1">
-        Build a data driven UI. The components as a lego elements already built-in. One single Json definition can build a user interface using these elements.
-        It's a good user interface for for example a server driven application.
+        It's a data driven UI. The components as a lego elements could already predefined and the json just tell how to show it and use it. One single Json
+        definition can build a user interface using these elements. It's a good user interface for example a server driven application.
       </Typography>
       <div style={{ textAlign: 'center', marginTop: 20, marginBottom: 10 }}>
         <FullSizeConceptImg src={conceptImage} alt="concept" />
@@ -41,11 +41,10 @@ function App() {
         State container
       </Typography>
       <Typography variant="subtitle1">
-        The state container based on Redux, but used a little bit unortodox way to support the idea behind JsonUI. The idea is to store data in separate stores
-        and access it via Json path definition. Each data store represent a graf based(how looks like json) storage. Each component can read/write data with
-        publish/subscribe logic or simple get/set way. <br />
+        The idea is, to store data in data stores and access it via Json path definition. Each data store represent a graf based(how looks like json) storage.
+        Each component can read/write data with publish/subscribe logic or simple get/set way. <br />
         When a component subscribed a data, it will rerender when the data changed. The data stores are independent from the UI, but how the application can
-        access data it is defined in the json.
+        access it, it's defined in the json.
       </Typography>
       <Typography variant="subtitle1" style={{ textAlign: 'center', margin: 20 }}>
         <FullSizeStateContainerImg src={stateContainer} alt="State container" width="80%" />
