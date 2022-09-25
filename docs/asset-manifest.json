@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/static/css/main.3643fe0e.css",
-    "main.js": "/static/js/main.ca685499.js",
+    "main.js": "/static/js/main.2aa03aee.js",
     "static/js/415.1b4aafa4.chunk.js": "/static/js/415.1b4aafa4.chunk.js",
-    "static/media/concept1.png": "/static/media/concept1.795270afba6b3e0df8b0.png",
+    "static/media/concept1.png": "/static/media/concept1.da021ecd646c179ba9f8.png",
     "static/media/state-container.svg": "/static/media/state-container.d8e2aaae4b598894aa5b83a6b18b7b24.svg",
     "static/media/apiJson.md": "/static/media/apiJson.4ceb8927089b0d245350.md",
     "static/media/apiReact.md": "/static/media/apiReact.970da60bce7d2938d704.md",
@@ -13,11 +13,11 @@
     "static/media/reactIcon.svg": "/static/media/reactIcon.3479b3da95a89e6164c19c68548634c8.svg",
     "static/media/npmIcon.svg": "/static/media/npmIcon.88ec0340907035293c941f0564ebd437.svg",
     "main.3643fe0e.css.map": "/static/css/main.3643fe0e.css.map",
-    "main.ca685499.js.map": "/static/js/main.ca685499.js.map",
+    "main.2aa03aee.js.map": "/static/js/main.2aa03aee.js.map",
     "415.1b4aafa4.chunk.js.map": "/static/js/415.1b4aafa4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3643fe0e.css",
-    "static/js/main.ca685499.js"
+    "static/js/main.2aa03aee.js"
   ]
 }
