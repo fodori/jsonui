@@ -1,10 +1,8 @@
 import React from 'react'
+import MUIButton, { ButtonProps as MUIButtonProps } from '@mui/material/Button'
 
-export type ButtonProps = any
+export type ButtonProps = MUIButtonProps
 
-function Button(props: ButtonProps) {
-  // eslint-disable-next-line react/button-has-type
-  return <button {...props} />
-}
+const Button = (props: ButtonProps) => <MUIButton {...props} />
 
 export default Button

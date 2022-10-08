@@ -1778,6 +1778,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fontsource/roboto@^4.5.8":
+  version "4.5.8"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.5.8.tgz#56347764786079838faf43f0eeda22dd7328437f"
+  integrity sha512-CnD7zLItIzt86q4Sj3kZUiLcBk1dSk81qcqgMGaZe7SQ1P8hFNxhMl5AZthK1zrDM5m74VVhaOpuMGIL4gagaA==
+
 "@gar/promisify@^1.0.1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.2.tgz#30aa825f11d438671d585bd44e7fd564535fc210"
@@ -2373,10 +2378,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@jsonui/core@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@jsonui/core/-/core-0.0.12.tgz#cd316be96ff33a01b3469d4708c6f655a56b4b45"
-  integrity sha512-tTvqOgiZsFKBgSquQRSRRp4OE8i8q8Qo7vPipmPKTJhdYaY4R2XjuocWlb+BbYZZ0ZajuYi6FVaMG36r3eJtXQ==
+"@jsonui/core@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@jsonui/core/-/core-0.1.1.tgz#657ed1154caf2e04dabdc41c04437c27147ac1a9"
+  integrity sha512-BP/VTevviZnVv7qSbVTtaQWGYzJ8KmAAITzmXvMhvvhaSLRJrpBChmhCUI5xKa1fT5LHxdBadM1LFoz8zI1umQ==
   dependencies:
     ajv "^8.9.0"
     immer "^9.0.12"
@@ -2388,13 +2393,13 @@
     redux-persist "^6.0.0"
     traverse "^0.6.6"
 
-"@jsonui/react@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@jsonui/react/-/react-0.0.12.tgz#007b6082d500556429b1d3f54c0bdba591f08ecf"
-  integrity sha512-uUEgJiTqgMLnTmKLZECJF+aw44u6BfSRjW/YtG+i0hXGMAcumszdo11ff+uaxms7KotLeLTgvu/3IbRDXHh1Yg==
+"@jsonui/react@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@jsonui/react/-/react-0.1.1.tgz#9096835a326adf6ca7f57e73520587f2287caedb"
+  integrity sha512-AnP/7xgtfH6Vvyyk8C2zvHwHjyuBW3pmVtwIcJ3L/00eQW6N30WsYdBkUCOjDpEJJoRrQfWfIfGwr9lLRMgWMA==
   dependencies:
     "@emotion/react" "^11.7.1"
-    "@jsonui/core" "^0.0.12"
+    "@jsonui/core" "^0.1.1"
     batchflow "^0.4.0"
     jsonata "^1.8.5"
     lodash "^4.17.21"
@@ -2402,23 +2407,6 @@
     redux "^4.1.2"
     redux-persist "^6.0.0"
     typescript "^4.5.4"
-
-"@jsonui/reactnative@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@jsonui/reactnative/-/reactnative-0.0.12.tgz#9747dbd97b264a85c0ff6003d32f7a0250a585ae"
-  integrity sha512-F//G2ZgZarOso1zShfRyPFX+i8Uc3cmzAPc2ugau76u8a4j0+4IsXTb0oH9yLIT0NBNkEm8C6dNXH3Y/k4NuqQ==
-  dependencies:
-    "@jsonui/core" "^0.0.12"
-    "@react-native-async-storage/async-storage" "^1.15.17"
-    batchflow "^0.4.0"
-    jsonata "^1.8.5"
-    lodash "^4.17.21"
-    react-native-extended-stylesheet "^0.12.0"
-    react-redux "^7.2.6"
-    redux "^4.1.2"
-    redux-persist "^6.0.0"
-    typescript "^4.5.4"
-    web-vitals "^2.1.4"
 
 "@lerna/add@4.0.0":
   version "4.0.0"
@@ -3174,6 +3162,13 @@
   version "5.10.8"
   resolved "https://registry.yarnpkg.com/@mui/core-downloads-tracker/-/core-downloads-tracker-5.10.8.tgz#b00402dd0796e7e99a09cfc23cb0b0a6196c8e09"
   integrity sha512-V5D7OInO4P9PdT/JACg7fwjbOORm3GklaMVgdGomjyxiyetgRND5CC9r35e1LK/DqHdoyDuhbFzdfrqWtpmEIw==
+
+"@mui/icons-material@^5.10.6":
+  version "5.10.6"
+  resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.10.6.tgz#a032395cfe7fe8e9a8edde2d27b9e3bd23e5b935"
+  integrity sha512-QwxdRmLA46S94B0hExPDx0td+A2unF+33bQ6Cs+lNpJKVsm1YeHwNdYXYcnpWeHeQQ07055OXl7IB2GKDd0MfA==
+  dependencies:
+    "@babel/runtime" "^7.19.0"
 
 "@mui/icons-material@^5.6.2":
   version "5.6.2"
