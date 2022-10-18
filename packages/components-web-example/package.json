@@ -1,5 +1,5 @@
 {
-  "name": "@jsonui/comp-mui",
+  "name": "@jsonui/components-web-example",
   "version": "0.1.1",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/fodori/jsonui.git"
   },
-  "description": "JsonUI component library with MUI components",
+  "description": "JsonUI component library example",
   "keywords": [
     "react",
     "react-component",
