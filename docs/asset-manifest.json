@@ -1,23 +1,20 @@
 {
   "files": {
     "main.css": "/static/css/main.3643fe0e.css",
-    "main.js": "/static/js/main.2aa03aee.js",
-    "static/js/415.1b4aafa4.chunk.js": "/static/js/415.1b4aafa4.chunk.js",
-    "static/media/concept1.png": "/static/media/concept1.da021ecd646c179ba9f8.png",
+    "main.js": "/static/js/main.51beecf1.js",
+    "static/js/529.fe4dd084.chunk.js": "/static/js/529.fe4dd084.chunk.js",
+    "static/media/concept1.png": "/static/media/concept1.795270afba6b3e0df8b0.png",
     "static/media/state-container.svg": "/static/media/state-container.d8e2aaae4b598894aa5b83a6b18b7b24.svg",
-    "static/media/apiJson.md": "/static/media/apiJson.4ceb8927089b0d245350.md",
-    "static/media/apiReact.md": "/static/media/apiReact.970da60bce7d2938d704.md",
+    "static/media/apiJson.md": "/static/media/apiJson.2d6ee7722073bb1e737e.md",
+    "static/media/apiReact.md": "/static/media/apiReact.343c963e9e07d7353e73.md",
     "static/media/jsonIcon.svg": "/static/media/jsonIcon.ecd845e437373962ba56f579441f08ec.svg",
     "index.html": "/index.html",
-    "static/media/gettingStarted.md": "/static/media/gettingStarted.a145ac494ab370b82374.md",
+    "static/media/gettingStarted.md": "/static/media/gettingStarted.5f64d2a0a6a423daa7c7.md",
     "static/media/reactIcon.svg": "/static/media/reactIcon.3479b3da95a89e6164c19c68548634c8.svg",
     "static/media/npmIcon.svg": "/static/media/npmIcon.88ec0340907035293c941f0564ebd437.svg",
     "main.3643fe0e.css.map": "/static/css/main.3643fe0e.css.map",
-    "main.2aa03aee.js.map": "/static/js/main.2aa03aee.js.map",
-    "415.1b4aafa4.chunk.js.map": "/static/js/415.1b4aafa4.chunk.js.map"
+    "main.51beecf1.js.map": "/static/js/main.51beecf1.js.map",
+    "529.fe4dd084.chunk.js.map": "/static/js/529.fe4dd084.chunk.js.map"
   },
-  "entrypoints": [
-    "static/css/main.3643fe0e.css",
-    "static/js/main.2aa03aee.js"
-  ]
+  "entrypoints": ["static/css/main.3643fe0e.css", "static/js/main.51beecf1.js"]
 }

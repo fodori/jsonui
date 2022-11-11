@@ -200,3 +200,11 @@ yarn lerna version --no-private
 # commit and push everything
 npm login
 yarn lerna publish from-package
+
+yarn lerna add @mui/material --scope=@jsonui/comp-mui
+yarn lerna add @emotion/react  --scope=@jsonui/comp-mui
+yarn lerna add @emotion/styled --scope=@jsonui/comp-mui
+yarn lerna add @fontsource/roboto --scope=@jsonui/comp-mui
+yarn lerna add @mui/icons-material --scope=@jsonui/comp-mui
+ 
+

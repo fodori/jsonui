@@ -2,11 +2,12 @@
 
 ### model: _any_
 
-The `model` is the most important property. It's contains the ui definitions and the business logic, usually a JSON structure or object structure which can come from an api response or a predefined Json file for example.
+The `model` is the most important property. It contains the ui definitions and the business logic, usually a JSON structure or object structure which can come from an api response or a predefined Json file for example.
 
 ### defaultValues: _Record<string, object>_
 
-If the JsonUI need to initialize data what the JsonUI is working on. The `defaultValues` should a name of the store and the data of it. For example if the name of the store is `questionnaire` and the initial data is a profile data.
+If the JsonUI needs to initialise data what the JsonUI is working on.
+The `defaultValues` should be the name of the store and the data of it. For example if the name of the store is a `questionnaire` and the initial data is a profile data.
 
 ```js
 <JsonUI
@@ -15,7 +16,7 @@ If the JsonUI need to initialize data what the JsonUI is working on. The `defaul
 />
 ```
 
-It will ba able to access with this example:
+It will be able to access with this example:
 
 ```json
 {
@@ -73,4 +74,4 @@ return <JsonUI model={model} functions={{ MyFunction }} />
 
 #### disabledPersist: _boolean_
 
-By default the `disabledPersist` is true and store the a specific name of store. At the moment, just one datastore is persistent which is `data`. Means everything which is stored in `data` should be persistent (data will be available after that when the application will be restarted). Everything else not. If `disabledPersist` is false, the all built in persistency mechanism disabled.
+By default the `disabledPersist` is true and stores a specific name of the store. At the moment, just one datastore is persistent which is `data`. Means everything which is stored in `data` should be persistent (data will be available after that when the application will be restarted). Everything else not. If `disabledPersist` is false, the all built in persistence mechanism disabled.

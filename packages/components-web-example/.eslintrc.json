@@ -1,0 +1,67 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "airbnb",
+    "plugin:react/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "plugin:prettier/recommended",
+    "prettier",
+    "plugin:storybook/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "ecmaVersion": 13,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "prettier", "react-hooks", "react"],
+  "rules": {
+    "default-param-last": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/function-component-definition": 0,
+    "react/destructuring-assignment": 0,
+    "react/prop-types": 0,
+    "arrow-body-style": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    ],
+    "import/extensions": ["error", "always", { "ts": "never", "tsx": "never", "js": "never", "jsx": "never" }],
+    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
+  },
+  "settings": {
+    "react": { "pragma": "React", "version": "detect" },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    }
+  },
+  "overrides": [
+    {
+      // or whatever matches stories specified in .storybook/main.js
+      "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)"],
+      "rules": {
+        // example of overriding a rule
+        "storybook/hierarchy-separator": "error",
+        // example of disabling a rule
+        "storybook/default-exports": "off",
+        "import/prefer-default-export": "off",
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ]
+}
