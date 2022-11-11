@@ -60,7 +60,6 @@ function App() {
                 <TableCell align="left">components</TableCell>
                 <TableCell align="left">{'Record<string, React.ReactType>'}</TableCell>
                 <TableCell align="left">
-                  {' '}
                   List of React components. The key will be the name of the component and it will be available for use in `model` definition.
                 </TableCell>
               </TableRow>
@@ -68,14 +67,13 @@ function App() {
                 <TableCell align="left">functions</TableCell>
                 <TableCell align="left">{'Record<string, () => any>'}</TableCell>
                 <TableCell align="left">
-                  {' '}
-                  List of function to use for `$modifier` or for `$action`. It will be available for use in `model` definition.{' '}
+                  List of functions to use for `$modifier` or for `$action`. It will be available for use in `model` definition.{' '}
                 </TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">disabledPersist</TableCell>
                 <TableCell align="left">boolean</TableCell>
-                <TableCell align="left">Default is `false`. When it false, we store app data persistently.</TableCell>
+                <TableCell align="left">Default is `false`. When it is false, we store app data persistently.</TableCell>
               </TableRow>
             </TableBody>
           </Table>

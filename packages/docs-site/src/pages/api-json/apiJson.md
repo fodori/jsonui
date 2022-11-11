@@ -56,7 +56,7 @@ Easily.
 const Canvas = () => <JsonUI model={jsonData}
   "components"={
     {
-     nagivate: ({route}) => navigate(route)
+     navigate: ({route}) => navigate(route)
     }
   }
   "functions"={
@@ -68,14 +68,14 @@ const Canvas = () => <JsonUI model={jsonData}
 
 ### State management or data storage
 
-The state management is another layer of the JSNOUI. It's represent a permissive and dynamic tree graf structure. Like a JSON file.
+The state management is another layer of the JSONUI. It's represent a permissive and dynamic tree graf structure. Like a JSON file.
 Each app has a separated data space, based on the `id` param of `JsonUI` component.
 Each app has multiple `store` represent multiple data tree or separate storage.
 Actually the `data` store is persistent. (it will be configurable soon if there is interest in it)
 You can define unlimited data store. What you need is, just use a specific name in JSON Definition, and it will automatically create at the first use.
 JSONUI use [json-pointer](https://www.npmjs.com/package/json-pointer) to tell the `path` what kind of data we need.
 
-We have 2 built-in function which can help to read and write your state management.
+We have 2 built-in functions which can help to read and write your state management.
 
 Let's see some example
 
@@ -163,7 +163,7 @@ few examples
 
 #### List
 
-Somethimes we need to handle dynamic data for example a list.
+JSONUI we need to handle dynamic data, for example a list.
 
 ##### Your data store looks like:
 
