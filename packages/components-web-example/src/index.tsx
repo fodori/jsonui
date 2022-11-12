@@ -7,6 +7,7 @@ import Checkbox, { CheckboxProps } from './components/Checkbox'
 import Slider, { SliderProps } from './components/Slider'
 import Switch, { SwitchProps } from './components/Switch'
 import Tooltip, { TooltipProps } from './components/Tooltip'
+import './style.css'
 
 export { Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip }
 

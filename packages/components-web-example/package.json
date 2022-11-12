@@ -30,7 +30,7 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rm -rf ./dist; rollup -c",
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -91,6 +91,7 @@
     "react-test-renderer": "^17.0.2",
     "redux-devtools": "^3.7.0",
     "rollup": "^2.66.1",
+    "rollup-plugin-css-only": "^4.3.0",
     "rollup-plugin-dts": "^4.1.0",
     "rollup-plugin-visualizer": "^5.5.4",
     "ts-jest": "^27.1.4",

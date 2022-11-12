@@ -2586,10 +2586,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@jsonui/core@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@jsonui/core/-/core-0.1.1.tgz#657ed1154caf2e04dabdc41c04437c27147ac1a9"
-  integrity sha512-BP/VTevviZnVv7qSbVTtaQWGYzJ8KmAAITzmXvMhvvhaSLRJrpBChmhCUI5xKa1fT5LHxdBadM1LFoz8zI1umQ==
+"@jsonui/core@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@jsonui/core/-/core-0.0.12.tgz#cd316be96ff33a01b3469d4708c6f655a56b4b45"
+  integrity sha512-tTvqOgiZsFKBgSquQRSRRp4OE8i8q8Qo7vPipmPKTJhdYaY4R2XjuocWlb+BbYZZ0ZajuYi6FVaMG36r3eJtXQ==
   dependencies:
     ajv "^8.9.0"
     immer "^9.0.12"
@@ -2601,13 +2601,13 @@
     redux-persist "^6.0.0"
     traverse "^0.6.6"
 
-"@jsonui/react@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@jsonui/react/-/react-0.1.1.tgz#9096835a326adf6ca7f57e73520587f2287caedb"
-  integrity sha512-AnP/7xgtfH6Vvyyk8C2zvHwHjyuBW3pmVtwIcJ3L/00eQW6N30WsYdBkUCOjDpEJJoRrQfWfIfGwr9lLRMgWMA==
+"@jsonui/react@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@jsonui/react/-/react-0.0.12.tgz#007b6082d500556429b1d3f54c0bdba591f08ecf"
+  integrity sha512-uUEgJiTqgMLnTmKLZECJF+aw44u6BfSRjW/YtG+i0hXGMAcumszdo11ff+uaxms7KotLeLTgvu/3IbRDXHh1Yg==
   dependencies:
     "@emotion/react" "^11.7.1"
-    "@jsonui/core" "^0.1.1"
+    "@jsonui/core" "^0.0.12"
     batchflow "^0.4.0"
     jsonata "^1.8.5"
     lodash "^4.17.21"
@@ -2615,6 +2615,23 @@
     redux "^4.1.2"
     redux-persist "^6.0.0"
     typescript "^4.5.4"
+
+"@jsonui/reactnative@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@jsonui/reactnative/-/reactnative-0.0.12.tgz#9747dbd97b264a85c0ff6003d32f7a0250a585ae"
+  integrity sha512-F//G2ZgZarOso1zShfRyPFX+i8Uc3cmzAPc2ugau76u8a4j0+4IsXTb0oH9yLIT0NBNkEm8C6dNXH3Y/k4NuqQ==
+  dependencies:
+    "@jsonui/core" "^0.0.12"
+    "@react-native-async-storage/async-storage" "^1.15.17"
+    batchflow "^0.4.0"
+    jsonata "^1.8.5"
+    lodash "^4.17.21"
+    react-native-extended-stylesheet "^0.12.0"
+    react-redux "^7.2.6"
+    redux "^4.1.2"
+    redux-persist "^6.0.0"
+    typescript "^4.5.4"
+    web-vitals "^2.1.4"
 
 "@lerna/add@4.0.0":
   version "4.0.0"
@@ -4011,6 +4028,15 @@
     "@rollup/pluginutils" "^3.1.0"
     resolve "^1.17.0"
 
+"@rollup/pluginutils@5":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.0.2.tgz#012b8f53c71e4f6f9cb317e311df1404f56e7a33"
+  integrity sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==
+  dependencies:
+    "@types/estree" "^1.0.0"
+    estree-walker "^2.0.2"
+    picomatch "^2.3.1"
+
 "@rollup/pluginutils@^3.0.8", "@rollup/pluginutils@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-3.1.0.tgz#706b4524ee6dc8b103b3c995533e5ad680c02b9b"
@@ -5295,6 +5321,11 @@
   version "0.0.39"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
   integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
+
+"@types/estree@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.0.tgz#5fb2e536c1ae9bf35366eed879e827fa59ca41c2"
+  integrity sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==
 
 "@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.18":
   version "4.17.28"
@@ -10430,7 +10461,7 @@ estree-walker@^1.0.1:
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-1.0.1.tgz#31bc5d612c96b704106b477e6dd5d8aa138cb700"
   integrity sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==
 
-estree-walker@^2.0.1:
+estree-walker@^2.0.1, estree-walker@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-2.0.2.tgz#52f010178c2a4c117a7757cfe942adb7d2da4cac"
   integrity sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==
@@ -17151,7 +17182,7 @@ picocolors@^1.0.0:
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
   integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
 
-picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.2.3, picomatch@^2.3.0:
+picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.2.3, picomatch@^2.3.0, picomatch@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
@@ -19348,6 +19379,13 @@ rollup-plugin-bundle-size@^1.0.3:
   dependencies:
     chalk "^1.1.3"
     maxmin "^2.1.0"
+
+rollup-plugin-css-only@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-css-only/-/rollup-plugin-css-only-4.3.0.tgz#d3d9374457a065aff623d7c7696f1a072c96ae7b"
+  integrity sha512-BsiCqJJQzZh2lQiHY5irejRoJ3I1EUFHEi5PjVqsr+EmOh54YrWVwd3YZEXnQJ2+fzlhif0YM/Kf0GuH90GAdQ==
+  dependencies:
+    "@rollup/pluginutils" "5"
 
 rollup-plugin-dts@^4.1.0:
   version "4.1.0"

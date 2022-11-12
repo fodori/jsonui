@@ -196,6 +196,12 @@ yarn lerna add @types/prismjs -D --scope=docs-site
 yarn lerna add json-format --scope=docs-site
 
 # publish new version, from main repo
+yarn workspace @jsonui/core run build;
+yarn workspace @jsonui/react run build;
+yarn workspace @jsonui/reactnative run build;
+yarn workspace @jsonui/components-web-example run build;
+yarn workspace @jsonui/functions-example run build;
+yarn workspace docs-site run build;
 yarn lerna version --no-private
 # commit and push everything
 npm login

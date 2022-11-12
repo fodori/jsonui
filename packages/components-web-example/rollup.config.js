@@ -4,6 +4,7 @@ import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
 import json from '@rollup/plugin-json'
 import { visualizer } from 'rollup-plugin-visualizer'
+import css from 'rollup-plugin-css-only'
 import packageJson from './package.json'
 
 export default [
@@ -21,7 +22,17 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), json(), visualizer()],
+    plugins: [
+      resolve(),
+      commonjs(),
+      typescript({ tsconfig: './tsconfig.json', exclude: ['**/*.stories.ts', '**/*.stories.tsx'] }),
+      json(),
+      css({
+        // Optional: filename to write all styles to
+        output: 'style.css',
+      }),
+      visualizer(),
+    ],
     external: ['react', 'react-dom'],
   },
   {
