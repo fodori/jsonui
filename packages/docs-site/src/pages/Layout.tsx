@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import Home from '@mui/icons-material/Home'
 import GitHub from '@mui/icons-material/GitHub'
+import Extension from '@mui/icons-material/Extension'
 import RocketLaunch from '@mui/icons-material/RocketLaunch'
 import Container from '@mui/material/Container'
 import { Outlet, Link } from 'react-router-dom'
@@ -107,6 +108,14 @@ export default function Layout() {
                   </SvgIcon>
                 </ListItemIcon>
                 <ListItemText>Json API</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={handleClose} {...{ component: Link }} to="/example">
+                <ListItemIcon>
+                  <SvgIcon>
+                    <Extension />
+                  </SvgIcon>
+                </ListItemIcon>
+                <ListItemText>Plugins</ListItemText>
               </MenuItem>
             </Menu>
             <MuiLink {...{ component: Link }} to="/" underline="none" color="inherit">

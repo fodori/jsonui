@@ -23,14 +23,11 @@ export default [
       },
     ],
     plugins: [
+      css(),
       resolve(),
       commonjs(),
       typescript({ tsconfig: './tsconfig.json', exclude: ['**/*.stories.ts', '**/*.stories.tsx'] }),
       json(),
-      css({
-        // Optional: filename to write all styles to
-        output: 'style.css',
-      }),
       visualizer(),
     ],
     external: ['react', 'react-dom'],
@@ -38,7 +35,7 @@ export default [
   {
     input: 'dist/esm/types/index.d.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    plugins: [dts()],
+    plugins: [css(), dts()],
     external: ['react', 'react-dom'],
   },
 ]

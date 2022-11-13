@@ -1,21 +1,15 @@
 [
   {
     "$comp": "Button",
-    "$children": "Change username",
+    "$children": "Send a post",
     "onClick": {
-      "$action": "set",
-      "store": "data",
-      "path": "/profile/0/exampledata",
-      "jsonataDef": "'Clicked at: ' & $now() & ' Value is: ' & $",
-      "value": "John Doe"
-    }
-  },
-  {
-    "$comp": "Text",
-    "$children": {
-      "$modifier": "get",
-      "store": "data",
-      "path": "/profile/0/exampledata"
+      "$action": "axios",
+      "method": "post",
+      "url": "/user/12345",
+      "data": {
+        "firstName": "Fred",
+        "lastName": "Flintstone"
+      }
     }
   }
 ]

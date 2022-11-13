@@ -2,8 +2,8 @@ import React from 'react'
 import { Grid, Paper, Typography } from '@mui/material'
 
 import { JsonUI } from '@jsonui/react'
-// import { axios } from '@jsonui/functions-example'
-import { Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip } from '@jsonui/components-web-example'
+import { axios } from '@jsonui/functions-example'
+// import { Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip } from '@jsonui/components-web-example'
 import model from './model.json'
 
 function AllInOne() {
@@ -16,8 +16,8 @@ function AllInOne() {
             <JsonUI
               model={model}
               disabledPersist
-              // functions={{ axios }}
-              components={{ Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip }}
+              functions={{ axios }}
+              // components={{ Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip }}
             />
           </Paper>
         </Grid>
