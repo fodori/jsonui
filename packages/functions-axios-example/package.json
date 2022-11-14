@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/functions-example",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
   "bugs": {
@@ -37,7 +37,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@jsonui/react": "^0.2.0",
+    "@jsonui/react": "^0.3.0",
     "axios": "^1.1.3",
     "typescript": "^4.5.4"
   },
