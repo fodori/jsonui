@@ -37,7 +37,7 @@ const reducer = (state = initialState, action: AnyAction) => {
         currentPaths = undefined,
         stock = undefined,
       } = action?.payload || {}
-      if (store && path) {
+      if (store && path && !util.isCircular(value)) {
         const storekey = `${store}`
         let convertedPath =
           currentPaths && currentPaths[storekey] && currentPaths[storekey].path

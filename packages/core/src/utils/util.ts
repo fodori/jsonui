@@ -135,3 +135,12 @@ export const collectObjToArray = (refConst: string, json: any) => {
   }
   return []
 }
+
+export const isCircular = (d: any): boolean => {
+  try {
+    JSON.stringify(d)
+  } catch (e) {
+    return true
+  }
+  return false
+}

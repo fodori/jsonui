@@ -504,3 +504,20 @@ test('collectObjToArray test', () => {
     ],
   ])
 })
+
+test('isCircular test', () => {
+  expect(util.isCircular('')).toBe(false)
+  expect(util.isCircular(null)).toBe(false)
+  expect(util.isCircular(undefined)).toBe(false)
+  expect(util.isCircular({})).toBe(false)
+  expect(util.isCircular(false)).toBe(false)
+  expect(util.isCircular(true)).toBe(false)
+  const funcTest = () => {
+    console.log('')
+  }
+  expect(util.isCircular(funcTest)).toBe(false)
+  const a: any = { a: 2, b: 5 }
+  expect(util.isCircular(a)).toBe(false)
+  a.b = a
+  expect(util.isCircular(a)).toBe(true)
+})
