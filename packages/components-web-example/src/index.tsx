@@ -1,4 +1,3 @@
-import './style.css'
 import Button, { ButtonProps } from './components/Button'
 import TextField, { TextFieldProps } from './components/TextField'
 import Radio, { RadioProps } from './components/Radio'

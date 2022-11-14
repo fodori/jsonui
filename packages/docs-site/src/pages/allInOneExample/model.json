@@ -11,5 +11,36 @@
         "lastName": "Flintstone"
       }
     }
+  },
+  {
+    "$comp": "Icon",
+    "color": "primary",
+    "name": "home"
+  },
+  {
+    "$comp": "Icon",
+    "type": "FontAwesome",
+    "name": "facebook"
+  },
+  {
+    "$comp": "Icon",
+    "type": "FontAwesome",
+    "color": "success",
+    "name": "home"
+  },
+  {
+    "$comp": "Checkbox",
+    "color": "secondary",
+    "defaultChecked": true
+  },
+  {
+    "$comp": "Slider",
+    "name": "age",
+    "value": { "$modifier": "get", "store": "anotherstore", "path": "/age" },
+    "onChange": { "$action": "set", "store": "anotherstore", "path": "/age" }
+  },
+  {
+    "$comp": "Text",
+    "$children": { "$modifier": "get", "store": "anotherstore", "path": "/age" }
   }
 ]

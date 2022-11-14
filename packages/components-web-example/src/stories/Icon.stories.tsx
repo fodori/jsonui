@@ -2,6 +2,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { JsonUI } from '@jsonui/react'
 import { Icon as MUIIcon } from '../index'
+import '../style.css'
 
 const ButtonStory = {
   title: 'mui/Icon',

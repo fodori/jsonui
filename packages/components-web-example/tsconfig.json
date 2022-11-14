@@ -9,8 +9,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"]
 }

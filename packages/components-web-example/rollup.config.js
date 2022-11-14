@@ -4,7 +4,7 @@ import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
 import json from '@rollup/plugin-json'
 import { visualizer } from 'rollup-plugin-visualizer'
-import scss from 'rollup-plugin-scss'
+import copy from 'rollup-plugin-copy'
 import packageJson from './package.json'
 
 export default [
@@ -23,19 +23,24 @@ export default [
       },
     ],
     plugins: [
-      scss(),
       resolve(),
       commonjs(),
       typescript({ tsconfig: './tsconfig.json', exclude: ['**/*.stories.ts', '**/*.stories.tsx'] }),
       json(),
       visualizer(),
+      copy({
+        targets: [
+          { src: 'src/assets', dest: 'dist' },
+          { src: 'src/style.css', dest: 'dist' },
+        ],
+      }),
     ],
     external: ['react', 'react-dom'],
   },
   {
     input: 'dist/esm/types/index.d.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    plugins: [dts(), scss()],
+    plugins: [dts()],
     external: ['react', 'react-dom'],
   },
 ]
