@@ -1,46 +1,109 @@
 [
   {
-    "$comp": "Button",
-    "$children": "Send a post",
-    "onClick": {
-      "$action": "axios",
-      "method": "post",
-      "url": "/user/12345",
-      "data": {
-        "firstName": "Fred",
-        "lastName": "Flintstone"
+    "$comp": "View",
+    "style": {
+      "display": "flex",
+      "flexDirection": "column",
+      "flexWrap": "wrap",
+      "alignContent": "center",
+      "justifyContent": "center",
+      "alignItems": "stretch",
+      "margin": 24
+    },
+    "$children": [
+      {
+        "$comp": "Text",
+        "$children": "How to define new components and functions",
+        "style": { "fontSize": 25, "textAlign": "center" }
+      },
+      {
+        "$comp": "Text",
+        "$children": "This form prepared for a google search",
+        "style": { "fontSize": 14, "textAlign": "left" }
+      },
+      {
+        "$comp": "TextField",
+        "name": "q",
+        "label": "Search for",
+        "helperText": "all these words",
+        "value": { "$modifier": "get", "store": "googleSearch", "path": "/q" },
+        "onChange": { "$action": "set", "store": "googleSearch", "path": "/q" }
+      },
+      {
+        "$comp": "Text",
+        "$children": {
+          "$modifier": "get",
+          "store": "googleSearch",
+          "path": "/num",
+          "jsonataDef": "'Number of show result: ' & ($not($)?'nothing':$)"
+        },
+        "style": { "fontSize": 14, "textAlign": "left" }
+      },
+      {
+        "$comp": "Slider",
+        "name": "num",
+        "value": { "$modifier": "get", "store": "googleSearch", "path": "/num" },
+        "onChange": { "$action": "set", "store": "googleSearch", "path": "/num" }
+      },
+      {
+        "$comp": "View",
+        "style": {
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "alignContent": "flex-start",
+          "justifyContent": "flex-start",
+          "alignItems": "flex-start"
+        },
+        "$children": [
+          {
+            "$comp": "Checkbox",
+            "name": "adtest",
+            "checked": { "$modifier": "get", "store": "googleSearch", "path": "/adtest" },
+            "onChange": { "$action": "set", "store": "googleSearch", "path": "/adtest" }
+          },
+          {
+            "$comp": "Text",
+            "$children": "Controls whether personalised search is on or not",
+            "style": { "fontSize": 14, "textAlign": "left" }
+          }
+        ]
       }
-    }
+    ]
   },
   {
-    "$comp": "Icon",
-    "color": "primary",
-    "name": "home"
-  },
-  {
-    "$comp": "Icon",
-    "type": "FontAwesome",
-    "name": "facebook"
-  },
-  {
-    "$comp": "Icon",
-    "type": "FontAwesome",
-    "color": "success",
-    "name": "home"
-  },
-  {
-    "$comp": "Checkbox",
-    "color": "secondary",
-    "defaultChecked": true
-  },
-  {
-    "$comp": "Slider",
-    "name": "age",
-    "value": { "$modifier": "get", "store": "anotherstore", "path": "/age" },
-    "onChange": { "$action": "set", "store": "anotherstore", "path": "/age" }
-  },
-  {
-    "$comp": "Text",
-    "$children": { "$modifier": "get", "store": "anotherstore", "path": "/age" }
+    "$comp": "View",
+    "style": {
+      "display": "flex",
+      "flexDirection": "column",
+      "flexWrap": "wrap",
+      "alignContent": "flex-end",
+      "justifyContent": "center",
+      "alignItems": "stretch"
+    },
+    "$children": [
+      {
+        "$comp": "Button",
+        "variant": "outlined",
+        "$children": [
+          {
+            "$comp": "Text",
+            "$children": "Search",
+            "style": { "margin": 0, "marginRight": 8 }
+          },
+          {
+            "$comp": "Icon",
+            "type": "FontAwesome",
+            "name": "search"
+          }
+        ],
+        "onClick": {
+          "$action": "axios",
+          "method": "get",
+          "url": "localhost",
+          "params": { "$modifier": "get", "store": "googleSearch", "path": "/" }
+        }
+      }
+    ]
   }
 ]
