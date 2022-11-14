@@ -6,8 +6,8 @@
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
-    "@jsonui/components-web-example": "^0.2.0",
-    "@jsonui/functions-example": "^0.2.0",
+    "@jsonui/components-web-example": "^0.3.0",
+    "@jsonui/functions-example": "^0.3.0",
     "@jsonui/react": "*",
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.4.3",
