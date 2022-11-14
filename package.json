@@ -13,7 +13,7 @@
     "startTestReact": "yarn workspace jsonui-test-react run start",
     "publish": "yarn lerna publish from-package",
     "bootstrap": "yarn lerna bootstrap",
-    "copyDocs": "yarn workspace docs-site run build; rm -rf ./docs/* -v !(\"CNAME\"); cp -R ./packages/docs-site/build/* ./docs/;"
+    "copyDocs": "yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
