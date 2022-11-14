@@ -97,11 +97,12 @@
             "name": "search"
           }
         ],
-        "onClick": {
-          "$action": "axios",
-          "method": "get",
-          "url": "localhost",
-          "params": { "$modifier": "get", "store": "googleSearch", "path": "/" }
+        "href": {
+          "$modifier": "get",
+          "store": "googleSearch",
+          "path": "/",
+          "target": "_blank",
+          "jsonataDef": "'https://www.google.com/search?q=' & $encodeUrl($.q) & '&num=' & $.num & '&adtest=' & ($exists($.adtest)?$boolean($.adtest):false)"
         }
       }
     ]
