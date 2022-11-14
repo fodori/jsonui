@@ -18,8 +18,13 @@
       },
       {
         "$comp": "Text",
-        "$children": "This form prepared for a google search",
+        "$children": "This form prepared for a google search and pretend to request an api (debug it on inspect mode, Network tab).",
         "style": { "fontSize": 14, "textAlign": "left" }
+      },
+      {
+        "$comp": "Text",
+        "$children": "This page contains an integrated Mui TextField, Slider, Checkbox, Button to show how is easy to integrate a component or a function to JsonUI",
+        "style": { "fontSize": 14, "textAlign": "left", "marginBottom": 40 }
       },
       {
         "$comp": "TextField",
@@ -75,11 +80,12 @@
     "$comp": "View",
     "style": {
       "display": "flex",
-      "flexDirection": "column",
-      "flexWrap": "wrap",
-      "alignContent": "flex-end",
-      "justifyContent": "center",
-      "alignItems": "stretch"
+      "flexDirection": "row",
+      "flexWrap": "nowrap",
+      "alignContent": "space-around",
+      "justifyContent": "flex-end",
+      "alignItems": "baseline",
+      "gap": 10
     },
     "$children": [
       {
@@ -88,7 +94,29 @@
         "$children": [
           {
             "$comp": "Text",
-            "$children": "Search",
+            "$children": "API request",
+            "style": { "margin": 0, "marginRight": 8 }
+          },
+          {
+            "$comp": "Icon",
+            "name": "settings"
+          }
+        ],
+
+        "onClick": {
+          "$action": "axios",
+          "method": "post",
+          "url": "localhost",
+          "data": { "$modifier": "get", "store": "googleSearch", "path": "/" }
+        }
+      },
+      {
+        "$comp": "Button",
+        "variant": "outlined",
+        "$children": [
+          {
+            "$comp": "Text",
+            "$children": "Request query",
             "style": { "margin": 0, "marginRight": 8 }
           },
           {
