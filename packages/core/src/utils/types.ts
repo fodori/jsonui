@@ -33,3 +33,8 @@ export interface ValidationType {
   path: string
   schema: any
 }
+
+export interface SubscriberPath {
+  store?: string
+  path?: string
+}

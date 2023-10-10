@@ -11,7 +11,9 @@ export const REF_LOCALES = '$locales'
 export const REF_VALIDATES = '$validations'
 export const STYLE_WEB_NAME = 'styleWeb'
 export const STYLE_RN_NAME = 'styleRN'
-export const REDUX_FUNCTIONS = ['set', 'get']
+export const REDUX_GET_FUNCTION = 'get'
+export const REDUX_SET_FUNCTION = 'set'
+export const REDUX_FUNCTIONS = [REDUX_GET_FUNCTION, REDUX_SET_FUNCTION]
 
 export const PATHNAME = 'path'
 export const SIMPLE_DATA_TYPES = ['string', 'number', 'boolean', 'null']
@@ -24,3 +26,5 @@ export const LIST_ITEM_PER_PAGE = '$itemPerPage'
 export const LIST_LENGTH = '$listLength'
 export const LIST_ITEM_PER_PAGE_DEFAULT = 10
 // TODO currentPaths maybe need to modify to ___currentPaths
+
+export const REDUX_PATHS = '$$reduxPaths'

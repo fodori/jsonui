@@ -2,7 +2,7 @@ import traverse from 'traverse'
 import orderBy from 'lodash/orderBy'
 import * as c from '../../utils/constants'
 import * as util from '../../utils/util'
-import { PathModifiersType, PathType, PropsType } from '../../utils/types'
+import { PathModifiersType, PathType, PropsType, SubscriberPath } from '../../utils/types'
 import { RootStateType } from './reducer'
 
 export const getState = (state: any): RootStateType => state?.root
@@ -58,4 +58,21 @@ export const genAllStateProps = (globalState: any, props: PropsType) => {
     }
   })
   return result
+}
+
+export const compSelectorHook = (currentPaths: PathModifiersType | undefined, subscriberPaths: SubscriberPath[]) => (origstate: any) => {
+  const state = getState(origstate) || {}
+  if (!(typeof subscriberPaths === 'object' && Array.isArray(subscriberPaths) && subscriberPaths?.length)) {
+    return []
+  }
+  const isError = false
+  // TODO isError, currentPaths, root need to solve propperly
+  return subscriberPaths.map(({ store, path }) => {
+    if (state && store && path) {
+      const convertedPath =
+        currentPaths && currentPaths[store] && currentPaths[store].path ? util.changeRelativePath(`${currentPaths[store].path}${c.SEPARATOR}${path}`) : path
+      return getValue(state, `${store}${isError ? c.STORE_ERROR_POSTFIX : ''}`, convertedPath)
+    }
+    return null
+  })
 }

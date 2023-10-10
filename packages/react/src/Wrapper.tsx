@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { connect } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 import { ClassNames } from '@emotion/react'
-import { constants as c, wrapperUtil, util, StockContext, PathModifierContext, genAllStateProps, Stock, WrapperType, PropsType } from '@jsonui/core'
+import { constants as c, wrapperUtil, util, StockContext, PathModifierContext, Stock, WrapperType, PropsType, compSelectorHook } from '@jsonui/core'
 import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'
 
@@ -32,10 +32,14 @@ const genStyle = (props: PropsType) => {
 export const getStyleForWeb = (props: PropsType = {}, component: string) =>
   component === 'View' ? genStyle(props) : { ...(props.style as any), ...(props[c.STYLE_WEB_NAME] as any) }
 
+export const getValue = (state: any, store: string, path: string) => util.jsonPointerGet(state[store], path) || null
+
 function Wrapper(props: any) {
   const { [c.V_COMP_NAME]: component, id, [c.PATH_MODIFIERS_KEY]: pathModifiers } = props
   const stock: InstanceType<typeof Stock> = useContext(StockContext)
-  const { currentPaths, ...ownProps } = wrapperUtil.getRootWrapperProps(props, stock)
+  const { currentPaths, subscriberPaths, ...ownProps } = wrapperUtil.getRootWrapperProps(props, stock)
+  // TODO isError, currentPaths, root need to solve propperly
+  useSelector(compSelectorHook(currentPaths, subscriberPaths), shallowEqual)
   if (!stock) {
     return null
   }
@@ -77,18 +81,6 @@ function Wrapper(props: any) {
   )
 }
 
-const ReduxWrapper = connect(genAllStateProps, null, (stateProps, dispatchProps, ownProps) => util.mergePath(ownProps, stateProps), {
-  areStatePropsEqual: (next, prev) => {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const [key, value] of Object.entries(next)) {
-      if (value !== prev[key]) {
-        return false
-      }
-    }
-    return true
-  },
-})(Wrapper)
-
 function WrapperOuter(props: any) {
   const currentPaths = useContext(PathModifierContext)
   const newProps = {
@@ -97,6 +89,6 @@ function WrapperOuter(props: any) {
     // eslint-disable-next-line react/destructuring-assignment
     ...wrapperUtil.pathModifierBuilder({ ...props, currentPaths }, props[c.PATH_MODIFIERS_KEY]),
   }
-  return <ReduxWrapper {...newProps} />
+  return <Wrapper {...newProps} />
 }
 export default WrapperOuter

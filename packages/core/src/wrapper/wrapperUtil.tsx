@@ -4,22 +4,59 @@ import traverse from 'traverse'
 import * as c from '../utils/constants'
 import * as util from '../utils/util'
 import Stock from '../stock/Stock'
-import { PathModifiersType, PathsType, PropsType, WrapperType } from '../utils/types'
+import { PathModifiersType, PropsType, SubscriberPath, WrapperType } from '../utils/types'
+import { V_COMP_NAME } from '../utils/constants'
+
+interface OwnTraverse {
+  key: string
+  value: PropsType
+  path: string[]
+  parent: PropsType
+  level: number
+}
+
+export const getFilteredPath = ({ parentComp, ...propsNew }: PropsType, func: (filterProps: OwnTraverse) => boolean): OwnTraverse[] => {
+  const paths: OwnTraverse[] = []
+
+  function* jsonTraverse(o: any) {
+    const memory = new Set()
+    function* innerTraversal(oo: any, path = []): any {
+      if (memory.has(oo)) {
+        return // circular
+      }
+      memory.add(oo)
+      // eslint-disable-next-line no-restricted-syntax
+      for (const i of Object.keys(oo)) {
+        const itemPath = path.concat(i as any)
+        if (itemPath && itemPath.length > 1 && typeof oo[i] === 'object' && oo[i]?.[V_COMP_NAME]) {
+          // eslint-disable-next-line no-continue
+          continue
+        }
+        if (i === 'parentComp' || i === 'currentPaths') {
+          // eslint-disable-next-line no-continue
+          continue
+        }
+        if (func({ key: i, value: oo[i], path, parent: oo, level: path.length })) {
+          yield { key: i, value: oo[i], path, parent: oo, level: path.length } as OwnTraverse
+        }
+        if (oo[i] !== null && typeof oo[i] === 'object') {
+          yield* innerTraversal(oo[i], itemPath)
+        }
+      }
+    }
+    yield* innerTraversal(o)
+  }
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const filteredvalue of jsonTraverse(propsNew)) {
+    paths.push(filteredvalue)
+  }
+  return paths
+}
 
 export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock>) => {
-  const paths: PathsType = []
   const { parentComp, ...propsNew } = props
-  // eslint-disable-next-line func-names
-  traverse(propsNew).forEach(function (x) {
-    if (
-      !!x &&
-      !!x[c.ACTION_KEY] &&
-      // && !c.REDUX_FUNCTIONS.includes(x[c.ACTION_KEY])
-      !(this.path.length > 1 && this.path.includes(c.V_CHILDREN_NAME))
-    ) {
-      paths.push({ path: this.path, level: this.level })
-    }
-  })
+  const paths = getFilteredPath(propsNew, ({ key }) => key === c.ACTION_KEY)
   orderBy(paths, ['level'], ['desc']).forEach(async (i) => {
     const { [c.ACTION_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
     traverse(props).set(i.path, async (...callerArgs: any[]) => {
@@ -28,18 +65,19 @@ export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock
   })
 }
 
-export const modifierBuilder = (props: PropsType, stock: InstanceType<typeof Stock>) => {
-  const paths: PathsType = []
+export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType<typeof Stock>): SubscriberPath[] => {
+  const reduxPaths: any = []
   const { parentComp, ...propsNew } = props
-  // eslint-disable-next-line func-names
-  traverse(propsNew).forEach(function (x) {
-    if (!!x && !!x[c.MODIFIER_KEY] && !c.REDUX_FUNCTIONS.includes(x[c.MODIFIER_KEY]) && !(this.path.length > 1 && this.path.includes(c.V_CHILDREN_NAME))) {
-      paths.push({ path: this.path, level: this.level })
-    }
-  })
+  const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
   orderBy(paths, ['level'], ['desc']).forEach(async (i) => {
     const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
+    if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
+      reduxPaths.push(functionParams)
+    }
     traverse(props).set(i.path, stock.callFunction(functionName, functionParams, props))
+  })
+  return reduxPaths.map((i: any) => {
+    return { store: i?.store, path: i?.path } as SubscriberPath
   })
 }
 
@@ -131,12 +169,12 @@ export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof
     ...props,
     // if the children generation move to wrapper, the redux genAllStateProps doesn't wortk properly. why?
   }
-  modifierBuilder(newProps, stock)
+  const subscriberPaths = calculatePropsFromModifier(newProps, stock)
   actionBuilder(newProps, stock)
   if (newProps[c.LIST_SEMAPHORE]) {
     newProps[c.V_CHILDREN_NAME] = genChildenFromListItem(newProps, stock)
   }
-
+  newProps.subscriberPaths = subscriberPaths
   return newProps
 }
 
