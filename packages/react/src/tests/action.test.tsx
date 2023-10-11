@@ -67,7 +67,15 @@ test('simple action 2.(compProps) input param', () => {
     .at(0)
     .simulate('change', { target: { value: 'test@example.com' } })
   expect(returnVal).toEqual(
-    JSON.stringify({ $comp: 'Edit', id: 'id1', name: 'id1', style: { textAlign: 'center', fontSize: 30, margin: 5 }, value: '8', currentPaths: {} })
+    JSON.stringify({
+      $comp: 'Edit',
+      id: 'id1',
+      name: 'id1',
+      style: { textAlign: 'center', fontSize: 30, margin: 5 },
+      value: '8',
+      currentPaths: {},
+      subscriberPaths: [],
+    })
   )
 })
 

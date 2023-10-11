@@ -1,7 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react'
-import { mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import { matchers } from '@emotion/jest'
+import jsonpointer from 'jsonpointer'
 import { JsonUI } from '../index'
 import Text from '../stock/components/Text'
 
@@ -32,7 +33,7 @@ test('simple modifier 2. input param with pathmodifier', () => {
   const wrapper = mount(<JsonUI disabledPersist functions={{ textModifierReturnSecond }} model={testModel} />)
 
   expect(wrapper.find(Text)).toHaveLength(1)
-  expect(wrapper.find(Text).at(0).children().text()).toEqual(
+  expect(wrapper.text()).toEqual(
     JSON.stringify({
       ...testModel,
       currentPaths: {
@@ -45,60 +46,4 @@ test('simple modifier 2. input param with pathmodifier', () => {
       },
     })
   )
-})
-const testModelFn = (firstLevel: string, secondLevel: string) => ({
-  $comp: 'Fragment',
-  $pathModifiers: {
-    data1: { path: firstLevel },
-  },
-  $children: {
-    $comp: 'Text',
-    $children: { $modifier: 'textModifierReturnSecond', a: 123, b: 12313, c: [1, 2, 3, 4] },
-    style: { marginTop: 3, padding: 5 },
-    $pathModifiers: {
-      data1: { path: secondLevel },
-    },
-  },
-})
-
-const testBlock = (testModel: any, expectedPath: string) => {
-  const wrapper = mount(<JsonUI disabledPersist functions={{ textModifierReturnSecond }} model={testModel} />)
-  expect(wrapper.find(Text)).toHaveLength(1)
-  expect(wrapper.find(Text).at(0).children().text()).toEqual(
-    JSON.stringify({
-      ...testModel.$children,
-      parentComp: { $comp: 'Fragment', $pathModifiers: { data1: { path: testModel.$pathModifiers.data1.path } } },
-      currentPaths: {
-        data1: { path: expectedPath },
-      },
-    })
-  )
-}
-
-test('simple modifier 2. input param with pathmodifier 2 level 1.', () => {
-  testBlock(testModelFn('/subscribed', 'list'), '/subscribed/list')
-})
-
-test('simple modifier 2. input param with pathmodifier 2 level 2.', () => {
-  testBlock(testModelFn('/subscribed', '/list'), '/list')
-})
-
-test('simple modifier 2. input param with pathmodifier 2 level 3.', () => {
-  testBlock(testModelFn('/subscribed', '../list'), '/list')
-})
-
-test('simple modifier 2. input param with pathmodifier 2 level 4.', () => {
-  testBlock(testModelFn('/sub/scr/ib/ed', '../list'), '/sub/scr/ib/list')
-})
-
-test('simple modifier 2. input param with pathmodifier 2 level 4.', () => {
-  testBlock(testModelFn('/sub/scr/ib/ed', '../../list'), '/sub/scr/list')
-})
-
-test('simple modifier 2. input param with pathmodifier 2 level 5.', () => {
-  testBlock(testModelFn('/sub/scr/ib/ed', './list'), '/sub/scr/ib/ed/list')
-})
-
-test('simple modifier 2. input param with pathmodifier 2 level 6.', () => {
-  testBlock(testModelFn('/sub/scr/ib/ed', 'list'), '/sub/scr/ib/ed/list')
 })

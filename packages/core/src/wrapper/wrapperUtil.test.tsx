@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { MODIFIER_KEY, REDUX_GET_FUNCTION } from '../utils/constants'
-import { calculatePropsFromModifier } from './wrapperUtil'
+import { calculatePropsFromModifier,pathModifierBuilder } from './wrapperUtil'
 import Stock from '../stock/Stock'
 
 
@@ -34,4 +34,32 @@ test('test getGetsPath with nested json', () => {
   const result = calculatePropsFromModifier(json1,new Stock(newStock, {}, {}))
 
   expect(result).not.toEqual(null)
+})
+
+test('test getGetsPath with nested json', () => {
+  
+
+  const props=(path:string)=>({
+    currentPaths:{
+      data1: { path },
+    }
+  })
+
+  const modifier=(path:string)=>({
+      data1: { path },
+  })
+
+  expect(pathModifierBuilder(props('/subscribed'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/subscribed/list')
+  expect(pathModifierBuilder(props('/subscribed'),modifier('/list'))?.currentPaths?.data1?.path).toEqual('/list')
+  expect(pathModifierBuilder(props('/subscribed'),modifier('../list'))?.currentPaths?.data1?.path).toEqual('/list')
+  expect(pathModifierBuilder(props('/sub/scr/ib/ed'),modifier('../list'))?.currentPaths?.data1?.path).toEqual('/sub/scr/ib/list')
+  expect(pathModifierBuilder(props('/sub/scr/ib/ed'),modifier('../../list'))?.currentPaths?.data1?.path).toEqual('/sub/scr/list')
+  expect(pathModifierBuilder(props('/sub/scr/ib/ed'),modifier('./list'))?.currentPaths?.data1?.path).toEqual('/sub/scr/ib/ed/list')
+  expect(pathModifierBuilder(props('/sub/scr/ib/ed'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/sub/scr/ib/ed/list')
+
+
+  expect(pathModifierBuilder(props('/'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/list')
+  expect(pathModifierBuilder(props('/'),modifier('/list'))?.currentPaths?.data1?.path).toEqual('/list')
+  expect(pathModifierBuilder(props('/0'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/0/list')
+  expect(pathModifierBuilder(props('/0'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/0/list')
 })

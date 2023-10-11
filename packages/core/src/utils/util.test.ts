@@ -330,6 +330,12 @@ test('changeRelativePath test', () => {
   expect(util.changeRelativePath('/lev1/lev2/lev3/../../levaaa')).toBe('/lev1/levaaa')
   expect(util.changeRelativePath('/lev1/lev2/lev3/../../levaaa/../')).toBe('/lev1')
   expect(util.changeRelativePath('/lev1/lev2/lev3/././levaaa/../')).toBe('/lev1/lev2/lev3')
+  expect(util.changeRelativePath('/../aaa')).toBe('/aaa')
+  expect(util.changeRelativePath('/bbb/../../aaa')).toBe('/aaa')
+  expect(util.changeRelativePath('/bbb/../cc./../../aaa')).toBe('/aaa')
+  expect(util.changeRelativePath('/../aaa')).toBe('/aaa')
+  expect(util.changeRelativePath('/bbb/../cc/../aaa')).toBe('/aaa')
+  expect(util.changeRelativePath('/bbb/hhh/../cc/../aaa')).toBe('/bbb/aaa')
 })
 
 test('mergeDeep test', () => {

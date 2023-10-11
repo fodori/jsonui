@@ -80,6 +80,10 @@ export const changeRelativePath = (path: string) => {
       pathArray.splice(relativepathIndex - 1, 1)
     }
   } while (relativepathIndex !== -1 && count < 100)
+  pathArray = pull(pathArray, '..')
+  if (pathArray.length === 1 && pathArray[0] !== '') {
+    pathArray = ['', ...pathArray]
+  }
   return pathArray.join(c.SEPARATOR)
 }
 
