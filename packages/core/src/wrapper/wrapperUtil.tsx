@@ -4,7 +4,7 @@ import traverse from 'traverse'
 import * as c from '../utils/constants'
 import * as util from '../utils/util'
 import Stock from '../stock/Stock'
-import { PathModifiersType, PropsType, SubscriberPath, WrapperType } from '../utils/types'
+import { PathModifiersType, PropsType, ReduxPathType, WrapperType } from '../utils/types'
 import { V_COMP_NAME } from '../utils/constants'
 
 interface OwnTraverse {
@@ -65,7 +65,7 @@ export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock
   })
 }
 
-export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType<typeof Stock>): SubscriberPath[] => {
+export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType<typeof Stock>): ReduxPathType[] => {
   const reduxPaths: any = []
   const { parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
@@ -77,7 +77,7 @@ export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType
     traverse(props).set(i.path, stock.callFunction(functionName, functionParams, props))
   })
   return reduxPaths.map((i: any) => {
-    return { store: i?.store, path: i?.path } as SubscriberPath
+    return { store: i?.store, path: i?.path } as ReduxPathType
   })
 }
 

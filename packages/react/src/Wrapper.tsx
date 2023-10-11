@@ -1,7 +1,19 @@
 import React, { useContext } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { ClassNames } from '@emotion/react'
-import { constants as c, wrapperUtil, util, StockContext, PathModifierContext, Stock, WrapperType, PropsType, compSelectorHook } from '@jsonui/core'
+import {
+  constants as c,
+  wrapperUtil,
+  util,
+  StockContext,
+  PathModifierContext,
+  Stock,
+  WrapperType,
+  PropsType,
+  compSelectorHook,
+  PathModifiersType,
+  ReduxPathType,
+} from '@jsonui/core'
 import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'
 
@@ -38,8 +50,8 @@ function Wrapper(props: any) {
   const { [c.V_COMP_NAME]: component, id, [c.PATH_MODIFIERS_KEY]: pathModifiers } = props
   const stock: InstanceType<typeof Stock> = useContext(StockContext)
   const { currentPaths, subscriberPaths, ...ownProps } = wrapperUtil.getRootWrapperProps(props, stock)
-  // TODO isError, currentPaths, root need to solve propperly
-  useSelector(compSelectorHook(currentPaths, subscriberPaths), shallowEqual)
+  // TODO isError, currentPaths
+  useSelector(compSelectorHook(currentPaths as PathModifiersType, subscriberPaths as ReduxPathType[]), shallowEqual)
   if (!stock) {
     return null
   }

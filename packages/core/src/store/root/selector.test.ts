@@ -1,4 +1,5 @@
-import { getStateValue, ReduxPathType } from './selectors'
+import { ReduxPathType } from 'utils/types'
+import { getStateValue } from './selectors'
 
 test('getStateValue test', () => {
   expect(getStateValue({}, { store: 'data', path: '' }, {})).toBe(null)

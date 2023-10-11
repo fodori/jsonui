@@ -2,18 +2,12 @@ import traverse from 'traverse'
 import orderBy from 'lodash/orderBy'
 import * as c from '../../utils/constants'
 import * as util from '../../utils/util'
-import { PathModifiersType, PathType, PropsType, SubscriberPath } from '../../utils/types'
+import { PathModifiersType, PathType, PropsType, ReduxPathType } from '../../utils/types'
 import { RootStateType } from './reducer'
 
 export const getState = (state: any): RootStateType => state?.root
 
 export const getValue = (state: any, store: string, path: string) => util.jsonPointerGet(state[store], path) || null
-
-export interface ReduxPathType {
-  store: string
-  path: string
-  isError?: boolean
-}
 
 export const getStateValue = (globalState: any, { store, path, isError = false }: ReduxPathType, currentPaths: PathModifiersType) => {
   const state = getState(globalState)
@@ -21,7 +15,6 @@ export const getStateValue = (globalState: any, { store, path, isError = false }
   if (state && store && path) {
     const convertedPath =
       currentPaths && currentPaths[store] && currentPaths[store].path ? util.changeRelativePath(`${currentPaths[store].path}${c.SEPARATOR}${path}`) : path
-
     return getValue(state, `${store}${isError ? c.STORE_ERROR_POSTFIX : ''}`, convertedPath)
   }
   return null
@@ -60,19 +53,10 @@ export const genAllStateProps = (globalState: any, props: PropsType) => {
   return result
 }
 
-export const compSelectorHook = (currentPaths: PathModifiersType | undefined, subscriberPaths: SubscriberPath[]) => (origstate: any) => {
-  const state = getState(origstate) || {}
-  if (!(typeof subscriberPaths === 'object' && Array.isArray(subscriberPaths) && subscriberPaths?.length)) {
-    return []
+export const compSelectorHook = (currentPaths: PathModifiersType, subscriberPaths: ReduxPathType[]) => (state: any) => {
+  if (typeof subscriberPaths === 'object' && Array.isArray(subscriberPaths) && subscriberPaths?.length > 0) {
+    return subscriberPaths.map((subscriberPath) => getStateValue(state, subscriberPath, currentPaths))
   }
-  const isError = false
   // TODO isError, currentPaths, root need to solve propperly
-  return subscriberPaths.map(({ store, path }) => {
-    if (state && store && path) {
-      const convertedPath =
-        currentPaths && currentPaths[store] && currentPaths[store].path ? util.changeRelativePath(`${currentPaths[store].path}${c.SEPARATOR}${path}`) : path
-      return getValue(state, `${store}${isError ? c.STORE_ERROR_POSTFIX : ''}`, convertedPath)
-    }
-    return null
-  })
+  return undefined
 }

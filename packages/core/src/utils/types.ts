@@ -34,7 +34,8 @@ export interface ValidationType {
   schema: any
 }
 
-export interface SubscriberPath {
+export interface ReduxPathType {
   store?: string
   path?: string
+  isError?: boolean
 }
