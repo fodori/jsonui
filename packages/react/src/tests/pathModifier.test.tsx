@@ -1,8 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import { matchers } from '@emotion/jest'
-import jsonpointer from 'jsonpointer'
 import { JsonUI } from '../index'
 import Text from '../stock/components/Text'
 

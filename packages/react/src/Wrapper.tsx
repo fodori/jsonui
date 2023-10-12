@@ -50,7 +50,7 @@ function Wrapper(props: any) {
   const { [c.V_COMP_NAME]: component, id, [c.PATH_MODIFIERS_KEY]: pathModifiers } = props
   const stock: InstanceType<typeof Stock> = useContext(StockContext)
   const { currentPaths, subscriberPaths, ...ownProps } = wrapperUtil.getRootWrapperProps(props, stock)
-  // TODO isError, currentPaths
+  // TODO isError
   useSelector(compSelectorHook(currentPaths as PathModifiersType, subscriberPaths as ReduxPathType[]), shallowEqual)
   if (!stock) {
     return null
