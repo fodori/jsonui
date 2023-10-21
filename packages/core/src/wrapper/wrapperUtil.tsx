@@ -32,7 +32,7 @@ export const getFilteredPath = ({ parentComp, ...propsNew }: PropsType, func: (f
           // eslint-disable-next-line no-continue
           continue
         }
-        if (i === 'parentComp' || i === 'currentPaths') {
+        if (i === 'parentComp' || i === 'currentPaths' || i === c.LIST_ITEM) {
           // eslint-disable-next-line no-continue
           continue
         }
