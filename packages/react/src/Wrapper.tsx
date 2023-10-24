@@ -18,7 +18,7 @@ import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'
 
 const genStyle = (props: PropsType) => {
-  const { parentComp } = props
+  const { [c.PARENT_PROP_NAME]: parentComp } = props
   const style = { display: 'flex', flexDirection: 'column', ...(props.style as any), ...(props[c.STYLE_WEB_NAME] as any) }
 
   if (style && style.borderWidth && !style.borderStyle) {
@@ -68,7 +68,7 @@ function Wrapper(props: any) {
         {({ css, cx }) => {
           ownProps.className = newStyle ? cx(css(newStyle)) : undefined
           const {
-            parentComp,
+            [c.PARENT_PROP_NAME]: parentComp,
             style,
             [c.STYLE_WEB_NAME]: _unused1,
             [c.V_COMP_NAME]: _unused2,

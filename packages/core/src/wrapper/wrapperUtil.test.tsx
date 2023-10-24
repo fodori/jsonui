@@ -1,7 +1,8 @@
 /* eslint-disable */
 import { MODIFIER_KEY, REDUX_GET_FUNCTION } from '../utils/constants'
-import { calculatePropsFromModifier,pathModifierBuilder } from './wrapperUtil'
+import { calculatePropsFromModifier,getParentProps,pathModifierBuilder } from './wrapperUtil'
 import Stock from '../stock/Stock'
+import { PropsType } from 'utils/types'
 
 
 const json1 = {
@@ -62,4 +63,21 @@ test('test getGetsPath with nested json', () => {
   expect(pathModifierBuilder(props('/'),modifier('/list'))?.currentPaths?.data1?.path).toEqual('/list')
   expect(pathModifierBuilder(props('/0'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/0/list')
   expect(pathModifierBuilder(props('/0'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/0/list')
+})
+
+test('test getParentProps', () => {
+  
+  expect(getParentProps(null as unknown as PropsType)).toStrictEqual({})
+  expect(getParentProps(undefined as unknown as PropsType)).toStrictEqual({})
+  expect(getParentProps(234 as unknown as PropsType)).toStrictEqual({})
+  expect(getParentProps("234" as unknown as PropsType)).toStrictEqual({})
+  expect(getParentProps([] as unknown as PropsType)).toStrictEqual({})
+  expect(getParentProps([5,87,4556] as unknown as PropsType)).toStrictEqual({})
+  expect(getParentProps(["asas","bbb"] as unknown as PropsType)).toStrictEqual({})
+  expect(getParentProps({a:'aa'} as unknown as PropsType)).toStrictEqual({a:'aa'})
+  expect(getParentProps({a:'aa','$child':'test'} as unknown as PropsType)).toStrictEqual({a:'aa'})
+  expect(getParentProps({a:'aa','$children':'test'} as unknown as PropsType)).toStrictEqual({a:'aa'})
+  expect(getParentProps({a:'aa','$childMain':'test'} as unknown as PropsType)).toStrictEqual({a:'aa'})
+  expect(getParentProps({a:'aa','$childMain':'test','$childTop':'test','$child':'test','$children':'test'} as unknown as PropsType)).toStrictEqual({a:'aa'})
+  expect(getParentProps({a:'aa',ab:'aa','$childMain':'test'} as unknown as PropsType)).toStrictEqual({a:'aa',ab:'aa'})
 })

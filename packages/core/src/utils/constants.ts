@@ -28,3 +28,5 @@ export const LIST_ITEM_PER_PAGE_DEFAULT = 10
 // TODO currentPaths maybe need to modify to ___currentPaths
 
 export const REDUX_PATHS = '$$reduxPaths'
+export const V_CHILDREN_PREFIX = '$child'
+export const PARENT_PROP_NAME = '__parentprop'

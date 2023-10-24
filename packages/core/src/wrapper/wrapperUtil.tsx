@@ -15,7 +15,7 @@ interface OwnTraverse {
   level: number
 }
 
-export const getFilteredPath = ({ parentComp, ...propsNew }: PropsType, func: (filterProps: OwnTraverse) => boolean): OwnTraverse[] => {
+export const getFilteredPath = ({ [c.PARENT_PROP_NAME]: parentComp, ...propsNew }: PropsType, func: (filterProps: OwnTraverse) => boolean): OwnTraverse[] => {
   const paths: OwnTraverse[] = []
 
   function* jsonTraverse(o: any) {
@@ -32,7 +32,7 @@ export const getFilteredPath = ({ parentComp, ...propsNew }: PropsType, func: (f
           // eslint-disable-next-line no-continue
           continue
         }
-        if (i === 'parentComp' || i === 'currentPaths' || i === c.LIST_ITEM) {
+        if (i === c.PARENT_PROP_NAME || i === 'currentPaths' || i === c.LIST_ITEM) {
           // eslint-disable-next-line no-continue
           continue
         }
@@ -55,7 +55,7 @@ export const getFilteredPath = ({ parentComp, ...propsNew }: PropsType, func: (f
 }
 
 export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock>) => {
-  const { parentComp, ...propsNew } = props
+  const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.ACTION_KEY)
   orderBy(paths, ['level'], ['desc']).forEach(async (i) => {
     const { [c.ACTION_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
@@ -67,7 +67,7 @@ export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock
 
 export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType<typeof Stock>): ReduxPathType[] => {
   const reduxPaths: any = []
-  const { parentComp, ...propsNew } = props
+  const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
   orderBy(paths, ['level'], ['desc']).forEach(async (i) => {
     const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
@@ -114,7 +114,7 @@ export const getWrapperProps = (props: PropsType, parentComp?: any): any => {
 
   const res: PropsType = {
     ...(c.SIMPLE_DATA_TYPES.includes(typeof props) ? {} : props),
-    parentComp,
+    [c.PARENT_PROP_NAME]: parentComp,
     [c.V_COMP_NAME]: c.SIMPLE_DATA_TYPES.includes(typeof props) || props === undefined || props === null ? '_PrimitiveProp' : props[c.V_COMP_NAME],
     [c.V_CHILDREN_NAME]: c.SIMPLE_DATA_TYPES.includes(typeof props) || props === undefined || props === null ? props : props[c.V_CHILDREN_NAME],
   }
@@ -178,17 +178,28 @@ export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof
   return newProps
 }
 
+export const getParentProps = (props: PropsType): PropsType => {
+  return props && typeof props === 'object' && !Array.isArray(props)
+    ? Object.keys(props)
+        .filter((key) => !key.startsWith(c.V_CHILDREN_PREFIX) && key !== c.PARENT_PROP_NAME)
+        .reduce((newObj, key) => {
+          // eslint-disable-next-line no-param-reassign
+          newObj[key] = props[key]
+          return newObj
+        }, {} as PropsType)
+    : ({} as PropsType)
+}
+
 export const getChildrensForRoot = (props: PropsType, children: any, Wrapper: WrapperType) => {
-  const { parentComp, [c.V_CHILDREN_NAME]: _notused, ...newParentComp } = props
   // eslint-disable-next-line no-nested-ternary
   if (!!props && Array.isArray(children)) {
     return children.map((childrenItem, index) => {
       // eslint-disable-next-line react/no-array-index-key
-      return <Wrapper key={index} {...getWrapperProps(childrenItem, newParentComp)} />
+      return <Wrapper key={index} {...getWrapperProps(childrenItem, getParentProps(props))} />
     })
   }
   if (!!props && !!children) {
-    return <Wrapper {...getWrapperProps(children, newParentComp)} />
+    return <Wrapper {...getWrapperProps(children, getParentProps(props))} />
   }
   return undefined
 }

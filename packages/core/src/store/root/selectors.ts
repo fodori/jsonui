@@ -24,7 +24,7 @@ export const genAllStateProps = (globalState: any, props: PropsType) => {
   const { currentPaths } = props
   const result: PropsType = {}
   const paths: PathType[] = []
-  const { parentComp, ...propsNew } = props
+  const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   // eslint-disable-next-line func-names
   traverse(propsNew).forEach(function (x) {
     if (!!x && !!x[c.MODIFIER_KEY] && x[c.MODIFIER_KEY] === 'get' && !(this.path.length > 1 && this.path.includes(c.V_CHILDREN_NAME))) {

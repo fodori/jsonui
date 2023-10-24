@@ -62,7 +62,6 @@ export class InfoBox extends React.PureComponent {
     if (filter && Array.isArray(filter) && Object.keys(filter).length !== 0 && !filter.includes(id)) {
       return null
     }
-    // const { children, stock, parentComp, ...newProps } = this.props
     return (
       <span style={styles.labelCont as React.CSSProperties}>
         <span style={styles.label}>
