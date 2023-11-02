@@ -46,7 +46,15 @@ export const getStyleForWeb = (props: PropsType = {}, component: string) =>
 
 export const getValue = (state: any, store: string, path: string) => util.jsonPointerGet(state[store], path) || null
 
-function Wrapper(props: any) {
+function Wrapper({ props: origProps }: { props: any }) {
+  const new1Props = wrapperUtil.normalisePrimitives(origProps)
+  const newCurrentPaths = useContext(PathModifierContext)
+  const props = {
+    ...new1Props,
+    currentPaths: newCurrentPaths,
+    // eslint-disable-next-line react/destructuring-assignment
+    ...wrapperUtil.pathModifierBuilder({ ...origProps, currentPaths: newCurrentPaths }, origProps?.[c.PATH_MODIFIERS_KEY]),
+  }
   const { [c.V_COMP_NAME]: component, id, [c.PATH_MODIFIERS_KEY]: pathModifiers } = props
   const stock: InstanceType<typeof Stock> = useContext(StockContext)
   const { currentPaths, subscriberPaths, ...ownProps } = wrapperUtil.getRootWrapperProps(props, stock)
@@ -72,18 +80,19 @@ function Wrapper(props: any) {
             style,
             [c.STYLE_WEB_NAME]: _unused1,
             [c.V_COMP_NAME]: _unused2,
-            [c.V_CHILDREN_NAME]: _unused3,
+            // [c.V_CHILDREN_NAME]: _unused3,
             [c.PATH_MODIFIERS_KEY]: _unused4,
             ...newProps
           } = ownProps
+          // children was {wrapperUtil.generateChildren(ownProps, stock)}
           return pathModifiers ? (
             <PathModifierContext.Provider value={currentPaths as any}>
-              <Comp {...newProps}>{wrapperUtil.generateChildren(ownProps, stock)}</Comp>
+              <Comp {...newProps} />
               {infobox && <InfoBox {...ownProps} />}
             </PathModifierContext.Provider>
           ) : (
             <>
-              <Comp {...newProps}>{wrapperUtil.generateChildren(ownProps, stock)}</Comp>
+              <Comp {...newProps} />
               {infobox && <InfoBox {...ownProps} />}
             </>
           )
@@ -93,14 +102,9 @@ function Wrapper(props: any) {
   )
 }
 
-function WrapperOuter(props: any) {
-  const currentPaths = useContext(PathModifierContext)
-  const newProps = {
-    ...props,
-    currentPaths,
-    // eslint-disable-next-line react/destructuring-assignment
-    ...wrapperUtil.pathModifierBuilder({ ...props, currentPaths }, props[c.PATH_MODIFIERS_KEY]),
-  }
-  return <Wrapper {...newProps} />
+export default Wrapper
+
+export const ChildWrapper = ({ props }: { props: any }) => {
+  const stock: InstanceType<typeof Stock> = useContext(StockContext)
+  return <>{wrapperUtil.generateNewChildren(props, stock)}</>
 }
-export default WrapperOuter

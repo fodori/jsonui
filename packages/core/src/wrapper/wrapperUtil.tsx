@@ -104,20 +104,21 @@ export const pathModifierBuilder = (props: PropsType, pathModifier: PathModifier
   return modified ? { currentPaths } : undefined
 }
 
-export const getWrapperProps = (props: PropsType, parentComp?: any): any => {
-  if (props && Array.isArray(props)) {
-    return {
-      [c.V_COMP_NAME]: 'Fragment',
-      [c.V_CHILDREN_NAME]: props,
-    }
+export const normalisePrimitives = (props: PropsType, parentComp?: any): any => {
+  let res = {} as PropsType
+  // TODO is the props part needed or just the children one
+  if (!!props && Array.isArray(props)) {
+    res[c.V_COMP_NAME] = c.FRAGMENT_COMP_NAME
+    res[c.V_CHILDREN_NAME] = props
+    res[c.PARENT_PROP_NAME] = parentComp
+  } else if (props === null || c.SIMPLE_DATA_TYPES.includes(typeof props)) {
+    res[c.V_COMP_NAME] = c.PRIMITIVE_COMP_NAME
+    res[c.V_CHILDREN_NAME] = props
+    res[c.PARENT_PROP_NAME] = parentComp
+  } else {
+    res = { ...props, [c.PARENT_PROP_NAME]: parentComp }
   }
 
-  const res: PropsType = {
-    ...(c.SIMPLE_DATA_TYPES.includes(typeof props) ? {} : props),
-    [c.PARENT_PROP_NAME]: parentComp,
-    [c.V_COMP_NAME]: c.SIMPLE_DATA_TYPES.includes(typeof props) || props === undefined || props === null ? '_PrimitiveProp' : props[c.V_COMP_NAME],
-    [c.V_CHILDREN_NAME]: c.SIMPLE_DATA_TYPES.includes(typeof props) || props === undefined || props === null ? props : props[c.V_CHILDREN_NAME],
-  }
   // eslint-disable-next-line no-restricted-syntax
   for (const i in res) if (typeof res[i] === 'undefined') delete res[i]
   return res
@@ -178,10 +179,12 @@ export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof
   return newProps
 }
 
+export const isChildrenProps = (propName?: string): boolean => !!propName && typeof propName === 'string' && propName.startsWith(c.V_CHILDREN_PREFIX)
+
 export const getParentProps = (props: PropsType): PropsType => {
   return props && typeof props === 'object' && !Array.isArray(props)
     ? Object.keys(props)
-        .filter((key) => !key.startsWith(c.V_CHILDREN_PREFIX) && key !== c.PARENT_PROP_NAME)
+        .filter((key) => !isChildrenProps(key) && key !== c.PARENT_PROP_NAME)
         .reduce((newObj, key) => {
           // eslint-disable-next-line no-param-reassign
           newObj[key] = props[key]
@@ -190,19 +193,47 @@ export const getParentProps = (props: PropsType): PropsType => {
     : ({} as PropsType)
 }
 
+export const getPropsChildrenFilter = ({ props, filter }: { props: PropsType; filter: 'onlyChildren' | 'withoutChildren' }): PropsType =>
+  props && typeof props === 'object' && !Array.isArray(props)
+    ? Object.keys(props)
+        .filter(
+          (key) =>
+            ((filter === 'withoutChildren' && !isChildrenProps(key)) || (filter === 'onlyChildren' && isChildrenProps(key))) && key !== c.PARENT_PROP_NAME
+        )
+        .reduce((newObj, key) => {
+          // eslint-disable-next-line no-param-reassign
+          newObj[key] = props[key]
+          return newObj
+        }, {} as PropsType)
+    : ({} as PropsType)
+
 export const getChildrensForRoot = (props: PropsType, children: any, Wrapper: WrapperType) => {
   // eslint-disable-next-line no-nested-ternary
   if (!!props && Array.isArray(children)) {
     return children.map((childrenItem, index) => {
       // eslint-disable-next-line react/no-array-index-key
-      return <Wrapper key={index} {...getWrapperProps(childrenItem, getParentProps(props))} />
+      return <Wrapper key={index} props={normalisePrimitives(childrenItem, getParentProps(props))} />
     })
   }
   if (!!props && !!children) {
-    return <Wrapper {...getWrapperProps(children, getParentProps(props))} />
+    return <Wrapper props={normalisePrimitives(children, getParentProps(props))} />
   }
   return undefined
 }
 
 export const generateChildren = (props: PropsType, { Wrapper }: InstanceType<typeof Stock>) =>
   props[c.V_COMP_NAME] !== '_PrimitiveProp' ? getChildrensForRoot(props, props[c.V_CHILDREN_NAME], Wrapper as WrapperType) : props[c.V_CHILDREN_NAME]
+
+export const generateNewChildren = (props: PropsType, { Wrapper }: InstanceType<typeof Stock>) => {
+  // eslint-disable-next-line no-nested-ternary
+  if (props) {
+    if (Array.isArray(props)) {
+      return props.map((childrenItem, index) => {
+        // eslint-disable-next-line react/no-array-index-key
+        return <Wrapper key={index} props={normalisePrimitives(childrenItem, getParentProps(props))} />
+      })
+    }
+    return <Wrapper props={normalisePrimitives(props, getParentProps(props))} />
+  }
+  return undefined
+}

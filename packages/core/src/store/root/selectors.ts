@@ -1,5 +1,6 @@
 import traverse from 'traverse'
 import orderBy from 'lodash/orderBy'
+import { isChildrenProps } from 'wrapper/wrapperUtil'
 import * as c from '../../utils/constants'
 import * as util from '../../utils/util'
 import { PathModifiersType, PathType, PropsType, ReduxPathType } from '../../utils/types'
@@ -27,7 +28,7 @@ export const genAllStateProps = (globalState: any, props: PropsType) => {
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   // eslint-disable-next-line func-names
   traverse(propsNew).forEach(function (x) {
-    if (!!x && !!x[c.MODIFIER_KEY] && x[c.MODIFIER_KEY] === 'get' && !(this.path.length > 1 && this.path.includes(c.V_CHILDREN_NAME))) {
+    if (!!x && !!x[c.MODIFIER_KEY] && x[c.MODIFIER_KEY] === 'get' && !(this.path.length > 1 && this.path.filter(isChildrenProps)?.length > 0)) {
       paths.push({ path: this.path, level: this.level })
     }
   })

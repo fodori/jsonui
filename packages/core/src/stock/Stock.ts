@@ -19,13 +19,13 @@ type GetComponentType = (componentName: string) => ReactNode
 export default class Stock {
   stock: NewStockType
 
-  Wrapper: ReactNode
+  Wrapper: React.ElementType
 
   reduxStore: any
 
   validations: any
 
-  constructor(newStock: NewStockType, Wrapper: ReactNode, reduxStore: any) {
+  constructor(newStock: NewStockType, Wrapper: React.ElementType, reduxStore: any) {
     this.stock = {
       components: {} as JsonUIComponentsType,
       functions: {} as JsonUIFunctions,

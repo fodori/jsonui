@@ -30,3 +30,5 @@ export const LIST_ITEM_PER_PAGE_DEFAULT = 10
 export const REDUX_PATHS = '$$reduxPaths'
 export const V_CHILDREN_PREFIX = '$child'
 export const PARENT_PROP_NAME = '__parentprop'
+export const PRIMITIVE_COMP_NAME = '_PrimitiveProp' // TODO check all literal and replace with this constant
+export const FRAGMENT_COMP_NAME = 'Fragment' // TODO check all literal and replace with this constant

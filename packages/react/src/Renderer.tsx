@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useStore } from 'react-redux'
-import { StockContext, PathModifierContext, wrapperUtil } from '@jsonui/core'
+import { StockContext, PathModifierContext, constants as c } from '@jsonui/core'
 import { AnyAction, Store } from 'redux'
 import { getStock } from './stock/stockToRenderer'
 import Wrapper from './Wrapper'
@@ -22,7 +22,7 @@ const Renderer = ({ model, stockInit, reduxStore }: RendererProps) => {
     <StockContext.Provider value={stock as any}>
       {/* eslint-disable-next-line react/jsx-no-constructed-context-values */}
       <PathModifierContext.Provider value={{}}>
-        <Wrapper {...wrapperUtil.getWrapperProps(model)} />
+        <Wrapper props={model} />
       </PathModifierContext.Provider>
     </StockContext.Provider>
   )
@@ -34,6 +34,7 @@ interface RendererFuncProps {
 }
 
 const rendererFunc = (props: RendererFuncProps) => {
+  // TODO remove this and merge to Renderer
   const reduxStore = useStore()
 
   return (
