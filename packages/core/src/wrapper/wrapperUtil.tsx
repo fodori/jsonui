@@ -81,15 +81,13 @@ export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType
   })
 }
 
-export const pathModifierBuilder = (props: PropsType, pathModifier: PathModifiersType) => {
+export const getCurrentPaths = (props: PropsType, pathModifier: PathModifiersType) => {
   const currentPaths: PathModifiersType = { ...(props.currentPaths as PathModifiersType) }
-  let modified = false
   if (pathModifier && Object.keys(pathModifier).length !== 0) {
     Object.keys(pathModifier).forEach((key: string) => {
       if (!!key && !!pathModifier[key] && pathModifier[key][c.PATHNAME] !== undefined && pathModifier[key][c.PATHNAME] !== null) {
         const path = pathModifier[key][c.PATHNAME]
         const parent = currentPaths[key]
-        modified = true
         if (`${path}`.startsWith(c.SEPARATOR) || !(parent && parent[c.PATHNAME])) {
           currentPaths[key] = { [c.PATHNAME]: path }
         } else {
@@ -101,27 +99,17 @@ export const pathModifierBuilder = (props: PropsType, pathModifier: PathModifier
       }
     })
   }
-  return modified ? { currentPaths } : undefined
+  return currentPaths
 }
 
 export const normalisePrimitives = (props: PropsType, parentComp?: any): any => {
-  let res = {} as PropsType
-  // TODO is the props part needed or just the children one
   if (!!props && Array.isArray(props)) {
-    res[c.V_COMP_NAME] = c.FRAGMENT_COMP_NAME
-    res[c.V_CHILDREN_NAME] = props
-    res[c.PARENT_PROP_NAME] = parentComp
-  } else if (props === null || c.SIMPLE_DATA_TYPES.includes(typeof props)) {
-    res[c.V_COMP_NAME] = c.PRIMITIVE_COMP_NAME
-    res[c.V_CHILDREN_NAME] = props
-    res[c.PARENT_PROP_NAME] = parentComp
-  } else {
-    res = { ...props, [c.PARENT_PROP_NAME]: parentComp }
+    return { [c.V_COMP_NAME]: c.FRAGMENT_COMP_NAME, [c.V_CHILDREN_NAME]: props, [c.PARENT_PROP_NAME]: parentComp }
   }
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const i in res) if (typeof res[i] === 'undefined') delete res[i]
-  return res
+  if (props === null || c.SIMPLE_DATA_TYPES.includes(typeof props)) {
+    return { [c.V_COMP_NAME]: c.PRIMITIVE_COMP_NAME, [c.V_CHILDREN_NAME]: props, [c.PARENT_PROP_NAME]: parentComp }
+  }
+  return { ...props, [c.PARENT_PROP_NAME]: parentComp }
 }
 
 const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Stock>) => {
