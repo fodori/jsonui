@@ -84,6 +84,11 @@ function Wrapper({ props: origProps }: { props: any }) {
             currentPaths: _unused5,
             subscriberPaths: _unused6,
             [c.PATH_MODIFIERS_KEY]: _unused7,
+            [c.LIST_SEMAPHORE]: _unused8,
+            [c.LIST_ITEM]: _unused9,
+            [c.LIST_PAGE]: _unused10,
+            [c.LIST_ITEM_PER_PAGE]: _unused11,
+            [c.LIST_LENGTH]: _unused12,
             ...newProps
           } = ownProps
           // children was {wrapperUtil.generateChildren(ownProps, stock)}
