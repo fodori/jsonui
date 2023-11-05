@@ -34,7 +34,7 @@ const reducer = (state = initialState, action: AnyAction) => {
         path = undefined,
         value = undefined,
         jsonataDef = undefined,
-        currentPaths = undefined,
+        [c.CURRENT_PATH_NAME]: currentPaths = undefined,
         stock = undefined,
       } = action?.payload || {}
       if (store && path && !util.isCircular(value)) {

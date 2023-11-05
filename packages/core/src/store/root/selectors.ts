@@ -22,7 +22,7 @@ export const getStateValue = (globalState: any, { store, path, isError = false }
 }
 
 export const genAllStateProps = (globalState: any, props: PropsType) => {
-  const { currentPaths } = props
+  const { [c.CURRENT_PATH_NAME]: currentPaths } = props
   const result: PropsType = {}
   const paths: PathType[] = []
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props

@@ -32,7 +32,7 @@ export const getFilteredPath = ({ [c.PARENT_PROP_NAME]: parentComp, ...propsNew 
           // eslint-disable-next-line no-continue
           continue
         }
-        if (i === c.PARENT_PROP_NAME || i === 'currentPaths' || i === c.LIST_ITEM) {
+        if (i === c.PARENT_PROP_NAME || i === c.CURRENT_PATH_NAME || i === c.LIST_ITEM) {
           // eslint-disable-next-line no-continue
           continue
         }
@@ -82,7 +82,7 @@ export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType
 }
 
 export const getCurrentPaths = (props: PropsType, pathModifier: PathModifiersType) => {
-  const currentPaths: PathModifiersType = { ...(props.currentPaths as PathModifiersType) }
+  const currentPaths: PathModifiersType = { ...(props[c.CURRENT_PATH_NAME] as PathModifiersType) }
   if (pathModifier && Object.keys(pathModifier).length !== 0) {
     Object.keys(pathModifier).forEach((key: string) => {
       if (!!key && !!pathModifier[key] && pathModifier[key][c.PATHNAME] !== undefined && pathModifier[key][c.PATHNAME] !== null) {
@@ -118,7 +118,7 @@ const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Sto
   let itemPerPage = !!props[c.LIST_ITEM_PER_PAGE] && util.isNumber(props[c.LIST_ITEM_PER_PAGE]) ? (props[c.LIST_ITEM_PER_PAGE] as number) : undefined
   const listItem: any = props[c.LIST_ITEM]
   if (!listItem) return undefined
-  const currentPaths = props.currentPaths as PathModifiersType
+  const currentPaths = props[c.CURRENT_PATH_NAME] as PathModifiersType
   if (!currentPaths) return undefined
   const store = Object.keys(currentPaths)[0]
   if (!store) return undefined
@@ -224,4 +224,24 @@ export const generateNewChildren = (props: PropsType, { Wrapper }: InstanceType<
     return <Wrapper props={normalisePrimitives(props, getParentProps(props))} />
   }
   return undefined
+}
+
+export const removeTechnicalProps = (changeableProps: any) => {
+  const {
+    [c.PARENT_PROP_NAME]: parentComp,
+    style,
+    [c.STYLE_WEB_NAME]: _unused1,
+    [c.V_COMP_NAME]: _unused2,
+    [c.PATH_MODIFIERS_KEY]: _unused3,
+    [c.CURRENT_PATH_NAME]: _unused4,
+    subscriberPaths: _unused5,
+    [c.PATH_MODIFIERS_KEY]: _unused6,
+    [c.LIST_SEMAPHORE]: _unused7,
+    [c.LIST_ITEM]: _unused8,
+    [c.LIST_PAGE]: _unused9,
+    [c.LIST_ITEM_PER_PAGE]: _unused10,
+    [c.LIST_LENGTH]: _unused11,
+    ...newProps
+  } = changeableProps
+  return newProps
 }

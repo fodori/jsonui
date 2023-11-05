@@ -25,10 +25,10 @@ export const LIST_PAGE = '$page'
 export const LIST_ITEM_PER_PAGE = '$itemPerPage'
 export const LIST_LENGTH = '$listLength'
 export const LIST_ITEM_PER_PAGE_DEFAULT = 10
-// TODO currentPaths maybe need to modify to ___currentPaths
 
 export const REDUX_PATHS = '$$reduxPaths'
 export const V_CHILDREN_PREFIX = '$child'
 export const PARENT_PROP_NAME = '__parentprop'
+export const CURRENT_PATH_NAME = '__currentPaths'
 export const PRIMITIVE_COMP_NAME = '_PrimitiveProp' // TODO check all literal and replace with this constant
 export const FRAGMENT_COMP_NAME = 'Fragment' // TODO check all literal and replace with this constant
