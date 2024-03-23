@@ -7,7 +7,7 @@ import model from '../Example.json'
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 
 const JsonUIStory = {
-  title: 'JsonUI',
+  title: 'JsonUI Generic tests',
   component: JsonUI,
 } as ComponentMeta<typeof JsonUI>
 

@@ -54,7 +54,7 @@ MultiChild.args = {
     $comp: 'EditMultiChild',
     value: { $modifier: 'get', store: 'data', path: 'firstname' },
     $childLabel: { $comp: 'Text', $children: 'This is a label', style: { textAlign: 'left', fontSize: 20, margin: 5, color: 'red' } },
-    $childHelperText: { $comp: 'Text', $children: 'JsonUI test page v0.1', style: { textAlign: 'left', fontSize: 10, margin: 5 } },
+    $childHelperText: { $comp: 'Text', $children: 'Thi is a Helper Text', style: { textAlign: 'left', fontSize: 10, margin: 5 } },
     onChange: { $action: 'set', store: 'data', path: 'firstname' },
   },
   disabledPersist: true,

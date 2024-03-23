@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { useStore } from 'react-redux'
 import { StockContext, PathModifierContext, constants as c } from '@jsonui/core'
 import { AnyAction, Store } from 'redux'
+import MessageReceiver from './MessageReceiver'
 import { getStock } from './stock/stockToRenderer'
 import Wrapper from './Wrapper'
 import ErrorBoundary from './ErrorBoundary'
@@ -22,6 +23,7 @@ const Renderer = ({ model, stockInit, reduxStore }: RendererProps) => {
     <StockContext.Provider value={stock as any}>
       {/* eslint-disable-next-line react/jsx-no-constructed-context-values */}
       <PathModifierContext.Provider value={{}}>
+        <MessageReceiver />
         <Wrapper props={model} />
       </PathModifierContext.Provider>
     </StockContext.Provider>

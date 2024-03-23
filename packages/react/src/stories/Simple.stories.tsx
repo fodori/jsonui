@@ -6,37 +6,41 @@ import { JsonUI } from '../index'
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 
 const JsonUIStory = {
-  title: 'Simple',
+  title: 'Primitives Test',
   component: JsonUI,
 } as ComponentMeta<typeof JsonUI>
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
 
-export const SimpleTest = Template.bind({})
+export const PrimitivesTest = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-SimpleTest.args = {
-  model: [[1, 'ooo'], 2, 3, 4, true, false, null, 9999],
+PrimitivesTest.args = {
+  model: [
+    [1, ', ', 'simple textűáéúőóüóüöŰÁÉÚŐÓÜÖ1Íí'],
+    ', ',
+    2,
+    ', ',
+    3,
+    ', ',
+    4,
+    ', ',
+    true,
+    ', ',
+    false,
+    ', ',
+    null,
+    ', ',
+    9999,
+    ', ',
+    0.00000000003,
+    ', ',
+    2 / 6,
+  ],
   disabledPersist: true,
 }
 
-SimpleTest.argTypes = {
-  model: {
-    control: {
-      type: 'object',
-    },
-  },
-  id: { control: { type: 'text' } },
-}
-
-export const TextTest = Template.bind({})
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-TextTest.args = {
-  model: { $comp: 'Text', $children: 'JsonUI test page v0.1', style: { textAlign: 'center', fontSize: 30, margin: 5 } },
-  disabledPersist: true,
-}
-
-TextTest.argTypes = {
+PrimitivesTest.argTypes = {
   model: {
     control: {
       type: 'object',

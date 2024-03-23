@@ -6,7 +6,7 @@ import { JsonUI } from '../index'
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 
 const JsonUIStory = {
-  title: 'JsonUI',
+  title: 'Redux test',
   component: JsonUI,
 } as ComponentMeta<typeof JsonUI>
 
@@ -16,9 +16,9 @@ const MyFunction = () => {
   console.log(' fired!!!!!! MyFunction')
   return 'age'
 }
-export const ReduxTest = Template.bind({})
+export const TwoEditAnd1Modifier = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-ReduxTest.args = {
+TwoEditAnd1Modifier.args = {
   model: {
     $comp: 'Fragment',
     $children: [
@@ -61,7 +61,7 @@ ReduxTest.args = {
   functions: { MyFunction },
 }
 
-ReduxTest.argTypes = {
+TwoEditAnd1Modifier.argTypes = {
   model: {
     control: {
       type: 'object',
@@ -70,7 +70,7 @@ ReduxTest.argTypes = {
   id: { control: { type: 'text' } },
 }
 
-ReduxTest.parameters = { controls: { include: ['model', 'id'] } }
+TwoEditAnd1Modifier.parameters = { controls: { include: ['model', 'id'] } }
 
 export const PathModifierTest = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args

@@ -6,16 +6,7 @@ import { persistConfig, storeReducers } from '@jsonui/core'
 import storage from 'redux-persist/lib/storage'
 import { Persistor } from 'redux-persist/es/types'
 import { persistStore, persistReducer } from 'redux-persist'
-
-export type JSONPrimitive = string | number | boolean | null
-// eslint-disable-next-line no-use-before-define
-export type JSONValue = JSONPrimitive | JSONObject | JSONArray
-export type JSONObject = { [member: string]: JSONValue }
-export type JSONArray = Array<JSONValue>
-
-export interface DefaultValues {
-  [key: string]: JSONValue
-}
+import { DefaultValues } from 'types'
 
 type MyProps = { children: ReactNode; defaultValues?: DefaultValues; disabledPersist?: boolean }
 

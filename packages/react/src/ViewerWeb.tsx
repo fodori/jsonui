@@ -1,18 +1,10 @@
 import React from 'react'
 import { appRootFunctions } from '@jsonui/core'
+import { ViewerProps } from 'types'
 import stockInitBasic from './stock/stockToRenderer'
-import ReduxProviders, { DefaultValues } from './ReduxProviders'
+import ReduxProviders from './ReduxProviders'
 import Renderer from './Renderer'
 import ErrorBoundary from './ErrorBoundary'
-
-export interface ViewerProps {
-  model: any
-  defaultValues?: DefaultValues
-  id?: string
-  components?: any
-  functions?: any
-  disabledPersist?: boolean
-}
 
 function Viewer({ model, components, functions }: ViewerProps) {
   const stockInit = {
@@ -27,10 +19,10 @@ function Viewer({ model, components, functions }: ViewerProps) {
   return <Renderer model={model} stockInit={stockInit} />
 }
 
-function ViewerWeb(props: ViewerProps) {
+function ViewerWeb({ defaultValues, disabledPersist, ...props }: ViewerProps) {
   return (
     <ErrorBoundary type="viewer">
-      <ReduxProviders defaultValues={props.defaultValues} disabledPersist={props.disabledPersist}>
+      <ReduxProviders defaultValues={defaultValues} disabledPersist={disabledPersist}>
         <Viewer {...props} />
       </ReduxProviders>
     </ErrorBoundary>

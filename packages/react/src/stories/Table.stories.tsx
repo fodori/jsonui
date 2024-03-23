@@ -6,14 +6,14 @@ import { JsonUI } from '../index'
 // validation
 // submit
 const JsonUIStory = {
-  title: 'Table',
+  title: 'Table Test',
   component: JsonUI,
 } as ComponentMeta<typeof JsonUI>
 
 const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
 
-export const ReduxTest = Template.bind({})
-ReduxTest.args = {
+export const TableTest = Template.bind({})
+TableTest.args = {
   model: {
     $comp: 'View',
     style: { marginTop: 10, backgroundColor: 'orange' },
@@ -63,7 +63,7 @@ ReduxTest.args = {
   } as any,
 }
 
-ReduxTest.argTypes = {
+TableTest.argTypes = {
   model: {
     control: {
       type: 'object',
@@ -72,6 +72,6 @@ ReduxTest.argTypes = {
   id: { control: { type: 'text' } },
 }
 
-ReduxTest.parameters = { controls: { include: ['model', 'id'] } }
+TableTest.parameters = { controls: { include: ['model', 'id'] } }
 
 export default JsonUIStory

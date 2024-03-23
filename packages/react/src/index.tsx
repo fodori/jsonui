@@ -1,9 +1,11 @@
 import React from 'react'
-import ViewerWeb, { ViewerProps } from './ViewerWeb'
+import { ChangeDefaultValueFuncProp, JSONValue, ViewerProps } from 'types'
+import ViewerWeb from './ViewerWeb'
+import { MessageHandlerContext, MessageHandler } from './MessageReceiverContext'
 
 type JsonUIProps = ViewerProps
 
 const JsonUI = (props: JsonUIProps) => <ViewerWeb {...props} />
 
-export { JsonUI }
-export type { JsonUIProps }
+export { JsonUI, MessageHandlerContext, MessageHandler }
+export type { JsonUIProps, JSONValue, ChangeDefaultValueFuncProp }
