@@ -1,9 +1,7 @@
-import React, { useContext } from 'react'
-import { StockContext, wrapperUtil, constants as c } from '@jsonui/core'
+import React from 'react'
 
-function Text({ value, [c.V_CHILDREN_NAME]: children, ...props }: any) {
-  const stock = useContext(StockContext)
-  return <p {...props}>{wrapperUtil.generateNewChildren(value || children, stock)}</p>
+function Text({ value, children, ...props }: any) {
+  return <p {...props}>{value || children}</p>
 }
 
 export default Text

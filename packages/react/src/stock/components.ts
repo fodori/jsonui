@@ -1,3 +1,4 @@
+import { constants as c } from '@jsonui/core'
 import Text from './components/Text'
 import Button from './components/Button'
 import Edit from './components/Edit'
@@ -9,8 +10,8 @@ import Fragment from './components/Fragment'
 
 const Components = {
   View,
-  _PrimitiveProp,
-  _Undefined,
+  [c.PRIMITIVE_COMP_NAME]: _PrimitiveProp,
+  [c.UNDEFINED_COMP_NAME]: _Undefined,
   Fragment,
   Image,
   Text,

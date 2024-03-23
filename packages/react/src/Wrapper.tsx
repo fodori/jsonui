@@ -73,7 +73,26 @@ function Wrapper({ props: origProps }: { props: any }) {
       <ClassNames>
         {({ css, cx }) => {
           ownProps.className = newStyle ? cx(css(newStyle)) : undefined
-          const newProps = wrapperUtil.removeTechnicalProps(ownProps)
+          const newProps = Object.keys(ownProps).reduce((newObj, childName) => {
+            // eslint-disable-next-line no-param-reassign
+            if (wrapperUtil.isChildrenProp(childName)) {
+              const res = component === c.PRIMITIVE_COMP_NAME ? ownProps[childName] : wrapperUtil.generateNewChildren(ownProps[childName] as any, stock)
+              // eslint-disable-next-line no-param-reassign
+              if (childName === c.V_CHILDREN_NAME) {
+                // eslint-disable-next-line no-param-reassign
+                newObj.children = res
+              } else {
+                // eslint-disable-next-line no-param-reassign
+                newObj[childName] = res
+              }
+            } else if (!wrapperUtil.isTechnicalProp(childName)) {
+              // eslint-disable-next-line no-param-reassign
+              newObj[childName] = ownProps[childName]
+            }
+
+            return newObj
+          }, {} as any)
+
           // children was {wrapperUtil.generateChildren(ownProps, stock)}
           return ownProps[c.PATH_MODIFIERS_KEY] ? (
             <PathModifierContext.Provider value={props[c.CURRENT_PATH_NAME] as any}>

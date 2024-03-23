@@ -1,9 +1,7 @@
-import React, { useContext } from 'react'
-import { StockContext, wrapperUtil, constants as c } from '@jsonui/core'
+import React from 'react'
 
-function View({ [c.V_CHILDREN_NAME]: children, ...props }: any) {
-  const stock = useContext(StockContext)
-  return <div {...props}>{wrapperUtil.generateNewChildren(children, stock)}</div>
+function View(props: any) {
+  return <div {...props} />
 }
 
 export default View

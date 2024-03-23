@@ -1,8 +1,11 @@
 import React from 'react'
 
-function Button(props: any) {
-  // eslint-disable-next-line react/button-has-type
-  return <button {...props} />
+function Button({ children, type, ...props }: any) {
+  return (
+    <button type="button" {...props}>
+      {children}
+    </button>
+  )
 }
 
 export default Button

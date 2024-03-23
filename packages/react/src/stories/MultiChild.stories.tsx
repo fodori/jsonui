@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { StockContext, wrapperUtil, constants as c } from '@jsonui/core'
 
 import { JsonUI } from '../index'
 
@@ -12,13 +11,12 @@ const JsonUIStory = {
 const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
 
 function EditMultiChild(props: any) {
-  const stock = useContext(StockContext)
   const handleChange = (event: any) => {
     props?.onChange(event.target.value)
   }
-  const { fieldErrors, validation, value, $childLabel, $childHelperText, onChange, ...ownProps } = props
+  const { fieldErrors, validation, value, $childLabel, $childHelperText, onChange, children, ...ownProps } = props
   let error = !!fieldErrors
-  let helperText = wrapperUtil.generateNewChildren($childHelperText, stock)
+  let helperText = $childHelperText
   if (error && fieldErrors) {
     helperText = fieldErrors && Array.isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors
   }
@@ -41,7 +39,8 @@ function EditMultiChild(props: any) {
   }
   return (
     <>
-      <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{wrapperUtil.generateNewChildren($childLabel, stock)}</div>
+      <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{$childLabel}</div>
+      <p>{children}</p>
       <input {...ownProps} value={value || ''} onChange={handleChange} />
       <div style={{ fontSize: 10, color: error ? 'red' : undefined }}>{helperText}</div>
     </>
@@ -50,13 +49,20 @@ function EditMultiChild(props: any) {
 
 export const MultiChild = Template.bind({})
 MultiChild.args = {
-  model: {
-    $comp: 'EditMultiChild',
-    value: { $modifier: 'get', store: 'data', path: 'firstname' },
-    $childLabel: { $comp: 'Text', $children: 'This is a label', style: { textAlign: 'left', fontSize: 20, margin: 5, color: 'red' } },
-    $childHelperText: { $comp: 'Text', $children: 'Thi is a Helper Text', style: { textAlign: 'left', fontSize: 10, margin: 5 } },
-    onChange: { $action: 'set', store: 'data', path: 'firstname' },
-  },
+  model: [
+    {
+      $comp: 'EditMultiChild',
+      value: { $modifier: 'get', store: 'data', path: 'firstname' },
+      $children: { $comp: 'Text', $children: 'simple text', style: { textAlign: 'left', fontSize: 20, margin: 5, color: 'green' } },
+      $childLabel: { $comp: 'Text', $children: 'This is a label', style: { textAlign: 'left', fontSize: 20, margin: 5, color: 'red' } },
+      $childHelperText: { $comp: 'Text', $children: 'Thi is a Helper Text', style: { textAlign: 'left', fontSize: 10, margin: 5 } },
+      onChange: { $action: 'set', store: 'data', path: 'firstname' },
+    },
+    {
+      $comp: 'Button',
+      $children: 'Click',
+    },
+  ],
   disabledPersist: true,
   components: { EditMultiChild },
 }

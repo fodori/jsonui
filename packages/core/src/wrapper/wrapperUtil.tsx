@@ -167,12 +167,12 @@ export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof
   return newProps
 }
 
-export const isChildrenProps = (propName?: string): boolean => !!propName && typeof propName === 'string' && propName.startsWith(c.V_CHILDREN_PREFIX)
+export const isChildrenProp = (propName?: string): boolean => !!propName && typeof propName === 'string' && propName.startsWith(c.V_CHILDREN_PREFIX)
 
 export const getParentProps = (props: PropsType): PropsType => {
   return props && typeof props === 'object' && !Array.isArray(props)
     ? Object.keys(props)
-        .filter((key) => !isChildrenProps(key) && key !== c.PARENT_PROP_NAME)
+        .filter((key) => !isChildrenProp(key) && key !== c.PARENT_PROP_NAME)
         .reduce((newObj, key) => {
           // eslint-disable-next-line no-param-reassign
           newObj[key] = props[key]
@@ -185,8 +185,7 @@ export const getPropsChildrenFilter = ({ props, filter }: { props: PropsType; fi
   props && typeof props === 'object' && !Array.isArray(props)
     ? Object.keys(props)
         .filter(
-          (key) =>
-            ((filter === 'withoutChildren' && !isChildrenProps(key)) || (filter === 'onlyChildren' && isChildrenProps(key))) && key !== c.PARENT_PROP_NAME
+          (key) => ((filter === 'withoutChildren' && !isChildrenProp(key)) || (filter === 'onlyChildren' && isChildrenProp(key))) && key !== c.PARENT_PROP_NAME
         )
         .reduce((newObj, key) => {
           // eslint-disable-next-line no-param-reassign
@@ -225,6 +224,23 @@ export const generateNewChildren = (props: PropsType, { Wrapper }: InstanceType<
   }
   return undefined
 }
+
+export const isTechnicalProp = (propName: string) =>
+  [
+    c.PARENT_PROP_NAME,
+    c.STYLE_WEB_NAME,
+    c.V_COMP_NAME,
+    c.PATH_MODIFIERS_KEY,
+    c.CURRENT_PATH_NAME,
+    c.PATH_MODIFIERS_KEY,
+    c.LIST_SEMAPHORE,
+    c.LIST_ITEM,
+    c.LIST_PAGE,
+    c.LIST_ITEM_PER_PAGE,
+    c.LIST_LENGTH,
+    'style',
+    'subscriberPaths',
+  ].includes(propName)
 
 export const removeTechnicalProps = (changeableProps: any) => {
   const {
