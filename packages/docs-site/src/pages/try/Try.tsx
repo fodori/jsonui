@@ -47,7 +47,7 @@ function Try() {
   return (
     <>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Examples</InputLabel>
+        <InputLabel id="demo-simple-select-label">Please select</InputLabel>
         <Select labelId="demo-simple-select-label" id="demo-simple-select" value={selectedIndex} label="Selected Index" onChange={handleSetSelectedIndex}>
           {tries.map((item, index) => (
             // eslint-disable-next-line react/no-array-index-key
@@ -64,8 +64,7 @@ function Try() {
           ))}
         </Select>
       </FormControl>
-      <Typography variant="h6">{tries?.[selectedIndex]?.name}</Typography>
-      <Typography variant="subtitle1">{tries?.[selectedIndex]?.help}</Typography>
+      <Typography variant="h6" style={{marginTop:20}}>Result:</Typography>
 
       <Grid container spacing={2} direction="column" justifyContent="center" alignItems="stretch">
         <Grid item xs={12}>
@@ -74,6 +73,7 @@ function Try() {
           </Paper>
         </Grid>
         <Grid item xs={12}>
+      <Typography variant="h6" style={{marginTop:20}}>Definition:</Typography>
           <Paper elevation={3} sx={{ p: 1 }} style={{ border: harError ? '2px solid red' : '2px solid green' }}>
             <Editor
               value={jsonVal}

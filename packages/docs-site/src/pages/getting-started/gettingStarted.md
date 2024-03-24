@@ -13,13 +13,15 @@ The `JsonUI` Component is a canvas and the `model` parameter is a definition of 
 ```js
 import {JsonUI} from '@jsonui/react';
 
-const Canvas = () => <JsonUI model={
+const model = {
     { "$comp": "Text",
       "$children": "Hello World",
       "style": { "fontSize": 30 }
-    } />
+    }
+
+const Canvas = () => <JsonUI model={model} />
 ```
 
 ## Next Steps
 
-After you see how the JsonUI works, you can write your own component library and own functions to use.
+After you see how the JsonUI works, you can write your own component library or own functions to use.

@@ -46,14 +46,18 @@ function App() {
             <TableBody>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">model</TableCell>
-                <TableCell align="left">any</TableCell>
-                <TableCell align="left">It should be a serializable non-cyclic object/array/primitive values. [more info](./api-json) </TableCell>
+                <TableCell align="left">any (json)</TableCell>
+                <TableCell align="left">It should be a serializable, non-cyclic object/array/primitive value.</TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">defaultValues</TableCell>
                 <TableCell align="left">{'Record<string, object>'}</TableCell>
                 <TableCell align="left">
-                  Initial values of stores, the key will be the name of the store. tha value can be the initial value of the store when the JsonUI will start
+                  Initial values of stores, the key will be the name of the store. The value can be the initial value of the store when the JsonUI starts.
+                  <br />
+                  For example: {`{ data : { firstName : 'Jon' } }`}
+                  <br />
+                  It's store <b>Jon</b> name into <b>firstName</b> attribute of the <b>data</b> store
                 </TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
@@ -73,7 +77,9 @@ function App() {
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">disabledPersist</TableCell>
                 <TableCell align="left">boolean</TableCell>
-                <TableCell align="left">Default is `false`. When it is false, we store app data persistently.</TableCell>
+                <TableCell align="left">
+                  The default is `false`. When it is false, we store app data (just the "data" named store is persistent) persistently.
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>

@@ -13,26 +13,44 @@
     "$children": [
       {
         "$comp": "Text",
-        "$children": "How to define new components and functions",
-        "style": { "fontSize": 25, "textAlign": "center" }
+        "$children": "This is a complex example",
+        "style": {
+          "fontSize": 25,
+          "textAlign": "center"
+        }
       },
       {
         "$comp": "Text",
-        "$children": "This form prepared for a google search and pretend to request an api (debug it on inspect mode, Network tab).",
-        "style": { "fontSize": 14, "textAlign": "left" }
+        "$children": "API call example: called google search, for make it easy (if you want to debug: Inspect mode -> Network tab).",
+        "style": {
+          "fontSize": 14,
+          "textAlign": "left"
+        }
       },
       {
         "$comp": "Text",
-        "$children": "This page contains an integrated Mui TextField, Slider, Checkbox, Button to show how is easy to integrate a component or a function to JsonUI",
-        "style": { "fontSize": 14, "textAlign": "left", "marginBottom": 40 }
+        "$children": "Added extra components: Mui TextField, Slider, Checkbox, Button to show how it is easy to integrate components and functions,",
+        "style": {
+          "fontSize": 14,
+          "textAlign": "left",
+          "marginBottom": 40
+        }
       },
       {
         "$comp": "TextField",
         "name": "q",
         "label": "Search for",
         "helperText": "all these words",
-        "value": { "$modifier": "get", "store": "googleSearch", "path": "/q" },
-        "onChange": { "$action": "set", "store": "googleSearch", "path": "/q" }
+        "value": {
+          "$modifier": "get",
+          "store": "googleSearch",
+          "path": "/q"
+        },
+        "onChange": {
+          "$action": "set",
+          "store": "googleSearch",
+          "path": "/q"
+        }
       },
       {
         "$comp": "Text",
@@ -42,13 +60,24 @@
           "path": "/num",
           "jsonataDef": "'Number of show result: ' & ($not($)?'nothing':$)"
         },
-        "style": { "fontSize": 14, "textAlign": "left" }
+        "style": {
+          "fontSize": 14,
+          "textAlign": "left"
+        }
       },
       {
         "$comp": "Slider",
         "name": "num",
-        "value": { "$modifier": "get", "store": "googleSearch", "path": "/num" },
-        "onChange": { "$action": "set", "store": "googleSearch", "path": "/num" }
+        "value": {
+          "$modifier": "get",
+          "store": "googleSearch",
+          "path": "/num"
+        },
+        "onChange": {
+          "$action": "set",
+          "store": "googleSearch",
+          "path": "/num"
+        }
       },
       {
         "$comp": "View",
@@ -64,13 +93,24 @@
           {
             "$comp": "Checkbox",
             "name": "adtest",
-            "checked": { "$modifier": "get", "store": "googleSearch", "path": "/adtest" },
-            "onChange": { "$action": "set", "store": "googleSearch", "path": "/adtest" }
+            "checked": {
+              "$modifier": "get",
+              "store": "googleSearch",
+              "path": "/adtest"
+            },
+            "onChange": {
+              "$action": "set",
+              "store": "googleSearch",
+              "path": "/adtest"
+            }
           },
           {
             "$comp": "Text",
             "$children": "Controls whether personalised search is on or not",
-            "style": { "fontSize": 14, "textAlign": "left" }
+            "style": {
+              "fontSize": 14,
+              "textAlign": "left"
+            }
           }
         ]
       }
@@ -95,19 +135,25 @@
           {
             "$comp": "Text",
             "$children": "API request",
-            "style": { "margin": 0, "marginRight": 8 }
+            "style": {
+              "margin": 0,
+              "marginRight": 8
+            }
           },
           {
             "$comp": "Icon",
             "name": "settings"
           }
         ],
-
         "onClick": {
           "$action": "axios",
           "method": "post",
           "url": "localhost",
-          "data": { "$modifier": "get", "store": "googleSearch", "path": "/" }
+          "data": {
+            "$modifier": "get",
+            "store": "googleSearch",
+            "path": "/"
+          }
         }
       },
       {
@@ -117,7 +163,10 @@
           {
             "$comp": "Text",
             "$children": "Request query",
-            "style": { "margin": 0, "marginRight": 8 }
+            "style": {
+              "margin": 0,
+              "marginRight": 8
+            }
           },
           {
             "$comp": "Icon",

@@ -2,17 +2,17 @@
 
 ### model: _any_
 
-The `model` is the most important property. It contains the ui definitions and the business logic, usually a JSON structure or object structure which can come from an api response or a predefined Json file for example.
+The `model` is the most important property. It contains the UI definitions and the business logic, usually a JSON structure or object structure which can come from an API response or a predefined JSON file for example.
 
 ### defaultValues: _Record<string, object>_
 
-If the JsonUI needs to initialise data what the JsonUI is working on.
-The `defaultValues` should be the name of the store and the data of it. For example if the name of the store is a `questionnaire` and the initial data is a profile data.
+If the JsonUI needs to initialise data, this is what the JsonUI is working on.
+The `defaultValues` should be the name of the store and the data of it. For example, if the name of the store is a `questionnaire` and the initial data of a profile.
 
 ```js
 <JsonUI
   model={...}
-  defaultValues={{ questionnaire:{ profile:{ firstname:'John', lastname:'Down' }}}}
+  defaultValues={{ questionnaire:{ profile:{ firstName:'John', lastName:'Down' }}}}
 />
 ```
 
@@ -24,7 +24,7 @@ It will be able to access with this example:
   "value": {
     "$modifier": "get",
     "store": "questionnaire",
-    "path": "/firstName"
+    "path": "/profile/firstName"
   }
 }
 ```
@@ -74,4 +74,4 @@ return <JsonUI model={model} functions={{ MyFunction }} />
 
 #### disabledPersist: _boolean_
 
-By default the `disabledPersist` is true and stores a specific name of the store. At the moment, just one datastore is persistent which is `data`. Means everything which is stored in `data` should be persistent (data will be available after that when the application will be restarted). Everything else not. If `disabledPersist` is false, the all built in persistence mechanism disabled.
+By default, the `disabledPersist` is true and stores a specific name of the store. At the moment, just one datastore is persistent which is `data`. This means everything which is stored in `data` should be persistent (data will be available after that when the application is restarted). Everything else is not. If `disabledPersist` is false, all built-in persistence mechanisms are disabled.

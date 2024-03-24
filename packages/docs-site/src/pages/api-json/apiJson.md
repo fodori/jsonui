@@ -1,6 +1,6 @@
 ### 1, Components
 
-The `"$comp"` key represents the name of a predefined react component. The predefined components:
+The `"$comp"` key represents the name of a component. This library contains few predefined components, just for test purpose:
 
 - **View:** it's a simple `div` html tag
 - **Button:** it's a simple `button` html tag
@@ -11,7 +11,7 @@ The `"$comp"` key represents the name of a predefined react component. The prede
 The props of the components are the same as in the normal react world.
 
 The `"$children"` key represents the children of the component.
-It can be array, object or primitive like text, number, boolean
+It can be an array, object or primitive like text, number, boolean
 
 ```json
 { "$comp": "Text", "$children": "Hello World" }
@@ -19,14 +19,14 @@ It can be array, object or primitive like text, number, boolean
 { "$comp": "Text", "$children": [1,2,3] }
 { "$comp": "Text", "$children": null }
 { "$comp": "View", "$children": [
-   { "$comp": "Text", "$children": "Hello World" }
+   { "$comp": "Text", "$children": "Hello World" },
   ]
 }
 ```
 
 ### 2, Actions
 
-When the component has an interaction with user or a triggered event, the `"$action"` key will represent it, for example onClick, onChange or onPress
+When the component has an interaction with a user or a triggered event, the `"$action"` key will represent it, for example, onClick, onChange or onPress.
 
 ```json
 {
@@ -36,11 +36,11 @@ When the component has an interaction with user or a triggered event, the `"$act
 }
 ```
 
-The action is really a predefined function when it will fire, when the event has triggered.
+The action is a predefined function that will run when the event has been triggered.
 
 ### 3, Modifiers
 
-The `"$action"` can add a dynamic value for properties or components. It's a function which will be called at render time of the component. Depends on environment data. For example JSONUI contains a basic internalisation solution.
+The `"$modifier"` can add a dynamic value for properties or components. It's a function which will be called at **render time** of the component. For example translate a text.
 
 ```json
 { "$comp": "Text", "$children": "Hello World" }
@@ -68,11 +68,11 @@ const Canvas = () => <JsonUI model={jsonData}
 
 ### State management or data storage
 
-The state management is another layer of the JSONUI. It's represent a permissive and dynamic tree graf structure. Like a JSON file.
-Each app has a separated data space, based on the `id` param of `JsonUI` component.
-Each app has multiple `store` represent multiple data tree or separate storage.
-Actually the `data` store is persistent. (it will be configurable soon if there is interest in it)
-You can define unlimited data store. What you need is, just use a specific name in JSON Definition, and it will automatically create at the first use.
+The state management is an independent layer in JSONUI. It represents a permissive and dynamic tree graf structure. Like a JSON file.
+Each JSONUI instance a separate data store, based on the `id` param of `JsonUI` component.
+Each JSONUI instance has multiple stores representing multiple data tree or separate storage.
+Actually, the `data` store is persistent.
+You can define unlimited data store. What you need is, just use a specific name in JSON Definition.
 JSONUI use [json-pointer](https://www.npmjs.com/package/json-pointer) to tell the `path` what kind of data we need.
 
 We have 2 built-in functions which can help to read and write your state management.
@@ -81,10 +81,10 @@ Let's see some example
 
 #### Read data
 
-##### Your data store Looks like:
+##### if your data store looks like:
 
 ```json
-{ "users": [{ "username": "John Doe" }] }
+{ "users": [{ "userName": "John Doe" }] }
 ```
 
 ##### Use _/username_ in text field
@@ -95,7 +95,7 @@ Let's see some example
   "$children": {
     "$modifier": "get",
     "store": "data",
-    "path": "/users/0/username"
+    "path": "/users/0/userName"
   }
 }
 ```
@@ -111,7 +111,7 @@ Let's see some example
   "onPress": {
     "$modifier": "set",
     "store": "data",
-    "path": "/users/0/username",
+    "path": "/users/0/userName",
     "value": "John Doe 2"
   }
 }
@@ -120,7 +120,7 @@ Let's see some example
 ##### Data will be:
 
 ```json
-{ "users": [{ "username": "John Doe2" }] }
+{ "users": [{ "userName": "John Doe 2" }] }
 ```
 
 ##### A simple input field solution
@@ -128,8 +128,8 @@ Let's see some example
 ```json
 {
   "$comp": "Edit",
-  "value": { "$modifier": "get", "store": "questionnaire1", "path": "/firstName" },
-  "onChange": { "$action": "set", "store": "questionnaire1", "path": "/firstName" }
+  "value": { "$modifier": "get", "store": "questionnaire", "path": "/firstName" },
+  "onChange": { "$action": "set", "store": "questionnaire", "path": "/firstName" }
 }
 ```
 
@@ -165,10 +165,10 @@ few examples
 
 JSONUI we need to handle dynamic data, for example a list.
 
-##### Your data store looks like:
+##### if your data store looks like:
 
 ```json
-{ "subscribed": { "list": [{ "name": "John Doe" }] } }
+{ "users": { "list": [{ "name": "John Doe" }] } }
 ```
 
 ```json
@@ -176,7 +176,7 @@ JSONUI we need to handle dynamic data, for example a list.
   "$comp": "Fragment",
   "isList": true,
   "$pathModifiers": {
-    "data": { "path": "/subscribed/list" }
+    "data": { "path": "/users/list" }
   },
   "listItem": {
     "$comp": "Edit",
