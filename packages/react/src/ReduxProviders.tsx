@@ -8,42 +8,33 @@ import { Persistor } from 'redux-persist/es/types'
 import { persistStore, persistReducer } from 'redux-persist'
 import { DefaultValues } from 'types'
 
-type MyProps = { children: ReactNode; defaultValues?: DefaultValues; disabledPersist?: boolean }
+interface MyProps {
+  children: ReactNode
+  // eslint-disable-next-line react/require-default-props
+  defaultValues?: DefaultValues
+  // eslint-disable-next-line react/require-default-props
+  disabledPersist?: boolean
+}
 
-class Providers extends React.Component<MyProps> {
-  store: Store<any, AnyAction>
+const Providers = ({ children, defaultValues: root, disabledPersist = false }: MyProps) => {
+  const store: Store<any, AnyAction> = createStore(
+    disabledPersist ? storeReducers : persistReducer({ ...persistConfig, storage }, storeReducers),
+    { root },
+    // eslint-disable-next-line no-underscore-dangle
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+  )
+  const persistor: Persistor = persistStore(store)
 
-  persistor: Persistor
-
-  disabledPersist: boolean
-
-  constructor(props: MyProps) {
-    super(props)
-    const reducerConfig = { ...persistConfig, storage }
-    this.disabledPersist = props.disabledPersist || false
-    const persistedReducer = this.disabledPersist ? storeReducers : persistReducer(reducerConfig, storeReducers)
-    this.store = createStore(
-      persistedReducer,
-      { root: props.defaultValues },
-      // eslint-disable-next-line no-underscore-dangle
-      (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
-    )
-    this.persistor = persistStore(this.store)
-  }
-
-  render() {
-    const { children } = this.props
-    return (
-      <Provider store={this.store}>
-        {this.disabledPersist ? (
-          children
-        ) : (
-          <PersistGate loading={null} persistor={this.persistor}>
-            {children}
-          </PersistGate>
-        )}
-      </Provider>
-    )
-  }
+  return (
+    <Provider store={store}>
+      {disabledPersist ? (
+        children
+      ) : (
+        <PersistGate loading={null} persistor={persistor}>
+          {children}
+        </PersistGate>
+      )}
+    </Provider>
+  )
 }
 export default Providers

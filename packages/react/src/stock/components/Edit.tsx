@@ -29,9 +29,9 @@ function Edit(props: any) {
   }
   return (
     <>
-      <p style={{ fontSize: 20, color: error ? 'red' : undefined }}>{label}</p>
+      {label && <p style={{ fontSize: 20, color: error ? 'red' : undefined }}>{label}</p>}
       <input {...ownProps} value={value || ''} onChange={handleChange} />
-      <p style={{ fontSize: 10, color: error ? 'red' : undefined }}>{helperText}</p>
+      {(helperText || error) && <p style={{ fontSize: 10, color: error ? 'red' : undefined }}>{helperText}</p>}
     </>
   )
 }
