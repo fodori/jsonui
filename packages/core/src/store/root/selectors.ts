@@ -1,6 +1,6 @@
 import traverse from 'traverse'
 import orderBy from 'lodash/orderBy'
-import { isChildrenProp } from 'wrapper/wrapperUtil'
+import { isChildrenProp } from '../../wrapper/wrapperUtil'
 import * as c from '../../utils/constants'
 import * as util from '../../utils/util'
 import { PathModifiersType, PathType, PropsType, ReduxPathType } from '../../utils/types'

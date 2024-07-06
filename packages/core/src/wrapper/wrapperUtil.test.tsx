@@ -3,6 +3,7 @@ import { MODIFIER_KEY, REDUX_GET_FUNCTION } from '../utils/constants'
 import { calculatePropsFromModifier,getParentProps,getCurrentPaths } from './wrapperUtil'
 import Stock from '../stock/Stock'
 import { PropsType } from 'utils/types'
+import * as c from '../utils/constants'
 
 
 const json1 = {
@@ -32,7 +33,7 @@ test('test getGetsPath with nested json', () => {
   const testFunc = jest.fn((...attrib) => attrib)
   const testFunc1 = jest.fn(() => 66)
   const newStock = { components: { a1: 5 }, functions: { testFunc, testFunc1 } }
-  const result = calculatePropsFromModifier(json1,new Stock(newStock, {}, {}))
+  const result = calculatePropsFromModifier(json1,new Stock(newStock, {} as React.ElementType, {}))
 
   expect(result).not.toEqual(null)
 })
@@ -41,7 +42,7 @@ test('test getGetsPath with nested json', () => {
   
 
   const props=(path:string)=>({
-    currentPaths:{
+    [c.CURRENT_PATH_NAME]:{
       data1: { path },
     }
   })
@@ -50,19 +51,19 @@ test('test getGetsPath with nested json', () => {
       data1: { path },
   })
 
-  expect(getCurrentPaths(props('/subscribed'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/subscribed/list')
-  expect(getCurrentPaths(props('/subscribed'),modifier('/list'))?.currentPaths?.data1?.path).toEqual('/list')
-  expect(getCurrentPaths(props('/subscribed'),modifier('../list'))?.currentPaths?.data1?.path).toEqual('/list')
-  expect(getCurrentPaths(props('/sub/scr/ib/ed'),modifier('../list'))?.currentPaths?.data1?.path).toEqual('/sub/scr/ib/list')
-  expect(getCurrentPaths(props('/sub/scr/ib/ed'),modifier('../../list'))?.currentPaths?.data1?.path).toEqual('/sub/scr/list')
-  expect(getCurrentPaths(props('/sub/scr/ib/ed'),modifier('./list'))?.currentPaths?.data1?.path).toEqual('/sub/scr/ib/ed/list')
-  expect(getCurrentPaths(props('/sub/scr/ib/ed'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/sub/scr/ib/ed/list')
+  expect(getCurrentPaths(props('/subscribed'),modifier('list'))?.data1?.path).toEqual('/subscribed/list')
+  expect(getCurrentPaths(props('/subscribed'),modifier('/list'))?.data1?.path).toEqual('/list')
+  expect(getCurrentPaths(props('/subscribed'),modifier('../list'))?.data1?.path).toEqual('/list')
+  expect(getCurrentPaths(props('/sub/scr/ib/ed'),modifier('../list'))?.data1?.path).toEqual('/sub/scr/ib/list')
+  expect(getCurrentPaths(props('/sub/scr/ib/ed'),modifier('../../list'))?.data1?.path).toEqual('/sub/scr/list')
+  expect(getCurrentPaths(props('/sub/scr/ib/ed'),modifier('./list'))?.data1?.path).toEqual('/sub/scr/ib/ed/list')
+  expect(getCurrentPaths(props('/sub/scr/ib/ed'),modifier('list'))?.data1?.path).toEqual('/sub/scr/ib/ed/list')
 
 
-  expect(getCurrentPaths(props('/'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/list')
-  expect(getCurrentPaths(props('/'),modifier('/list'))?.currentPaths?.data1?.path).toEqual('/list')
-  expect(getCurrentPaths(props('/0'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/0/list')
-  expect(getCurrentPaths(props('/0'),modifier('list'))?.currentPaths?.data1?.path).toEqual('/0/list')
+  expect(getCurrentPaths(props('/'),modifier('list'))?.data1?.path).toEqual('/list')
+  expect(getCurrentPaths(props('/'),modifier('/list'))?.data1?.path).toEqual('/list')
+  expect(getCurrentPaths(props('/0'),modifier('list'))?.data1?.path).toEqual('/0/list')
+  expect(getCurrentPaths(props('/0'),modifier('list'))?.data1?.path).toEqual('/0/list')
 })
 
 test('test getParentProps', () => {

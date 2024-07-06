@@ -126,7 +126,7 @@ export const collectObjMerge = (refConst: string, json: any) => {
   return res
 }
 
-export const collectObjToArray = (refConst: string, json: any) => {
+export const collectObjToArray = (refConst: string, json: any, flatten = false) => {
   if (refConst && json && typeof json === 'object') {
     const refs: any[] = []
     // eslint-disable-next-line func-names
@@ -135,7 +135,7 @@ export const collectObjToArray = (refConst: string, json: any) => {
         refs.push(x[refConst])
       }
     })
-    return refs
+    return flatten === true ? refs.flat() : refs
   }
   return []
 }

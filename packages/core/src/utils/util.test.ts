@@ -457,6 +457,8 @@ test('collectObjMerge test', () => {
 
 test('collectObjToArray test', () => {
   const json = { test: 999, level1: { test: { any: 7 }, '': 8, level2: { test: { any: 7 }, level3: { test: { another: 3, any: 8 } } } } }
+  expect(util.collectObjToArray('test', json)).toEqual([999, { any: 7 }, { any: 7 }, { another: 3, any: 8 }])
+  expect(util.collectObjToArray('any', json)).toEqual([7, 7, 8])
   const realisticJson = {
     $validations: [
       {
@@ -464,11 +466,16 @@ test('collectObjToArray test', () => {
         path: '/elso/masodik',
         store: 'data',
       },
+      {
+        data: 2,
+        path: '/elso/masodik',
+        store: 'data',
+      },
     ],
     level1: {
       $validations: [
         {
-          data: 2,
+          data: 3,
           path: '/elso/masodik',
           store: 'data',
         },
@@ -476,7 +483,7 @@ test('collectObjToArray test', () => {
       level2: {
         $validations: [
           {
-            data: 3,
+            data: 4,
             path: '/elso/harmadik',
             store: 'data',
           },
@@ -484,30 +491,27 @@ test('collectObjToArray test', () => {
       },
     },
   }
-  expect(util.collectObjToArray('test', json)).toEqual([999, { any: 7 }, { any: 7 }, { another: 3, any: 8 }])
-  expect(util.collectObjToArray('any', json)).toEqual([7, 7, 8])
-  expect(util.collectObjToArray('$validations', realisticJson)).toEqual([
-    [
-      {
-        data: 1,
-        path: '/elso/masodik',
-        store: 'data',
-      },
-    ],
-    [
-      {
-        data: 2,
-        path: '/elso/masodik',
-        store: 'data',
-      },
-    ],
-    [
-      {
-        data: 3,
-        path: '/elso/harmadik',
-        store: 'data',
-      },
-    ],
+  expect(util.collectObjToArray('$validations', realisticJson, true)).toEqual([
+    {
+      data: 1,
+      path: '/elso/masodik',
+      store: 'data',
+    },
+    {
+      data: 2,
+      path: '/elso/masodik',
+      store: 'data',
+    },
+    {
+      data: 3,
+      path: '/elso/masodik',
+      store: 'data',
+    },
+    {
+      data: 4,
+      path: '/elso/harmadik',
+      store: 'data',
+    },
   ])
 })
 
