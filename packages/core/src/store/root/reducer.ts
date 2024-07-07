@@ -1,4 +1,4 @@
-import produce from 'immer'
+import produce, { current } from 'immer'
 import { AnyAction } from 'redux'
 import { ValidationType } from '../../utils/types'
 import * as c from '../../utils/constants'
@@ -15,7 +15,9 @@ const validateNewState = (stock: InstanceType<typeof Stock>, newState: RootState
     stock.validations.forEach((validateItem: ValidationType) => {
       if (validateItem.store === actionStore && `${actionPath}`.startsWith(validateItem.path)) {
         if (validateItem.schema) {
-          const stateToBeValidated = util.jsonPointerGet(newState, `${c.SEPARATOR}${actionStore}${validateItem.path}`)
+          const state = current(newState)
+          const stateToBeValidated = util.jsonPointerGet(state, `${c.SEPARATOR}${actionStore}${validateItem.path}`)
+
           const errors = validateJSON(validateItem.schema, actionStore, stateToBeValidated)
           // console.log('matched validator', `${c.SEPARATOR}${errors.store}${validateItem.path}`, errors)
           // eslint-disable-next-line no-param-reassign
@@ -43,7 +45,7 @@ const reducer = (state = initialState, action: AnyAction) => {
           currentPaths && currentPaths[storekey] && currentPaths[storekey].path
             ? util.changeRelativePath(`${currentPaths[storekey].path}${c.SEPARATOR}${path}`)
             : util.changeRelativePath(path)
-        convertedPath = convertedPath.startsWith(c.SEPARATOR) ? convertedPath : `${c.SEPARATOR}${convertedPath}`
+        convertedPath = util.jsonPointerFix(convertedPath)
 
         const absolutePathWithStoreKey = `${c.SEPARATOR}${storekey}${convertedPath}`
         const newState = produce(state, (draft: RootStateType) => {

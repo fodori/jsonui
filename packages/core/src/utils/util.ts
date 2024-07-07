@@ -14,11 +14,21 @@ export const drop = (arr: any[], n = 1) => arr.slice(n)
 
 export const isNumber = (a: any) => typeof a === 'number'
 
+export const jsonPointerFix = (path?: string) => {
+  if (path !== null && path !== undefined && typeof path === 'string') {
+    let str = path
+    str = str.charAt(str.length - 1) === c.SEPARATOR ? str.slice(0, -1) : str
+    str = str.startsWith(c.SEPARATOR) ? path : `${c.SEPARATOR}${path}`
+    return str
+  }
+  return c.SEPARATOR
+}
+
 export const jsonPointerGet = (json: any, path?: string) => {
   if (json === undefined || path === null || path === undefined || typeof path !== 'string') return undefined
   if (path === c.SEPARATOR /* || path === '' same effect */) return json
   try {
-    return jsonpointer.get(json, path.startsWith(c.SEPARATOR) ? path : `${c.SEPARATOR}${path}`)
+    return jsonpointer.get(json, jsonPointerFix(path))
   } catch (e) {
     return undefined
   }
@@ -30,7 +40,7 @@ export const jsonPointerSet = (json: any, path?: string, value?: any) => {
     return value
   }
   try {
-    jsonpointer.set(json, path.startsWith(c.SEPARATOR) ? path : `${c.SEPARATOR}${path}`, value)
+    jsonpointer.set(json, jsonPointerFix(path), value)
     return json
     // eslint-disable-next-line no-empty
   } catch (e) {

@@ -21,7 +21,7 @@ export const getStock = (stockInit: any, model: any, Wrapper: any, reduxStore: a
   })
 
   // get Validations
-  stock.validations = util.collectObjToArray(c.REF_VALIDATES, model)
+  stock.validations = util.collectObjToArray(c.REF_VALIDATES, model, true)
   stock.registerFunction('t', (p) => i18n.t(p.keys, p.options))
   stock.registerFunction('test', () => 'Test is ok')
   return stock
