@@ -1,5 +1,15 @@
 import React from 'react'
 
+const convertErrorToString = (fieldErrors: any): string => {
+  if (typeof fieldErrors === 'string' || typeof fieldErrors === 'number') return `${fieldErrors}`
+  if (fieldErrors && Array.isArray(fieldErrors)) {
+    // eslint-disable-next-line no-nested-ternary
+    return fieldErrors.map((i) => (typeof i === 'string' ? i : i?.['-'] ? i?.['-'] : JSON.stringify(i))).join(', ')
+  }
+  // eslint-disable-next-line no-nested-ternary
+  return typeof fieldErrors === 'string' ? fieldErrors : fieldErrors?.['-'] ? fieldErrors?.['-'] : JSON.stringify(fieldErrors)
+}
+
 function Edit(props: any) {
   const handleChange = (event: any) => {
     props?.onChange(event.target.value)
@@ -8,7 +18,7 @@ function Edit(props: any) {
   let error = !!fieldErrors
   let helperText = origHelpertext
   if (error && fieldErrors) {
-    helperText = fieldErrors && Array.isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors
+    helperText = convertErrorToString(fieldErrors)
   }
   if (validation && value && validation.jsonataDef) {
     let isValid = true
@@ -24,7 +34,7 @@ function Edit(props: any) {
     }
     if (!isValid) {
       error = true
-      helperText = validation.fieldErrors && Array.isArray(validation.fieldErrors) ? validation.fieldErrors.join(', ') : validation.fieldErrors
+      helperText = convertErrorToString(validation.message)
     }
   }
   return (
