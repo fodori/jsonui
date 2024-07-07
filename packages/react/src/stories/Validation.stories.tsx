@@ -44,13 +44,22 @@ ValidationTest.args = {
           properties: {
             name1: {
               type: 'string',
+              format: 'email',
               minLength: 2,
-              maxLength: 10,
+              maxLength: 50,
+              errorMessage: {
+                format: 'should be email',
+              },
             },
             name2: {
               type: 'string',
               minLength: 4,
               maxLength: 10,
+              errorMessage: {
+                type: 'should be string', // will not replace internal "type" error for the property "foo"
+                minLength: 'minLength ',
+                maxLength: 'maxLength',
+              },
             },
           },
           required: ['name1', 'name2'],
@@ -65,7 +74,6 @@ ValidationTest.args = {
   defaultValues: {
     data: {
       name1: '7',
-      name2: '9',
     },
   } as any,
   components: { FormResult },

@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "ajv": "^8.9.0",
+    "ajv-errors": "^3.0.0",
+    "ajv-formats": "^3.0.1",
     "immer": "^9.0.12",
     "jsonata": "^1.8.5",
     "jsonpointer": "^5.0.0",
