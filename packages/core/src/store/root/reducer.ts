@@ -17,9 +17,7 @@ const validateNewState = (stock: InstanceType<typeof Stock>, newState: RootState
         if (validateItem.schema) {
           const state = current(newState)
           const stateToBeValidated = util.jsonPointerGet(state, `${c.SEPARATOR}${actionStore}${validateItem.path}`)
-
           const errors = validateJSON(validateItem.schema, actionStore, stateToBeValidated)
-          // console.log('matched validator', `${c.SEPARATOR}${errors.store}${validateItem.path}`, errors)
           // eslint-disable-next-line no-param-reassign
           newState = util.jsonPointerSet(newState, `${c.SEPARATOR}${errors.store}${validateItem.path}`, errors.value)
         }

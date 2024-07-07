@@ -18,7 +18,7 @@ export const jsonPointerFix = (path?: string) => {
   if (path !== null && path !== undefined && typeof path === 'string') {
     let str = path
     str = str.charAt(str.length - 1) === c.SEPARATOR ? str.slice(0, -1) : str
-    str = str.startsWith(c.SEPARATOR) ? path : `${c.SEPARATOR}${path}`
+    str = str.startsWith(c.SEPARATOR) ? str : `${c.SEPARATOR}${str}`
     return str
   }
   return c.SEPARATOR

@@ -9,6 +9,7 @@ export const errorConverter = (errors: ErrorObject<string, Record<string, any>, 
   if (errors) {
     errors.forEach((i) => {
       if (i.keyword === 'required') {
+        // because it's not parent error, need to move that level
         jsonpointer.set(res, `${pathConverter(`${i.instancePath}.${i.params.missingProperty}`)}/-`, i.message)
       } else {
         jsonpointer.set(res, `${pathConverter(i.instancePath)}/-`, i.message)
