@@ -12,7 +12,7 @@ const json1 = {
     {
       $comp: 'Edit',
       value: { $modifier: 'get', store: 'data', path: 'age' },
-      label: 'Field level validation',
+      label: 'Validation',
       helperText: "it's a child age",
       onChange: { $action: 'set', store: 'data', path: 'age', jsonataDef: '$' },
     },

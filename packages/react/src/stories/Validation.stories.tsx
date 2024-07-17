@@ -20,11 +20,23 @@ ValidationTest.args = {
     $children: [
       {
         $comp: 'Edit',
+        value: { $modifier: 'get', store: 'data', path: 'name5' },
+        label: 'Field level schema test',
+        helperText: 'helppertext here',
+        onChange: {
+          $action: 'set',
+          store: 'data',
+          path: 'name5',
+        },
+        fieldErrors: { $modifier: 'get', store: 'data', path: 'name5', type: 'ERROR' },
+      },
+      {
+        $comp: 'Edit',
         value: { $modifier: 'get', store: 'data', path: 'name1' },
         label: 'E-mail address',
         helperText: "we don't accept any another format",
         onChange: { $action: 'set', store: 'data', path: 'name1' },
-        fieldErrors: { $modifier: 'get', store: 'data', path: 'name1', isError: true },
+        fieldErrors: { $modifier: 'get', store: 'data', path: 'name1', type: 'ERROR' },
       },
       {
         $comp: 'Edit',
@@ -32,35 +44,38 @@ ValidationTest.args = {
         label: 'Length test',
         helperText: 'helppertext here',
         onChange: { $action: 'set', store: 'data', path: 'name2' },
-        fieldErrors: { $modifier: 'get', store: 'data', path: 'name2', isError: true },
+        fieldErrors: { $modifier: 'get', store: 'data', path: 'name2', type: 'ERROR' },
       },
+
       {
         $comp: 'Edit',
         value: { $modifier: 'get', store: 'data', path: 'name3' },
         label: 'Single schema test',
         helperText: 'helppertext here',
         onChange: { $action: 'set', store: 'data', path: 'name3' },
-        fieldErrors: { $modifier: 'get', store: 'data', path: 'name3', isError: true },
-      },
-      {
-        $comp: 'Edit',
-        value: { $modifier: 'get', store: 'data', path: 'name4' },
-        label: 'Jsonata test',
-        helperText: 'helppertext here',
-        onChange: { $action: 'set', store: 'data', path: 'name4' },
-        fieldErrors: { $modifier: 'get', store: 'data', path: 'name4', isError: true },
-        validation: { jsonataDef: '$length($)>5', message: 'at least 5 character' },
+        fieldErrors: { $modifier: 'get', store: 'data', path: 'name3', type: 'ERROR' },
       },
       { $comp: 'Text', $children: 'Data', style: { fontSize: 20 } },
       { $comp: 'FormResult', value: { $modifier: 'get', store: 'data', path: '/' } },
       { $comp: 'Text', $children: 'Data Error', style: { fontSize: 20 } },
       { $comp: 'FormResult', value: { $modifier: 'get', store: `data${c.STORE_ERROR_POSTFIX}`, path: '/' } },
+      { $comp: 'Text', $children: 'Data touched', style: { fontSize: 20 } },
+      { $comp: 'FormResult', value: { $modifier: 'get', store: `data${c.STORE_TOUCH_POSTFIX}`, path: '/' } },
     ],
     $validations: [
       {
         schema: {
           type: 'object',
           properties: {
+            name5: {
+              type: 'string',
+              format: 'email',
+              minLength: 2,
+              maxLength: 50,
+              errorMessage: {
+                format: 'should be email',
+              },
+            },
             name1: {
               type: 'string',
               format: 'email',
@@ -121,14 +136,9 @@ ValidationTest.parameters = { controls: { include: ['model', 'id'] } }
 export default JsonUIStory
 
 /**
- * BUG:
- * validation global doesn't work
  * TODO:
- * test global validation,
- * field level validation,
- * multiple validation,
- * multiple button/condition validation
- * touch,
- * show validation data (globally, field level with same path, add to a different component)
+ * how is help submit to validate the whole form
+ * touch
+ * dirty
  *
  * */

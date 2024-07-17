@@ -11,7 +11,7 @@ import {
   PropsType,
   compSelectorHook,
   PathModifiersType,
-  ReduxPathType,
+  ReduxPath,
 } from '@jsonui/core'
 import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'
@@ -54,7 +54,7 @@ function Wrapper({ props: origProps }: { props: any }) {
   const { [c.V_COMP_NAME]: component } = props
   const ownProps = wrapperUtil.getRootWrapperProps(props, stock)
   // TODO isError
-  useSelector(compSelectorHook(props[c.CURRENT_PATH_NAME] as PathModifiersType, ownProps.subscriberPaths as ReduxPathType[]), shallowEqual)
+  useSelector(compSelectorHook(props[c.CURRENT_PATH_NAME] as PathModifiersType, ownProps.subscriberPaths as ReduxPath[]), shallowEqual)
   if (!stock) {
     return null
   }

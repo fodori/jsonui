@@ -150,11 +150,31 @@ export const collectObjToArray = (refConst: string, json: any, flatten = false) 
   return []
 }
 
-export const isCircular = (d: any): boolean => {
+export const isValidJson = (d: any): boolean => {
   try {
     JSON.stringify(d)
   } catch (e) {
     return true
   }
   return false
+}
+
+export const isPrimitiveValue = (value: any, emptyStringAllowed = false) =>
+  value !== 'undefined' && value !== null && ['string', 'boolean', 'number', 'bigint'].includes(typeof value) && (value !== '' || emptyStringAllowed)
+
+export const isEmptyNested = (obj: any, emptyStringAllowed = false): boolean => {
+  if (typeof obj === 'object') {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in obj) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key]
+        if (typeof value === 'object') {
+          return isEmptyNested(value)
+        }
+        return !isPrimitiveValue(value, emptyStringAllowed)
+      }
+    }
+  }
+  return !isPrimitiveValue(obj, emptyStringAllowed)
 }

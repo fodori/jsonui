@@ -34,8 +34,15 @@ export interface ValidationType {
   schema: any
 }
 
-export interface ReduxPathType {
+// eslint-disable-next-line no-shadow
+export enum ReduxPathTypeEnum {
+  ERROR = 'ERROR',
+  TOUCH = 'TOUCH',
+  NORMAL = 'NORMAL',
+}
+
+export interface ReduxPath {
   store?: string
   path?: string
-  isError?: boolean
+  type?: ReduxPathTypeEnum
 }

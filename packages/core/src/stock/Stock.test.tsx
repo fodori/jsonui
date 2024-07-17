@@ -4,7 +4,7 @@ test('Stock init test', () => {
   const testFunc = jest.fn((...attrib) => attrib)
   const testFunc1 = jest.fn(() => 66)
   const newStock = { components: { a1: 5 }, functions: { testFunc, testFunc1 } }
-  const stockInstance = new Stock(newStock, {}, {})
+  const stockInstance = new Stock(newStock, {} as React.ElementType, {})
   expect(stockInstance.stock).toStrictEqual(newStock)
   const additional = { components: { a2: 8, a1: 8 }, functions: { testFunc3: () => 7 } }
   expect(stockInstance.stock.components.a1).toStrictEqual(5)
@@ -25,7 +25,7 @@ test('callFunction test', () => {
   const testFunc = jest.fn((...attrib) => attrib)
   const testFunc1 = jest.fn(() => 66)
   const newStock = { components: {}, functions: { testFunc, testFunc1 } }
-  const stockInstance = new Stock(newStock, {}, {})
+  const stockInstance = new Stock(newStock, {} as React.ElementType, {})
   const attr = 'attr'
   const callerArgs = 'callerArgs'
   stockInstance.callFunction('testFunc', attr, callerArgs)
@@ -45,7 +45,7 @@ test('getComponent test', () => {
   const testFunc = jest.fn((...attrib) => attrib)
   const testFunc1 = jest.fn(() => 66)
   const newStock = { components: { a1: 5 }, functions: { testFunc, testFunc1 } }
-  const stockInstance = new Stock(newStock, {}, {})
+  const stockInstance = new Stock(newStock, {} as React.ElementType, {})
   expect(stockInstance.getComponent('')).toBe(undefined)
   expect(stockInstance.getComponent('jhjhgjh')).toBe(undefined)
   expect(stockInstance.getComponent('a1')).toBe(5)

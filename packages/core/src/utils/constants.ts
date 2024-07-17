@@ -1,5 +1,6 @@
 export const SEPARATOR = '/'
 export const STORE_ERROR_POSTFIX = '.error'
+export const STORE_TOUCH_POSTFIX = '.touch'
 
 export const PATH_MODIFIERS_KEY = '$pathModifiers'
 export const MODIFIER_KEY = '$modifier'

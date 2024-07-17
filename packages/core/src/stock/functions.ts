@@ -5,14 +5,14 @@ import { PathModifiersType } from '../utils/types'
 import * as c from '../utils/constants'
 
 const getStateValue: JsonUIFunctionType = (attr, { [c.CURRENT_PATH_NAME]: currentPaths } = {}, callerArgs, stock) => {
-  const { store, path, isError } = attr
+  const { store, path, type } = attr
   const state = stock.reduxStore.getState()
-  return getStateValueSelector(state, { store, path, isError }, currentPaths as PathModifiersType)
+  return getStateValueSelector(state, { store, path, type }, currentPaths as PathModifiersType)
 }
 const get: JsonUIFunctionType = (attr, { [c.CURRENT_PATH_NAME]: currentPaths } = {}, callerArgs, stock) => {
-  const { store, path, isError } = attr
+  const { store, path, type } = attr
   const state = stock.reduxStore.getState()
-  return getStateValueSelector(state, { store, path, isError }, currentPaths as PathModifiersType)
+  return getStateValueSelector(state, { store, path, type }, currentPaths as PathModifiersType)
 }
 const set: JsonUIFunctionType = (attr, props, callerArgs, stock) => {
   stock.reduxStore.dispatch(

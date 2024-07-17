@@ -1,9 +1,9 @@
-import { ReduxPathType } from 'utils/types'
+import { ReduxPath } from 'utils/types'
 import { getStateValue } from './selectors'
 
 test('getStateValue test', () => {
   expect(getStateValue({}, { store: 'data', path: '' }, {})).toBe(null)
-  expect(getStateValue({ root: { data: { age: 66 } } }, {} as ReduxPathType, {})).toBe(null)
+  expect(getStateValue({ root: { data: { age: 66 } } }, {} as ReduxPath, {})).toBe(null)
   expect(getStateValue({}, { store: 'data', path: 'age' }, {})).toBe(null)
   expect(getStateValue(null, { store: 'data', path: 'age' }, {})).toBe(null)
   expect(getStateValue(null, { store: '', path: '' }, {})).toBe(null)

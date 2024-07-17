@@ -515,19 +515,76 @@ test('collectObjToArray test', () => {
   ])
 })
 
-test('isCircular test', () => {
-  expect(util.isCircular('')).toBe(false)
-  expect(util.isCircular(null)).toBe(false)
-  expect(util.isCircular(undefined)).toBe(false)
-  expect(util.isCircular({})).toBe(false)
-  expect(util.isCircular(false)).toBe(false)
-  expect(util.isCircular(true)).toBe(false)
+test('isValidJson test', () => {
+  expect(util.isValidJson('')).toBe(false)
+  expect(util.isValidJson(null)).toBe(false)
+  expect(util.isValidJson(undefined)).toBe(false)
+  expect(util.isValidJson({})).toBe(false)
+  expect(util.isValidJson(false)).toBe(false)
+  expect(util.isValidJson(true)).toBe(false)
   const funcTest = () => {
+    // eslint-disable-next-line no-console
     console.log('')
   }
-  expect(util.isCircular(funcTest)).toBe(false)
+  expect(util.isValidJson(funcTest)).toBe(false)
   const a: any = { a: 2, b: 5 }
-  expect(util.isCircular(a)).toBe(false)
+  expect(util.isValidJson(a)).toBe(false)
   a.b = a
-  expect(util.isCircular(a)).toBe(true)
+  expect(util.isValidJson(a)).toBe(true)
+})
+
+test('isPrimitiveValue test emptyStringAllowed false', () => {
+  expect(util.isPrimitiveValue('', false)).toBe(false)
+  expect(util.isPrimitiveValue('a', false)).toBe(true)
+  expect(util.isPrimitiveValue(6, false)).toBe(true)
+  expect(util.isPrimitiveValue(BigInt(9007199254740991), false)).toBe(true)
+  expect(util.isPrimitiveValue(null, false)).toBe(false)
+  expect(util.isPrimitiveValue(undefined, false)).toBe(false)
+  expect(util.isPrimitiveValue({}, false)).toBe(false)
+  expect(util.isPrimitiveValue([], false)).toBe(false)
+  expect(util.isPrimitiveValue(false, false)).toBe(true)
+  expect(util.isPrimitiveValue(true, false)).toBe(true)
+  const a: any = { a: 2, b: 5 }
+  expect(util.isPrimitiveValue(a, false)).toBe(false)
+  a.b = a
+  expect(util.isPrimitiveValue(a, false)).toBe(false)
+})
+
+test('isPrimitiveValue test emptyStringAllowed true', () => {
+  expect(util.isPrimitiveValue('', true)).toBe(true)
+  expect(util.isPrimitiveValue('a', true)).toBe(true)
+  expect(util.isPrimitiveValue(6, true)).toBe(true)
+  expect(util.isPrimitiveValue(BigInt(9007199254740991), true)).toBe(true)
+  expect(util.isPrimitiveValue(null, true)).toBe(false)
+  expect(util.isPrimitiveValue(undefined, true)).toBe(false)
+  expect(util.isPrimitiveValue({}, true)).toBe(false)
+  expect(util.isPrimitiveValue([], true)).toBe(false)
+  expect(util.isPrimitiveValue(false, true)).toBe(true)
+  expect(util.isPrimitiveValue(true, true)).toBe(true)
+  const a: any = { a: 2, b: 5 }
+  expect(util.isPrimitiveValue(a, true)).toBe(false)
+  a.b = a
+  expect(util.isPrimitiveValue(a, true)).toBe(false)
+})
+
+test('isEmptyNested test emptyStringAllowed false', () => {
+  expect(util.isEmptyNested('', false)).toBe(true)
+  expect(util.isEmptyNested('a', false)).toBe(false)
+  expect(util.isEmptyNested(6, false)).toBe(false)
+  expect(util.isEmptyNested(BigInt(9007199254740991), false)).toBe(false)
+  expect(util.isEmptyNested(null, false)).toBe(true)
+  expect(util.isEmptyNested(undefined, false)).toBe(true)
+  expect(util.isEmptyNested({}, false)).toBe(true)
+  expect(util.isEmptyNested([], false)).toBe(true)
+  expect(util.isEmptyNested(false, false)).toBe(false)
+  expect(util.isEmptyNested(true, false)).toBe(false)
+  const a: any = { a: 2, b: 5 }
+  expect(util.isEmptyNested(a, false)).toBe(false)
+  a.b = a
+  expect(util.isEmptyNested(a, false)).toBe(false)
+
+  expect(util.isEmptyNested({ a: { c: [] }, b: [], d: [], e: { g: {} }, w: null, t: undefined }, false)).toBe(true)
+  expect(util.isEmptyNested({ a: { c: [5] }, b: [], d: [], e: { g: {} }, w: null, t: undefined }, false)).toBe(false)
+  expect(util.isEmptyNested([], false)).toBe(true)
+  expect(util.isEmptyNested([[[[{}], {}], null, undefined], { w: null, t: undefined }], false)).toBe(true)
 })

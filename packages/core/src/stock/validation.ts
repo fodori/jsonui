@@ -21,18 +21,27 @@ export const errorConverter = (errors: ErrorObject<string, Record<string, any>, 
       }
     })
   }
-  return res
+  // TODO: if it's a root level validation, looks like : {-: 'should be email'} should be converted
+  return res && (res as any)['-'] ? (res as any)['-'] : res
 }
 
-export const validateJSON = (schema: any, store: string, data: any) => {
+export const validateJSON = (schema: any, data: any) => {
   const ajv = new Ajv({ allErrors: true })
   ajvErrors(ajv)
   ajvFormats(ajv)
   const validate = ajv.compile(schema as JSONSchemaType<any>)
   const valid = validate(data)
   return {
+    valid: validate(data),
+    error: valid ? null : errorConverter(validate.errors),
+  }
+}
+
+export const validateJSONAndStore = (schema: any, store: string, data: any) => {
+  const { valid, error } = validateJSON(schema, data)
+  return {
     store: `${store}${c.STORE_ERROR_POSTFIX}`,
     valid,
-    value: valid ? null : errorConverter(validate.errors),
+    value: error,
   }
 }
