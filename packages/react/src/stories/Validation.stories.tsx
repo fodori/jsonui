@@ -29,6 +29,7 @@ ValidationTest.args = {
           path: 'name5',
         },
         fieldErrors: { $modifier: 'get', store: 'data', path: 'name5', type: 'ERROR' },
+        fieldTouched: { $modifier: 'get', store: 'data', path: 'name5', type: 'TOUCH' },
       },
       {
         $comp: 'Edit',
@@ -37,6 +38,7 @@ ValidationTest.args = {
         helperText: "we don't accept any another format",
         onChange: { $action: 'set', store: 'data', path: 'name1' },
         fieldErrors: { $modifier: 'get', store: 'data', path: 'name1', type: 'ERROR' },
+        fieldTouched: { $modifier: 'get', store: 'data', path: 'name1', type: 'TOUCH' },
       },
       {
         $comp: 'Edit',
@@ -45,6 +47,7 @@ ValidationTest.args = {
         helperText: 'helppertext here',
         onChange: { $action: 'set', store: 'data', path: 'name2' },
         fieldErrors: { $modifier: 'get', store: 'data', path: 'name2', type: 'ERROR' },
+        fieldTouched: { $modifier: 'get', store: 'data', path: 'name2', type: 'TOUCH' },
       },
 
       {
@@ -54,6 +57,7 @@ ValidationTest.args = {
         helperText: 'helppertext here',
         onChange: { $action: 'set', store: 'data', path: 'name3' },
         fieldErrors: { $modifier: 'get', store: 'data', path: 'name3', type: 'ERROR' },
+        fieldTouched: { $modifier: 'get', store: 'data', path: 'name3', type: 'TOUCH' },
       },
       { $comp: 'Text', $children: 'Data', style: { fontSize: 20 } },
       { $comp: 'FormResult', value: { $modifier: 'get', store: 'data', path: '/' } },

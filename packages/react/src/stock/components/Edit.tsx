@@ -14,11 +14,15 @@ function Edit(props: any) {
   const handleChange = (event: any) => {
     props?.onChange(event.target.value)
   }
-  const { fieldErrors, validation, value, label, helperText, onChange, ...ownProps } = props
+  const { fieldErrors, fieldTouched, validation, value, label, helperText, onChange, ...ownProps } = props
   const error = !!fieldErrors
   return (
     <>
-      {label && <p style={{ fontSize: 20, color: error ? 'red' : undefined }}>{label}</p>}
+      {label && (
+        <p style={{ fontSize: 20, color: error ? 'red' : undefined }}>
+          {label} {fieldTouched ? '[touched]' : ''}
+        </p>
+      )}
       <input {...ownProps} value={value || ''} onChange={handleChange} />
       {(helperText || error) && <p style={{ fontSize: 10, color: error ? 'red' : undefined }}>{error ? convertErrorToString(fieldErrors) : helperText}</p>}
     </>

@@ -172,9 +172,9 @@ export const hasLeaf = (obj: any, emptyStringAllowed = false): boolean => {
         if (typeof value === 'object') {
           return hasLeaf(value)
         }
-        return !isPrimitiveValue(value, emptyStringAllowed)
+        return isPrimitiveValue(value, emptyStringAllowed)
       }
     }
   }
-  return !isPrimitiveValue(obj, emptyStringAllowed)
+  return isPrimitiveValue(obj, emptyStringAllowed)
 }

@@ -19,12 +19,12 @@ export const getStateValue = (globalState: any, { store, path, type }: ReduxPath
     if (type === ReduxPathTypeEnum.ERROR) {
       const value = getValue(state, `${store}${c.STORE_ERROR_POSTFIX}`, convertedPath)
       // if we have error, need to show, the empty structure is not error, doesn't matter how deep is it
-      return util.hasLeaf(value) ? null : value
+      return util.hasLeaf(value) ? value : null
     }
     if (type === ReduxPathTypeEnum.TOUCH) {
       const value = getValue(state, `${store}${c.STORE_TOUCH_POSTFIX}`, convertedPath)
       // if we have error, need to show, the empty structure is not error, doesn't matter how deep is it
-      return util.hasLeaf(value) ? null : value
+      return util.hasLeaf(value) // return true if is touched.
     }
 
     return getValue(state, store, convertedPath)
