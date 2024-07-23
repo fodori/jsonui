@@ -26,13 +26,9 @@ yarn add @jsonui/react
 The `JsonUI` Component is a canvas and the `model` parameter contains the UI definition in Json format.
 
 ```js
-import {JsonUI} from '@jsonui/react';
+import { JsonUI } from '@jsonui/react'
 
-const Canvas = () => <JsonUI model={
-    { "$comp": "Text",
-      "$children": "Hello World",
-      "style": { "fontSize": 30 }
-    } />
+const Canvas = () => <JsonUI model={{ $comp: 'Text', $children: 'Hello World', style: { fontSize: 30 } }} />
 ```
 
 ### How it works
@@ -91,12 +87,12 @@ Easily.
 ```js
 
 const Canvas = () => <JsonUI model={jsonData}
-  "components"={
+  "components" = {
     {
-     nagivate: ({route}) => navigate(route)
+     navigate: ({route}) => navigate(route)
     }
   }
-  "functions"={
+  "functions" = {
     {
      t: ({key}) => t(key)
     }
