@@ -76,9 +76,7 @@ export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType
     }
     traverse(props).set(i.path, stock.callFunction(functionName, functionParams, props))
   })
-  return reduxPaths.map((i: any) => {
-    return { store: i?.store, path: i?.path } as ReduxPath
-  })
+  return reduxPaths
 }
 
 export const getCurrentPaths = (props: PropsType, pathModifier: PathModifiersType) => {
@@ -125,7 +123,7 @@ const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Sto
   const { path } = currentPaths[store]
   if (currentPaths && !listLength) {
     if (path) {
-      const list = stock.callFunction('get', { store, path })
+      const list = stock.callFunction(c.REDUX_GET_FUNCTION, { store, path })
       listLength = !!list && Array.isArray(list as any[]) ? list.length : 0
     }
   }
@@ -154,17 +152,14 @@ const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Sto
 }
 
 export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof Stock>) => {
-  const newProps = {
-    ...props,
-    // if the children generation move to wrapper, the redux genAllStateProps doesn't wortk properly. why?
+  const subscriberPaths = calculatePropsFromModifier(props, stock)
+  actionBuilder(props, stock)
+  if (props[c.LIST_SEMAPHORE]) {
+    // eslint-disable-next-line no-param-reassign
+    props[c.V_CHILDREN_NAME] = genChildenFromListItem(props, stock)
   }
-  const subscriberPaths = calculatePropsFromModifier(newProps, stock)
-  actionBuilder(newProps, stock)
-  if (newProps[c.LIST_SEMAPHORE]) {
-    newProps[c.V_CHILDREN_NAME] = genChildenFromListItem(newProps, stock)
-  }
-  newProps.subscriberPaths = subscriberPaths
-  return newProps
+  // eslint-disable-next-line no-param-reassign
+  props[c.REDUX_GET_SUBSCRIBERS_NAME] = subscriberPaths
 }
 
 export const isChildrenProp = (propName?: string): boolean => !!propName && typeof propName === 'string' && propName.startsWith(c.V_CHILDREN_PREFIX)
@@ -239,7 +234,7 @@ export const isTechnicalProp = (propName: string) =>
     c.LIST_ITEM_PER_PAGE,
     c.LIST_LENGTH,
     'style',
-    'subscriberPaths',
+    c.REDUX_GET_SUBSCRIBERS_NAME,
   ].includes(propName)
 
 export const removeTechnicalProps = (changeableProps: any) => {
@@ -250,7 +245,7 @@ export const removeTechnicalProps = (changeableProps: any) => {
     [c.V_COMP_NAME]: _unused2,
     [c.PATH_MODIFIERS_KEY]: _unused3,
     [c.CURRENT_PATH_NAME]: _unused4,
-    subscriberPaths: _unused5,
+    [c.REDUX_GET_SUBSCRIBERS_NAME]: _unused5,
     [c.PATH_MODIFIERS_KEY]: _unused6,
     [c.LIST_SEMAPHORE]: _unused7,
     [c.LIST_ITEM]: _unused8,

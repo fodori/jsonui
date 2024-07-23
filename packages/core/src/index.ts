@@ -10,7 +10,7 @@ import persistConfig from './store/persistConfig'
 import storeReducers from './store/reducers'
 import appRootFunctions from './stock/appRootFunctions'
 
-export * from './utils/types'
+export type * from './utils/types'
 
 export {
   Stock,

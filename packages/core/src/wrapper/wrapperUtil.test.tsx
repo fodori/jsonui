@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { MODIFIER_KEY, REDUX_GET_FUNCTION } from '../utils/constants'
 import { calculatePropsFromModifier,getParentProps,getCurrentPaths } from './wrapperUtil'
 import Stock from '../stock/Stock'
 import { PropsType } from 'utils/types'

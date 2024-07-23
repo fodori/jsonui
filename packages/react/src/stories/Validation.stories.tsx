@@ -1,6 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { constants as c } from '@jsonui/core'
+import { constants as c, JsonUIFunctionType } from '@jsonui/core'
 import FormResult from '../stock/components/FormResult'
 
 import { JsonUI } from '../index'
@@ -12,95 +12,100 @@ const JsonUIStory = {
 
 const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
 
+const submit: JsonUIFunctionType = (attr, props, callerArgs) => {
+  console.log(' ---- submit ---- ')
+  console.log('attr: ', attr)
+  console.log('props: ', props)
+  console.log('callerArgs: ', callerArgs)
+}
+
 export const ValidationTest = Template.bind({})
 ValidationTest.args = {
   model: {
     $comp: 'View',
+    id: 'view',
     style: { marginTop: 10 },
     $children: [
       {
         $comp: 'Edit',
-        value: { $modifier: 'get', store: 'data', path: 'name5' },
-        label: 'Field level schema test',
-        helperText: 'helppertext here',
+        value: { $modifier: 'get', store: 'data', path: 'firstname' },
+        label: 'First Name',
+        helperText: 'more than 2 character and less than 10',
         onChange: {
           $action: 'set',
           store: 'data',
-          path: 'name5',
+          path: 'firstname',
         },
-        fieldErrors: { $modifier: 'get', store: 'data', path: 'name5', type: 'ERROR' },
-        fieldTouched: { $modifier: 'get', store: 'data', path: 'name5', type: 'TOUCH' },
+        fieldErrors: { $modifier: 'get', store: 'data', path: 'firstname', type: 'ERROR' },
+        fieldTouched: { $modifier: 'get', store: 'data', path: 'firstname', type: 'TOUCH' },
       },
       {
         $comp: 'Edit',
-        value: { $modifier: 'get', store: 'data', path: 'name1' },
+        value: { $modifier: 'get', store: 'data', path: 'email' },
         label: 'E-mail address',
         helperText: "we don't accept any another format",
-        onChange: { $action: 'set', store: 'data', path: 'name1' },
-        fieldErrors: { $modifier: 'get', store: 'data', path: 'name1', type: 'ERROR' },
-        fieldTouched: { $modifier: 'get', store: 'data', path: 'name1', type: 'TOUCH' },
+        onChange: { $action: 'set', store: 'data', path: 'email' },
+        fieldErrors: { $modifier: 'get', store: 'data', path: 'email', type: 'ERROR' },
+        fieldTouched: { $modifier: 'get', store: 'data', path: 'email', type: 'TOUCH' },
       },
       {
         $comp: 'Edit',
-        value: { $modifier: 'get', store: 'data', path: 'name2' },
-        label: 'Length test',
-        helperText: 'helppertext here',
-        onChange: { $action: 'set', store: 'data', path: 'name2' },
-        fieldErrors: { $modifier: 'get', store: 'data', path: 'name2', type: 'ERROR' },
-        fieldTouched: { $modifier: 'get', store: 'data', path: 'name2', type: 'TOUCH' },
-      },
-
-      {
-        $comp: 'Edit',
-        value: { $modifier: 'get', store: 'data', path: 'name3' },
+        value: { $modifier: 'get', store: 'data', path: 'anotherText' },
         label: 'Single schema test',
         helperText: 'helppertext here',
-        onChange: { $action: 'set', store: 'data', path: 'name3' },
-        fieldErrors: { $modifier: 'get', store: 'data', path: 'name3', type: 'ERROR' },
-        fieldTouched: { $modifier: 'get', store: 'data', path: 'name3', type: 'TOUCH' },
+        onChange: { $action: 'set', store: 'data', path: 'anotherText' },
+        fieldErrors: { $modifier: 'get', store: 'data', path: 'anotherText', type: 'ERROR' },
+        fieldTouched: { $modifier: 'get', store: 'data', path: 'anotherText', type: 'TOUCH' },
       },
       { $comp: 'Text', $children: 'Data', style: { fontSize: 20 } },
       { $comp: 'FormResult', value: { $modifier: 'get', store: 'data', path: '/' } },
-      { $comp: 'Text', $children: 'Data Error', style: { fontSize: 20 } },
+      { $comp: 'Text', $children: 'Error', style: { fontSize: 20 } },
       { $comp: 'FormResult', value: { $modifier: 'get', store: `data${c.STORE_ERROR_POSTFIX}`, path: '/' } },
-      { $comp: 'Text', $children: 'Data touched', style: { fontSize: 20 } },
+      { $comp: 'Text', $children: 'Touched', style: { fontSize: 20 } },
       { $comp: 'FormResult', value: { $modifier: 'get', store: `data${c.STORE_TOUCH_POSTFIX}`, path: '/' } },
+
+      {
+        $comp: 'Button',
+        id: 'submitbutton',
+        onClick: { $action: 'submit', store: 'data', path: '/' },
+        $children: 'Submit',
+        disabled: {
+          $modifier: 'jsonata',
+          jsonataDef: 'error = true or touched = false',
+          error: { $modifier: 'get', store: 'data', path: '/', type: 'ERROR', jsonataDef: '$ !=null' },
+          touched: { $modifier: 'get', store: 'data', path: '/', type: 'TOUCH' },
+        },
+      },
     ],
     $validations: [
       {
         schema: {
           type: 'object',
           properties: {
-            name5: {
+            firstname: {
               type: 'string',
-              format: 'email',
-              minLength: 2,
-              maxLength: 50,
+              minLength: 3,
+              maxLength: 9,
               errorMessage: {
-                format: 'should be email',
+                minLength: 'too small',
+                maxLength: 'too big',
               },
             },
-            name1: {
+            email: {
               type: 'string',
               format: 'email',
-              minLength: 2,
-              maxLength: 50,
               errorMessage: {
                 format: 'should be email',
-              },
-            },
-            name2: {
-              type: 'string',
-              minLength: 4,
-              maxLength: 10,
-              errorMessage: {
-                type: 'should be string', // will not replace internal "type" error for the property "foo"
-                minLength: 'minLength ',
-                maxLength: 'maxLength',
               },
             },
           },
-          required: ['name1', 'name2'],
+          required: ['firstname', 'email'],
+          errorMessage: {
+            required: {
+              firstname: 'firstname is required',
+              email: 'email is required',
+            },
+          },
         },
         path: '/',
         store: 'data',
@@ -111,7 +116,7 @@ ValidationTest.args = {
           minLength: 2,
           maxLength: 4,
         },
-        path: '/name3',
+        path: '/anotherText',
         store: 'data',
       },
     ],
@@ -124,6 +129,7 @@ ValidationTest.args = {
     },
   } as any,
   components: { FormResult },
+  functions: { submit },
 }
 
 ValidationTest.argTypes = {

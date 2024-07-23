@@ -1,3 +1,5 @@
+import { JsonUIComponentsType, JsonUIFunctions } from '@jsonui/core'
+
 export type JSONPrimitive = string | number | boolean | null
 // eslint-disable-next-line no-use-before-define
 export type JSONValue = JSONPrimitive | JSONObject | JSONArray
@@ -10,6 +12,7 @@ export interface ChangeDefaultValueFuncProp {
   value: JSONValue
 }
 export type ChangeDefaultValueFunc = (arg: ChangeDefaultValueFuncProp) => void
+export type OnSubmitFunc = (arg: any) => void
 
 export interface DefaultValues {
   [key: string]: JSONValue
@@ -19,7 +22,8 @@ export interface ViewerProps {
   model: any
   defaultValues?: DefaultValues
   id?: string
-  components?: any
-  functions?: any
+  components?: JsonUIComponentsType
+  functions?: JsonUIFunctions
   disabledPersist?: boolean
+  onSubmit?: OnSubmitFunc
 }

@@ -1,9 +1,5 @@
 import { ReactNode } from 'react'
-import { JsonUIFunctions, JsonUIFunctionType } from './appRootFunctions'
-
-interface JsonUIComponentsType {
-  [key: string]: ReactNode
-}
+import { JsonUIComponentsType, JsonUIFunctions, JsonUIFunctionType } from 'utils/types'
 
 interface NewStockType {
   components: JsonUIComponentsType

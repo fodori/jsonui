@@ -13,6 +13,7 @@ import {
   PathModifiersType,
   ReduxPath,
 } from '@jsonui/core'
+import { cloneDeep } from 'lodash'
 import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'
 
@@ -47,14 +48,14 @@ function Wrapper({ props: origProps }: { props: any }) {
   const newCurrentPaths = useContext(PathModifierContext)
   const stock: InstanceType<typeof Stock> = useContext(StockContext)
 
-  const props = {
+  const props = cloneDeep({
+    // TODO replace cloneDeep to a fastest one
     ...wrapperUtil.normalisePrimitives(origProps),
     [c.CURRENT_PATH_NAME]: wrapperUtil.getCurrentPaths({ ...origProps, [c.CURRENT_PATH_NAME]: newCurrentPaths }, origProps?.[c.PATH_MODIFIERS_KEY]),
-  }
+  })
   const { [c.V_COMP_NAME]: component } = props
-  const ownProps = wrapperUtil.getRootWrapperProps(props, stock)
-  // TODO isError
-  useSelector(compSelectorHook(props[c.CURRENT_PATH_NAME] as PathModifiersType, ownProps.subscriberPaths as ReduxPath[]), shallowEqual)
+  wrapperUtil.getRootWrapperProps(props, stock)
+  useSelector(compSelectorHook(props[c.CURRENT_PATH_NAME] as PathModifiersType, props[c.REDUX_GET_SUBSCRIBERS_NAME] as ReduxPath[]), shallowEqual)
   if (!stock) {
     return null
   }
@@ -66,17 +67,17 @@ function Wrapper({ props: origProps }: { props: any }) {
     throw `The Component(${component}) is not available`
   }
 
-  const newStyle = ownProps.style || ownProps[c.STYLE_WEB_NAME] ? getStyle(ownProps, component) : undefined
+  const newStyle = props.style || props[c.STYLE_WEB_NAME] ? getStyle(props, component) : undefined
 
   return (
     <ErrorBoundary type="wrapper" id={props.id}>
       <ClassNames>
         {({ css, cx }) => {
-          ownProps.className = newStyle ? cx(css(newStyle)) : undefined
-          const newProps = Object.keys(ownProps).reduce((newObj, childName) => {
+          props.className = newStyle ? cx(css(newStyle)) : undefined
+          const newProps = Object.keys(props).reduce((newObj, childName) => {
             // eslint-disable-next-line no-param-reassign
             if (wrapperUtil.isChildrenProp(childName)) {
-              const res = component === c.PRIMITIVE_COMP_NAME ? ownProps[childName] : wrapperUtil.generateNewChildren(ownProps[childName] as any, stock)
+              const res = component === c.PRIMITIVE_COMP_NAME ? props[childName] : wrapperUtil.generateNewChildren(props[childName] as any, stock)
               // eslint-disable-next-line no-param-reassign
               if (childName === c.V_CHILDREN_NAME) {
                 // eslint-disable-next-line no-param-reassign
@@ -87,22 +88,21 @@ function Wrapper({ props: origProps }: { props: any }) {
               }
             } else if (!wrapperUtil.isTechnicalProp(childName)) {
               // eslint-disable-next-line no-param-reassign
-              newObj[childName] = ownProps[childName]
+              newObj[childName] = props[childName]
             }
 
             return newObj
           }, {} as any)
-
           // children was {wrapperUtil.generateChildren(ownProps, stock)}
-          return ownProps[c.PATH_MODIFIERS_KEY] ? (
+          return props[c.PATH_MODIFIERS_KEY] ? (
             <PathModifierContext.Provider value={props[c.CURRENT_PATH_NAME] as any}>
               <Comp {...newProps} />
-              {infobox && <InfoBox {...ownProps} />}
+              {infobox && <InfoBox {...props} />}
             </PathModifierContext.Provider>
           ) : (
             <>
               <Comp {...newProps} />
-              {infobox && <InfoBox {...ownProps} />}
+              {infobox && <InfoBox {...props} />}
             </>
           )
         }}
