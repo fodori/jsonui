@@ -12,11 +12,11 @@ const JsonUIStory = {
 
 const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
 
-const submit: JsonUIFunctionType = (attr, props, callerArgs) => {
+const submit: JsonUIFunctionType = (attr, props, callerArgs, stock) => {
+  // const state = stock.reduxStore.getState()
+  const result = stock.callFunction('get', attr, props, callerArgs, stock)
   console.log(' ---- submit ---- ')
-  console.log('attr: ', attr)
-  console.log('props: ', props)
-  console.log('callerArgs: ', callerArgs)
+  console.log(result)
 }
 
 export const ValidationTest = Template.bind({})
@@ -125,7 +125,9 @@ ValidationTest.args = {
   disabledPersist: true,
   defaultValues: {
     data: {
-      name1: '7',
+      firstname: 'Jon',
+      email: 'a@a.com',
+      anotherText: 'somethin',
     },
   } as any,
   components: { FormResult },
