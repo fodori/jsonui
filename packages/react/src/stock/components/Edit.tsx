@@ -24,7 +24,11 @@ function Edit(props: any) {
         </p>
       )}
       <input {...ownProps} value={value || ''} onChange={handleChange} />
-      {(helperText || error) && <p style={{ fontSize: 10, color: error ? 'red' : undefined }}>{error ? convertErrorToString(fieldErrors) : helperText}</p>}
+      {(helperText || error) && (
+        <p style={{ fontSize: 10, color: error && fieldTouched ? 'red' : undefined }}>
+          {error && fieldTouched ? convertErrorToString(fieldErrors) : helperText}
+        </p>
+      )}
     </>
   )
 }
