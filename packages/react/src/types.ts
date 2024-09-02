@@ -25,5 +25,4 @@ export interface ViewerProps {
   components?: JsonUIComponentsType
   functions?: JsonUIFunctions
   disabledPersist?: boolean
-  onSubmit?: OnSubmitFunc
 }
