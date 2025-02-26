@@ -7,10 +7,6 @@ import Text from '../stock/components/Text'
 
 expect.extend(matchers)
 
-jest.mock('redux-persist/integration/react', () => ({
-  PersistGate: ({ children }: any) => children,
-}))
-
 const textModifierReturnFirst = (params: any) => {
   return JSON.stringify(params)
 }
@@ -22,7 +18,6 @@ const textModifierReturnSecond = (_: any, compProps: any) => {
 test('simple modifier 1 input param', () => {
   const wrapper = mount(
     <JsonUI
-      disabledPersist
       functions={{ textModifierReturnFirst }}
       model={{ $comp: 'Text', $children: { $modifier: 'textModifierReturnFirst', a: 123, b: 12313, c: [1, 2, 3, 4] } }}
     />
@@ -38,7 +33,7 @@ test('simple modifier 2 input param', () => {
     $children: { $modifier: 'textModifierReturnSecond', a: 123, b: 12313, c: [1, 2, 3, 4] },
     style: { marginTop: 3, padding: 5 },
   }
-  const wrapper = mount(<JsonUI disabledPersist functions={{ textModifierReturnSecond }} model={testModel} />)
+  const wrapper = mount(<JsonUI functions={{ textModifierReturnSecond }} model={testModel} />)
 
   expect(wrapper.find(Text)).toHaveLength(1)
   expect(wrapper.find(Text).at(0).children().text()).toEqual(
@@ -58,7 +53,7 @@ test('simple modifier 2 input param with pathmodifier', () => {
       data: { path: '/subscribed/list' },
     },
   }
-  const wrapper = mount(<JsonUI disabledPersist functions={{ textModifierReturnSecond }} model={testModel} />)
+  const wrapper = mount(<JsonUI functions={{ textModifierReturnSecond }} model={testModel} />)
 
   expect(wrapper.find(Text)).toHaveLength(1)
   expect(wrapper.find(Text).at(0).children().text()).toEqual(

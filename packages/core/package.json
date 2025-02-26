@@ -30,7 +30,6 @@
     "key-value-replace": "^3.0.0",
     "lodash": "^4.17.21",
     "redux": "^4.1.2",
-    "redux-persist": "^6.0.0",
     "traverse": "^0.6.6"
   },
   "peerDependencies": {

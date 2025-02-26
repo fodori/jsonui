@@ -7,10 +7,6 @@ import Text from '../stock/components/Text'
 
 expect.extend(matchers)
 
-jest.mock('redux-persist/integration/react', () => ({
-  PersistGate: ({ children }: any) => children,
-}))
-
 const textModifierReturnSecond = (_: any, compProps: any) => {
   return JSON.stringify(compProps)
 }
@@ -29,7 +25,7 @@ test('simple modifier 2. input param with pathmodifier', () => {
       data6: { path: '../list/prop0' },
     },
   }
-  const wrapper = mount(<JsonUI disabledPersist functions={{ textModifierReturnSecond }} model={testModel} />)
+  const wrapper = mount(<JsonUI functions={{ textModifierReturnSecond }} model={testModel} />)
 
   expect(wrapper.find(Text)).toHaveLength(1)
   expect(wrapper.text()).toEqual(

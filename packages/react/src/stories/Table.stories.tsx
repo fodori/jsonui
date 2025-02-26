@@ -53,7 +53,6 @@ TableTest.args = {
     ],
   },
   id: 'redux',
-  disabledPersist: true,
   defaultValues: {
     data: {
       level1: {

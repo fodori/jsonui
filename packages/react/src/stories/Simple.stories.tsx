@@ -37,7 +37,6 @@ PrimitivesTest.args = {
     ', ',
     2 / 6,
   ],
-  disabledPersist: true,
 }
 
 PrimitivesTest.argTypes = {

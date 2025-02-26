@@ -24,5 +24,4 @@ export interface ViewerProps {
   id?: string
   components?: JsonUIComponentsType
   functions?: JsonUIFunctions
-  disabledPersist?: boolean
 }

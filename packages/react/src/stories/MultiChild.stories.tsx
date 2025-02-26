@@ -63,7 +63,6 @@ MultiChild.args = {
       $children: 'Click',
     },
   ],
-  disabledPersist: true,
   components: { EditMultiChild },
 }
 

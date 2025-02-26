@@ -47,7 +47,6 @@ export const InputTest = Template.bind({})
 InputTest.args = {
   model,
   iteration: 400,
-  disabledPersist: true,
 }
 
 InputTest.argTypes = {

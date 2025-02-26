@@ -44,7 +44,6 @@ export const BoxTest = Template.bind({})
 BoxTest.args = {
   model,
   iteration: 400,
-  disabledPersist: true,
 }
 
 BoxTest.argTypes = {

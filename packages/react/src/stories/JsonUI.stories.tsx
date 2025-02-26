@@ -19,7 +19,6 @@ export const TableTest = Template.bind({})
 TableTest.args = {
   model,
   id: 'aaaa',
-  disabledPersist: true,
   defaultValues: {
     data: {
       level1: {
@@ -51,7 +50,6 @@ InputTest.args = {
     onChange: { $action: 'set', store: 'data', path: 'age', jsonataDef: '$' },
   },
   id: 'aaaa',
-  disabledPersist: true,
   defaultValues: {
     data: {
       age: 'Test',

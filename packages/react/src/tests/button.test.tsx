@@ -7,14 +7,9 @@ import Text from '../stock/components/Text'
 
 expect.extend(matchers)
 
-jest.mock('redux-persist/integration/react', () => ({
-  PersistGate: ({ children }: any) => children,
-}))
-
 test('Text component test', () => {
   const wrapper = mount(
     <JsonUI
-      disabledPersist
       model={[
         { $comp: 'Text', $children: { $modifier: 'get', store: 'data', path: '/age' } },
         {

@@ -22,14 +22,10 @@ const NewEdit = (props: any) => {
     </>
   )
 }
-jest.mock('redux-persist/integration/react', () => ({
-  PersistGate: ({ children }: any) => children,
-}))
 
 test('Edit component test', () => {
   const wrapper = mount(
     <JsonUI
-      disabledPersist
       model={{
         $comp: 'Edit',
         id: 'id1',
@@ -52,7 +48,6 @@ test('Edit component test', () => {
 test('check rerender count after action', () => {
   const wrapper = mount(
     <JsonUI
-      disabledPersist
       components={{ Counter, NewEdit }}
       model={{
         $comp: 'NewEdit',
@@ -82,8 +77,6 @@ test('check rerender count after action', () => {
  * - check children and no children component with children prop
  * - check data manipulation with mutability situation
  * - check error boundary how works
- * - check persistent data how works after reload
- * - test with app id and multiple instance how the persistent can work
  * Low:
  * - check performance or memory leak???
 

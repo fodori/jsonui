@@ -7,10 +7,6 @@ import Text from '../stock/components/Text'
 
 expect.extend(matchers)
 
-jest.mock('redux-persist/integration/react', () => ({
-  PersistGate: ({ children }: any) => children,
-}))
-
 test('model undefined', () => {
   const wrapper = mount(<JsonUI model={undefined} />)
   expect(wrapper).toEqual({})

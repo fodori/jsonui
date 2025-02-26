@@ -47,7 +47,6 @@ export const PartialValueUpdateTest = Template.bind({})
 PartialValueUpdateTest.args = {
   model,
   id: 'aaaa',
-  disabledPersist: true,
   defaultValues: {
     data: {
       level1: {

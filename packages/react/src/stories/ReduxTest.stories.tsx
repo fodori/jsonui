@@ -52,7 +52,6 @@ TwoEditAnd1Modifier.args = {
   // },
 
   id: 'redux',
-  disabledPersist: true,
   defaultValues: {
     data: {
       age: 'Test1',
@@ -135,7 +134,6 @@ PathModifierTest.args = {
   // },
 
   id: 'redux',
-  disabledPersist: true,
   defaultValues: {
     data: {
       age: 'Test1',

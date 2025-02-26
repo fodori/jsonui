@@ -6,10 +6,6 @@ import { JsonUI } from '../index'
 
 expect.extend(matchers)
 
-jest.mock('redux-persist/integration/react', () => ({
-  PersistGate: ({ children }: any) => children,
-}))
-
 test('simple action 1.(params) input param', () => {
   let returnVal: any = null
 
@@ -18,7 +14,6 @@ test('simple action 1.(params) input param', () => {
   }
   const wrapper = mount(
     <JsonUI
-      disabledPersist
       functions={{ textModifierReturnFirst }}
       model={{
         $comp: 'Edit',
@@ -48,7 +43,6 @@ test('simple action 2.(compProps) input param', () => {
 
   const wrapper = mount(
     <JsonUI
-      disabledPersist
       functions={{ textModifierReturnSecond }}
       model={{
         $comp: 'Edit',
@@ -88,7 +82,6 @@ test('simple action 3.(actionParams) input param', () => {
 
   const wrapper = mount(
     <JsonUI
-      disabledPersist
       functions={{ textModifierReturnThird }}
       model={{
         $comp: 'Edit',

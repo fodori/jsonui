@@ -122,7 +122,6 @@ ValidationTest.args = {
     ],
   },
   id: 'redux',
-  disabledPersist: true,
   defaultValues: {
     data: {
       firstname: 'Jon',

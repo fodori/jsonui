@@ -19,10 +19,10 @@ function Viewer({ model, components, functions }: ViewerProps) {
   return <Renderer model={model} stockInit={stockInit} />
 }
 
-function ViewerWeb({ defaultValues, disabledPersist, ...props }: ViewerProps) {
+function ViewerWeb({ defaultValues, ...props }: ViewerProps) {
   return (
     <ErrorBoundary type="viewer">
-      <ReduxProviders defaultValues={defaultValues} disabledPersist={disabledPersist}>
+      <ReduxProviders defaultValues={defaultValues}>
         <Viewer {...props} />
       </ReduxProviders>
     </ErrorBoundary>
