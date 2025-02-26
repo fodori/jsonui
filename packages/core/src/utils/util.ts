@@ -162,7 +162,7 @@ export const isValidJson = (d: any): boolean => {
 export const isPrimitiveValue = (value: any, emptyStringAllowed = false) =>
   value !== 'undefined' && value !== null && ['string', 'boolean', 'number', 'bigint'].includes(typeof value) && (value !== '' || emptyStringAllowed)
 
-export const hasLeaf = (obj: any, emptyStringAllowed = false): boolean => {
+export const hasLeaf = (obj: any, emptyStringAllowed?: boolean): boolean => {
   if (typeof obj === 'object') {
     // eslint-disable-next-line no-restricted-syntax
     for (const key in obj) {

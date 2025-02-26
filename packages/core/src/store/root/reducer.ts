@@ -4,7 +4,7 @@ import { ValidationType } from '../../utils/types'
 import * as c from '../../utils/constants'
 import * as util from '../../utils/util'
 import { validateJSONAndStore } from '../../stock/validation'
-import { DATA_UPDATE, PURGE } from './actions'
+import { DATA_UPDATE } from './actions'
 import Stock from '../../stock/Stock'
 
 export type RootStateType = any
@@ -75,9 +75,6 @@ const reducer = (state = initialState, action: AnyAction) => {
         return newState
       }
       return state
-    }
-    case PURGE: {
-      return initialState
     }
     default:
       return state

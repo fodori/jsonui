@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import * as c from 'utils/constants'
+import * as c from './constants'
 
 export type UIDefinition = any
 export type Path = string
