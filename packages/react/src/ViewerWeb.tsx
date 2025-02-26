@@ -1,5 +1,4 @@
 import React from 'react'
-import { appRootFunctions } from '@jsonui/core'
 import { ViewerProps } from 'types'
 import stockInitBasic from './stock/stockToRenderer'
 import ReduxProviders from './ReduxProviders'
@@ -11,7 +10,6 @@ function Viewer({ model, components, functions }: ViewerProps) {
     components: { ...stockInitBasic.components, ...components },
     functions: {
       ...stockInitBasic.functions,
-      ...appRootFunctions,
       ...functions,
     },
   }
