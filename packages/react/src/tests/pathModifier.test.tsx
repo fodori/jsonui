@@ -2,6 +2,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { matchers } from '@emotion/jest'
+import { constants as c } from '@jsonui/core'
 import { JsonUI } from '../index'
 import Text from '../stock/components/Text'
 
@@ -31,7 +32,7 @@ test('simple modifier 2. input param with pathmodifier', () => {
   expect(wrapper.text()).toEqual(
     JSON.stringify({
       ...testModel,
-      currentPaths: {
+      [`${c.CURRENT_PATH_NAME}`]: {
         data1: { path: '/subscribed/list' },
         data2: { path: '/list' },
         data3: { path: '/list' },

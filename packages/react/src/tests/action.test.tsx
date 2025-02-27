@@ -2,6 +2,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { matchers } from '@emotion/jest'
+import { constants as c } from '@jsonui/core'
 import { JsonUI } from '../index'
 
 expect.extend(matchers)
@@ -19,7 +20,6 @@ test('simple action 1.(params) input param', () => {
         $comp: 'Edit',
         id: 'id1',
         name: 'id1',
-        style: { textAlign: 'center', fontSize: 30, margin: 5 },
         value: '8',
         onChange: { $action: 'textModifierReturnFirst', a: 123, b: 12313, c: [1, 2, 3, 4] },
       }}
@@ -48,7 +48,6 @@ test('simple action 2.(compProps) input param', () => {
         $comp: 'Edit',
         id: 'id1',
         name: 'id1',
-        style: { textAlign: 'center', fontSize: 30, margin: 5 },
         value: '8',
         onChange: { $action: 'textModifierReturnSecond' },
       }}
@@ -65,10 +64,9 @@ test('simple action 2.(compProps) input param', () => {
       $comp: 'Edit',
       id: 'id1',
       name: 'id1',
-      style: { textAlign: 'center', fontSize: 30, margin: 5 },
       value: '8',
-      currentPaths: {},
-      subscriberPaths: [],
+      [`${c.CURRENT_PATH_NAME}`]: {},
+      [`${c.REDUX_GET_SUBSCRIBERS_NAME}`]: [],
     })
   )
 })
@@ -87,7 +85,6 @@ test('simple action 3.(actionParams) input param', () => {
         $comp: 'Edit',
         id: 'id1',
         name: 'id1',
-        style: { textAlign: 'center', fontSize: 30, margin: 5 },
         value: '8',
         onChange: { $action: 'textModifierReturnThird' },
       }}
