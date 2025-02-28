@@ -6,7 +6,7 @@ When you change the Json definition, the interface immediately reflects on what 
 
 Actually JSONUI is available for **react** and **react-native**. It will be able to integrate to 99% of the cross-platform environments, thanks for reactjs ecosystem
 
-The UI definition contains a layout definition and components configuration as well. The most important it has a built in **state management system**. Data can be **persistent** or not, depends on the name of the store.
+The UI definition contains a layout definition and components configuration as well. The most important it has a built in **state management system**.
 
 ## Core concept
 

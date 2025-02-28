@@ -16,12 +16,7 @@ function AllInOne() {
     <Grid container spacing={2} direction="column" justifyContent="center" alignItems="stretch">
       <Grid item xs={12}>
         <Paper elevation={3} sx={{ p: 1 }}>
-          <JsonUI
-            model={model}
-            disabledPersist
-            functions={{ axios }}
-            components={{ Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip }}
-          />
+          <JsonUI model={model} functions={{ axios }} components={{ Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip }} />
         </Paper>
       </Grid>
       <Grid item xs={12}>

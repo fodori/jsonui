@@ -68,11 +68,7 @@ const Canvas = () => <JsonUI model={jsonData}
 
 ### State management or data storage
 
-The state management is an independent layer in JSONUI. It represents a permissive and dynamic tree graf structure. Like a JSON file.
-Each JSONUI instance a separate data store, based on the `id` param of `JsonUI` component.
-Each JSONUI instance has multiple stores representing multiple data tree or separate storage.
-Actually, the `data` store is persistent.
-You can define unlimited data store. What you need is, just use a specific name in JSON Definition.
+The state management stores form state or any information what is needed to store. It is independent from **model**. It represents a permissive and dynamic tree graf structure. Like a JSON file. Each JSONUI instance has multiple stores (each one has a name/key) representing multiple data tree or separate storage. What you need is, just use a specific name in JSON Definition.
 JSONUI use [json-pointer](https://www.npmjs.com/package/json-pointer) to tell the `path` what kind of data we need.
 
 We have 2 built-in functions which can help to read and write your state management.
@@ -81,7 +77,7 @@ Let's see some example
 
 #### Read data
 
-##### if your data store looks like:
+##### if your defaultValues looks like:
 
 ```json
 { "users": [{ "userName": "John Doe" }] }
@@ -94,8 +90,8 @@ Let's see some example
   "$comp": "Text",
   "$children": {
     "$modifier": "get",
-    "store": "data",
-    "path": "/users/0/userName"
+    "store": "users",
+    "path": "/0/userName"
   }
 }
 ```
@@ -110,8 +106,8 @@ Let's see some example
   "$children": "Change username",
   "onPress": {
     "$modifier": "set",
-    "store": "data",
-    "path": "/users/0/userName",
+    "store": "users",
+    "path": "/0/userName",
     "value": "John Doe 2"
   }
 }
@@ -168,7 +164,7 @@ JSONUI we need to handle dynamic data, for example a list.
 ##### if your data store looks like:
 
 ```json
-{ "users": { "list": [{ "name": "John Doe" }] } }
+{ "data": { "users": { "list": [{ "name": "John Doe" }] } } }
 ```
 
 ```json

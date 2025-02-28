@@ -24,7 +24,7 @@ function App() {
       <Typography variant="subtitle1">
         JsonUI is a JSON-based data-driven user interface.
         <br />
-        It's a language written in JSON. data-driven because the definition defines what you will see it on the canvas. When you change the definition, the
+        It's a language written in JSON. Data-driven because the definition defines what you will see it on the canvas. When you change the definition, the
         canvas immediately follows it. It saves you development time. JSONUI is available in <b>react</b> and <b>react-native</b>. It can be used for making
         web, android, iPhone, iPad, OSX, Linux, Windows,... applications.
       </Typography>
@@ -48,8 +48,8 @@ function App() {
         their life easier. Because we follow this, all across the app, we just copy-paste the same pattern everywhere. When we create a new page or a new form
         we use the same theme, nearly the same behavior.
         <br />
-        The components of a Lego block could already be predefined. For example, input fields, select fields, checkboxes, radio buttons, buttons, date pickers….
-        The JSON just tells how to show it, and it contains all instance's specific definitions, for example, style, name, label and hypertext.
+        The components of a Lego block could already be pre-defined. For example, input fields, select fields, checkboxes, radio buttons, buttons, date
+        pickers…. The JSON just tells how to show it, and it contains all instance's specific definitions, for example, style, name, label and hypertext.
       </Typography>
       <Typography variant="subtitle1" sx={{ margin: 2 }}>
         Let's see some use-case
@@ -71,15 +71,12 @@ function App() {
         State container
       </Typography>
       <Typography variant="subtitle1">
-        As a form, it needs to store the data that the user makes it. As a form needs some data to be predefined, for example for drop-down fields or for
+        As a form, it needs to store the data that the user makes it. As a form needs some data to be pre-defined, for example for drop-down fields or for
         example to update a record. Because we use JSON to define UI, we can use it to define data as well.
         <br />
         Therefore this canvas has 2 main input parameters, the ui definition and the data, we called it "default values".
         <br />
-        We store it in a state container and the user can manipulate it with interact the components. The biggest entity is the <b>store</b>. One store called
-        <b> "data" </b>
-        is a persistence store, which means that, when the user opens the application again, it won’t forget the filled forms. All other data from the stores
-        disappears after the application closes.
+        We store it in a state container and the user can manipulate it with component interactions. The data is in separate store. Each store has a name/key.
       </Typography>
       <Typography variant="subtitle1" style={{ textAlign: 'center', margin: 20 }}>
         <FullSizeStateContainerImg src={stateContainer} alt="State container" width="80%" />

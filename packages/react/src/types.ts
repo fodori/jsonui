@@ -22,7 +22,6 @@ export type GetFormState = React.MutableRefObject<(() => DefaultValues) | undefi
 export interface ViewerProps {
   model: any
   defaultValues?: DefaultValues
-  id?: string
   components?: JsonUIComponentsType
   functions?: JsonUIFunctions
   getFormState?: GetFormState

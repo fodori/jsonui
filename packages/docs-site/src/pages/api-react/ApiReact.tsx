@@ -75,10 +75,11 @@ function App() {
                 </TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
-                <TableCell align="left">disabledPersist</TableCell>
-                <TableCell align="left">boolean</TableCell>
+                <TableCell align="left">getFormState</TableCell>
+                <TableCell align="left">{'React.MutableRefObject<(() => DefaultValues) | undefined>'}</TableCell>
                 <TableCell align="left">
-                  The default is `false`. When it is false, we store app data (just the "data" named store is persistent) persistently.
+                  Get the actual state of the form for store it persistently if needed. Use useRef to create a reference and pass you can give it to JsonUI
+                  component. Check the Storybook example how to use it.
                 </TableCell>
               </TableRow>
             </TableBody>

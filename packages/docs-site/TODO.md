@@ -14,7 +14,6 @@
 - Predefined components
 - Predefined functions
 - redux mechanism
-- persist mechanism
 
 ## api json
 

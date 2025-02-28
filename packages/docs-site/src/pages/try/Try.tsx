@@ -69,7 +69,7 @@ function Try() {
       <Grid container spacing={2} direction="column" justifyContent="center" alignItems="stretch">
         <Grid item xs={12}>
           <Paper elevation={3} sx={{ p: 1 }}>
-            <JsonUI model={jsonValid} disabledPersist />
+            <JsonUI model={jsonValid} />
           </Paper>
         </Grid>
         <Grid item xs={12}>

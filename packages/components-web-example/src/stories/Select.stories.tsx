@@ -18,8 +18,6 @@ export const Template: ComponentStory<typeof React.Component> = () => {
     <div style={{ display: 'flex', gridGap: 10, flexDirection: 'row' }}>
       <JsonUI
         components={{ MUISelect }}
-        id="aaaa"
-        disabledPersist
         defaultValues={{
           anotherstore: {},
         }}

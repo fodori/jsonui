@@ -72,6 +72,6 @@ const model = {
 return <JsonUI model={model} functions={{ MyFunction }} />
 ```
 
-#### disabledPersist: _boolean_
+#### getFormState: React.MutableRefObject<(() => DefaultValues) | undefined>
 
-By default, the `disabledPersist` is true and stores a specific name of the store. At the moment, just one datastore is persistent which is `data`. This means everything which is stored in `data` should be persistent (data will be available after that when the application is restarted). Everything else is not. If `disabledPersist` is false, all built-in persistence mechanisms are disabled.
+Get the actual state of the form for store it persistently if needed. Use useRef to create a reference and pass you can give it to JsonUI component. Check the Storybook example how to use it.
