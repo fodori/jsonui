@@ -17,6 +17,7 @@ export type OnSubmitFunc = (arg: any) => void
 export interface DefaultValues {
   [key: string]: JSONValue
 }
+export type GetFormState = React.MutableRefObject<(() => DefaultValues) | undefined>
 
 export interface ViewerProps {
   model: any
@@ -24,4 +25,5 @@ export interface ViewerProps {
   id?: string
   components?: JsonUIComponentsType
   functions?: JsonUIFunctions
+  getFormState?: GetFormState
 }
