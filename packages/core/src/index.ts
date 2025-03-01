@@ -8,6 +8,41 @@ import { compSelectorHook } from './store/root/selectors'
 import stockFunctions from './stock/functions'
 import storeReducers from './store/reducers'
 
-export type * from './utils/types'
+import {
+  UIDefinition,
+  Path,
+  ArraysType,
+  WrapperType,
+  PropValue,
+  PathModifierType,
+  PathModifiersType,
+  PropsType,
+  PathType,
+  PathsType,
+  ValidationType,
+  ReduxPathTypeEnum,
+  ReduxPath,
+  JsonUIComponentsType,
+  JsonUIFunctionType,
+  JsonUIFunctions,
+} from './utils/types'
 
 export { Stock, I18n, wrapperUtil, util, constants, StockContext, PathModifierContext, compSelectorHook, stockFunctions, storeReducers }
+export type {
+  UIDefinition,
+  Path,
+  ArraysType,
+  WrapperType,
+  PropValue,
+  PathModifierType,
+  PathModifiersType,
+  PropsType,
+  PathType,
+  PathsType,
+  ValidationType,
+  ReduxPathTypeEnum,
+  ReduxPath,
+  JsonUIComponentsType,
+  JsonUIFunctionType,
+  JsonUIFunctions,
+}
