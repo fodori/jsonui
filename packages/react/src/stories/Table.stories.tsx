@@ -52,7 +52,6 @@ TableTest.args = {
       },
     ],
   },
-  id: 'redux',
   defaultValues: {
     data: {
       level1: {
@@ -68,7 +67,6 @@ TableTest.argTypes = {
       type: 'object',
     },
   },
-  id: { control: { type: 'text' } },
 }
 
 TableTest.parameters = { controls: { include: ['model', 'id'] } }

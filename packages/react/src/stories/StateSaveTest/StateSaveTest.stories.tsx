@@ -96,9 +96,7 @@ const Template: ComponentStory<typeof JsonUI> = (args) => {
 
 export const StoreStateTest = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-StoreStateTest.args = {
-  id: 'aaaa',
-}
+StoreStateTest.args = {}
 
 StoreStateTest.argTypes = {
   model: {
@@ -106,7 +104,6 @@ StoreStateTest.argTypes = {
       type: 'object',
     },
   },
-  id: { control: { type: 'text' } },
 }
 
 StoreStateTest.parameters = { controls: { include: ['model', 'id'] } }

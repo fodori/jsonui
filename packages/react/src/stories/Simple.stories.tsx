@@ -45,7 +45,6 @@ PrimitivesTest.argTypes = {
       type: 'object',
     },
   },
-  id: { control: { type: 'text' } },
 }
 
 export default JsonUIStory

@@ -121,7 +121,6 @@ ValidationTest.args = {
       },
     ],
   },
-  id: 'redux',
   defaultValues: {
     data: {
       firstname: 'Jon',
@@ -139,7 +138,6 @@ ValidationTest.argTypes = {
       type: 'object',
     },
   },
-  id: { control: { type: 'text' } },
 }
 
 ValidationTest.parameters = { controls: { include: ['model', 'id'] } }

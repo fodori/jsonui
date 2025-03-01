@@ -18,7 +18,6 @@ export const TableTest = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TableTest.args = {
   model,
-  id: 'aaaa',
   defaultValues: {
     data: {
       level1: {
@@ -34,7 +33,6 @@ TableTest.argTypes = {
       type: 'object',
     },
   },
-  id: { control: { type: 'text' } },
 }
 
 TableTest.parameters = { controls: { include: ['model', 'id'] } }
@@ -49,7 +47,6 @@ InputTest.args = {
     helperText: "it's a child age",
     onChange: { $action: 'set', store: 'data', path: 'age', jsonataDef: '$' },
   },
-  id: 'aaaa',
   defaultValues: {
     data: {
       age: 'Test',
@@ -63,7 +60,6 @@ InputTest.argTypes = {
       type: 'object',
     },
   },
-  id: { control: { type: 'text' } },
 }
 
 InputTest.parameters = { controls: { include: ['model', 'id'] } }

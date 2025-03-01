@@ -51,7 +51,6 @@ TwoEditAnd1Modifier.args = {
   //   $children: { $modifier: 'get', store: 'data', path: { $modifier: 'MyFunction' } },
   // },
 
-  id: 'redux',
   defaultValues: {
     data: {
       age: 'Test1',
@@ -66,7 +65,6 @@ TwoEditAnd1Modifier.argTypes = {
       type: 'object',
     },
   },
-  id: { control: { type: 'text' } },
 }
 
 TwoEditAnd1Modifier.parameters = { controls: { include: ['model', 'id'] } }
@@ -133,7 +131,6 @@ PathModifierTest.args = {
   //   $children: { $modifier: 'get', store: 'data', path: { $modifier: 'MyFunction' } },
   // },
 
-  id: 'redux',
   defaultValues: {
     data: {
       age: 'Test1',
@@ -148,7 +145,6 @@ PathModifierTest.argTypes = {
       type: 'object',
     },
   },
-  id: { control: { type: 'text' } },
 }
 
 PathModifierTest.parameters = { controls: { include: ['model', 'id'] } }

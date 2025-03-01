@@ -46,7 +46,6 @@ export const PartialValueUpdateTest = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 PartialValueUpdateTest.args = {
   model,
-  id: 'aaaa',
   defaultValues: {
     data: {
       level1: {
@@ -62,7 +61,6 @@ PartialValueUpdateTest.argTypes = {
       type: 'object',
     },
   },
-  id: { control: { type: 'text' } },
 }
 
 PartialValueUpdateTest.parameters = { controls: { include: ['model', 'id'] } }
