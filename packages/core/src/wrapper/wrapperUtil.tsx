@@ -233,6 +233,7 @@ export const isTechnicalProp = (propName: string) =>
     c.LIST_PAGE,
     c.LIST_ITEM_PER_PAGE,
     c.LIST_LENGTH,
+    c.REF_VALIDATES,
     'style',
     c.REDUX_GET_SUBSCRIBERS_NAME,
   ].includes(propName)
@@ -252,6 +253,7 @@ export const removeTechnicalProps = (changeableProps: any) => {
     [c.LIST_PAGE]: _unused9,
     [c.LIST_ITEM_PER_PAGE]: _unused10,
     [c.LIST_LENGTH]: _unused11,
+    [c.REF_VALIDATES]: _unused12,
     ...newProps
   } = changeableProps
   return newProps

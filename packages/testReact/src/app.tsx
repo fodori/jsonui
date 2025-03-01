@@ -89,7 +89,7 @@ const App = () => {
       <button type="button" onClick={() => console.log('actualValue: ', getActualDefaultValue())}>
         Console log actual state
       </button>
-      <JsonUI model={model} getFormState={getFormState} defaultValues={defaultValue as any} />
+      <JsonUI model={model as any} getFormState={getFormState} defaultValues={defaultValue as any} />
     </div>
   )
 }
