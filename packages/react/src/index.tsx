@@ -1,6 +1,6 @@
 import React from 'react'
-import { ChangeDefaultValueFuncProp, JSONValue, ViewerProps } from 'types'
 import { JsonUIComponentsType, JsonUIFunctions, JsonUIFunctionType } from '@jsonui/core'
+import { ChangeDefaultValueFuncProp, JSONValue, ViewerProps } from './types'
 import ViewerWeb from './ViewerWeb'
 import { MessageHandlerContext, MessageHandler } from './MessageReceiverContext'
 
