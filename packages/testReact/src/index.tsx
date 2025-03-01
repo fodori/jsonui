@@ -1,13 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { JsonUI } from '@jsonui/react'
 import './index.css'
+import App from 'app'
 import reportWebVitals from './reportWebVitals'
-import model from './Example.json'
 
 ReactDOM.render(
   <React.StrictMode>
-    <JsonUI model={model} />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 )

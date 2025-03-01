@@ -1,15 +1,23 @@
 import React, { useRef, useState } from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { DefaultValues, JSONValue } from 'types'
-import { JsonUI } from '../../index'
+import { JsonUI, JSONValue } from '@jsonui/react'
 
 const forms = {
-  form1: [
+  form1: {
+    $comp: 'Edit',
+    value: { $modifier: 'get', store: 'data', path: 'firstname' },
+    label: 'Form 1',
+    onChange: {
+      $action: 'set',
+      store: 'data',
+      path: 'firstname',
+    },
+  },
+  form2: [
     {
       $comp: 'Edit',
       value: { $modifier: 'get', store: 'data', path: 'firstname' },
-      label: 'Form 1',
+      label: 'Form 2',
       onChange: {
         $action: 'set',
         store: 'data',
@@ -23,16 +31,6 @@ const forms = {
       disabled: true,
     },
   ],
-  form2: {
-    $comp: 'Edit',
-    value: { $modifier: 'get', store: 'data', path: 'firstname' },
-    label: 'Form 2',
-    onChange: {
-      $action: 'set',
-      store: 'data',
-      path: 'firstname',
-    },
-  },
   form3: {
     $comp: 'Edit',
     value: { $modifier: 'get', store: 'data', path: 'firstname' },
@@ -45,15 +43,9 @@ const forms = {
   },
 }
 
-const JsonUIStory = {
-  title: 'Store State Test',
-  component: JsonUI,
-} as ComponentMeta<typeof JsonUI>
-
 type Keys = 'form1' | 'form2' | 'form3'
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof JsonUI> = (args) => {
+const App = () => {
   const [actualKey, setActualKey] = useState<Keys>('form1')
 
   const [defaultValues, setDefaultValues] = useState<Record<Keys, JSONValue | undefined>>({
@@ -62,7 +54,7 @@ const Template: ComponentStory<typeof JsonUI> = (args) => {
     form3: undefined,
   })
 
-  const getFormState = useRef<(() => DefaultValues) | undefined>(undefined)
+  const getFormState = useRef<(() => any) | undefined>(undefined)
 
   const getActualDefaultValue = () => {
     if (getFormState.current) {
@@ -97,23 +89,9 @@ const Template: ComponentStory<typeof JsonUI> = (args) => {
       <button type="button" onClick={() => console.log('actualValue: ', getActualDefaultValue())}>
         Console log actual state
       </button>
-      <JsonUI {...args} model={model} getFormState={getFormState} defaultValues={defaultValue as any} />
+      <JsonUI model={model} getFormState={getFormState} defaultValues={defaultValue as any} />
     </div>
   )
 }
 
-export const StoreStateTest = Template.bind({})
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-StoreStateTest.args = {}
-
-StoreStateTest.argTypes = {
-  model: {
-    control: {
-      type: 'object',
-    },
-  },
-}
-
-StoreStateTest.parameters = { controls: { include: ['model', 'id'] } }
-
-export default JsonUIStory
+export default App
