@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { JsonUIComponentsType, JsonUIFunctions, JsonUIFunctionType } from 'utils/types'
+import { JsonUIComponentsType, JsonUIComponentType, JsonUIFunctions, JsonUIFunctionType } from 'utils/types'
 
 interface NewStockType {
   components: JsonUIComponentsType
@@ -8,7 +8,7 @@ interface NewStockType {
 
 type InitType = (prop: NewStockType) => void
 type RegisterFunctionType = (key: string, value: JsonUIFunctionType) => void
-type RegisterComponentType = (key: string, value: ReactNode) => void
+type RegisterComponentType = (key: string, value: JsonUIComponentType) => void
 type CallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => any
 type GetComponentType = (componentName: string) => ReactNode
 

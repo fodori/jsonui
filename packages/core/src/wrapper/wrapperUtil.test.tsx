@@ -31,7 +31,7 @@ const json1 = {
 test('test getGetsPath with nested json', () => {
   const testFunc = jest.fn((...attrib) => attrib)
   const testFunc1 = jest.fn(() => 66)
-  const newStock = { components: { a1: 5 }, functions: { testFunc, testFunc1 } }
+  const newStock = { components: { a1: () =>5 }, functions: { testFunc, testFunc1 } }
   const result = calculatePropsFromModifier(json1,new Stock(newStock, {} as React.ElementType, {}))
 
   expect(result).not.toEqual(null)

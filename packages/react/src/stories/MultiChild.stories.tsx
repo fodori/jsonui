@@ -8,9 +8,7 @@ const JsonUIStory = {
   component: JsonUI,
 } as ComponentMeta<typeof JsonUI>
 
-const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
-
-function EditMultiChild(props: any) {
+const EditMultiChild = (props: any) => {
   const handleChange = (event: any) => {
     props?.onChange(event.target.value)
   }
@@ -46,6 +44,8 @@ function EditMultiChild(props: any) {
     </>
   )
 }
+
+const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} components={{ EditMultiChild }} />
 
 export const MultiChild = Template.bind({})
 MultiChild.args = {

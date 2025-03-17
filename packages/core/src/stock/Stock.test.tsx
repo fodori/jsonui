@@ -3,21 +3,23 @@ import Stock from './Stock'
 test('Stock init test', () => {
   const testFunc = jest.fn((...attrib) => attrib)
   const testFunc1 = jest.fn(() => 66)
-  const newStock = { components: { a1: 5 }, functions: { testFunc, testFunc1 } }
+  const testFunc2 = jest.fn(() => 66)
+  const newStock = { components: { NewComp: () => 5 }, functions: { testFunc, testFunc1 } }
   const stockInstance = new Stock(newStock, {} as React.ElementType, {})
   expect(stockInstance.stock).toStrictEqual(newStock)
-  const additional = { components: { a2: 8, a1: 8 }, functions: { testFunc3: () => 7 } }
-  expect(stockInstance.stock.components.a1).toStrictEqual(5)
+
+  expect(stockInstance.stock.components.a1).toBeUndefined()
+  const additional = { components: { a2: () => 8, a1: () => 1 }, functions: { testFunc3: () => 7 } }
   stockInstance.init(additional)
   expect(stockInstance.stock.components).toStrictEqual({ ...newStock.components, ...additional.components })
   expect(stockInstance.stock.functions).toStrictEqual({ ...newStock.functions, ...additional.functions })
-  expect(stockInstance.stock.components.a1).toStrictEqual(8)
-  const a1 = 9
-  stockInstance.registerComponent('a1', a1)
-  expect(stockInstance.stock.components.a1).toStrictEqual(8)
-  const a2 = () => 7
-  stockInstance.registerFunction('testFunc1', a2)
-  expect(stockInstance.stock.functions.testFunc1).not.toBe(a2)
+  expect((stockInstance.stock.components.a1 as any)()).toStrictEqual(1)
+  const a2 = () => 8
+  stockInstance.registerComponent('a1', a2)
+  expect((stockInstance.stock.components.a1 as any)()).not.toStrictEqual(8)
+
+  stockInstance.registerFunction('testFunc1', testFunc2)
+  expect(stockInstance.stock.functions.testFunc1).not.toBe(testFunc2)
   expect(stockInstance.stock.functions.testFunc1).toBe(testFunc1)
 })
 
@@ -44,9 +46,11 @@ test('callFunction test', () => {
 test('getComponent test', () => {
   const testFunc = jest.fn((...attrib) => attrib)
   const testFunc1 = jest.fn(() => 66)
-  const newStock = { components: { a1: 5 }, functions: { testFunc, testFunc1 } }
+
+  const a1 = () => 5
+  const newStock = { components: { a1 }, functions: { testFunc, testFunc1 } }
   const stockInstance = new Stock(newStock, {} as React.ElementType, {})
   expect(stockInstance.getComponent('')).toBe(undefined)
   expect(stockInstance.getComponent('jhjhgjh')).toBe(undefined)
-  expect(stockInstance.getComponent('a1')).toBe(5)
+  expect(stockInstance.getComponent('a1')).toBe(a1)
 })

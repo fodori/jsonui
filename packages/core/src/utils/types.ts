@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import * as c from './constants'
 
 export type UIDefinition = any
@@ -48,10 +48,11 @@ export interface ReduxPath {
   jsonataDef?: string
 }
 
-export interface JsonUIComponentsType {
-  [key: string]: ReactNode
-}
+export type JsonUIComponentType = React.FC<any> | typeof React.Component | ((prop: any) => number | null | undefined | string)
 
+export interface JsonUIComponentsType {
+  [key: string]: JsonUIComponentType
+}
 export type JsonUIFunctionType = (attr: any, props: any, callerArgs: any, stock: any) => Promise<void> | void | any
 
 export interface JsonUIFunctions {
