@@ -23,6 +23,12 @@ const forms = {
         store: 'data',
         path: 'firstname',
       },
+      style: {
+        border: '3px solid green',
+        '@media (min-width: 420px)': {
+          border: '3px solid red',
+        },
+      },
     },
     {
       $comp: 'Edit',

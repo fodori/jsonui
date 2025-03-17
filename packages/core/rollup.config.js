@@ -22,7 +22,7 @@ export default [
       },
     ],
     plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), json(), visualizer()],
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'lodash', 'jsonata', 'ajv', 'ajv-errors', 'ajv-formats', 'traverse', 'immer'],
   },
   {
     input: 'dist/esm/types/index.d.ts',

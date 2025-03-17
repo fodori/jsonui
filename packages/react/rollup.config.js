@@ -23,7 +23,7 @@ export default [
     ],
     plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), json(), visualizer()],
     // external: [...Object.keys(packageJson.dependencies || {}), ...Object.keys(packageJson.peerDependencies || {})],
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', '@emotion/react', 'lodash', 'jsonata', 'batchflow', 'react-redux'],
   },
   {
     input: 'dist/esm/types/index.d.ts',
