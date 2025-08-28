@@ -1,10 +1,9 @@
 import { JsonUIComponentsType, JsonUIFunctions } from '@jsonui/core'
 
 export type JSONPrimitive = string | number | boolean | null
-// eslint-disable-next-line no-use-before-define
-export type JSONValue = JSONPrimitive | JSONObject | JSONArray
-export type JSONObject = { [member: string]: JSONValue }
-export type JSONArray = Array<JSONValue>
+export type JSONObject = { [member: string]: any } //any to avoid circular dependency
+export type JSONArray = Array<any> //any to avoid circular dependency
+export type JSONValue = JSONPrimitive | JSONObject | JSONArray //not perfect, typescript doesn't support it properly
 
 export interface ChangeDefaultValueFuncProp {
   store: string
