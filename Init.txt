@@ -195,7 +195,8 @@ yarn lerna add prismjs --scope=docs-site
 yarn lerna add @types/prismjs -D --scope=docs-site
 yarn lerna add json-format --scope=docs-site
 
-# publish new version, from main repo
+###### BEGIN publish new version, from main repo
+
 yarn workspace @jsonui/core run build;
 yarn workspace @jsonui/react run build;
 yarn workspace @jsonui/reactnative run build;
@@ -206,6 +207,8 @@ yarn lerna version --no-private
 # commit and push everything
 npm login
 yarn lerna publish from-package
+
+###### END publish new version, from main repo
 
 yarn lerna add @mui/material --scope=@jsonui/comp-mui
 yarn lerna add @emotion/react  --scope=@jsonui/comp-mui
