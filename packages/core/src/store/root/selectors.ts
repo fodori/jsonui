@@ -5,7 +5,7 @@ import { RootStateType } from './reducer'
 
 export const getState = (state: any): RootStateType => state?.root
 
-export const getValue = (state: any, store: string, path: string) => util.jsonPointerGet(state[store], path) || null
+export const getValue = (state: any, store: string, path: string) => util.jsonPointerGet(state[store], path)
 export const getStoreNameFromType = (store: string, type?: ReduxPathTypeEnum) =>
   // eslint-disable-next-line no-nested-ternary
   type === ReduxPathTypeEnum.ERROR ? `${store}${c.STORE_ERROR_POSTFIX}` : type === ReduxPathTypeEnum.TOUCH ? `${store}${c.STORE_TOUCH_POSTFIX}` : `${store}`

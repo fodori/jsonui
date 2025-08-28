@@ -98,3 +98,61 @@ test('simple action 3.(actionParams) input param', () => {
     .simulate('change', { target: { value: 'test@example.com' } })
   expect(returnVal).toEqual(['test@example.com'])
 })
+
+test('action value test', () => {
+  let returnVal: any = null
+
+  const testAction = (_: any, __: any, actionParams: any) => {
+    returnVal = actionParams
+  }
+
+  const wrapper = mount(
+    <JsonUI
+      functions={{ testAction: testAction }}
+      model={{
+        $comp: 'Edit',
+        id: 'id1',
+        name: 'id1',
+        value: '8',
+        onChange: { $action: 'testAction' },
+      }}
+    />
+  )
+
+  expect(wrapper.find('input')).toHaveLength(1)
+  wrapper
+    .find('input')
+    .at(0)
+    .simulate('change', { target: { value: true } })
+  expect(returnVal).toEqual([true])
+  wrapper
+    .find('input')
+    .at(0)
+    .simulate('change', { target: { value: false } })
+  expect(returnVal).toEqual([false])
+  wrapper
+    .find('input')
+    .at(0)
+    .simulate('change', { target: { value: null } })
+  expect(returnVal).toEqual([null])
+  wrapper
+    .find('input')
+    .at(0)
+    .simulate('change', { target: { value: undefined } })
+  expect(returnVal).toEqual([undefined])
+  wrapper
+    .find('input')
+    .at(0)
+    .simulate('change', { target: { value: 6 } })
+  expect(returnVal).toEqual([6])
+  wrapper
+    .find('input')
+    .at(0)
+    .simulate('change', { target: { value: -1 } })
+  expect(returnVal).toEqual([-1])
+  wrapper
+    .find('input')
+    .at(0)
+    .simulate('change', { target: { value: 0 } })
+  expect(returnVal).toEqual([0])
+})
