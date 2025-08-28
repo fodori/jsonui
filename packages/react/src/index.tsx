@@ -8,3 +8,4 @@ const JsonUI = (props: ViewerProps) => <ViewerWeb {...props} />
 
 export { JsonUI, MessageHandlerContext, MessageHandler }
 export type { ViewerProps as JsonUIProps, JSONValue, ChangeDefaultValueFuncProp, JsonUIFunctions, JsonUIFunctionType, JsonUIComponentsType }
+export default JsonUI

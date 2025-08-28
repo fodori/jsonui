@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { JsonUI, JSONValue } from '@jsonui/react'
+import JsonUI, { JSONValue } from '@jsonui/react'
 
 const forms = {
   form1: {
