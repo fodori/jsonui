@@ -40,7 +40,7 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@fontsource/roboto": "^4.5.8",
-    "@jsonui/react": "^0.3.0",
+    "@jsonui/react": "*",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
     "typescript": "^4.5.4"
