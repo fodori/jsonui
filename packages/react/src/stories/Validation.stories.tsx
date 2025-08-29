@@ -76,6 +76,9 @@ ValidationTest.args = {
         options: [
           { label: 'Yes', value: true },
           { label: 'No', value: false },
+          { label: 'null', value: null },
+          { label: 'number 0', value: 0 },
+          { label: 'number 1', value: 1 },
         ],
         required: false,
         fullWidth: false,
