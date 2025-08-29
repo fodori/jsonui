@@ -10,6 +10,35 @@ const JsonUIStory = {
   component: JsonUI,
 } as ComponentMeta<typeof JsonUI>
 
+const RadioGroupField = (props: any) => {
+  const handleChange = (event: any) => {
+    props?.onChange(JSON.parse(event.target.value))
+  }
+  const { fieldErrors, validation, value, $childLabel, $childHelperText, onChange, children, options, ...ownProps } = props
+  let error = !!fieldErrors
+  let helperText = $childHelperText
+  if (error && fieldErrors) {
+    helperText = fieldErrors && Array.isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors
+  }
+  return (
+    <>
+      <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{$childLabel}</div>
+      <p>{children}</p>
+      {options.map((i: any) => {
+        const itemValue = typeof i === 'string' ? i : i.value
+        const checked = value === itemValue
+        return (
+          <div key={i.value}>
+            <input {...ownProps} value={JSON.stringify(i.value)} onChange={handleChange} type="radio" checked={checked} />
+            <label>{i.label}</label>
+          </div>
+        )
+      })}
+      <div style={{ fontSize: 10, color: error ? 'red' : undefined }}>{helperText}</div>
+    </>
+  )
+}
+
 const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
 
 const submit: JsonUIFunctionType = (attr, props, callerArgs, stock) => {
@@ -26,6 +55,34 @@ ValidationTest.args = {
     id: 'view',
     style: { marginTop: 10 },
     $children: [
+      {
+        $comp: 'RadioGroupField',
+        name: 'showNow',
+        $childLabel: 'Show now',
+        $childHelperText: '',
+        placeholder: '',
+        fieldErrors: { $modifier: 'get', store: 'data', path: 'showNow', type: 'ERROR' },
+        fieldTouched: { $modifier: 'get', store: 'data', path: 'showNow', type: 'TOUCH' },
+        value: {
+          $modifier: 'get',
+          store: 'data',
+          path: 'showNow',
+        },
+        onChange: {
+          $action: 'set',
+          store: 'data',
+          path: 'showNow',
+        },
+        options: [
+          { label: 'Yes', value: true },
+          { label: 'No', value: false },
+        ],
+        required: false,
+        fullWidth: false,
+        style: {
+          minWidth: 100,
+        },
+      },
       {
         $comp: 'Edit',
         value: { $modifier: 'get', store: 'data', path: 'firstname' },
@@ -128,7 +185,7 @@ ValidationTest.args = {
       anotherText: 'somethin',
     },
   } as any,
-  components: { FormResult },
+  components: { FormResult, RadioGroupField },
   functions: { submit },
 }
 
