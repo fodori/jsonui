@@ -154,9 +154,9 @@ export const isValidJson = (d: any): boolean => {
   try {
     JSON.stringify(d)
   } catch (e) {
-    return true
+    return false
   }
-  return false
+  return true
 }
 
 export const isPrimitiveValue = (value: any, emptyStringAllowed = false) =>

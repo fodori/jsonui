@@ -516,21 +516,21 @@ test('collectObjToArray test', () => {
 })
 
 test('isValidJson test', () => {
-  expect(util.isValidJson('')).toBe(false)
-  expect(util.isValidJson(null)).toBe(false)
-  expect(util.isValidJson(undefined)).toBe(false)
-  expect(util.isValidJson({})).toBe(false)
-  expect(util.isValidJson(false)).toBe(false)
-  expect(util.isValidJson(true)).toBe(false)
+  expect(util.isValidJson('')).toBe(true)
+  expect(util.isValidJson(null)).toBe(true)
+  expect(util.isValidJson(undefined)).toBe(true)
+  expect(util.isValidJson({})).toBe(true)
+  expect(util.isValidJson(false)).toBe(true)
+  expect(util.isValidJson(true)).toBe(true)
   const funcTest = () => {
     // eslint-disable-next-line no-console
     console.log('')
   }
-  expect(util.isValidJson(funcTest)).toBe(false)
+  expect(util.isValidJson(funcTest)).toBe(true)
   const a: any = { a: 2, b: 5 }
-  expect(util.isValidJson(a)).toBe(false)
-  a.b = a
   expect(util.isValidJson(a)).toBe(true)
+  a.b = a
+  expect(util.isValidJson(a)).toBe(false)
 })
 
 test('isPrimitiveValue test emptyStringAllowed false', () => {

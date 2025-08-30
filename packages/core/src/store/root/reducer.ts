@@ -37,7 +37,7 @@ const reducer = (state = initialState, action: AnyAction) => {
         [c.CURRENT_PATH_NAME]: currentPaths = undefined,
         stock = undefined,
       } = action?.payload || {}
-      if (store && path && !util.isValidJson(value)) {
+      if (store && path && util.isValidJson(value)) {
         const storekey = `${store}`
         let convertedPath =
           currentPaths && currentPaths[storekey] && currentPaths[storekey].path
