@@ -203,7 +203,7 @@ yarn workspace @jsonui/reactnative run build;
 yarn workspace @jsonui/components-web-example run build;
 yarn workspace @jsonui/functions-example run build;
 yarn workspace docs-site run build;
-yarn buildweb;
+yarn copyDocs;
 yarn lerna version --no-private
 # commit and push everything
 npm login
