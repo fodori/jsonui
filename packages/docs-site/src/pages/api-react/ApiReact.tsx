@@ -46,14 +46,15 @@ function App() {
             <TableBody>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">model</TableCell>
-                <TableCell align="left">any (json)</TableCell>
-                <TableCell align="left">It should be a serializable, non-cyclic object/array/primitive value.</TableCell>
+                <TableCell align="left">any (JsonValue)</TableCell>
+                <TableCell align="left">It should be a serializable, non-cyclic object/array/primitive value. Like a JSON.</TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">defaultValues</TableCell>
                 <TableCell align="left">{'Record<string, object>'}</TableCell>
                 <TableCell align="left">
-                  Initial values of stores, the key will be the name of the store. The value can be the initial value of the store when the JsonUI starts.
+                  Initial values of stores, the key will be the name of the store. The value can be the initial value of the store when the JsonUI starts.Like a
+                  normal JSON.
                   <br />
                   For example: {`{ data : { firstName : 'Jon' } }`}
                   <br />

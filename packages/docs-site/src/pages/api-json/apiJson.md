@@ -44,7 +44,7 @@ The `"$modifier"` can add a dynamic value for properties or components. It's a f
 
 ```json
 { "$comp": "Text", "$children": "Hello World" }
-{ "$comp": "Text", "$children": { "$modifier": "t", "key": "Helló Világ" } }
+{ "$comp": "Text", "$children": { "$modifier": "translate", "key": "Helló Világ" } }
 ```
 
 ### How can you customise it?
@@ -54,14 +54,10 @@ Easily.
 ```js
 
 const Canvas = () => <JsonUI model={jsonData}
-  "components"={
-    {
-     navigate: ({route}) => navigate(route)
-    }
-  }
   "functions"={
     {
-     t: ({key}) => t(key)
+     translate: ({key}) => translate(key)
+     navigate: ({route}) => navigate(route)
     }
   }/>
 ```

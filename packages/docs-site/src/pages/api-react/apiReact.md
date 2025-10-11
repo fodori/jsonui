@@ -69,7 +69,7 @@ const model = {
   onClick: { $action: 'MyFunction' },
 }
 
-return <JsonUI model={model} functions={{ MyFunction }} />
+return <JsonUI model={model} functions={{ MyFunction }} components={{ Button }} />
 ```
 
 #### getFormState: React.MutableRefObject<(() => DefaultValues) | undefined>

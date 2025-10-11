@@ -1829,19 +1829,6 @@
     "@emotion/weak-memoize" "^0.4.0"
     hoist-non-react-statics "^3.3.1"
 
-"@emotion/react@^11.7.1":
-  version "11.7.1"
-  resolved "https://registry.yarnpkg.com/@emotion/react/-/react-11.7.1.tgz#3f800ce9b20317c13e77b8489ac4a0b922b2fe07"
-  integrity sha512-DV2Xe3yhkF1yT4uAUoJcYL1AmrnO5SVsdfvu+fBuS7IbByDeTVx9+wFmvx9Idzv7/78+9Mgx2Hcmr7Fex3tIyw==
-  dependencies:
-    "@babel/runtime" "^7.13.10"
-    "@emotion/cache" "^11.7.1"
-    "@emotion/serialize" "^1.0.2"
-    "@emotion/sheet" "^1.1.0"
-    "@emotion/utils" "^1.0.0"
-    "@emotion/weak-memoize" "^0.2.5"
-    hoist-non-react-statics "^3.3.1"
-
 "@emotion/react@^11.8.1":
   version "11.8.1"
   resolved "https://registry.yarnpkg.com/@emotion/react/-/react-11.8.1.tgz#5358b8c78367063881e26423057c030c57ce52eb"
@@ -2707,51 +2694,6 @@
     redux "^4.1.2"
     redux-persist "^6.0.0"
     traverse "^0.6.6"
-
-"@jsonui/core@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@jsonui/core/-/core-0.3.0.tgz#03ee51627a8246661a96f2569a22be5a0dcc8aba"
-  integrity sha512-Nxsz+sIuqOBod84W7FV246rN880ynOTWLYgkxspd62RgrVtnk3iRT6DjzQyuXmgAvwdipt6Szghn+o9TZgZ1pA==
-  dependencies:
-    ajv "^8.9.0"
-    immer "^9.0.12"
-    jsonata "^1.8.5"
-    jsonpointer "^5.0.0"
-    key-value-replace "^3.0.0"
-    lodash "^4.17.21"
-    redux "^4.1.2"
-    redux-persist "^6.0.0"
-    traverse "^0.6.6"
-
-"@jsonui/react@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@jsonui/react/-/react-0.0.12.tgz#007b6082d500556429b1d3f54c0bdba591f08ecf"
-  integrity sha512-uUEgJiTqgMLnTmKLZECJF+aw44u6BfSRjW/YtG+i0hXGMAcumszdo11ff+uaxms7KotLeLTgvu/3IbRDXHh1Yg==
-  dependencies:
-    "@emotion/react" "^11.7.1"
-    "@jsonui/core" "^0.0.12"
-    batchflow "^0.4.0"
-    jsonata "^1.8.5"
-    lodash "^4.17.21"
-    react-redux "^7.2.6"
-    redux "^4.1.2"
-    redux-persist "^6.0.0"
-    typescript "^4.5.4"
-
-"@jsonui/react@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@jsonui/react/-/react-0.3.0.tgz#2fa22483bef1300e980ae743229c5486b6453150"
-  integrity sha512-4rTzJivVeY/dlJb6dSu0JMM+PjSXTKaClQ9lGBdb9pbB4kMsK84sY1QYUImK1zgOmsXceBXbaBeiobfd6XSl2A==
-  dependencies:
-    "@emotion/react" "^11.7.1"
-    "@jsonui/core" "^0.3.0"
-    batchflow "^0.4.0"
-    jsonata "^1.8.5"
-    lodash "^4.17.21"
-    react-redux "^7.2.6"
-    redux "^4.1.2"
-    redux-persist "^6.0.0"
-    typescript "^4.5.4"
 
 "@jsonui/reactnative@^0.0.12":
   version "0.0.12"
