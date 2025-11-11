@@ -16,21 +16,17 @@ interface RendererProps {
 const Renderer = ({ model, stockInit, reduxStore }: RendererProps) => {
   const stock = useMemo(() => getStock(stockInit, model, Wrapper, reduxStore), [stockInit, model, reduxStore])
 
-  // Type assertion to handle React 19 typing issues
-  const StockProvider = StockContext.Provider as any
-  const PathModifierProvider = PathModifierContext.Provider as any
-
   if (model === undefined) {
     return null
   }
   return (
-    <StockProvider value={stock}>
+    <StockContext.Provider value={stock}>
       {/* eslint-disable-next-line react/jsx-no-constructed-context-values */}
-      <PathModifierProvider value={{}}>
+      <PathModifierContext.Provider value={{}}>
         <MessageReceiver />
         <Wrapper props={model} />
-      </PathModifierProvider>
-    </StockProvider>
+      </PathModifierContext.Provider>
+    </StockContext.Provider>
   )
 }
 

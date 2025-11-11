@@ -1,18 +1,7 @@
 import React, { useContext } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { ClassNames } from '@emotion/react'
-import {
-  constants as c,
-  wrapperUtil,
-  StockContext,
-  PathModifierContext,
-  Stock,
-  WrapperType,
-  PropsType,
-  compSelectorHook,
-  PathModifiersType,
-  ReduxPath,
-} from '@jsonui/core'
+import { constants as c, wrapperUtil, StockContext, PathModifierContext, Stock, PropsType, compSelectorHook, PathModifiersType, ReduxPath } from '@jsonui/core'
 import { cloneDeep } from 'lodash'
 import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'
@@ -69,8 +58,6 @@ function Wrapper({ props: origProps }: { props: any }) {
 
   const newStyle = props.style || props[c.STYLE_WEB_NAME] ? getStyle(props, component) : undefined
 
-  const PathModifierProvider = PathModifierContext.Provider as any
-
   return (
     <ErrorBoundary type="wrapper" id={props.id}>
       <ClassNames>
@@ -97,10 +84,10 @@ function Wrapper({ props: origProps }: { props: any }) {
           }, {} as any)
           // children was {wrapperUtil.generateChildren(ownProps, stock)}
           return props[c.PATH_MODIFIERS_KEY] ? (
-            <PathModifierProvider value={props[c.CURRENT_PATH_NAME] as any}>
+            <PathModifierContext.Provider value={props[c.CURRENT_PATH_NAME] as any}>
               <Comp {...newProps} />
               {infobox && <InfoBox {...props} />}
-            </PathModifierProvider>
+            </PathModifierContext.Provider>
           ) : (
             <>
               <Comp {...newProps} />

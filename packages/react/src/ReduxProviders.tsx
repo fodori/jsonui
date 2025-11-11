@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { Provider } from 'react-redux'
 import { createStore, Store, AnyAction } from 'redux'
 import { storeReducers } from '@jsonui/core'
 import { DefaultValues, GetFormState } from 'types'
 
 interface Props {
-  children: ReactNode
+  children: React.ReactNode
   // eslint-disable-next-line react/require-default-props
   defaultValues?: DefaultValues
   // eslint-disable-next-line react/require-default-props
@@ -24,6 +24,9 @@ const Providers = ({ children, defaultValues: root, getFormState: getState }: Pr
     getState.current = () => store.getState()?.root // root contanins form data
   }
 
-  return <Provider store={store}>{children}</Provider>
+  // Type assertion to handle React 19 compatibility with react-redux
+  const ReduxProvider = Provider as React.ComponentType<{ store: Store<any, AnyAction>; children: React.ReactNode }>
+
+  return <ReduxProvider store={store}>{children}</ReduxProvider>
 }
 export default Providers
