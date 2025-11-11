@@ -24,9 +24,6 @@ const Providers = ({ children, defaultValues: root, getFormState: getState }: Pr
     getState.current = () => store.getState()?.root // root contanins form data
   }
 
-  // Type assertion to handle React 19 compatibility with react-redux
-  const ReduxProvider = Provider as React.ComponentType<{ store: Store<any, AnyAction>; children: React.ReactNode }>
-
-  return <ReduxProvider store={store}>{children}</ReduxProvider>
+  return <Provider store={store}>{children}</Provider>
 }
 export default Providers

@@ -8,6 +8,10 @@
   "workspaces": [
     "packages/*"
   ],
+  "resolutions": {
+    "@types/react": "^19.2.3",
+    "@types/react-dom": "^19.2.2"
+  },
   "scripts": {
     "buildweb": "yarn workspace @jsonui/core run build; yarn workspace @jsonui/react run build;",
     "startTestReact": "yarn workspace jsonui-test-react run start",
