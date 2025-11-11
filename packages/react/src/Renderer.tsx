@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { createContext, useMemo } from 'react'
 import { useStore } from 'react-redux'
-import { StockContext, PathModifierContext, constants as c } from '@jsonui/core'
+import { constants as c, PathModifierContext, Stock, StockContext } from '@jsonui/core'
 import { AnyAction, Store } from 'redux'
 import MessageReceiver from './MessageReceiver'
 import { getStock } from './stock/stockToRenderer'
@@ -16,17 +16,21 @@ interface RendererProps {
 const Renderer = ({ model, stockInit, reduxStore }: RendererProps) => {
   const stock = useMemo(() => getStock(stockInit, model, Wrapper, reduxStore), [stockInit, model, reduxStore])
 
+  // Type assertion to handle React 19 typing issues
+  const StockProvider = StockContext.Provider as any
+  const PathModifierProvider = PathModifierContext.Provider as any
+
   if (model === undefined) {
     return null
   }
   return (
-    <StockContext.Provider value={stock as any}>
+    <StockProvider value={stock}>
       {/* eslint-disable-next-line react/jsx-no-constructed-context-values */}
-      <PathModifierContext.Provider value={{}}>
+      <PathModifierProvider value={{}}>
         <MessageReceiver />
         <Wrapper props={model} />
-      </PathModifierContext.Provider>
-    </StockContext.Provider>
+      </PathModifierProvider>
+    </StockProvider>
   )
 }
 

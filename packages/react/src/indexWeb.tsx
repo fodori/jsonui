@@ -1,11 +1,10 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import { JsonUI } from './index'
 import model from './Example.json'
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <JsonUI model={model} />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 )

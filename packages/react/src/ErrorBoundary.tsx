@@ -2,9 +2,10 @@ import React from 'react'
 
 const printObj = (obj: any) => (typeof obj === 'string' ? obj : JSON.stringify(obj))
 
-export interface ErrorBoundaryProps extends React.Props<any> {
+export interface ErrorBoundaryProps {
   type?: string
   id?: string
+  children?: React.ReactNode
 }
 
 type errorType = any

@@ -45,8 +45,8 @@ export const getStyle = (props: PropsType = {}, component: string) =>
   component === 'View' ? getWebStyle(props) : { ...(props.style as any), ...(props[c.STYLE_WEB_NAME] as any) }
 
 function Wrapper({ props: origProps }: { props: any }) {
-  const newCurrentPaths = useContext(PathModifierContext)
-  const stock: InstanceType<typeof Stock> = useContext(StockContext)
+  const newCurrentPaths = useContext(PathModifierContext as any)
+  const stock: InstanceType<typeof Stock> = useContext(StockContext as any)
 
   const props = cloneDeep({
     // TODO replace cloneDeep to a fastest one
@@ -59,7 +59,7 @@ function Wrapper({ props: origProps }: { props: any }) {
   if (!stock) {
     return null
   }
-  const Comp: WrapperType = stock.getComponent(component) as WrapperType
+  const Comp: React.ElementType = stock.getComponent(component) as unknown as React.ElementType // TODO fix any
 
   const infobox = false
   if (!Comp) {
@@ -68,6 +68,8 @@ function Wrapper({ props: origProps }: { props: any }) {
   }
 
   const newStyle = props.style || props[c.STYLE_WEB_NAME] ? getStyle(props, component) : undefined
+
+  const PathModifierProvider = PathModifierContext.Provider as any
 
   return (
     <ErrorBoundary type="wrapper" id={props.id}>
@@ -95,10 +97,10 @@ function Wrapper({ props: origProps }: { props: any }) {
           }, {} as any)
           // children was {wrapperUtil.generateChildren(ownProps, stock)}
           return props[c.PATH_MODIFIERS_KEY] ? (
-            <PathModifierContext.Provider value={props[c.CURRENT_PATH_NAME] as any}>
+            <PathModifierProvider value={props[c.CURRENT_PATH_NAME] as any}>
               <Comp {...newProps} />
               {infobox && <InfoBox {...props} />}
-            </PathModifierContext.Provider>
+            </PathModifierProvider>
           ) : (
             <>
               <Comp {...newProps} />
