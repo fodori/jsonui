@@ -10,7 +10,7 @@ type InitType = (prop: NewStockType) => void
 type RegisterFunctionType = (key: string, value: JsonUIFunctionType) => void
 type RegisterComponentType = (key: string, value: JsonUIComponentType) => void
 type CallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => any
-type GetComponentType = (componentName: string) => ReactNode
+type GetComponentType = (componentName: string) => JsonUIComponentType
 
 export default class Stock {
   stock: NewStockType
