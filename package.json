@@ -20,8 +20,12 @@
     "copyDocs": "yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
   },
   "devDependencies": {
+    "gh-pages": "^3.2.3",
     "lerna": "^4.0.0",
-    "microbundle": "^0.14.2",
-    "gh-pages": "^3.2.3"
+    "microbundle": "^0.14.2"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   }
 }

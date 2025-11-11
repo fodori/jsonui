@@ -1,7 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import Enzyme from 'enzyme'
+import '@testing-library/jest-dom'
 import { createSerializer } from '@emotion/jest'
-
-// Enzyme.configure({ adapter: new Adapter() })
 
 expect.addSnapshotSerializer(createSerializer())
