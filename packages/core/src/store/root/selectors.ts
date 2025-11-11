@@ -1,5 +1,5 @@
 import * as c from '../../utils/constants'
-import * as util from '../../utils/util'
+import * as util from '../../utils/jsonUtils'
 import { PathModifiersType, ReduxPath, ReduxPathTypeEnum } from '../../utils/types'
 import { RootStateType } from './reducer'
 

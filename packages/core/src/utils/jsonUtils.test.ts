@@ -1,4 +1,4 @@
-import * as util from './util'
+import * as util from './jsonUtils'
 import * as c from './constants'
 
 test('isNumber test', () => {

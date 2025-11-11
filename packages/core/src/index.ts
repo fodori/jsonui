@@ -1,7 +1,7 @@
 import Stock from './stock/Stock'
 import * as wrapperUtil from './wrapper/wrapperUtil'
 import * as constants from './utils/constants'
-import * as util from './utils/util'
+import * as util from './utils/jsonUtils'
 import I18n from './utils/I18n'
 import { StockContext, PathModifierContext } from './utils/contextHandler'
 import { compSelectorHook } from './store/root/selectors'

@@ -4,30 +4,41 @@ import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
 import { visualizer } from 'rollup-plugin-visualizer'
 import dts from 'rollup-plugin-dts'
-import packageJson from './package.json'
 
 export default [
   {
     input: 'src/index.ts',
     output: [
       {
-        file: packageJson.main,
+        file: 'dist/cjs/index.js',
         format: 'cjs',
         sourcemap: true,
       },
       {
-        file: packageJson.module,
+        file: 'dist/esm/index.js',
         format: 'esm',
         sourcemap: true,
       },
     ],
-    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), json(), visualizer()],
-    external: ['react', 'react-dom', 'lodash', 'jsonata', 'ajv', 'ajv-errors', 'ajv-formats', 'traverse', 'immer'],
+    plugins: [
+      resolve({
+        preferBuiltins: true,
+      }),
+      commonjs(),
+      typescript({
+        tsconfig: './tsconfig.json',
+        declaration: false,
+        declarationMap: false,
+      }),
+      json(),
+      visualizer(),
+    ],
+    external: ['react', 'react-dom', 'lodash', 'redux'],
   },
   {
-    input: 'dist/esm/types/index.d.ts',
+    input: 'src/index.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    plugins: [dts()],
-    external: ['react', 'react-dom'],
+    plugins: [dts({ tsconfig: './tsconfig.json' })],
+    external: ['react', 'react-dom', 'lodash', 'redux'],
   },
 ]
