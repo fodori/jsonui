@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useRef } from 'react'
-import { mount } from 'enzyme'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { matchers } from '@emotion/jest'
 import { JsonUI } from '../index'
 import components from '../stock/components'
@@ -24,7 +24,7 @@ const NewEdit = (props: any) => {
 }
 
 test('Edit component test', () => {
-  const wrapper = mount(
+  render(
     <JsonUI
       model={{
         $comp: 'Edit',
@@ -37,16 +37,14 @@ test('Edit component test', () => {
     />
   )
 
-  expect(wrapper.find('input')).toHaveLength(1)
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: 'test@example.com' } })
-  expect(wrapper.find('input').at(0).prop('value')).toEqual('test@example.com')
+  const input = screen.getByRole('textbox')
+  expect(input).toBeInTheDocument()
+  fireEvent.change(input, { target: { value: 'test@example.com' } })
+  expect(input).toHaveValue('test@example.com')
 })
 
 test('check rerender count after action', () => {
-  const wrapper = mount(
+  render(
     <JsonUI
       components={{ Counter, NewEdit }}
       model={{
@@ -60,14 +58,18 @@ test('check rerender count after action', () => {
     />
   )
 
-  expect(wrapper.find('input')).toHaveLength(1)
-  expect(wrapper.find(Counter).at(0).children().text()).toEqual('Renders: 1')
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: 'test@example.com' } })
-  expect(wrapper.find('input').at(0).prop('value')).toEqual('test@example.com')
-  expect(wrapper.find(Counter).at(0).children().text()).toEqual('Renders: 2')
+  const input = screen.getByRole('textbox')
+  expect(input).toBeInTheDocument()
+
+  // Check initial render count
+  expect(screen.getByText('Renders: 1')).toBeInTheDocument()
+
+  // Trigger change event
+  fireEvent.change(input, { target: { value: 'test@example.com' } })
+  expect(input).toHaveValue('test@example.com')
+
+  // Check that render count increased
+  expect(screen.getByText('Renders: 2')).toBeInTheDocument()
 })
 /**
  * TODO:

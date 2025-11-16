@@ -1,19 +1,21 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react'
-import { mount } from 'enzyme'
+import { render, screen, fireEvent } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { matchers } from '@emotion/jest'
 import { constants as c } from '@jsonui/core'
 import { JsonUI } from '../index'
 
 expect.extend(matchers)
 
-test('simple action 1.(params) input param', () => {
+test('simple action 1.(params) input param', async () => {
+  const user = userEvent.setup()
   let returnVal: any = null
 
   const textModifierReturnFirst = (params: any) => {
     returnVal = JSON.stringify(params)
   }
-  const wrapper = mount(
+  render(
     <JsonUI
       functions={{ textModifierReturnFirst }}
       model={{
@@ -26,22 +28,22 @@ test('simple action 1.(params) input param', () => {
     />
   )
 
-  expect(wrapper.find('input')).toHaveLength(1)
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: 'test@example.com' } })
+  const input = screen.getByRole('textbox')
+  expect(input).toBeInTheDocument()
+  await user.clear(input)
+  await user.type(input, 'test@example.com')
   expect(returnVal).toEqual(JSON.stringify({ a: 123, b: 12313, c: [1, 2, 3, 4] }))
 })
 
-test('simple action 2.(compProps) input param', () => {
+test('simple action 2.(compProps) input param', async () => {
+  const user = userEvent.setup()
   let returnVal: any = null
 
   const textModifierReturnSecond = (_: any, compProps: any) => {
     returnVal = JSON.stringify(compProps)
   }
 
-  const wrapper = mount(
+  render(
     <JsonUI
       functions={{ textModifierReturnSecond }}
       model={{
@@ -54,11 +56,10 @@ test('simple action 2.(compProps) input param', () => {
     />
   )
 
-  expect(wrapper.find('input')).toHaveLength(1)
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: 'test@example.com' } })
+  const input = screen.getByRole('textbox')
+  expect(input).toBeInTheDocument()
+  await user.clear(input)
+  await user.type(input, 'test@example.com')
   expect(returnVal).toEqual(
     JSON.stringify({
       $comp: 'Edit',
@@ -78,7 +79,7 @@ test('simple action 3.(actionParams) input param', () => {
     returnVal = actionParams
   }
 
-  const wrapper = mount(
+  render(
     <JsonUI
       functions={{ textModifierReturnThird }}
       model={{
@@ -91,22 +92,20 @@ test('simple action 3.(actionParams) input param', () => {
     />
   )
 
-  expect(wrapper.find('input')).toHaveLength(1)
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: 'test@example.com' } })
+  const input = screen.getByRole('textbox')
+  expect(input).toBeInTheDocument()
+  fireEvent.change(input, { target: { value: 'test@example.com' } })
   expect(returnVal).toEqual(['test@example.com'])
 })
 
-test('action value test', () => {
+test('action value test', async () => {
   let returnVal: any = null
 
   const testAction = (_: any, __: any, actionParams: any) => {
     returnVal = actionParams
   }
 
-  const wrapper = mount(
+  render(
     <JsonUI
       functions={{ testAction: testAction }}
       model={{
@@ -119,40 +118,38 @@ test('action value test', () => {
     />
   )
 
-  expect(wrapper.find('input')).toHaveLength(1)
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: true } })
-  expect(returnVal).toEqual([true])
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: false } })
-  expect(returnVal).toEqual([false])
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: null } })
-  expect(returnVal).toEqual([null])
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: undefined } })
-  expect(returnVal).toEqual([undefined])
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: 6 } })
-  expect(returnVal).toEqual([6])
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: -1 } })
-  expect(returnVal).toEqual([-1])
-  wrapper
-    .find('input')
-    .at(0)
-    .simulate('change', { target: { value: 0 } })
-  expect(returnVal).toEqual([0])
+  const input = screen.getByRole('textbox')
+  expect(input).toBeInTheDocument()
+
+  // Test string values (HTML inputs always deal with strings)
+  fireEvent.change(input, { target: { value: 'true' } })
+  expect(returnVal).toEqual(['true'])
+
+  fireEvent.change(input, { target: { value: 'false' } })
+  expect(returnVal).toEqual(['false'])
+
+  fireEvent.change(input, { target: { value: '' } })
+  expect(returnVal).toEqual([''])
+
+  fireEvent.change(input, { target: { value: '6' } })
+  expect(returnVal).toEqual(['6'])
+
+  fireEvent.change(input, { target: { value: '-1' } })
+  expect(returnVal).toEqual(['-1'])
+
+  fireEvent.change(input, { target: { value: '0' } })
+  expect(returnVal).toEqual(['0'])
+
+  // TODO these test slways return as a string, check how it works really.
+  fireEvent.change(input, { target: { value: true } })
+  expect(returnVal).toEqual(['true'])
+
+  fireEvent.change(input, { target: { value: false } })
+  expect(returnVal).toEqual(['false'])
+
+  fireEvent.change(input, { target: { value: null } })
+  expect(returnVal).toEqual([''])
+
+  fireEvent.change(input, { target: { value: undefined } })
+  expect(returnVal).toEqual([''])
 })

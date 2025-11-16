@@ -1,14 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react'
-import { mount } from 'enzyme'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { matchers } from '@emotion/jest'
 import { JsonUI } from '../index'
-import Text from '../stock/components/Text'
 
 expect.extend(matchers)
 
 test('Text component test', () => {
-  const wrapper = mount(
+  render(
     <JsonUI
       model={[
         { $comp: 'Text', $children: { $modifier: 'get', store: 'data', path: '/age' } },
@@ -20,9 +19,15 @@ test('Text component test', () => {
     />
   )
 
-  expect(wrapper.find('button')).toHaveLength(1)
-  expect(wrapper.find(Text)).toHaveLength(1)
-  expect(wrapper.find(Text).at(0).children().contains('button test')).toEqual(false)
-  wrapper.find('button').at(0).simulate('click')
-  expect(wrapper.find(Text).at(0).children().contains('button test')).toEqual(true)
+  const button = screen.getByRole('button')
+  expect(button).toBeInTheDocument()
+
+  // Initially, the text should be empty (no value at /age)
+  expect(screen.queryByText('button test')).not.toBeInTheDocument()
+
+  // Click the button
+  fireEvent.click(button)
+
+  // After clicking, the text should appear
+  expect(screen.getByText('button test')).toBeInTheDocument()
 })

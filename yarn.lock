@@ -1746,17 +1746,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cfaester/enzyme-adapter-react-18@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@cfaester/enzyme-adapter-react-18/-/enzyme-adapter-react-18-0.8.0.tgz#313814eb79658a6e74209f9f1743bcefff14a46f"
-  integrity sha512-3Z3ThTUouHwz8oIyhTYQljEMNRFtlVyc3VOOHCbxs47U6cnXs8K9ygi/c1tv49s7MBlTXeIcuN+Ttd9aPtILFQ==
-  dependencies:
-    enzyme-shallow-equal "^1.0.0"
-    function.prototype.name "^1.1.6"
-    has "^1.0.4"
-    react-is "^18.2.0"
-    react-shallow-renderer "^16.15.0"
-
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -13908,11 +13897,6 @@ has@^1.0.0, has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-has@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/has/-/has-1.0.4.tgz#2eb2860e000011dae4f1406a86fe80e530fb2ec6"
-  integrity sha512-qdSAmqLF6209RFj4VVItywPMbm3vWylknmB3nvNiUIs72xAimcM8nVYxYr7ncvZq5qzk9MKIZR8ijqD/1QuYjQ==
-
 hash-base@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/hash-base/-/hash-base-3.1.0.tgz#55c381d9e06e1d2997a883b4a3fddfe7f0d3af33"
@@ -21581,11 +21565,6 @@ react-is@17.0.2, "react-is@^16.12.0 || ^17.0.0", react-is@^17.0.0, react-is@^17.
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-"react-is@^16.12.0 || ^17.0.0 || ^18.0.0", react-is@^18.3.1:
-  version "18.3.1"
-  resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
-  integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
-
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -21600,6 +21579,11 @@ react-is@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
+
+react-is@^18.3.1:
+  version "18.3.1"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
+  integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
 
 react-is@^19.2.0:
   version "19.2.0"
@@ -21824,14 +21808,6 @@ react-shallow-renderer@^16.13.1:
   dependencies:
     object-assign "^4.1.1"
     react-is "^16.12.0 || ^17.0.0"
-
-react-shallow-renderer@^16.15.0:
-  version "16.15.0"
-  resolved "https://registry.yarnpkg.com/react-shallow-renderer/-/react-shallow-renderer-16.15.0.tgz#48fb2cf9b23d23cde96708fe5273a7d3446f4457"
-  integrity sha512-oScf2FqQ9LFVQgA73vr86xl2NaOIX73rh+YFqcOp68CWj56tSfgtGKrEbyhCj0rSijyG9M1CYprTh39fBi5hzA==
-  dependencies:
-    object-assign "^4.1.1"
-    react-is "^16.12.0 || ^17.0.0 || ^18.0.0"
 
 react-simple-code-editor@^0.11.2:
   version "0.11.2"

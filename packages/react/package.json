@@ -44,7 +44,6 @@
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "@cfaester/enzyme-adapter-react-18": "^0.8.0",
     "@emotion/jest": "^11.14.2",
     "@rollup/plugin-commonjs": "^29.0.0",
     "@rollup/plugin-json": "^6.1.0",
