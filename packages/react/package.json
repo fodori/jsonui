@@ -30,8 +30,8 @@
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts",
-    "storybook": "run storybook",
-    "build-storybook": "build-storybook",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "test": "jest"
   },
   "dependencies": {
@@ -49,11 +49,6 @@
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
-    "@storybook/addon-actions": "^9.0.8",
-    "@storybook/addon-essentials": "^8.6.14",
-    "@storybook/addon-interactions": "^8.6.14",
-    "@storybook/addon-links": "^10.0.7",
-    "@storybook/react": "^10.0.7",
     "@storybook/react-vite": "^10.0.7",
     "@storybook/testing-library": "^0.2.2",
     "@testing-library/jest-dom": "^6.9.1",
@@ -90,9 +85,11 @@
     "rollup": "^4.53.2",
     "rollup-plugin-dts": "^6.2.3",
     "rollup-plugin-visualizer": "^6.0.5",
+    "storybook": "^10.0.7",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^7.2.2"
   },
   "peerDependencies": {
     "lodash": "^4.17.21",
