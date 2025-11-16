@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/reactnative",
-  "version": "0.7.5",
+  "version": "0.8.0",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
   "bugs": {
@@ -33,7 +33,7 @@
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts"
   },
   "dependencies": {
-    "@jsonui/core": "^0.7.5",
+    "@jsonui/core": "^0.8.0",
     "@react-native-async-storage/async-storage": "^1.15.17",
     "batchflow": "^0.4.0",
     "jsonata": "^1.8.5",
