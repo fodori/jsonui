@@ -7,8 +7,17 @@
   "files": [
     "dist"
   ],
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts",
     "test": "jest",
