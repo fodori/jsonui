@@ -17,10 +17,12 @@ If you would like to build a remote controlled app or a form generator app, I ho
 
 On react environment
 
-```bash
-npm install @jsonui/react
+I assume you have already added react and react-dom.
 
-yarn add @jsonui/react
+```bash
+npm install @jsonui/react batchflow jsonata lodash react-redux redux
+
+yarn add @jsonui/react batchflow jsonata lodash react-redux redux
 ```
 
 On react-native environment

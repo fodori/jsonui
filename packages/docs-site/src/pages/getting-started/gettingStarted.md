@@ -1,9 +1,11 @@
 ## Installation
 
+I assume you have already added react and react-dom.
+
 ```bash
-npm install @jsonui/react
-or
-yarn add @jsonui/react
+npm install @jsonui/react batchflow jsonata lodash react-redux redux
+
+yarn add @jsonui/react batchflow jsonata lodash react-redux redux
 ```
 
 ## Basic Usage
