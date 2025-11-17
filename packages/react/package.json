@@ -31,9 +31,9 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/cjs/index.js"
     }
   },
   "scripts": {
@@ -101,9 +101,7 @@
     "vite": "^7.2.2"
   },
   "peerDependencies": {
-    "lodash": "^4.17.21",
-    "react-redux": "^9.2.0",
-    "redux": "^5.0.1"
+    "react-redux": "^9.2.0"
   },
   "browserslist": {
     "production": [

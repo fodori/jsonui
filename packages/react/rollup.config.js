@@ -22,14 +22,35 @@ export default [
         exports: 'named',
       },
     ],
-    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json', declaration: false, declarationMap: false }), json(), visualizer()],
-    // external: [...Object.keys(packageJson.dependencies || {}), ...Object.keys(packageJson.peerDependencies || {})],
-    external: ['react', 'react-dom', '@emotion/react', '@jsonui/core', 'lodash', 'jsonata', 'batchflow', 'redux', 'react-redux'],
+    plugins: [
+      resolve({
+        preferBuiltins: false,
+        browser: true,
+      }),
+      commonjs({
+        include: /node_modules/,
+        requireReturnsDefault: 'auto',
+      }),
+      typescript({ tsconfig: './tsconfig.json', declaration: false, declarationMap: false }),
+      json(),
+      visualizer(),
+    ],
+    external: (id) => {
+      // Externalize all node_modules except what we explicitly want to bundle
+      // This prevents bundling transitive dependencies that cause issues
+      if (/node_modules/.test(id)) {
+        return true
+      }
+      // Also externalize these specific packages
+      return ['react', 'react-dom', 'react/jsx-runtime', '@emotion/react', '@jsonui/core', 'lodash', 'jsonata', 'batchflow', 'redux', 'react-redux'].some(
+        (pkg) => id === pkg || id.startsWith(`${pkg}/`)
+      )
+    },
   },
   {
     input: 'dist/esm/types/index.d.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
     plugins: [dts({ tsconfig: './tsconfig.json' })],
-    external: ['react', 'react-dom', '@jsonui/core'],
+    external: ['react', 'react-dom', 'react/jsx-runtime', '@emotion/react', '@jsonui/core', 'lodash', 'jsonata', 'batchflow', 'redux', 'react-redux'],
   },
 ]
