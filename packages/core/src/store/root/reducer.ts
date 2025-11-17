@@ -2,7 +2,7 @@ import { produce, current } from 'immer'
 import { AnyAction } from 'redux'
 import { ValidationType } from '../../utils/types'
 import * as c from '../../utils/constants'
-import * as util from '../../utils/jsonUtils'
+import * as utils from '../../utils/jsonUtils'
 import { validateJSONAndStore } from '../../stock/validation'
 import { DATA_UPDATE } from './actions'
 import Stock from '../../stock/Stock'
@@ -16,10 +16,10 @@ const globalValidateNewState = (stock: InstanceType<typeof Stock>, newState: Roo
       if (validateItem.store === actionStore && `${actionPath}`.startsWith(validateItem.path)) {
         if (validateItem.schema) {
           const state = current(newState)
-          const stateToBeValidated = util.jsonPointerGet(state, `${c.SEPARATOR}${actionStore}${validateItem.path}`)
+          const stateToBeValidated = utils.jsonPointerGet(state, `${c.SEPARATOR}${actionStore}${validateItem.path}`)
           const errors = validateJSONAndStore(validateItem.schema, actionStore, stateToBeValidated)
           // eslint-disable-next-line no-param-reassign
-          newState = util.jsonPointerSet(newState, `${c.SEPARATOR}${errors.store}${validateItem.path}`, errors.value)
+          newState = utils.jsonPointerSet(newState, `${c.SEPARATOR}${errors.store}${validateItem.path}`, errors.value)
         }
       }
     })
@@ -37,13 +37,13 @@ const reducer = (state = initialState, action: AnyAction) => {
         [c.CURRENT_PATH_NAME]: currentPaths = undefined,
         stock = undefined,
       } = action?.payload || {}
-      if (store && path && util.isValidJson(value)) {
+      if (store && path && utils.isValidJson(value)) {
         const storekey = `${store}`
         let convertedPath =
           currentPaths && currentPaths[storekey] && currentPaths[storekey].path
-            ? util.changeRelativePath(`${currentPaths[storekey].path}${c.SEPARATOR}${path}`)
-            : util.changeRelativePath(path)
-        convertedPath = util.jsonPointerFix(convertedPath)
+            ? utils.changeRelativePath(`${currentPaths[storekey].path}${c.SEPARATOR}${path}`)
+            : utils.changeRelativePath(path)
+        convertedPath = utils.jsonPointerFix(convertedPath)
 
         const absolutePathWithStoreKey = `${c.SEPARATOR}${storekey}${convertedPath}`
         const newState = produce(state, (draft: RootStateType) => {
@@ -54,21 +54,21 @@ const reducer = (state = initialState, action: AnyAction) => {
               const expression = jsonata(jsonataDef)
               const newValue = expression.evaluate(value)
               // eslint-disable-next-line no-param-reassign
-              draft = util.jsonPointerSet(draft, absolutePathWithStoreKey, newValue)
+              draft = utils.jsonPointerSet(draft, absolutePathWithStoreKey, newValue)
             } catch (error) {
               // eslint-disable-next-line no-console
               console.error('jsonata error', error, jsonataDef)
               // eslint-disable-next-line no-param-reassign
-              draft = util.jsonPointerSet(draft, absolutePathWithStoreKey, value)
+              draft = utils.jsonPointerSet(draft, absolutePathWithStoreKey, value)
             }
           } else {
             // eslint-disable-next-line no-param-reassign
-            draft = util.jsonPointerSet(draft, absolutePathWithStoreKey, value)
+            draft = utils.jsonPointerSet(draft, absolutePathWithStoreKey, value)
           }
           // set, if a leaf touched
           // TODO if array or object touched, can easily overwite the leaf touched
           // eslint-disable-next-line no-param-reassign
-          draft = util.jsonPointerSet(draft, `${c.SEPARATOR}${storekey}${c.STORE_TOUCH_POSTFIX}${convertedPath}`, true)
+          draft = utils.jsonPointerSet(draft, `${c.SEPARATOR}${storekey}${c.STORE_TOUCH_POSTFIX}${convertedPath}`, true)
           // if validatior has match, need to validate it synchronously
           globalValidateNewState(stock, draft, store, convertedPath)
         })

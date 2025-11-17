@@ -2,7 +2,7 @@ import React from 'react'
 import orderBy from 'lodash/orderBy'
 import traverse from 'traverse'
 import * as c from '../utils/constants'
-import * as util from '../utils/jsonUtils'
+import * as utils from '../utils/jsonUtils'
 import Stock from '../stock/Stock'
 import { PathModifiersType, PropsType, ReduxPath, WrapperType } from '../utils/types'
 import { V_COMP_NAME } from '../utils/constants'
@@ -89,7 +89,7 @@ export const getCurrentPaths = (props: PropsType, pathModifier: PathModifiersTyp
         if (`${path}`.startsWith(c.SEPARATOR) || !(parent && parent[c.PATHNAME])) {
           currentPaths[key] = { [c.PATHNAME]: path }
         } else {
-          currentPaths[key] = { [c.PATHNAME]: util.changeRelativePath(`${parent[c.PATHNAME]}${c.SEPARATOR}${path}`) }
+          currentPaths[key] = { [c.PATHNAME]: utils.changeRelativePath(`${parent[c.PATHNAME]}${c.SEPARATOR}${path}`) }
         }
         if (!!currentPaths[key] && !`${currentPaths[key][c.PATHNAME]}`.startsWith(c.SEPARATOR)) {
           currentPaths[key][c.PATHNAME] = `${c.SEPARATOR}${currentPaths[key][c.PATHNAME]}`
@@ -111,9 +111,9 @@ export const normalisePrimitives = (props: PropsType, parentComp?: any): any => 
 }
 
 const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Stock>) => {
-  let page = !!props[c.LIST_PAGE] && util.isNumber(props[c.LIST_PAGE]) ? (props[c.LIST_PAGE] as number) : 0
-  let listLength = !!props[c.LIST_LENGTH] && util.isNumber(props[c.LIST_LENGTH]) ? (props[c.LIST_LENGTH] as number) : undefined
-  let itemPerPage = !!props[c.LIST_ITEM_PER_PAGE] && util.isNumber(props[c.LIST_ITEM_PER_PAGE]) ? (props[c.LIST_ITEM_PER_PAGE] as number) : undefined
+  let page = !!props[c.LIST_PAGE] && utils.isNumber(props[c.LIST_PAGE]) ? (props[c.LIST_PAGE] as number) : 0
+  let listLength = !!props[c.LIST_LENGTH] && utils.isNumber(props[c.LIST_LENGTH]) ? (props[c.LIST_LENGTH] as number) : undefined
+  let itemPerPage = !!props[c.LIST_ITEM_PER_PAGE] && utils.isNumber(props[c.LIST_ITEM_PER_PAGE]) ? (props[c.LIST_ITEM_PER_PAGE] as number) : undefined
   const listItem: any = props[c.LIST_ITEM]
   if (!listItem) return undefined
   const currentPaths = props[c.CURRENT_PATH_NAME] as PathModifiersType

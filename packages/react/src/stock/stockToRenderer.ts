@@ -1,5 +1,5 @@
 import defaultsDeep from 'lodash/defaultsDeep'
-import { constants as c, Stock, I18n, stockFunctions as functions, util } from '@jsonui/core'
+import { constants as c, Stock, I18n, stockFunctions as functions, utils } from '@jsonui/core'
 import additionalComponents from './components'
 
 // eslint-disable-next-line import/prefer-default-export
@@ -17,11 +17,11 @@ export const getStock = (stockInit: any, model: any, Wrapper: any, reduxStore: a
       (navigator.languages && navigator.languages[0]) || // Chrome / Firefox
       navigator.language || // All browsers
       (navigator as any).userLanguage, // IE <= 10
-    resources: util.collectObjMerge(c.REF_LOCALES, model),
+    resources: utils.collectObjMerge(c.REF_LOCALES, model),
   })
 
   // get Validations
-  stock.validations = util.collectObjToArray(c.REF_VALIDATES, model, true)
+  stock.validations = utils.collectObjToArray(c.REF_VALIDATES, model, true)
   stock.registerFunction('t', (p: any) => i18n.t(p.keys, p.options))
   stock.registerFunction('test', () => 'Test is ok')
   return stock

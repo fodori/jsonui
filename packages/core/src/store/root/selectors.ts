@@ -1,11 +1,11 @@
 import * as c from '../../utils/constants'
-import * as util from '../../utils/jsonUtils'
+import * as utils from '../../utils/jsonUtils'
 import { PathModifiersType, ReduxPath, ReduxPathTypeEnum } from '../../utils/types'
 import { RootStateType } from './reducer'
 
 export const getState = (state: any): RootStateType => state?.root
 
-export const getValue = (state: any, store: string, path: string) => util.jsonPointerGet(state[store], path)
+export const getValue = (state: any, store: string, path: string) => utils.jsonPointerGet(state[store], path)
 export const getStoreNameFromType = (store: string, type?: ReduxPathTypeEnum) =>
   // eslint-disable-next-line no-nested-ternary
   type === ReduxPathTypeEnum.ERROR ? `${store}${c.STORE_ERROR_POSTFIX}` : type === ReduxPathTypeEnum.TOUCH ? `${store}${c.STORE_TOUCH_POSTFIX}` : `${store}`
@@ -15,7 +15,7 @@ export const getStateValue = (globalState: any, { store, path, type, jsonataDef 
 
   if (state && store && path) {
     const convertedPath =
-      currentPaths && currentPaths[store] && currentPaths[store].path ? util.changeRelativePath(`${currentPaths[store].path}${c.SEPARATOR}${path}`) : path
+      currentPaths && currentPaths[store] && currentPaths[store].path ? utils.changeRelativePath(`${currentPaths[store].path}${c.SEPARATOR}${path}`) : path
     const storeName = getStoreNameFromType(store, type)
     let value = getValue(state, storeName, convertedPath)
     if (jsonataDef) {
@@ -31,10 +31,10 @@ export const getStateValue = (globalState: any, { store, path, type, jsonataDef 
     }
     if (type === ReduxPathTypeEnum.ERROR) {
       // if we have error, need to show, the empty structure is not error, doesn't matter how deep is it
-      return util.hasLeaf(value) ? value : null
+      return utils.hasLeaf(value) ? value : null
     }
     if (type === ReduxPathTypeEnum.TOUCH) {
-      return util.hasLeaf(value) // return true if is touched.
+      return utils.hasLeaf(value) // return true if is touched.
     }
     return value
   }
