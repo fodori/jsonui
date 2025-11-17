@@ -218,3 +218,8 @@ yarn lerna add @fontsource/roboto --scope=@jsonui/comp-mui
 yarn lerna add @mui/icons-material --scope=@jsonui/comp-mui
  
 
+## to test the build, before publish
+# in /react folder
+yarn pack
+# another place app
+yarn add ~/Documents/gitHub/jsonui/packages/react/jsonui-react-v0.8.0.tgz

@@ -31,7 +31,11 @@ export default [
         include: /node_modules/,
         requireReturnsDefault: 'auto',
       }),
-      typescript({ tsconfig: './tsconfig.json', declaration: false, declarationMap: false }),
+      typescript({
+        tsconfig: './tsconfig.json',
+        declaration: false,
+        declarationMap: false,
+      }),
       json(),
       visualizer(),
     ],
@@ -48,7 +52,7 @@ export default [
     },
   },
   {
-    input: 'dist/esm/types/index.d.ts',
+    input: 'src/index.tsx',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
     plugins: [dts({ tsconfig: './tsconfig.json' })],
     external: ['react', 'react-dom', 'react/jsx-runtime', '@emotion/react', '@jsonui/core', 'lodash', 'jsonata', 'batchflow', 'redux', 'react-redux'],
