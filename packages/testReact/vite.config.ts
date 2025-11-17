@@ -10,6 +10,13 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  optimizeDeps: {
+    include: ['lodash', 'jsonata', 'batchflow', 'react-redux', 'redux', '@emotion/react'],
+  },
+  define: {
+    global: 'globalThis',
+    'process.env': {},
+  },
   server: {
     port: 3000,
     open: true,
