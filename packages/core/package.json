@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/core",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "license": "MIT",
   "source": "src/index.ts",
   "homepage": "http://www.jsonui.org/",
@@ -67,5 +67,5 @@
     "ts-jest": "^29.4.5",
     "typescript": "^5.9.3"
   },
-  "gitHead": "743c310a80c03af33b3e6e40f3c4b0b6dd62c6a0"
+  "gitHead": "aac0d89b4cf6116cebea7d4fbdc49ea39637da2f"
 }
