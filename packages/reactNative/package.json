@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/reactnative",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
   "bugs": {
@@ -33,7 +33,7 @@
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts"
   },
   "dependencies": {
-    "@jsonui/core": "^0.8.0",
+    "@jsonui/core": "^0.8.3",
     "@react-native-async-storage/async-storage": "^1.15.17",
     "batchflow": "^0.4.0",
     "jsonata": "^1.8.5",
@@ -91,5 +91,5 @@
       "last 1 safari version"
     ]
   },
-  "gitHead": "743c310a80c03af33b3e6e40f3c4b0b6dd62c6a0"
+  "gitHead": "bef386489c5dffe83fc740b9f8e8370e09929641"
 }

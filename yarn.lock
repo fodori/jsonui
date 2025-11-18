@@ -7029,7 +7029,7 @@ batch@0.6.1:
 batchflow@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/batchflow/-/batchflow-0.4.0.tgz#7d419df79b6b7587b06f9ea34f96ccef6f74e5b5"
-  integrity sha1-fUGd95trdYewb56jT5bM72905bU=
+  integrity sha512-XwQQoCGPUjdLWzmpAvRNZc91wnBYuKLmj52d9LLZ1Ww06ow5RBqBt8kUmU9/3ZvPq88j7Elh3V4cEhgNKXbIlQ==
 
 bcrypt-pbkdf@^1.0.0:
   version "1.0.2"

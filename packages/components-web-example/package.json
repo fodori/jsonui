@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/components-web-example",
-  "version": "0.8.0",
+  "version": "0.8.3",
   "type": "module",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
@@ -109,5 +109,5 @@
       "last 1 safari version"
     ]
   },
-  "gitHead": "743c310a80c03af33b3e6e40f3c4b0b6dd62c6a0"
+  "gitHead": "bef386489c5dffe83fc740b9f8e8370e09929641"
 }
