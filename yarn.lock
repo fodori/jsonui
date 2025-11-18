@@ -2903,30 +2903,6 @@
     redux-persist "^6.0.0"
     traverse "^0.6.6"
 
-"@jsonui/core@^0.8.3":
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/@jsonui/core/-/core-0.8.3.tgz#9d926470de651709a44602d802946a094102e2e9"
-  integrity sha512-zz6Wp+d1SjGTvYrmnNiTx+LR35H+cMgEjJKzTw+Lakx+GZMonFXf0kJ+UNnTIPfjtLlm4BdQHC/vy9LVRvR+ZQ==
-  dependencies:
-    ajv "^8.17.1"
-    ajv-errors "^3.0.0"
-    ajv-formats "^3.0.1"
-    immer "^10.2.0"
-    jsonata "^2.1.0"
-    jsonpointer "^5.0.1"
-    key-value-replace "^3.0.0"
-    traverse "^0.6.11"
-
-"@jsonui/react@^0.8.3":
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/@jsonui/react/-/react-0.8.3.tgz#5bf0af8bd8ec80662d9304c6e6abc5f79544964c"
-  integrity sha512-ZnU33lHb53kChzycfBVz1LHqvyxVe9XADAb6LhcTMqtl0GyqcSQDm8jK9scZnECvjV5bSdW+jqM8ijnALYwLeA==
-  dependencies:
-    "@emotion/react" "^11.14.0"
-    "@jsonui/core" "^0.8.3"
-    batchflow "^0.4.0"
-    jsonata "^2.1.0"
-
 "@jsonui/reactnative@^0.0.12":
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/@jsonui/reactnative/-/reactnative-0.0.12.tgz#9747dbd97b264a85c0ff6003d32f7a0250a585ae"
