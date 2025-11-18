@@ -20,9 +20,9 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import SportsEsports from '@mui/icons-material/SportsEsports'
 import MuiLink from '@mui/material/Link'
-import { ReactComponent as NpmIcon } from '../assets/npmIcon.svg'
-import { ReactComponent as JsonIcon } from '../assets/jsonIcon.svg'
-import { ReactComponent as ReactIcon } from '../assets/reactIcon.svg'
+import NpmIcon from '../assets/npmIcon.svg?react'
+import JsonIcon from '../assets/jsonIcon.svg?react'
+import ReactIcon from '../assets/reactIcon.svg?react'
 
 interface HideOnScrollProps {
   children: React.ReactElement

@@ -3,7 +3,7 @@ import React from 'react'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import conceptImage from '../../assets/concept1.png'
-import stateContainer from '../../assets/state-container.svg'
+import StateContainer from '../../assets/state-container.svg?react'
 
 const FullSizeConceptImg = styled('img')`
   width: 100%;
@@ -89,7 +89,7 @@ function App() {
         We store it in a state container and the user can manipulate it with component interactions. The data is in separate store. Each store has a name/key.
       </Typography>
       <Typography variant="subtitle1" style={{ textAlign: 'center', margin: 20 }}>
-        <FullSizeStateContainerImg src={stateContainer} alt="State container" width="80%" />
+        <StateContainer style={{ width: '100%', maxWidth: '1092' }} aria-label="State container" width="80%" />
       </Typography>
 
       <Typography variant="h4" sx={{ margin: 4, marginLeft: 0 }}>
