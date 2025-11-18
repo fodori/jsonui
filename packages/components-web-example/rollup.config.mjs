@@ -1,0 +1,64 @@
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+import typescript from '@rollup/plugin-typescript'
+import dts from 'rollup-plugin-dts'
+import json from '@rollup/plugin-json'
+import { visualizer } from 'rollup-plugin-visualizer'
+import copy from 'rollup-plugin-copy'
+
+export default [
+  {
+    input: 'src/index.tsx',
+    output: [
+      {
+        file: 'dist/cjs/index.js',
+        format: 'cjs',
+        sourcemap: true,
+        exports: 'named',
+      },
+      {
+        file: 'dist/esm/index.js',
+        format: 'esm',
+        sourcemap: true,
+        exports: 'named',
+      },
+    ],
+    plugins: [
+      resolve({
+        preferBuiltins: false,
+        browser: true,
+      }),
+      commonjs({
+        include: /node_modules/,
+        requireReturnsDefault: 'auto',
+      }),
+      typescript({
+        tsconfig: './tsconfig.json',
+        declaration: false,
+        declarationMap: false,
+      }),
+      json(),
+      visualizer(),
+      copy({
+        targets: [
+          { src: 'src/assets', dest: 'dist' },
+          { src: 'src/style.css', dest: 'dist' },
+        ],
+      }),
+    ],
+    external: (id) => {
+      // Externalize all node_modules except what we explicitly want to bundle
+      if (/node_modules/.test(id)) {
+        return true
+      }
+      // Also externalize these specific packages
+      return ['react', 'react-dom', 'react/jsx-runtime', '@jsonui/react'].some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
+    },
+  },
+  {
+    input: 'src/index.tsx',
+    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+    plugins: [dts({ tsconfig: './tsconfig.json' })],
+    external: ['react', 'react-dom', 'react/jsx-runtime', '@jsonui/react', '@mui/material', '@mui/icons-material'],
+  },
+]
