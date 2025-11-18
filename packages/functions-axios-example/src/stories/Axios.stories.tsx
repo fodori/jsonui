@@ -1,34 +1,36 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { JsonUI } from '@jsonui/react'
 import { axios } from '../index'
 
-const AxiosStory = {
+const meta = {
   title: 'mui/Axios',
-  component: React.Component,
-} as ComponentMeta<typeof React.Component>
+  component: JsonUI,
+} satisfies Meta<typeof JsonUI>
 
-const Template: ComponentStory<typeof React.Component> = () => (
-  <JsonUI
-    functions={{ axios }}
-    model={[
-      {
-        $comp: 'Button',
-        $children: 'Send a post',
-        onClick: {
-          $action: 'axios',
-          method: 'post',
-          url: '/user/12345',
-          data: {
-            firstName: 'Fred',
-            lastName: 'Flintstone',
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Axios: Story = {
+  args: {},
+  render: () => (
+    <JsonUI
+      functions={{ axios }}
+      model={[
+        {
+          $comp: 'Button',
+          $children: 'Send a post',
+          onClick: {
+            $action: 'axios',
+            method: 'post',
+            url: '/user/12345',
+            data: {
+              firstName: 'Fred',
+              lastName: 'Flintstone',
+            },
           },
         },
-      },
-    ]}
-  />
-)
-
-export const Axios = Template.bind({})
-
-export default AxiosStory
+      ]}
+    />
+  ),
+}
