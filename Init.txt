@@ -1,6 +1,10 @@
 This is a description how this monorepo created.
-The goal is to create a monorepo to store a react and a react native module or library to make n open source project
+The goal is to create a monorepo to store a react and a react native module or library to make an open source project
 https://andreasheissenberger.medium.com/monorepo-setup-for-javascript-typescript-and-react-1-4-71d37c395b67
+
+# TODO
+- jsonata 2.0 is aync all action, selector need to prepare for it
+
 
 delete git repo history
 git checkout --orphan tmp-master # create a temporary branch
@@ -37,52 +41,6 @@ yarn lerna add ajv jsonpointer immer traverse lodash jsonata redux-persist redux
 yarn lerna add react-redux react-router-dom @emotion/react lodash redux redux-persist traverse batchflow --scope=@jsonui/react
 
 yarn lerna add eslint-config-airbnb -D --scope=@jsonui/react
-yarn lerna add eslint-config-prettier -D --scope=@jsonui/react
-yarn lerna add eslint-plugin-import -D --scope=@jsonui/react
-yarn lerna add eslint-plugin-jsx-a11y -D --scope=@jsonui/react
-yarn lerna add eslint-plugin-prettier -D --scope=@jsonui/react
-yarn lerna add eslint-plugin-react -D --scope=@jsonui/react
-yarn lerna add eslint-plugin-react-hooks -D --scope=@jsonui/react
-yarn lerna add husky -D --scope=@jsonui/react
-yarn lerna add lint-staged -D --scope=@jsonui/react
-yarn lerna add prettier -D --scope=@jsonui/react
-yarn lerna add redux-devtools -D --scope=@jsonui/react
-
-
-
-yarn lerna add ajv --scope=@jsonui/react
-yarn lerna add jsonpointer --scope=@jsonui/react
-yarn lerna add immer --scope=@jsonui/react
-yarn lerna add traverse --scope=@jsonui/react
-yarn lerna add jsonata --scope=@jsonui/react
-yarn lerna add redux-persist--scope=@jsonui/react
-yarn lerna add key-value-replace --scope=@jsonui/react
-yarn lerna add url --scope=@jsonui/react
-         
-yarn lerna add @typescript-eslint/parser -D --scope=@jsonui/react
-yarn lerna add @typescript-eslint/eslint-plugin -D --scope=@jsonui/react
-          
-          yarn lerna add eslint-plugin-react@^7.28.0 -D --scope=@jsonui/react
-          yarn lerna add @typescript-eslint/eslint-plugin@latest -D --scope=@jsonui/react 
-          yarn lerna add eslint-config-airbnb@latest -D --scope=@jsonui/react
-          yarn lerna add eslint@^8.2.0 -D --scope=@jsonui/react
-          yarn lerna add eslint-plugin-import@^2.25.3 -D --scope=@jsonui/react
-          yarn lerna add eslint-plugin-jsx-a11y@^6.5.1 -D --scope=@jsonui/react
-          yarn lerna add eslint-plugin-react-hooks@^4.3.0 -D --scope=@jsonui/react
-          yarn lerna add @typescript-eslint/parser@latest -D --scope=@jsonui/react
-
-
-
-yarn lerna add @typescript-eslint/parser -D --scope=@jsonui/core
-yarn lerna add @typescript-eslint/eslint-plugin -D --scope=@jsonui/core
-yarn lerna add eslint-plugin-react@^7.28.0 -D --scope=@jsonui/core
-yarn lerna add @typescript-eslint/eslint-plugin@latest -D --scope=@jsonui/core 
-yarn lerna add eslint-config-airbnb@latest -D --scope=@jsonui/core
-yarn lerna add eslint@^8.2.0 -D --scope=@jsonui/core
-yarn lerna add eslint-plugin-import@^2.25.3 -D --scope=@jsonui/core
-yarn lerna add eslint-plugin-jsx-a11y@^6.5.1 -D --scope=@jsonui/core
-yarn lerna add eslint-plugin-react-hooks@^4.3.0 -D --scope=@jsonui/core
-yarn lerna add react --scope=@jsonui/core
 
 cd packages
 yarn create react-app test-react --template typescript
@@ -98,15 +56,6 @@ noChildren is not configurable
  
 yarn lerna add @jsonui/react --scope=@jsonui/test-react
 
-yarn lerna add rollup -D --scope=@jsonui/react
-yarn lerna add @rollup/plugin-node-resolve -D --scope=@jsonui/react
-yarn lerna add @rollup/plugin-typescript -D --scope=@jsonui/react
-yarn lerna add @rollup/plugin-commonjs -D --scope=@jsonui/react
-yarn lerna add rollup-plugin-dts -D --scope=@jsonui/react
-
-yarn lerna add @types/traverse -D --scope=@jsonui/core
-yarn lerna add @rollup/plugin-json -D --scope=@jsonui/react
-
 // added react native project
 have created outside, because an error on create time
 
@@ -121,79 +70,16 @@ N/A: version "N/A -> N/A" is not yet installed.
 nvm alias default node
 
 yarn lerna add react-native-web --scope=jsonui-test-react-native-web
-yarn lerna add babel-plugin-react-native-web -D --scope=jsonui-test-react-native-web
-
-
-
-yarn lerna add @react-native-async-storage/async-storage --scope=@jsonui/reactnative
-yarn lerna add @emotion/native --scope=@jsonui/reactnative
-yarn lerna add react-native -D --scope=@jsonui/reactnative
-
-
-
-yarn lerna add @jsonui/reactnative --scope=testreactnative
-yarn lerna add @react-native-async-storage/async-storage --scope=testreactnative
-
-yarn lerna add react-native-extended-stylesheet --scope=@jsonui/reactnative
-
-yarn lerna add rollup-plugin-visualizer -D --scope=@jsonui/react
-yarn lerna add rollup-plugin-visualizer -D --scope=@jsonui/reactnative
-
-yarn lerna add use-context-selector --scope=@jsonui/react
-yarn lerna add scheduler --scope=@jsonui/react
-yarn lerna add jest -D --scope=@jsonui/core
-yarn lerna add @types/jest -D --scope=@jsonui/core
-yarn lerna add ts-jest -D --scope=@jsonui/core
-
-
-yarn lerna add rollup -D --scope=@jsonui/core
-yarn lerna add @rollup/plugin-node-resolve -D --scope=@jsonui/core
-yarn lerna add @rollup/plugin-typescript -D --scope=@jsonui/core
-yarn lerna add @rollup/plugin-commonjs -D --scope=@jsonui/core
-yarn lerna add rollup-plugin-dts -D --scope=@jsonui/core
-yarn lerna add @rollup/plugin-json -D --scope=@jsonui/core
-yarn lerna add rollup-plugin-visualizer -D --scope=@jsonui/core
-
 
 npx create-react-app docs-site jsonui-react --template typescript
 yarn lerna add @mui/material --scope=docs-site
-yarn lerna add @emotion/react --scope=docs-site
-yarn lerna add @emotion/styled --scope=docs-site
-yarn lerna add react-router --scope=docs-site
-yarn lerna add react-router-dom --scope=docs-site
 
 yarn add gh-pages --dev
-
 yarn lerna gh-pages --dev
 
-yarn lerna add jest -D --scope=@jsonui/react
-yarn lerna add @types/jest -D --scope=@jsonui/react
-yarn lerna add ts-jest -D --scope=@jsonui/react
-yarn lerna add react-test-renderer -D --scope=@jsonui/react
-yarn lerna add enzyme -D --scope=@jsonui/react
-
-yarn lerna add babel-jest -D --scope=@jsonui/react
-yarn lerna add @babel/preset-env -D --scope=@jsonui/react
 yarn lerna add @babel/preset-react -D --scope=@jsonui/react
 jest--init
 yarn lerna add ts-node -D --scope=@jsonui/react
-yarn lerna add @types/enzyme -D --scope=@jsonui/react
-yarn lerna add enzyme-adapter-react-16 -D --scope=@jsonui/react
-yarn lerna add @types/enzyme-adapter-react-16 -D --scope=@jsonui/react
-
-
-yarn lerna add react-json-editor-ajrm --scope=docs-site
-yarn lerna add @types/react-json-editor-ajrm -D --scope=docs-site
-yarn lerna add @emotion/jest -D --scope=@jsonui/react
-yarn lerna add @mui/icons-material --scope=docs-site
-yarn lerna add react-markdown --scope=docs-site
-yarn lerna add rehype-highlight --scope=docs-site
-yarn lerna add remark-gfm --scope=docs-site
-
-yarn lerna add react-simple-code-editor --scope=docs-site
-yarn lerna add prismjs --scope=docs-site
-yarn lerna add @types/prismjs -D --scope=docs-site
-yarn lerna add json-format --scope=docs-site
 
 ###### BEGIN publish new version, from main repo
 

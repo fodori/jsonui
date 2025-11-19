@@ -6,6 +6,7 @@ import * as utils from '../../utils/jsonUtils'
 import { validateJSONAndStore } from '../../stock/validation'
 import { DATA_UPDATE } from './actions'
 import Stock from '../../stock/Stock'
+import jsonata from 'jsonata'
 
 export type RootStateType = any
 
@@ -49,8 +50,6 @@ const reducer = (state = initialState, action: AnyAction) => {
         const newState = produce(state, (draft: RootStateType) => {
           if (jsonataDef) {
             try {
-              // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
-              const jsonata = require('jsonata')
               const expression = jsonata(jsonataDef)
               const newValue = expression.evaluate(value)
               // eslint-disable-next-line no-param-reassign

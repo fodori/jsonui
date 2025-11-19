@@ -2,6 +2,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { JsonUI } from '../index'
+import jsonata from 'jsonata'
 
 const JsonUIStory = {
   title: 'Multi Child',
@@ -21,8 +22,6 @@ const EditMultiChild = (props: any) => {
   if (validation && value && validation.jsonataDef) {
     let isValid = true
     try {
-      // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
-      const jsonata = require('jsonata')
       const expression = jsonata(validation.jsonataDef)
       isValid = expression.evaluate(value)
     } catch (err) {

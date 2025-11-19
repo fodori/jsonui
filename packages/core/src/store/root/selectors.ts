@@ -2,6 +2,7 @@ import * as c from '../../utils/constants'
 import * as utils from '../../utils/jsonUtils'
 import { PathModifiersType, ReduxPath, ReduxPathTypeEnum } from '../../utils/types'
 import { RootStateType } from './reducer'
+import jsonata from 'jsonata'
 
 export const getState = (state: any): RootStateType => state?.root
 
@@ -20,8 +21,6 @@ export const getStateValue = (globalState: any, { store, path, type, jsonataDef 
     let value = getValue(state, storeName, convertedPath)
     if (jsonataDef) {
       try {
-        // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
-        const jsonata = require('jsonata')
         const expression = jsonata(jsonataDef)
         value = expression.evaluate(value)
       } catch (error) {

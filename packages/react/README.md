@@ -18,9 +18,9 @@ If you would like to build a remote controlled app or a form generator app, I ho
 I assume you have already added react and react-dom.
 
 ```bash
-npm install @jsonui/react batchflow jsonata lodash react-redux redux
+npm install @jsonui/react batchflow jsonata@1.8.7 lodash react-redux redux
 
-yarn add @jsonui/react batchflow jsonata lodash react-redux redux
+yarn add @jsonui/react batchflow jsonata@1.8.7 lodash react-redux redux
 ```
 
 ## Basic Usage

@@ -31,7 +31,7 @@
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
     "immer": "^10.2.0",
-    "jsonata": "^2.1.0",
+    "jsonata": "1.8.7",
     "jsonpointer": "^5.0.1",
     "key-value-replace": "^3.0.0",
     "traverse": "^0.6.11"
