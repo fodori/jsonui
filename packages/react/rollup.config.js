@@ -46,15 +46,25 @@ export default [
         return true
       }
       // Also externalize these specific packages
-      return ['react', 'react-dom', 'react/jsx-runtime', '@emotion/react', '@jsonui/core', 'lodash', 'jsonata', 'batchflow', 'redux', 'react-redux'].some(
-        (pkg) => id === pkg || id.startsWith(`${pkg}/`)
-      )
+      return [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        '@emotion/react',
+        '@jsonui/core',
+        'lodash',
+        'jsonata',
+        'batchflow',
+        'redux',
+        'react-redux',
+        'tslib',
+      ].some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
     },
   },
   {
     input: 'src/index.tsx',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
     plugins: [dts({ tsconfig: './tsconfig.json' })],
-    external: ['react', 'react-dom', 'react/jsx-runtime', '@emotion/react', '@jsonui/core', 'lodash', 'jsonata', 'batchflow', 'redux', 'react-redux'],
+    external: ['react', 'react-dom', 'react/jsx-runtime', '@emotion/react', '@jsonui/core', 'lodash', 'jsonata', 'batchflow', 'redux', 'react-redux', 'tslib'],
   },
 ]
