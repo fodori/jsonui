@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/react",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "type": "module",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
-    "@jsonui/core": "^0.8.4",
+    "@jsonui/core": "^0.8.5",
     "batchflow": "^0.4.0",
     "jsonata": "1.8.7"
   },

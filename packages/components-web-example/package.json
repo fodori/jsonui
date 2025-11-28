@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/components-web-example",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "type": "module",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
@@ -41,7 +41,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@fontsource/roboto": "^5.2.8",
-    "@jsonui/react": "^0.8.4",
+    "@jsonui/react": "^0.8.5",
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
     "typescript": "^5.9.3"
