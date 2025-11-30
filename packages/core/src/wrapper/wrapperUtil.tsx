@@ -57,10 +57,10 @@ export const getFilteredPath = ({ [c.PARENT_PROP_NAME]: parentComp, ...propsNew 
 export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock>) => {
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.ACTION_KEY)
-  orderBy(paths, ['level'], ['desc']).forEach(async (i) => {
+  orderBy(paths, ['level'], ['desc']).forEach((i) => {
     const { [c.ACTION_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
-    traverse(props).set(i.path, async (...callerArgs: any[]) => {
-      await stock.callFunction(functionName, functionParams, props, callerArgs)
+    traverse(props).set(i.path, (...callerArgs: any[]) => {
+      stock.callFunction(functionName, functionParams, props, callerArgs)
     })
   })
 }
@@ -69,7 +69,7 @@ export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType
   const reduxPaths: any = []
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
-  orderBy(paths, ['level'], ['desc']).forEach(async (i) => {
+  orderBy(paths, ['level'], ['desc']).forEach((i) => {
     const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
     if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
       reduxPaths.push(functionParams)

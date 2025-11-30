@@ -53,7 +53,7 @@ export type JsonUIComponentType = React.FC<any> | typeof React.Component | ((pro
 export interface JsonUIComponentsType {
   [key: string]: JsonUIComponentType
 }
-export type JsonUIFunctionType = (attr: any, props: any, callerArgs: any, stock: any) => Promise<void> | void | any
+export type JsonUIFunctionType = (attr: any, props: any, callerArgs: any, stock: any) => void | any
 
 export interface JsonUIFunctions {
   [key: string]: JsonUIFunctionType
