@@ -10,6 +10,7 @@ type InitType = (prop: NewStockType) => void
 type RegisterFunctionType = (key: string, value: JsonUIFunctionType) => void
 type RegisterComponentType = (key: string, value: JsonUIComponentType) => void
 type CallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => any
+type AsyncCallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => Promise<any>
 type GetComponentType = (componentName: string) => JsonUIComponentType
 
 export default class Stock {
@@ -61,6 +62,24 @@ export default class Stock {
       return result
     }
     return null
+  }
+
+  callFunctionAsync: AsyncCallFunctionType = async (name, attr, props, callerArgs) => {
+    if (!!attr && !!name && name in this.stock.functions) {
+      const result = this.stock.functions[name](attr, props, callerArgs, this)
+      // Handle both sync and async functions
+      return result instanceof Promise ? await result : result
+    }
+    return null
+  }
+
+  isAsyncFunction: (name: string) => boolean = (name) => {
+    if (!!name && name in this.stock.functions) {
+      // Check if function is marked as async or returns a promise
+      const func = this.stock.functions[name]
+      return func.constructor.name === 'AsyncFunction' || func.isAsync === true
+    }
+    return false
   }
 
   getComponent: GetComponentType = (componentName) =>
