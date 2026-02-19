@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { ClassNames } from '@emotion/react'
 import { constants as c, wrapperUtil, StockContext, PathModifierContext, Stock, PropsType, compSelectorHook, PathModifiersType, ReduxPath } from '@jsonui/core'
@@ -33,31 +33,75 @@ const getWebStyle = (props: PropsType) => {
 export const getStyle = (props: PropsType = {}, component: string) =>
   component === 'View' ? getWebStyle(props) : { ...(props.style as any), ...(props[c.STYLE_WEB_NAME] as any) }
 
+interface AsyncWrapperState {
+  isLoading: boolean
+  props?: PropsType
+  error?: Error
+}
+
 function Wrapper({ props: origProps }: { props: any }) {
   const newCurrentPaths = useContext(PathModifierContext as any)
   const stock: InstanceType<typeof Stock> = useContext(StockContext as any)
 
-  const props = cloneDeep({
+  const [asyncState, setAsyncState] = useState<AsyncWrapperState>({
+    isLoading: false,
+    props: undefined,
+    error: undefined,
+  })
+
+  const clonedProps = cloneDeep({
     // TODO replace cloneDeep to a fastest one
     ...wrapperUtil.normalisePrimitives(origProps),
     [c.CURRENT_PATH_NAME]: wrapperUtil.getCurrentPaths({ ...origProps, [c.CURRENT_PATH_NAME]: newCurrentPaths }, origProps?.[c.PATH_MODIFIERS_KEY]),
   })
+
+  useEffect(() => {
+    const processAsync = async () => {
+      try {
+        setAsyncState((prev) => ({ ...prev, isLoading: true, error: undefined }))
+
+        await wrapperUtil.getRootWrapperProps(clonedProps, stock)
+        console.log('getRootWrapperProps done', clonedProps)
+        setAsyncState({
+          isLoading: false,
+          props: clonedProps,
+          error: undefined,
+        })
+      } catch (error) {
+        setAsyncState({
+          isLoading: false,
+          props: undefined,
+          error: error instanceof Error ? error : new Error('Unknown error'),
+        })
+      }
+    }
+
+    processAsync()
+  }, [origProps, stock])
+  const props = asyncState.props || clonedProps || {} // is empy object need?
   const { [c.V_COMP_NAME]: component } = props
-  wrapperUtil.getRootWrapperProps(props, stock)
+
   useSelector(compSelectorHook(props[c.CURRENT_PATH_NAME] as PathModifiersType, props[c.REDUX_GET_SUBSCRIBERS_NAME] as ReduxPath[]), shallowEqual)
   if (!stock) {
     return null
   }
-  const Comp: React.ElementType = stock.getComponent(component) as unknown as React.ElementType // TODO fix any
+  const Comp: React.ElementType = stock.getComponent(`${component}`) as unknown as React.ElementType // TODO fix any
 
   const infobox = false
   if (!Comp) {
     // eslint-disable-next-line no-throw-literal
     throw `The Component(${component}) is not available`
   }
+  if (asyncState.error) {
+    throw asyncState.error
+  }
 
-  const newStyle = props.style || props[c.STYLE_WEB_NAME] ? getStyle(props, component) : undefined
+  if (asyncState.isLoading) {
+    return <div>...</div> // TODO this need to show previous state
+  }
 
+  const newStyle = props.style || props[c.STYLE_WEB_NAME] ? getStyle(props, `${component}`) : undefined
+  if (component === 'Edit') console.log('Wrapper render: ', component, props)
   return (
     <ErrorBoundary type="wrapper" id={props.id}>
       <ClassNames>

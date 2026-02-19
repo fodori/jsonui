@@ -1,4 +1,3 @@
-import { ReactNode } from 'react'
 import { JsonUIComponentsType, JsonUIComponentType, JsonUIFunctions, JsonUIFunctionType } from 'utils/types'
 
 interface NewStockType {
@@ -9,8 +8,7 @@ interface NewStockType {
 type InitType = (prop: NewStockType) => void
 type RegisterFunctionType = (key: string, value: JsonUIFunctionType) => void
 type RegisterComponentType = (key: string, value: JsonUIComponentType) => void
-type CallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => any
-type AsyncCallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => Promise<any>
+type CallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => any | Promise<any>
 type GetComponentType = (componentName: string) => JsonUIComponentType
 
 export default class Stock {
@@ -56,15 +54,8 @@ export default class Stock {
     }
   }
 
-  callFunction: CallFunctionType = (name, attr, props, callerArgs) => {
-    if (!!attr && !!name && name in this.stock.functions) {
-      const result = this.stock.functions[name](attr, props, callerArgs, this)
-      return result
-    }
-    return null
-  }
-
-  callFunctionAsync: AsyncCallFunctionType = async (name, attr, props, callerArgs) => {
+  callFunction: CallFunctionType = async (name, attr, props, callerArgs) => {
+    // console.log('callFunction: ', name, attr, props, callerArgs)
     if (!!attr && !!name && name in this.stock.functions) {
       const result = this.stock.functions[name](attr, props, callerArgs, this)
       // Handle both sync and async functions
@@ -77,7 +68,7 @@ export default class Stock {
     if (!!name && name in this.stock.functions) {
       // Check if function is marked as async or returns a promise
       const func = this.stock.functions[name]
-      return func.constructor.name === 'AsyncFunction' || func.isAsync === true
+      return func.constructor.name === 'AsyncFunction' || (func as any).isAsync === true
     }
     return false
   }

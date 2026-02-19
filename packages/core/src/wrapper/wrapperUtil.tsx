@@ -55,27 +55,35 @@ export const getFilteredPath = ({ [c.PARENT_PROP_NAME]: parentComp, ...propsNew 
 }
 
 export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock>) => {
+  // TODO this approach call the action but don't wait it. for chain is not good, use modifier in lower level. an just the top could be an action. like onClick.
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.ACTION_KEY)
   orderBy(paths, ['level'], ['desc']).forEach((i) => {
     const { [c.ACTION_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
     traverse(props).set(i.path, (...callerArgs: any[]) => {
-      stock.callFunction(functionName, functionParams, props, callerArgs)
+      const innerFunc = async () => {
+        await stock.callFunction(functionName, functionParams, props, callerArgs)
+      }
+      innerFunc()
     })
   })
 }
 
-export const calculatePropsFromModifier = (props: PropsType, stock: InstanceType<typeof Stock>): ReduxPath[] => {
+export const calculatePropsFromModifier = async (props: PropsType, stock: InstanceType<typeof Stock>): Promise<ReduxPath[]> => {
   const reduxPaths: any = []
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
-  orderBy(paths, ['level'], ['desc']).forEach((i) => {
+  await orderBy(paths, ['level'], ['desc']).forEach(async (i) => {
     const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
     if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
       reduxPaths.push(functionParams)
     }
-    traverse(props).set(i.path, stock.callFunction(functionName, functionParams, props))
+    console.log('mModifier done', functionName, functionParams, props)
+    const res = await stock.callFunction(functionName, functionParams, props, [])
+    traverse(props).set(i.path, res)
   })
+  console.log('calculatePropsFromModifier done', reduxPaths)
+  // TODO if the items are identical, it could run multiple times, let's check it.
   return reduxPaths
 }
 
@@ -151,8 +159,8 @@ const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Sto
   return children.length > 0 ? children : undefined
 }
 
-export const getRootWrapperProps = (props: PropsType, stock: InstanceType<typeof Stock>) => {
-  const subscriberPaths = calculatePropsFromModifier(props, stock)
+export const getRootWrapperProps = async (props: PropsType, stock: InstanceType<typeof Stock>) => {
+  const subscriberPaths = await calculatePropsFromModifier(props, stock)
   actionBuilder(props, stock)
   if (props[c.LIST_SEMAPHORE]) {
     // eslint-disable-next-line no-param-reassign

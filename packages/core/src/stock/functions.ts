@@ -129,10 +129,10 @@ const asyncValidate: JsonUIFunctionType = async (attr, props, callerArgs, stock)
 }
 
 // Mark async functions for identification
-httpGet.isAsync = true
-httpPost.isAsync = true
-delay.isAsync = true
-asyncValidate.isAsync = true
+;(httpGet as any).isAsync = true
+;(httpPost as any).isAsync = true
+;(delay as any).isAsync = true
+;(asyncValidate as any).isAsync = true
 
 export default {
   get,
