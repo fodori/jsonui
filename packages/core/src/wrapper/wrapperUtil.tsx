@@ -73,16 +73,14 @@ export const calculatePropsFromModifier = async (props: PropsType, stock: Instan
   const reduxPaths: any = []
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
-  await Promise.all(
-    orderBy(paths, ['level'], ['desc']).map(async (i) => {
-      const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
-      if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
-        reduxPaths.push(functionParams)
-      }
-      const res = await stock.callFunction(functionName, functionParams, props, [])
-      traverse(props).set(i.path, res)
-    })
-  )
+  await orderBy(paths, ['level'], ['desc']).map(async (i) => {
+    const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
+    if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
+      reduxPaths.push(functionParams)
+    }
+    const res = await stock.callFunction(functionName, functionParams, props, [])
+    traverse(props).set(i.path, res)
+  })
   // TODO if the items are identical, it could run multiple times, let's check it.
   return reduxPaths
 }
@@ -131,7 +129,7 @@ const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Sto
   const { path } = currentPaths[store]
   if (currentPaths && !listLength) {
     if (path) {
-      const list = stock.callFunction(c.REDUX_GET_FUNCTION, { store, path })
+      const list = stock.callFunctionSync(c.REDUX_GET_FUNCTION, { store, path }) // TODO maybe modify to async?
       listLength = !!list && Array.isArray(list as any[]) ? list.length : 0
     }
   }
@@ -143,7 +141,7 @@ const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Sto
   itemPerPage = !!itemPerPage && Number.isInteger(itemPerPage) && itemPerPage >= 0 ? itemPerPage : 0
   listLength = !!listLength && Number.isInteger(listLength) && listLength >= 0 ? listLength : 0
   const offset = page * itemPerPage <= listLength ? page * itemPerPage : 0
-
+  console.log('generateNewChildren for list: ', { page, itemPerPage, listLength, offset })
   const children: PropsType[] = []
   // eslint-disable-next-line no-plusplus
   for (let i = offset; i < listLength && i < offset + itemPerPage; i++) {
@@ -163,8 +161,8 @@ export const getRootWrapperProps = async (props: PropsType, stock: InstanceType<
   const subscriberPaths = await calculatePropsFromModifier(props, stock)
   actionBuilder(props, stock)
   if (props[c.LIST_SEMAPHORE]) {
-    // eslint-disable-next-line no-param-reassign
     props[c.V_CHILDREN_NAME] = genChildenFromListItem(props, stock)
+    console.log('generateNewChildren for list: ', props)
   }
   // eslint-disable-next-line no-param-reassign
   props[c.REDUX_GET_SUBSCRIBERS_NAME] = subscriberPaths

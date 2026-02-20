@@ -8,7 +8,8 @@ interface NewStockType {
 type InitType = (prop: NewStockType) => void
 type RegisterFunctionType = (key: string, value: JsonUIFunctionType) => void
 type RegisterComponentType = (key: string, value: JsonUIComponentType) => void
-type CallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => any | Promise<any>
+type CallFunctionType = (name: string, attr?: any, props?: any, callerArgs?: any) => any
+type CallFunctionAsyncType = (name: string, attr?: any, props?: any, callerArgs?: any) => any | Promise<any>
 type GetComponentType = (componentName: string) => JsonUIComponentType
 
 export default class Stock {
@@ -54,12 +55,21 @@ export default class Stock {
     }
   }
 
-  callFunction: CallFunctionType = async (name, attr, props, callerArgs) => {
+  callFunction: CallFunctionAsyncType = async (name, attr, props, callerArgs) => {
     // console.log('callFunction: ', name, attr, props, callerArgs)
     if (!!attr && !!name && name in this.stock.functions) {
       const result = this.stock.functions[name](attr, props, callerArgs, this)
       // Handle both sync and async functions
       return result instanceof Promise ? await result : result
+    }
+    return null
+  }
+  callFunctionSync: CallFunctionType = (name, attr, props, callerArgs) => {
+    // console.log('callFunctionSync: ', name, attr, props, callerArgs)
+    if (!!attr && !!name && name in this.stock.functions) {
+      const result = this.stock.functions[name](attr, props, callerArgs, this)
+      // Handle both sync and async functions
+      return result
     }
     return null
   }

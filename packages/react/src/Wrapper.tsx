@@ -34,7 +34,6 @@ export const getStyle = (props: PropsType = {}, component: string) =>
   component === 'View' ? getWebStyle(props) : { ...(props.style as any), ...(props[c.STYLE_WEB_NAME] as any) }
 
 interface AsyncWrapperState {
-  isLoading: boolean
   props?: PropsType
   error?: Error
 }
@@ -44,7 +43,6 @@ function Wrapper({ props: origProps }: { props: any }) {
   const stock: InstanceType<typeof Stock> = useContext(StockContext as any)
 
   const [asyncState, setAsyncState] = useState<AsyncWrapperState>({
-    isLoading: false,
     props: undefined,
     error: undefined,
   })
@@ -65,16 +63,14 @@ function Wrapper({ props: origProps }: { props: any }) {
   useEffect(() => {
     const processAsync = async () => {
       try {
-        setAsyncState((prev) => ({ ...prev, isLoading: true, error: undefined }))
+        setAsyncState((prev) => ({ ...prev, error: undefined }))
         await wrapperUtil.getRootWrapperProps(clonedProps, stock)
         setAsyncState({
-          isLoading: false,
           props: clonedProps,
           error: undefined,
         })
       } catch (error) {
         setAsyncState({
-          isLoading: false,
           props: undefined,
           error: error instanceof Error ? error : new Error('Unknown error'),
         })
