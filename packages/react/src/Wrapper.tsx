@@ -102,7 +102,6 @@ function Wrapper({ props: origProps }: { props: any }) {
   }
 
   const newStyle = props.style || props[c.STYLE_WEB_NAME] ? getStyle(props, `${component}`) : undefined
-  if (component === 'Edit') console.log('Wrapper render: ', component, props)
   return (
     <ErrorBoundary type="wrapper" id={`${props.id}`}>
       <ClassNames>
