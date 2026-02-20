@@ -19,14 +19,12 @@ const AsyncExample = () => {
 
     // Async validation
     validateEmail: async (attr: any, props: any, callerArgs: any) => {
-      await new Promise((resolve) => setTimeout(resolve, 3000))
-      console.log('validateEmail', attr)
       const email = attr.email
       if (!email) return { isValid: false, error: 'Email is required' }
 
       // Simulate API validation
       const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-      return { isValid, error: isValid ? null : `Invalid email format ${uniqueId()}` }
+      return isValid ? null : `Invalid email format ${uniqueId()}`
     },
 
     // File upload
@@ -68,6 +66,7 @@ const AsyncExample = () => {
       store: 'form',
       path: '/email',
     },
+    fieldTouched: true,
     fieldErrors: {
       $modifier: 'validateEmail',
       email: {

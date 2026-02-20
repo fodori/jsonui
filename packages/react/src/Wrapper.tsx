@@ -55,13 +55,18 @@ function Wrapper({ props: origProps }: { props: any }) {
     [c.CURRENT_PATH_NAME]: wrapperUtil.getCurrentPaths({ ...origProps, [c.CURRENT_PATH_NAME]: newCurrentPaths }, origProps?.[c.PATH_MODIFIERS_KEY]),
   })
 
+  const props = asyncState.props || {} // is empy object need?
+  const { [c.V_COMP_NAME]: component } = props
+  const selectorResult = useSelector(
+    compSelectorHook(props[c.CURRENT_PATH_NAME] as PathModifiersType, props[c.REDUX_GET_SUBSCRIBERS_NAME] as ReduxPath[]),
+    shallowEqual
+  )
+
   useEffect(() => {
     const processAsync = async () => {
       try {
         setAsyncState((prev) => ({ ...prev, isLoading: true, error: undefined }))
-
         await wrapperUtil.getRootWrapperProps(clonedProps, stock)
-        console.log('getRootWrapperProps done', clonedProps)
         setAsyncState({
           isLoading: false,
           props: clonedProps,
@@ -77,11 +82,7 @@ function Wrapper({ props: origProps }: { props: any }) {
     }
 
     processAsync()
-  }, [origProps, stock])
-  const props = asyncState.props || clonedProps || {} // is empy object need?
-  const { [c.V_COMP_NAME]: component } = props
-
-  useSelector(compSelectorHook(props[c.CURRENT_PATH_NAME] as PathModifiersType, props[c.REDUX_GET_SUBSCRIBERS_NAME] as ReduxPath[]), shallowEqual)
+  }, [origProps, stock, selectorResult])
   if (!stock) {
     return null
   }
@@ -96,14 +97,14 @@ function Wrapper({ props: origProps }: { props: any }) {
     throw asyncState.error
   }
 
-  if (asyncState.isLoading) {
+  if (asyncState.props === undefined) {
     return <div>...</div> // TODO this need to show previous state
   }
 
   const newStyle = props.style || props[c.STYLE_WEB_NAME] ? getStyle(props, `${component}`) : undefined
   if (component === 'Edit') console.log('Wrapper render: ', component, props)
   return (
-    <ErrorBoundary type="wrapper" id={props.id}>
+    <ErrorBoundary type="wrapper" id={`${props.id}`}>
       <ClassNames>
         {({ css, cx }) => {
           props.className = newStyle ? cx(css(newStyle)) : undefined

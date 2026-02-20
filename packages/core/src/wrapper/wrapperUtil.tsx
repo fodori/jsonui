@@ -73,16 +73,16 @@ export const calculatePropsFromModifier = async (props: PropsType, stock: Instan
   const reduxPaths: any = []
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
-  await orderBy(paths, ['level'], ['desc']).forEach(async (i) => {
-    const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
-    if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
-      reduxPaths.push(functionParams)
-    }
-    console.log('mModifier done', functionName, functionParams, props)
-    const res = await stock.callFunction(functionName, functionParams, props, [])
-    traverse(props).set(i.path, res)
-  })
-  console.log('calculatePropsFromModifier done', reduxPaths)
+  await Promise.all(
+    orderBy(paths, ['level'], ['desc']).map(async (i) => {
+      const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
+      if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
+        reduxPaths.push(functionParams)
+      }
+      const res = await stock.callFunction(functionName, functionParams, props, [])
+      traverse(props).set(i.path, res)
+    })
+  )
   // TODO if the items are identical, it could run multiple times, let's check it.
   return reduxPaths
 }
