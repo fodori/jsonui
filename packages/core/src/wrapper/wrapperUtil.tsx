@@ -73,17 +73,52 @@ export const calculatePropsFromModifier = async (props: PropsType, stock: Instan
   const reduxPaths: any = []
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
-  await Promise.all(
-    orderBy(paths, ['level'], ['desc']).map(async (i) => {
-      const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
-      if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
-        reduxPaths.push(functionParams)
-      }
-      const res = await stock.callFunction(functionName, functionParams, props, [])
-      traverse(props).set(i.path, res)
-    })
-  )
-  // TODO if the items are identical, it could run multiple times, let's check it.
+
+  if (paths.length === 0) return reduxPaths
+
+  // Create traverse object once and reuse it
+  const traverser = traverse(props)
+
+  // Cache for deduplicating identical function calls
+  const callCache = new Map<string, Promise<any>>()
+
+  // Sort paths by level descending - use faster native sort
+  const sortedPaths = paths.sort((a, b) => b.level - a.level)
+
+  // Batch process all modifiers
+  const modifierPromises = sortedPaths.map(async (pathItem) => {
+    const modifierObj = traverser.get(pathItem.path)
+    const functionName = modifierObj[c.MODIFIER_KEY]
+
+    // Early return for redux functions
+    if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
+      const { [c.MODIFIER_KEY]: _, ...functionParams } = modifierObj
+      reduxPaths.push(functionParams)
+    }
+
+    // Create cache key for deduplication
+    const cacheKey = JSON.stringify({ fn: functionName, params: modifierObj })
+
+    // Check cache first
+    let resultPromise = callCache.get(cacheKey)
+    if (!resultPromise) {
+      const { [c.MODIFIER_KEY]: _, ...functionParams } = modifierObj
+      resultPromise = stock.callFunction(functionName, functionParams, props, [])
+      callCache.set(cacheKey, resultPromise as any)
+    }
+
+    const res = resultPromise instanceof Promise ? await resultPromise : resultPromise
+    return { path: pathItem.path, result: res }
+  })
+
+  // Execute all promises and update paths
+  const results = await Promise.all(modifierPromises)
+
+  // Batch update all paths at once
+  results.forEach(({ path, result }) => {
+    traverser.set(path, result)
+  })
+
   return reduxPaths
 }
 
