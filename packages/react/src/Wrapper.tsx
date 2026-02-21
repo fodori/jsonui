@@ -75,9 +75,9 @@ function Wrapper({ props: origProps }: { props: any }) {
     const processAsync = async () => {
       try {
         setAsyncState((prev) => ({ ...prev, error: undefined }))
-        await wrapperUtil.getRootWrapperProps(clonedProps, stock)
+        const resultProps = await wrapperUtil.getRootWrapperProps(clonedProps, stock)
         setAsyncState({
-          props: clonedProps,
+          props: resultProps,
           error: undefined,
         })
       } catch (error) {

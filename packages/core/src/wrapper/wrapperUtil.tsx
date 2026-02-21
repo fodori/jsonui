@@ -173,7 +173,7 @@ export const normalisePrimitives = (props: PropsType, parentComp?: any): any => 
   return { ...props, [c.PARENT_PROP_NAME]: parentComp }
 }
 
-const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Stock>) => {
+export const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Stock>) => {
   let page = !!props[c.LIST_PAGE] && utils.isNumber(props[c.LIST_PAGE]) ? (props[c.LIST_PAGE] as number) : 0
   let listLength = !!props[c.LIST_LENGTH] && utils.isNumber(props[c.LIST_LENGTH]) ? (props[c.LIST_LENGTH] as number) : undefined
   let itemPerPage = !!props[c.LIST_ITEM_PER_PAGE] && utils.isNumber(props[c.LIST_ITEM_PER_PAGE]) ? (props[c.LIST_ITEM_PER_PAGE] as number) : undefined
@@ -214,22 +214,20 @@ const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Sto
   return children.length > 0 ? children : undefined
 }
 
-export const getRootWrapperProps = async (props: PropsType, stock: InstanceType<typeof Stock>) => {
+export const getRootWrapperProps = async (props: PropsType, stock: InstanceType<typeof Stock>): Promise<any> => {
   const start = performance.now() * 100
-  const subscriberPaths = await calculatePropsFromModifier(props, stock)
+  const subscriberPaths: any[] = []
+  const resultProps = await processModifiers(props, stock, subscriberPaths)
   const modifier = performance.now() * 100
   console.log(`Execution time(modifier): ${Math.round(modifier - start)}`)
-  actionBuilder(props, stock)
-  const actionbuilder = performance.now() * 100
-  console.log(`Execution time(actionbuilder): ${Math.round(actionbuilder - modifier)}`)
-  if (props[c.LIST_SEMAPHORE]) {
-    props[c.V_CHILDREN_NAME] = genChildenFromListItem(props, stock)
+  if (resultProps[c.LIST_SEMAPHORE]) {
+    resultProps[c.V_CHILDREN_NAME] = genChildenFromListItem(resultProps, stock)
   }
   // eslint-disable-next-line no-param-reassign
-  props[c.REDUX_GET_SUBSCRIBERS_NAME] = subscriberPaths
-
+  resultProps[c.REDUX_GET_SUBSCRIBERS_NAME] = subscriberPaths
   const genChilden = performance.now() * 100
-  console.log(`Execution time(genChildenFromListItem): ${Math.round(genChilden - actionbuilder)}`)
+  console.log(`Execution time(genChildenFromListItem): ${Math.round(genChilden - modifier)}`)
+  return resultProps
 }
 
 export const isChildrenProp = (propName?: string): boolean => !!propName && typeof propName === 'string' && propName.startsWith(c.V_CHILDREN_PREFIX)
@@ -327,4 +325,51 @@ export const removeTechnicalProps = (changeableProps: any) => {
     ...newProps
   } = changeableProps
   return newProps
+}
+
+export const processModifiers = async (obj: PropsType, stock: InstanceType<typeof Stock>, reduxPaths: any[]): Promise<any> => {
+  // Fast type checks - avoid expensive operations
+  if (obj === null || typeof obj !== 'object') {
+    return obj
+  }
+
+  // Array handling - process each element
+  if (Array.isArray(obj)) {
+    const result = new Array(obj.length)
+    for (let i = 0; i < obj.length; i++) {
+      result[i] = processModifiers(obj[i], stock, reduxPaths)
+    }
+    return Promise.all(result)
+  }
+  const { [c.MODIFIER_KEY]: modifierFunctionName, [c.ACTION_KEY]: actionfunctionName, ...functionParams } = obj
+
+  // Regular object - process all properties
+  const result: any = {}
+  const propertyPromises: Promise<void>[] = []
+
+  for (const key in functionParams) {
+    if (typeof functionParams[key] === 'object') {
+      propertyPromises.push(
+        processModifiers(functionParams[key] as any, stock, reduxPaths).then((resolvedValue) => {
+          result[key] = resolvedValue
+        })
+      )
+    } else {
+      result[key] = functionParams[key]
+    }
+  }
+
+  await Promise.all(propertyPromises)
+
+  if (modifierFunctionName) {
+    if (modifierFunctionName === c.REDUX_GET_FUNCTION) {
+      reduxPaths.push(functionParams)
+    }
+    return await stock.callFunction(modifierFunctionName as string, result, obj, [])
+  } else if (actionfunctionName) {
+    return async (...callerArgs: any[]) => {
+      await stock.callFunction(actionfunctionName as string, result, obj, callerArgs)
+    }
+  }
+  return result
 }
