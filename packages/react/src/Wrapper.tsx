@@ -1,10 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { ClassNames } from '@emotion/react'
-import { constants as c, wrapperUtil, StockContext, PathModifierContext, Stock, PropsType, compSelectorHook, PathModifiersType, ReduxPath } from '@jsonui/core'
-import { cloneDeep } from 'lodash'
+import {
+  constants as c,
+  wrapperUtil,
+  StockContext,
+  PathModifierContext,
+  Stock,
+  PropsType,
+  compSelectorHook,
+  PathModifiersType,
+  ReduxPath,
+  utils,
+} from '@jsonui/core'
+
 import { InfoBox } from './stock/components/Label'
 import ErrorBoundary from './ErrorBoundary'
+import { cloneDeep } from 'lodash'
 
 const getWebStyle = (props: PropsType) => {
   const { [c.PARENT_PROP_NAME]: parentComp } = props
@@ -46,8 +58,7 @@ function Wrapper({ props: origProps }: { props: any }) {
     props: undefined,
     error: undefined,
   })
-
-  const clonedProps = cloneDeep({
+  const clonedProps = utils.cloneDeep({
     // TODO replace cloneDeep to a fastest one
     ...wrapperUtil.normalisePrimitives(origProps),
     [c.CURRENT_PATH_NAME]: wrapperUtil.getCurrentPaths({ ...origProps, [c.CURRENT_PATH_NAME]: newCurrentPaths }, origProps?.[c.PATH_MODIFIERS_KEY]),
@@ -94,7 +105,7 @@ function Wrapper({ props: origProps }: { props: any }) {
   }
 
   if (asyncState.props === undefined) {
-    return <div>...</div> // TODO this need to show previous state
+    return // TODO this need to show previous state
   }
 
   const newStyle = props.style || props[c.STYLE_WEB_NAME] ? getStyle(props, `${component}`) : undefined

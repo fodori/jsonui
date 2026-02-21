@@ -19,6 +19,8 @@ const AsyncExample = () => {
 
     // Async validation
     validateEmail: async (attr: any, props: any, callerArgs: any) => {
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      // console.log('validateEmail', attr, props, callerArgs)
       const email = attr.email
       if (!email) return { isValid: false, error: 'Email is required' }
 

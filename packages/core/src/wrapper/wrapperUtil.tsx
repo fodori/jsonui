@@ -73,14 +73,16 @@ export const calculatePropsFromModifier = async (props: PropsType, stock: Instan
   const reduxPaths: any = []
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
-  await orderBy(paths, ['level'], ['desc']).map(async (i) => {
-    const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
-    if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
-      reduxPaths.push(functionParams)
-    }
-    const res = await stock.callFunction(functionName, functionParams, props, [])
-    traverse(props).set(i.path, res)
-  })
+  await Promise.all(
+    orderBy(paths, ['level'], ['desc']).map(async (i) => {
+      const { [c.MODIFIER_KEY]: functionName, ...functionParams } = traverse(props).get(i.path)
+      if (typeof functionName === 'string' && functionName === c.REDUX_GET_FUNCTION) {
+        reduxPaths.push(functionParams)
+      }
+      const res = await stock.callFunction(functionName, functionParams, props, [])
+      traverse(props).set(i.path, res)
+    })
+  )
   // TODO if the items are identical, it could run multiple times, let's check it.
   return reduxPaths
 }
@@ -158,14 +160,21 @@ const genChildenFromListItem = (props: PropsType, stock: InstanceType<typeof Sto
 }
 
 export const getRootWrapperProps = async (props: PropsType, stock: InstanceType<typeof Stock>) => {
+  const start = performance.now() * 100
   const subscriberPaths = await calculatePropsFromModifier(props, stock)
+  const modifier = performance.now() * 100
+  console.log(`Execution time(modifier): ${Math.round(modifier - start)}`)
   actionBuilder(props, stock)
+  const actionbuilder = performance.now() * 100
+  console.log(`Execution time(actionbuilder): ${Math.round(actionbuilder - modifier)}`)
   if (props[c.LIST_SEMAPHORE]) {
     props[c.V_CHILDREN_NAME] = genChildenFromListItem(props, stock)
-    console.log('generateNewChildren for list: ', props)
   }
   // eslint-disable-next-line no-param-reassign
   props[c.REDUX_GET_SUBSCRIBERS_NAME] = subscriberPaths
+
+  const genChilden = performance.now() * 100
+  console.log(`Execution time(genChildenFromListItem): ${Math.round(genChilden - actionbuilder)}`)
 }
 
 export const isChildrenProp = (propName?: string): boolean => !!propName && typeof propName === 'string' && propName.startsWith(c.V_CHILDREN_PREFIX)
