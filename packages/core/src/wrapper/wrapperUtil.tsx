@@ -69,15 +69,35 @@ export const actionBuilder = (props: PropsType, stock: InstanceType<typeof Stock
   })
 }
 
+// Helper function to get value from object using path array
+const getValueByPath = (obj: any, path: string[]): any => {
+  let current = obj
+  for (const key of path) {
+    if (current == null || typeof current !== 'object') return undefined
+    current = current[key]
+  }
+  return current
+}
+
+// Helper function to set value in object using path array
+const setValueByPath = (obj: any, path: string[], value: any): void => {
+  let current = obj
+  for (let i = 0; i < path.length - 1; i++) {
+    const key = path[i]
+    if (current[key] == null || typeof current[key] !== 'object') {
+      current[key] = {}
+    }
+    current = current[key]
+  }
+  current[path[path.length - 1]] = value
+}
+
 export const calculatePropsFromModifier = async (props: PropsType, stock: InstanceType<typeof Stock>): Promise<ReduxPath[]> => {
   const reduxPaths: any = []
   const { [c.PARENT_PROP_NAME]: parentComp, ...propsNew } = props
   const paths = getFilteredPath(propsNew, ({ key }) => key === c.MODIFIER_KEY)
 
   if (paths.length === 0) return reduxPaths
-
-  // Create traverse object once and reuse it
-  const traverser = traverse(props)
 
   // Cache for deduplicating identical function calls
   const callCache = new Map<string, Promise<any>>()
@@ -87,7 +107,7 @@ export const calculatePropsFromModifier = async (props: PropsType, stock: Instan
 
   // Batch process all modifiers
   const modifierPromises = sortedPaths.map(async (pathItem) => {
-    const modifierObj = traverser.get(pathItem.path)
+    const modifierObj = getValueByPath(props, pathItem.path)
     const functionName = modifierObj[c.MODIFIER_KEY]
 
     // Early return for redux functions
@@ -116,7 +136,7 @@ export const calculatePropsFromModifier = async (props: PropsType, stock: Instan
 
   // Batch update all paths at once
   results.forEach(({ path, result }) => {
-    traverser.set(path, result)
+    setValueByPath(props, path, result)
   })
 
   return reduxPaths
