@@ -335,13 +335,23 @@ export const processModifiers = async (obj: PropsType, stock: InstanceType<typeo
 
   // Array handling - process each element
   if (Array.isArray(obj)) {
+    const hasModifiers = obj.some(
+      (item) =>
+        item && typeof item === 'object' && (item[c.MODIFIER_KEY] || item[c.ACTION_KEY] || Object.values(item).some((val) => val && typeof val === 'object'))
+    )
+
+    if (!hasModifiers) return obj
     const result = new Array(obj.length)
-    for (let i = 0; i < obj.length; i++) {
-      result[i] = processModifiers(obj[i], stock, reduxPaths)
-    }
-    return Promise.all(result)
+    const promises = obj.map((item) => processModifiers(item, stock, reduxPaths))
+    return Promise.all(promises)
   }
   const { [c.MODIFIER_KEY]: modifierFunctionName, [c.ACTION_KEY]: actionfunctionName, ...functionParams } = obj
+
+  const hasNestedObjects = Object.values(functionParams).some((val) => val && typeof val === 'object')
+
+  if (!modifierFunctionName && !actionfunctionName && !hasNestedObjects) {
+    return obj
+  }
 
   // Regular object - process all properties
   const result: any = {}
