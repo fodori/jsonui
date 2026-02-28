@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/core",
-  "version": "0.8.5",
+  "version": "0.9.0",
   "license": "MIT",
   "source": "src/index.ts",
   "homepage": "http://www.jsonui.org/",
