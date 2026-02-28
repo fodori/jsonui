@@ -29,7 +29,7 @@ export const jsonPointerGet = (json: any, path?: string) => {
   if (path === c.SEPARATOR /* || path === '' same effect */) return json
   try {
     return jsonpointer.get(json, jsonPointerFix(path))
-  } catch (e) {
+  } catch {
     return undefined
   }
 }
@@ -43,7 +43,7 @@ export const jsonPointerSet = (json: any, path?: string, value?: any) => {
     jsonpointer.set(json, jsonPointerFix(path), value)
     return json
     // eslint-disable-next-line no-empty
-  } catch (e) {
+  } catch {
     return json
   }
 }
@@ -153,7 +153,7 @@ export const collectObjToArray = (refConst: string, json: any, flatten = false) 
 export const isValidJson = (d: any): boolean => {
   try {
     JSON.stringify(d)
-  } catch (e) {
+  } catch {
     return false
   }
   return true
