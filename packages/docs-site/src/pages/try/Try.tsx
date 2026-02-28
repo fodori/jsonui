@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react'
-import { Grid, ListItemText, Paper, Typography } from '@mui/material'
+import { Stack, ListItemText, Paper, Typography } from '@mui/material'
 // import JSONInput from 'react-json-editor-ajrm'
 import Editor from 'react-simple-code-editor'
 import { JsonUI } from '@jsonui/react'
@@ -68,39 +68,35 @@ function Try() {
         Result:
       </Typography>
 
-      <Grid container spacing={2} direction="column" justifyContent="center" alignItems="stretch">
-        <Grid item xs={12}>
-          <Paper elevation={3} sx={{ p: 1 }}>
-            <JsonUI model={jsonValid} />
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6" style={{ marginTop: 20 }}>
-            Definition:
-          </Typography>
-          <Paper elevation={3} sx={{ p: 1 }} style={{ border: harError ? '2px solid red' : '2px solid green' }}>
-            <Editor
-              value={jsonVal}
-              onValueChange={(code) => {
-                setJsonVal(code)
-                if (isJsonString(code)) {
-                  setHasError(false)
-                  setJsonValid(JSON.parse(code))
-                } else {
-                  setHasError(true)
-                }
-              }}
-              highlight={(code) => highlight(code, languages.js)}
-              padding={0}
-              style={{
-                fontFamily: '"Fira code", "Fira Mono", monospace',
-                fontSize: 12,
-                outline: 'transparent',
-              }}
-            />
-          </Paper>
-        </Grid>
-      </Grid>
+      <Stack spacing={2} direction="column" sx={{ width: '100%' }}>
+        <Paper elevation={3} sx={{ p: 1 }}>
+          <JsonUI model={jsonValid} />
+        </Paper>
+        <Typography variant="h6" style={{ marginTop: 20 }}>
+          Definition:
+        </Typography>
+        <Paper elevation={3} sx={{ p: 1 }} style={{ border: harError ? '2px solid red' : '2px solid green' }}>
+          <Editor
+            value={jsonVal}
+            onValueChange={(code) => {
+              setJsonVal(code)
+              if (isJsonString(code)) {
+                setHasError(false)
+                setJsonValid(JSON.parse(code))
+              } else {
+                setHasError(true)
+              }
+            }}
+            highlight={(code) => highlight(code, languages.js)}
+            padding={0}
+            style={{
+              fontFamily: '"Fira code", "Fira Mono", monospace',
+              fontSize: 12,
+              outline: 'transparent',
+            }}
+          />
+        </Paper>
+      </Stack>
     </>
   )
 }
