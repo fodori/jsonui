@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { JsonUI } from '../../index'
 import forms from './forms.json'
-import { useDispatch, useSelector } from 'react-redux'
 
 type Keys = 'form1' | 'form2' | 'form3'
 
@@ -14,19 +14,18 @@ const FormViewer = () => {
     setActualKey(key)
   }
 
-  const defaultValues: any = []
   const model = forms[`${actualKey}`]
   const defaultValue = defaultValueState || {
     data: {
       firstname: '',
     },
   }
-  const onStateExport = ({ id, defaultValue }: any) => {
+  const onStateExport = ({ id, defaultValue: exportedValue }: any) => {
     dispatch({
       type: 'SAVE_FORM',
       payload: {
         id,
-        defaultValue,
+        defaultValue: exportedValue,
       },
     })
   }
@@ -41,7 +40,13 @@ const FormViewer = () => {
       <button type="button" onClick={formSwitch('form3')}>
         Switch to Form3
       </button>
-      <button type="button" onClick={() => console.log('actualValue: ', defaultValueState)}>
+      <button
+        type="button"
+        onClick={() => {
+          // Log actual state for debugging
+          // console.log('actualValue: ', defaultValueState)
+        }}
+      >
         Console log actual state
       </button>
       <JsonUI model={model} onStateExport={onStateExport} defaultValues={defaultValue as any} id={actualKey} />

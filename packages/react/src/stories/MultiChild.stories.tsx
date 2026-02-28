@@ -1,8 +1,8 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
+import jsonata from 'jsonata'
 
 import { JsonUI } from '../index'
-import jsonata from 'jsonata'
 
 const JsonUIStory = {
   title: 'Multi Child',

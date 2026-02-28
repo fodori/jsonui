@@ -1,10 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { useRef } from 'react'
+import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { matchers } from '@emotion/jest'
 import { JsonUI } from '../index'
 import components from '../stock/components'
-import jsonpointer from 'jsonpointer'
 
 expect.extend(matchers)
 

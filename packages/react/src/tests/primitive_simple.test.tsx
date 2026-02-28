@@ -24,7 +24,7 @@ test('model false', () => {
 })
 
 test('model false', () => {
-  const { container } = render(<JsonUI model={true} />)
+  const { container } = render(<JsonUI model />)
   expect(container.firstChild).not.toBeNull()
   expect(container.textContent).toBe('true') // because true is rendered as text
 })

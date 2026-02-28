@@ -3,7 +3,7 @@ import React from 'react'
 function FormResult({ value }: { value: any }) {
   try {
     return <>{JSON.stringify(value)}</>
-  } catch (e) {
+  } catch {
     return <>invalid JSON</>
   }
 }

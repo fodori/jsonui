@@ -15,7 +15,7 @@ const RadioGroupField = (props: any) => {
     props?.onChange(JSON.parse(event.target.value))
   }
   const { fieldErrors, validation, value, $childLabel, $childHelperText, onChange, children, options, ...ownProps } = props
-  let error = !!fieldErrors
+  const error = !!fieldErrors
   let helperText = $childHelperText
   if (error && fieldErrors) {
     helperText = fieldErrors && Array.isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors
@@ -29,8 +29,8 @@ const RadioGroupField = (props: any) => {
         const checked = value === itemValue
         return (
           <div key={i.value}>
-            <input {...ownProps} value={JSON.stringify(i.value)} onChange={handleChange} type="radio" checked={checked} />
-            <label>{i.label}</label>
+            <input {...ownProps} value={JSON.stringify(i.value)} onChange={handleChange} type="radio" checked={checked} id={`radio-${i.value}`} />
+            <label htmlFor={`radio-${i.value}`}>{i.label}</label>
           </div>
         )
       })}
@@ -43,9 +43,9 @@ const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} />
 
 const submit: JsonUIFunctionType = (attr, props, callerArgs, stock) => {
   // const state = stock.reduxStore.getState()
-  const result = stock.callFunction('get', attr, props, callerArgs, stock)
-  console.log(' ---- submit ---- ')
-  console.log(result)
+  stock.callFunction('get', attr, props, callerArgs, stock)
+  // Submit function executed - result would be available if needed
+  // console.log(' ---- submit ---- ')
 }
 
 export const ValidationTest = Template.bind({})

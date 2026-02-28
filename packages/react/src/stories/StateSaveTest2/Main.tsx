@@ -1,7 +1,7 @@
 import React from 'react'
-import FormViewer from './FormViewer'
 import { createStore, Store, AnyAction } from 'redux'
 import { Provider } from 'react-redux'
+import FormViewer from './FormViewer'
 
 const reducer = (state = {}, action: AnyAction) => {
   switch (action?.type) {
@@ -18,7 +18,6 @@ const reducer = (state = {}, action: AnyAction) => {
 const store: Store<any, AnyAction> = createStore(reducer)
 
 const Main = () => {
-  const root: any = {}
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', alignContent: 'space-around', gap: 10 }}>
       <Provider store={store}>

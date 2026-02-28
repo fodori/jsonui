@@ -107,7 +107,7 @@ test('action value test', async () => {
 
   render(
     <JsonUI
-      functions={{ testAction: testAction }}
+      functions={{ testAction }}
       model={{
         $comp: 'Edit',
         id: 'id1',
