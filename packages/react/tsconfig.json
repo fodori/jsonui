@@ -11,5 +11,5 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["src"],
-  "exclude": ["src/stories"]
+  "exclude": ["src/stories", "**/*.test.*", "**/*.spec.*", "**/setupTests.*"]
 }
