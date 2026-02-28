@@ -1,8 +1,8 @@
+import jsonata from 'jsonata'
 import * as c from '../../utils/constants'
 import * as utils from '../../utils/jsonUtils'
 import { PathModifiersType, ReduxPath, ReduxPathTypeEnum } from '../../utils/types'
 import { RootStateType } from './reducer'
-import jsonata from 'jsonata'
 
 export const getState = (state: any): RootStateType => state?.root
 

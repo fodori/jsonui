@@ -1,12 +1,12 @@
 import { produce, current } from 'immer'
 import { AnyAction } from 'redux'
+import jsonata from 'jsonata'
 import { ValidationType } from '../../utils/types'
 import * as c from '../../utils/constants'
 import * as utils from '../../utils/jsonUtils'
 import { validateJSONAndStore } from '../../stock/validation'
 import { DATA_UPDATE } from './actions'
 import Stock from '../../stock/Stock'
-import jsonata from 'jsonata'
 
 export type RootStateType = any
 

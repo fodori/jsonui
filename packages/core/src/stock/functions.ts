@@ -1,8 +1,8 @@
+import jsonataObj from 'jsonata'
 import { getStateValue } from '../store/root/selectors'
 import { set as setAction } from '../store/root/actions'
 import { JsonUIFunctionType, PathModifiersType } from '../utils/types'
 import * as c from '../utils/constants'
-import jsonataObj from 'jsonata'
 
 const get: JsonUIFunctionType = (attr, { [c.CURRENT_PATH_NAME]: currentPaths } = {}, callerArgs, stock) => {
   const { store, path, type, jsonataDef } = attr
