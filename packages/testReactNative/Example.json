@@ -1,5 +1,0 @@
-{
-  "$comp": "View",
-  "style": { "marginTop": 40, "backgroundColor": "orange" },
-  "$children": [{ "$comp": "Text", "$children": "JsonUI test page", "style": { "textAlign": "center", "fontSize": 30, "margin": 5 } }]
-}
