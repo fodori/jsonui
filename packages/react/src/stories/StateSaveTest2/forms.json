@@ -1,0 +1,46 @@
+{
+  "form1": [
+    {
+      "$comp": "Edit",
+      "value": { "$modifier": "get", "store": "data", "path": "firstname" },
+      "label": "Form 1",
+      "onChange": {
+        "$action": "set",
+        "store": "data",
+        "path": "firstname"
+      }
+    },
+    {
+      "$comp": "Edit",
+      "value": { "$modifier": "get", "store": "data", "path": "firstname", "jsonataDef": "$ ? $uppercase($): 'empty'" },
+      "label": "Full uppercase",
+      "disabled": true
+    }
+  ],
+  "form2": {
+    "$comp": "Edit",
+    "value": { "$modifier": "get", "store": "data", "path": "firstname" },
+    "label": "Form 2",
+    "onChange": {
+      "$action": "set",
+      "store": "data",
+      "path": "firstname"
+    },
+    "style": {
+      "border": "3px solid green",
+      "@media (min-width: 420px)": {
+        "border": "3px solid red"
+      }
+    }
+  },
+  "form3": {
+    "$comp": "Edit",
+    "value": { "$modifier": "get", "store": "data", "path": "firstname" },
+    "label": "Form 3",
+    "onChange": {
+      "$action": "set",
+      "store": "data",
+      "path": "firstname"
+    }
+  }
+}

@@ -72,6 +72,6 @@ const model = {
 return <JsonUI model={model} functions={{ MyFunction }} components={{ Button }} />
 ```
 
-#### getFormState: React.MutableRefObject<(() => DefaultValues) | undefined>
+#### onStateExport: (formState: JSONValue) => void
 
-Get the actual state of the form for store it persistently if needed. Use useRef to create a reference and pass you can give it to JsonUI component. Check the Storybook example how to use it.
+When the JsonUI react component need to re-render to show a new form, need to save the previous state if it is not finished. Use id attributum to make sure it's export on the right time. Example in the storybook stories.

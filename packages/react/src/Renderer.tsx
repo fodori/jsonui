@@ -1,4 +1,4 @@
-import React, { createContext, useMemo } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useRef } from 'react'
 import { useStore } from 'react-redux'
 import { constants as c, PathModifierContext, Stock, StockContext } from '@jsonui/core'
 import { AnyAction, Store } from 'redux'
@@ -6,19 +6,39 @@ import MessageReceiver from './MessageReceiver'
 import { getStock } from './stock/stockToRenderer'
 import Wrapper from './Wrapper'
 import ErrorBoundary from './ErrorBoundary'
+import { DefaultValues, OnStateExportType } from 'types'
 
 interface RendererProps {
   model: any
   stockInit: any
   reduxStore: Store<any, AnyAction>
+  onStateExport?: OnStateExportType
+  defaultValues?: DefaultValues
+  id?: string
 }
 
-const Renderer = ({ model, stockInit, reduxStore }: RendererProps) => {
+const Renderer = ({ model, stockInit, reduxStore, onStateExport, defaultValues, id }: RendererProps) => {
   const stock = useMemo(() => getStock(stockInit, model, Wrapper, reduxStore), [stockInit, model, reduxStore])
 
+  const idRef = useRef(id)
   if (model === undefined) {
     return null
   }
+
+  const getCurrentFormState = () => {
+    return stock?.reduxStore.getState()?.root
+  }
+
+  useEffect(() => {
+    idRef.current = id
+    return () => {
+      if (onStateExport) {
+        const defaultValue = getCurrentFormState()
+        onStateExport({ id: idRef.current, defaultValue })
+      }
+    }
+  }, [model, defaultValues, onStateExport, id])
+
   return (
     <StockContext.Provider value={stock}>
       {/* eslint-disable-next-line react/jsx-no-constructed-context-values */}
@@ -33,6 +53,8 @@ const Renderer = ({ model, stockInit, reduxStore }: RendererProps) => {
 interface RendererFuncProps {
   model: any
   stockInit: any
+  onStateExport?: OnStateExportType
+  defaultValues?: DefaultValues
 }
 
 const rendererFunc = (props: RendererFuncProps) => {

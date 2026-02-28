@@ -76,12 +76,17 @@ function App() {
                 </TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
-                <TableCell align="left">getFormState</TableCell>
-                <TableCell align="left">{'React.MutableRefObject<(() => DefaultValues) | undefined>'}</TableCell>
+                <TableCell align="left">onStateExport</TableCell>
+                <TableCell align="left">{'(formState: JSONValue) => void'}</TableCell>
                 <TableCell align="left">
-                  Get the actual state of the form for store it persistently if needed. Use useRef to create a reference and pass you can give it to JsonUI
-                  component. Check the Storybook example how to use it.
+                  When the JsonUI react component need to re-render to show a new form, need to save the previous state if it is not finished. Use id attributum
+                  to make sure it's export on the right time. Example in the storybook stories.
                 </TableCell>
+              </TableRow>
+              <TableRow hover tabIndex={-1}>
+                <TableCell align="left">id</TableCell>
+                <TableCell align="left">{'string'}</TableCell>
+                <TableCell align="left">this is used to identify the form, when the form need to export the state, like a form ID or job ID.</TableCell>
               </TableRow>
             </TableBody>
           </Table>

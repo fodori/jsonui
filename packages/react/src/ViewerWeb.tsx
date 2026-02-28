@@ -5,7 +5,7 @@ import ReduxProviders from './ReduxProviders'
 import Renderer from './Renderer'
 import ErrorBoundary from './ErrorBoundary'
 
-function Viewer({ model, components, functions }: ViewerProps) {
+function Viewer({ components, functions, ...props }: ViewerProps) {
   const stockInit = {
     components: { ...stockInitBasic.components, ...components },
     functions: {
@@ -14,13 +14,13 @@ function Viewer({ model, components, functions }: ViewerProps) {
     },
   }
 
-  return <Renderer model={model} stockInit={stockInit} />
+  return <Renderer {...props} stockInit={stockInit} />
 }
 
-function ViewerWeb({ defaultValues, getFormState, ...props }: ViewerProps) {
+function ViewerWeb(props: ViewerProps) {
   return (
     <ErrorBoundary type="viewer">
-      <ReduxProviders defaultValues={defaultValues} getFormState={getFormState}>
+      <ReduxProviders defaultValues={props.defaultValues}>
         <Viewer {...props} />
       </ReduxProviders>
     </ErrorBoundary>
