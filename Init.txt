@@ -85,7 +85,6 @@ yarn lerna add ts-node -D --scope=@jsonui/react
 
 yarn workspace @jsonui/core run build;
 yarn workspace @jsonui/react run build;
-yarn workspace @jsonui/reactnative run build;
 yarn workspace @jsonui/components-web-example run build;
 yarn workspace @jsonui/functions-example run build;
 yarn workspace docs-site run build;

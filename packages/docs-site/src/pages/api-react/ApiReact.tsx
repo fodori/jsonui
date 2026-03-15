@@ -77,10 +77,10 @@ function App() {
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">onStateExport</TableCell>
-                <TableCell align="left">{'(formState: JSONValue) => void'}</TableCell>
+                <TableCell align="left">{'({ id?: string, formState: JSONValue}) => void'}</TableCell>
                 <TableCell align="left">
-                  When the JsonUI react component need to re-render to show a new form, need to save the previous state if it is not finished. Use id attributum
-                  to make sure it's export on the right time. Example in the storybook stories.
+                  When the JsonUI react component need to re-render to show a new form, need to save the previous state if it is not finished. Use id comes from
+                  JsonUI id property. Use it, to make sure it's export on the right time. Example in the storybook stories.
                 </TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
