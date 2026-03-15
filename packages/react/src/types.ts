@@ -16,7 +16,15 @@ export type OnSubmitFunc = (arg: any) => void
 export interface DefaultValues {
   [key: string]: JSONValue
 }
-export type OnStateExportType = (formState: JSONValue) => void
+
+export type FormID = string
+
+export interface OnStateExportProps {
+  id?: FormID
+  formState: JSONValue
+}
+
+export type OnStateExportType = (arg: OnStateExportProps) => void
 
 export interface ViewerProps {
   model: any

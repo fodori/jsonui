@@ -20,12 +20,12 @@ const FormViewer = () => {
       firstname: '',
     },
   }
-  const onStateExport = ({ id, defaultValue: exportedValue }: any) => {
+  const onStateExport = ({ id, formState }: any) => {
     dispatch({
       type: 'SAVE_FORM',
       payload: {
         id,
-        defaultValue: exportedValue,
+        defaultValue: formState,
       },
     })
   }

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef } from 'react'
 import { useStore } from 'react-redux'
 import { PathModifierContext, StockContext } from '@jsonui/core'
 import { AnyAction, Store } from 'redux'
-import { DefaultValues, OnStateExportType } from 'types'
+import { DefaultValues, FormID, OnStateExportType, OnStateExportProps } from 'types'
 import MessageReceiver from './MessageReceiver'
 import { getStock } from './stock/stockToRenderer'
 import Wrapper from './Wrapper'
@@ -14,7 +14,7 @@ interface RendererProps {
   reduxStore: Store<any, AnyAction>
   onStateExport?: OnStateExportType
   defaultValues?: DefaultValues
-  id?: string
+  id?: FormID
 }
 
 const Renderer = ({ model, stockInit, reduxStore, onStateExport, defaultValues, id }: RendererProps) => {
@@ -33,8 +33,12 @@ const Renderer = ({ model, stockInit, reduxStore, onStateExport, defaultValues, 
     idRef.current = id
     return () => {
       if (onStateExport) {
-        const defaultValue = getCurrentFormState()
-        onStateExport({ id: idRef.current, defaultValue })
+        const formState = getCurrentFormState()
+        const props: OnStateExportProps = {
+          id: idRef.current,
+          formState,
+        }
+        onStateExport(props)
       }
     }
   }, [model, defaultValues, onStateExport, id])
