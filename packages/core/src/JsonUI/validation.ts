@@ -1,0 +1,188 @@
+import Ajv, { type ValidateFunction } from 'ajv'
+import addFormats from 'ajv-formats'
+import ajvErrors from 'ajv-errors'
+import { Store, getRootStore, resolveStorePath } from '../store.js'
+import { ERROR_STORE_SUFFIX } from '../types.js'
+
+export interface ValidationRule {
+  schema: unknown
+  path: string
+  store: string
+}
+
+export type ValidationRegistry = Record<string, Record<string, ValidateFunction[]>>
+
+// Inline (field-level) validation spec defined on a node via `$validation`.
+export interface InlineValidationSpec {
+  store: string
+  path: string // may be absolute or relative
+  schema: unknown
+}
+
+let inlineAjv: Ajv | null = null
+
+function getInlineAjv(): Ajv {
+  if (!inlineAjv) {
+    inlineAjv = new Ajv({ allErrors: true, strict: false })
+    addFormats(inlineAjv)
+    ajvErrors(inlineAjv)
+  }
+  return inlineAjv
+}
+
+export function buildValidationRegistry(rules: ValidationRule[] | undefined): ValidationRegistry {
+  const registry: ValidationRegistry = {}
+  if (!rules || rules.length === 0) return registry
+
+  const ajv = new Ajv({ allErrors: true, strict: false })
+  // TODO: check test how looks like in jsonui
+  addFormats(ajv)
+  ajvErrors(ajv)
+
+  for (const rule of rules) {
+    if (!rule || !rule.schema || !rule.store || !rule.path) continue
+    const validate = ajv.compile(rule.schema)
+    if (!registry[rule.store]) registry[rule.store] = {}
+    if (!registry[rule.store][rule.path]) {
+      registry[rule.store][rule.path] = []
+    }
+    registry[rule.store][rule.path].push(validate)
+  }
+
+  return registry
+}
+
+/**
+ * Run a single inline (field-level) validation spec against the current store state.
+ *
+ * - Respects $validation.store and $validation.path.
+ * - If the path is relative (does not start with '/'), it is resolved using
+ *   resolveStorePath with currentPath and pathModifiers so list items and
+ *   global path modifiers work as expected.
+ * - Writes errors to `${store}.error` at the resolved logical path, but only
+ *   if the error value actually changes.
+ */
+export function runInlineValidation(
+  spec: InlineValidationSpec,
+  stores: Record<string, Store>,
+  currentPath: string,
+  pathModifiers?: Record<string, { path: string }>
+): void {
+  if (!spec || !spec.store || !spec.path || !spec.schema) return
+
+  const storeName = spec.store
+  const logicalPath = resolveStorePath(spec.path, currentPath, pathModifiers, storeName)
+
+  const root = getRootStore(stores)
+  const errorStoreName = `${storeName}${ERROR_STORE_SUFFIX}`
+  const value = root.getForStore(storeName, logicalPath)
+
+  const ajv = getInlineAjv()
+  const validate = ajv.compile(spec.schema)
+  const messages: string[] = []
+  const valid = validate(value)
+  if (!valid && validate.errors) {
+    for (const err of validate.errors) {
+      if (err?.message) messages.push(err.message)
+    }
+  }
+
+  const newError = messages.length > 0 ? messages.join('; ') : undefined
+  const currentError = root.getForStore(errorStoreName, logicalPath)
+
+  if (currentError === newError) return
+
+  if (messages.length > 0) {
+    root.setForStore(errorStoreName, logicalPath, newError, false)
+  } else {
+    root.setForStore(errorStoreName, logicalPath, undefined, false)
+  }
+}
+
+export function runValidationsForPath(registry: ValidationRegistry, stores: Record<string, Store>, storeName: string, path: string): void {
+  const storeValidators = registry[storeName]
+
+  // No validators registered for this store at all
+  if (!storeValidators) {
+    return
+  }
+
+  const root = getRootStore(stores)
+  const errorStoreName = `${storeName}${ERROR_STORE_SUFFIX}`
+
+  // Collect new error messages per *concrete* target path (e.g. '/players/0/score').
+  const perPathMessages: Record<string, string[]> = {}
+  const affectedErrorPaths = new Set<string>()
+
+  // Include any existing error leaf paths under matching rule paths so we can clear
+  // them if they become valid.
+  const collectExistingPaths = (basePath: string, value: unknown): void => {
+    if (value == null) return
+    if (typeof value !== 'object') {
+      affectedErrorPaths.add(basePath)
+      return
+    }
+    if (Array.isArray(value)) {
+      value.forEach((v, i) => {
+        collectExistingPaths(`${basePath}/${i}`, v)
+      })
+      return
+    }
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      collectExistingPaths(basePath === '/' ? `/${k}` : `${basePath}/${k}`, v)
+    }
+  }
+
+  // Run all validators whose rule path is a prefix of the affected path.
+  // Example: action path '/a/b/c' should trigger validators registered for
+  // '/', '/a', '/a/b', and '/a/b/c'.
+  for (const [rulePath, validators] of Object.entries(storeValidators)) {
+    if (!isPathPrefix(rulePath, path)) continue
+
+    // Track existing error paths under this rule so we can clear them.
+    const existingSubtree = root.getForStore(errorStoreName, rulePath)
+    if (existingSubtree !== undefined) {
+      collectExistingPaths(rulePath || '/', existingSubtree)
+    }
+
+    const valueAtRulePath = root.getForStore(storeName, rulePath)
+    for (const validate of validators) {
+      const valid = validate(valueAtRulePath)
+      if (!valid && validate.errors) {
+        for (const err of validate.errors) {
+          if (!err?.message) continue
+          const instancePath = err.instancePath ?? ''
+          // instancePath is relative to rulePath, e.g. '/0/score'
+          let targetPath: string
+          if (!rulePath || rulePath === '/') {
+            targetPath = instancePath || '/'
+          } else {
+            targetPath = instancePath ? `${rulePath}${instancePath}` : rulePath
+          }
+          if (!perPathMessages[targetPath]) perPathMessages[targetPath] = []
+          perPathMessages[targetPath].push(err.message)
+          affectedErrorPaths.add(targetPath)
+        }
+      }
+    }
+  }
+
+  // Apply updates for all affected error paths (both existing and new).
+  for (const targetPath of affectedErrorPaths) {
+    const messages = perPathMessages[targetPath] ?? []
+    const newError = messages.length > 0 ? messages.join('; ') : undefined
+    const currentError = root.getForStore(errorStoreName, targetPath)
+    if (currentError === newError) continue
+    root.setForStore(errorStoreName, targetPath, newError, false)
+  }
+}
+
+/** Match whole segments only; works for paths of any depth (e.g. /a/b/0/c). */
+function isPathPrefix(rulePath: string, targetPath: string): boolean {
+  const r = rulePath === '' ? '/' : rulePath
+  const t = targetPath === '' ? '/' : targetPath
+
+  if (r === '/') return true
+  if (t === r) return true
+  return t.startsWith(r.endsWith('/') ? r : `${r}/`)
+}

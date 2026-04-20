@@ -16,7 +16,7 @@ function App() {
   const [content, setContent] = useState('')
 
   useEffect(() => {
-    fetch(markupFile)
+    void fetch(markupFile)
       .then((res) => res.text())
       .then((md) => {
         setContent(md)

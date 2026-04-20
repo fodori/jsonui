@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/functions-example",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
   "bugs": {
@@ -38,7 +38,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@jsonui/react": "^0.9.0",
+    "@jsonui/core": "0.10.0",
+    "@jsonui/react": "0.10.0",
     "axios": "^1.13.2",
     "typescript": "^5.9.3"
   },
@@ -90,8 +91,8 @@
     "ts-node": "^10.9.2"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "browserslist": {
     "production": [
@@ -104,6 +105,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "gitHead": "4b5f090fb92c7004f68c900fd9c6c9f02cdc2542"
+  }
 }

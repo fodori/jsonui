@@ -1,14 +1,17 @@
 {
-  "extends": "../../tsconfig",
   "compilerOptions": {
-    "baseUrl": "src",
-    "jsx": "react-jsx",
-    "module": "ESNext",
-    "declaration": true,
-    "sourceMap": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "rootDir": "src",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true
   },
   "include": ["src"]
 }

@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+ 
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
@@ -8,11 +8,6 @@ import StateContainer from '../../assets/state-container.svg?react'
 const FullSizeConceptImg = styled('img')`
   width: 100%;
   max-width: 837px;
-`
-
-const FullSizeStateContainerImg = styled('img')`
-  width: 100%;
-  max-width: 1092px;
 `
 
 function App() {

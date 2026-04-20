@@ -3,10 +3,12 @@
 I assume you have already added react and react-dom.
 
 ```bash
-npm install @jsonui/react batchflow jsonata@1.8.7 lodash react-redux redux
+npm install @jsonui/react
 
-yarn add @jsonui/react batchflow jsonata@1.8.7 lodash react-redux redux
+yarn add @jsonui/react
 ```
+
+Optional: if you use JSONata expressions in models, install a compatible `jsonata` version (v2 is used by `@jsonui/core`).
 
 ## Basic Usage
 

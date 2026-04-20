@@ -1,5 +1,5 @@
-/* eslint-disable prettier/prettier */
 import React, { useState } from 'react'
+import type { JsonUINode } from '@jsonui/core'
 import { Stack, ListItemText, Paper, Typography } from '@mui/material'
 // import JSONInput from 'react-json-editor-ajrm'
 import Editor from 'react-simple-code-editor'
@@ -38,7 +38,7 @@ function Try() {
   const isJsonString = (str: string) => {
     try {
       JSON.parse(str)
-    } catch (e) {
+    } catch {
       return false
     }
     return true
@@ -50,7 +50,6 @@ function Try() {
         <InputLabel id="demo-simple-select-label">Please select</InputLabel>
         <Select labelId="demo-simple-select-label" id="demo-simple-select" value={selectedIndex} label="Selected Index" onChange={handleSetSelectedIndex}>
           {tries.map((item, index) => (
-            // eslint-disable-next-line react/no-array-index-key
             <MenuItem value={index} key={index}>
               <ListItemText
                 primary={item.name}
@@ -70,7 +69,7 @@ function Try() {
 
       <Stack spacing={2} direction="column" sx={{ width: '100%' }}>
         <Paper elevation={3} sx={{ p: 1 }}>
-          <JsonUI model={jsonValid} />
+          <JsonUI model={jsonValid as unknown as JsonUINode} />
         </Paper>
         <Typography variant="h6" style={{ marginTop: 20 }}>
           Definition:

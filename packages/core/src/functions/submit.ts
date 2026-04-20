@@ -1,0 +1,23 @@
+import type { ModifierContext } from '../types.js'
+import { getRootStore } from '../store.js'
+import { ERROR_STORE_SUFFIX } from '../types.js'
+
+export function submit(params: Record<string, unknown>): void {
+  console.log('Submit clicked', params)
+}
+
+export function submitErrors(params: Record<string, unknown>, ctx: ModifierContext): void {
+  const storeName = params?.store as string | undefined
+  const path = (params?.path as string) ?? '/'
+  if (!storeName) {
+    alert('submitErrors requires a store name (e.g. { "store": "myStore" })')
+    return
+  }
+  const root = getRootStore(ctx.stores)
+  const errorsAtPath = root.getForStore(`${storeName}${ERROR_STORE_SUFFIX}`, path)
+  alert(`${storeName}${ERROR_STORE_SUFFIX} at ${path} = ${JSON.stringify(errorsAtPath, null, 2)}`)
+}
+
+export function submitWithPayload(params: Record<string, unknown>): void {
+  console.log('Submit with payload:', params)
+}

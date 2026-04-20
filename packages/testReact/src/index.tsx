@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom/client'
 import App from './app'
 import reportWebVitals from './reportWebVitals'
 
-const root = ReactDOM.createRoot(document.getElementById('root')!)
+const rootEl = document.getElementById('root')
+if (!rootEl) {
+  throw new Error('Missing root element')
+}
+const root = ReactDOM.createRoot(rootEl)
 
 root.render(
   <React.StrictMode>

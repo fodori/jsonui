@@ -6,26 +6,53 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "resolutions": {
     "@types/react": "^19.2.3",
     "@types/react-dom": "^19.2.2"
   },
   "scripts": {
-    "buildweb": "yarn workspace @jsonui/core run build; yarn workspace @jsonui/react run build;",
+    "build:libs": "yarn workspace @jsonui/core run build && yarn workspace @jsonui/react run build",
+    "build": "yarn build:libs && yarn workspace @jsonui/playground run build",
+    "buildweb": "yarn build:libs",
+    "test": "yarn workspace @jsonui/core run test && yarn workspace @jsonui/react run test",
+    "test:watch": "yarn workspace @jsonui/core run test:watch",
     "startTestReact": "yarn workspace jsonui-test-react run start",
-    "publish": "yarn lerna publish from-package",
-    "bootstrap": "yarn lerna bootstrap",
+    "storybook": "yarn workspace @jsonui/playground run storybook",
+    "build-storybook": "yarn workspace @jsonui/playground run build-storybook",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "release:verify": "yarn build:libs && yarn test && yarn lint && yarn format:check",
     "copyDocs": "yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^3.10.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-storybook": "^0.11.1",
     "gh-pages": "^3.2.3",
-    "lerna": "^4.0.0",
-    "microbundle": "^0.14.2"
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0"
   },
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,mts,cts}": "eslint --fix",
+    "*.{json,md,css,yml,yaml}": "prettier --write"
   }
 }

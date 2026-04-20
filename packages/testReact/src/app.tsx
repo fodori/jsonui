@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+import type { JSONValue, JsonUINode, JSONObject } from '@jsonui/core'
+import JsonUI, { Input } from '@jsonui/react'
 
-import JsonUI, { JSONValue } from '@jsonui/react'
-
-const forms = {
+const forms: Record<'form1' | 'form2' | 'form3', JsonUINode> = {
   form1: {
     $comp: 'Edit',
     value: { $modifier: 'get', store: 'data', path: 'firstname' },
@@ -13,30 +13,38 @@ const forms = {
       path: 'firstname',
     },
   },
-  form2: [
-    {
-      $comp: 'Edit',
-      value: { $modifier: 'get', store: 'data', path: 'firstname' },
-      label: 'Form 2',
-      onChange: {
-        $action: 'set',
-        store: 'data',
-        path: 'firstname',
-      },
-      style: {
-        border: '3px solid green',
-        '@media (min-width: 420px)': {
-          border: '3px solid red',
+  form2: {
+    $comp: 'Fragment',
+    $children: [
+      {
+        $comp: 'Edit',
+        value: { $modifier: 'get', store: 'data', path: 'firstname' },
+        label: 'Form 2',
+        onChange: {
+          $action: 'set',
+          store: 'data',
+          path: 'firstname',
+        },
+        style: {
+          border: '3px solid green',
+          '@media (min-width: 420px)': {
+            border: '3px solid red',
+          },
         },
       },
-    },
-    {
-      $comp: 'Edit',
-      value: { $modifier: 'get', store: 'data', path: 'firstname', jsonataDef: "$ ? $uppercase($): 'empty'" },
-      label: 'Full uppercase',
-      disabled: true,
-    },
-  ],
+      {
+        $comp: 'Edit',
+        value: {
+          $modifier: 'get',
+          store: 'data',
+          path: 'firstname',
+          jsonataDef: "$ ? $uppercase($): 'empty'",
+        },
+        label: 'Full uppercase',
+        disabled: true,
+      },
+    ],
+  },
   form3: {
     $comp: 'Edit',
     value: { $modifier: 'get', store: 'data', path: 'firstname' },
@@ -60,7 +68,7 @@ const App = () => {
     form3: undefined,
   })
 
-  const getFormState = useRef<(() => any) | undefined>(undefined)
+  const getFormState = useRef<(() => JSONValue) | undefined>(undefined)
 
   const getActualDefaultValue = () => {
     if (getFormState.current) {
@@ -74,8 +82,8 @@ const App = () => {
     setDefaultValues({ ...defaultValues, [actualKey]: defaultValue })
     setActualKey(key)
   }
-  const model = forms[`${actualKey}`]
-  const defaultValue = defaultValues[`${actualKey}`] || {
+  const model = forms[actualKey]
+  const defaultValue = defaultValues[actualKey] || {
     data: {
       firstname: '',
     },
@@ -95,7 +103,14 @@ const App = () => {
       <button type="button" onClick={() => console.log('actualValue: ', getActualDefaultValue())}>
         Console log actual state
       </button>
-      <JsonUI model={model as any} getFormState={getFormState} defaultValues={defaultValue as any} />
+      <JsonUI
+        model={model}
+        components={{ Edit: Input }}
+        defaultValues={defaultValue as Record<string, JSONObject>}
+        onStateExport={(p) => {
+          getFormState.current = () => p.formState
+        }}
+      />
     </div>
   )
 }

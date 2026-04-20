@@ -1,5 +1,6 @@
 node_modules
 dist
+**/storybook-static
 lerna-debug.log
 stats.html
 .DS_Store

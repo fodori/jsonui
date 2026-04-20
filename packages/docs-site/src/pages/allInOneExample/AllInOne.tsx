@@ -1,6 +1,6 @@
 import React from 'react'
-
-import { JsonUI } from '@jsonui/react'
+import type { JsonUINode } from '@jsonui/core'
+import { JsonUI, type ComponentMap } from '@jsonui/react'
 import { axios } from '@jsonui/functions-example'
 import { Button, TextField, Radio, Select, Checkbox, Icon, Slider, Switch, Tooltip } from '@jsonui/components-web-example'
 import '@jsonui/components-web-example/dist/style.css'
@@ -15,12 +15,15 @@ function AllInOne() {
   return (
     <Stack spacing={2} direction="column" sx={{ width: '100%' }}>
       <Paper elevation={3} sx={{ p: 1 }}>
-        <JsonUI model={model} functions={{ axios }} components={{ Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip }} />
+        <JsonUI
+          model={model as unknown as JsonUINode}
+          functions={{ axios }}
+          components={{ Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip } as unknown as ComponentMap}
+        />
       </Paper>
       <Paper elevation={3} sx={{ p: 1 }}>
         <Editor
           value={format(model)}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           onValueChange={() => {}}
           highlight={(code) => highlight(code, languages.js)}
           padding={0}
