@@ -12,7 +12,7 @@
     "noEmit": true,
     "rootDir": "src",
     "isolatedModules": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": false
   },
   "include": ["src"]
 }
