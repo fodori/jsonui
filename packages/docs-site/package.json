@@ -2,6 +2,7 @@
   "name": "docs-site",
   "version": "0.2.0",
   "private": true,
+  "type": "module",
   "homepage": "/",
   "dependencies": {
     "@jsonui/core": "0.10.0",
@@ -10,18 +11,17 @@
     "@jsonui/components-web-example": "0.10.0",
     "@jsonui/functions-example": "0.10.0",
     "@jsonui/react": "0.10.0",
-    "@mui/icons-material": "^7.3.5",
-    "@mui/material": "^7.3.5",
+    "@mui/icons-material": "^7.3.10",
+    "@mui/material": "^7.3.10",
     "json-format": "^1.0.1",
     "jsonata": "^2.1.0",
     "prismjs": "^1.30.0",
+    "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-json-editor-ajrm": "^2.5.14",
     "react-markdown": "^10.1.0",
-    "react-router-dom": "^6.2.1",
-    "react-router": "^6.2.1",
+    "react-router-dom": "^7.14.2",
     "react-simple-code-editor": "^0.14.1",
-    "react": "^19.2.5",
     "rehype-highlight": "^7.0.2",
     "remark-gfm": "^4.0.1"
   },
@@ -29,7 +29,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "type-check": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
   },
   "browserslist": {
     "production": [
@@ -44,21 +45,23 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.0",
+    "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.1",
-    "@types/prismjs": "^1.26.5",
+    "@types/node": "^25.6.0",
+    "@types/prismjs": "^1.26.6",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/react-json-editor-ajrm": "^2.5.6",
     "@vitejs/plugin-react": "^6.0.1",
-    "serve": "^14.2.5",
+    "jsdom": "^29.0.2",
+    "prettier": "^3.8.3",
+    "serve": "^14.2.6",
     "typescript": "^6.0.3",
     "vite": "^8.0.9",
-    "vite-plugin-svgr": "^4.5.0",
+    "vite-plugin-svgr": "^5.2.0",
     "vitest": "^4.1.5",
-    "web-vitals": "^5.1.0"
+    "web-vitals": "^5.2.0"
   }
 }

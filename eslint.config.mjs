@@ -36,6 +36,7 @@ export default tseslint.config(
       '**/babel.config.*',
       '**/jest.config.*',
       'packages/**/setupTests.*',
+      'packages/docs-site/src/setupTests.ts',
       'packages/**/public/**',
       '**/vite.config.ts',
       '**/vitest.config.ts',
