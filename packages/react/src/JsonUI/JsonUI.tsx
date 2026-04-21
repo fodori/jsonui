@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 import type {
   JsonUINode,
+  JsonUIValue,
   FunctionMap,
   TranslationsMap,
   OnStateExportType,
@@ -9,7 +10,7 @@ import type {
   ValidationRegistry,
   ValidationRule,
 } from '@jsonui/core'
-import { buildValidationRegistry, Store, getRootStore } from '@jsonui/core'
+import { buildValidationRegistry, Store, getRootStore, V_COMP, V_CHILDREN } from '@jsonui/core'
 import type { ComponentMap } from '../componentMap.js'
 import { useStores } from '../hooks/useStores.js'
 import { builtinComponents } from '../components/index.js'
@@ -17,8 +18,32 @@ import { RenderNode } from './RenderNode.js'
 import { StyleProvider } from '../style/StyleContext.js'
 import { MessageReceiver } from './MessageReceiver.js'
 
+function normalizeRootModel(model: JsonUIValue | undefined): JsonUINode {
+  if (model === undefined || model === null) {
+    return { [V_COMP]: 'Fragment' }
+  }
+  if (Array.isArray(model)) {
+    return { [V_COMP]: 'Fragment', [V_CHILDREN]: model }
+  }
+  const t = typeof model
+  if (t === 'string' || t === 'number' || t === 'boolean' || t === 'bigint') {
+    return { [V_COMP]: 'Fragment', [V_CHILDREN]: model }
+  }
+  if (t === 'symbol') {
+    return { [V_COMP]: 'Fragment' }
+  }
+  return model as JsonUINode
+}
+
+function modelTopRecord(model: JsonUIValue | undefined): Record<string, unknown> | undefined {
+  if (model === null || model === undefined) return undefined
+  if (typeof model !== 'object' || Array.isArray(model)) return undefined
+  return model
+}
+
 export interface JsonUIProps {
-  model: JsonUINode
+  /** Root UI definition, or any JSON value (wrapped in a root `Fragment` when not a plain object node). */
+  model: JsonUIValue
   components?: ComponentMap
   /** Handlers for both `$action` and `$modifier` in the model. */
   functions?: FunctionMap
@@ -50,9 +75,10 @@ export function JsonUI({
   onStateExport,
 }: JsonUIProps): React.ReactElement | null {
   const stores = useStores(initialStores, defaultValues)
+  const top = modelTopRecord(model)
   const validationRegistry: ValidationRegistry = useMemo(
-    () => buildValidationRegistry((model as unknown as { $validations?: ValidationRule[] }).$validations ?? []),
-    [model]
+    () => buildValidationRegistry((top?.$validations as ValidationRule[] | undefined) ?? []),
+    [top]
   )
   const allComponents = useMemo(() => (Object.keys(components).length ? components : builtinComponents), [components])
 
@@ -60,7 +86,7 @@ export function JsonUI({
 
   // could we move the translation into a functions?
   const translations: TranslationsMap = useMemo(() => {
-    const raw = (model as unknown as { $translate?: unknown }).$translate
+    const raw = top?.$translate
     if (!raw || typeof raw !== 'object') return {}
 
     const map: TranslationsMap = {}
@@ -76,7 +102,7 @@ export function JsonUI({
     }
 
     return map
-  }, [model])
+  }, [top])
 
   const idRef = useRef(id)
   useEffect(() => {
@@ -95,18 +121,14 @@ export function JsonUI({
     }
   }, [model, defaultValues, onStateExport, id, stores])
 
-  // TODO: the model could be something else, like array, number, string, boolean, etc.
-  const modelUnknown: unknown = model
-  if (modelUnknown === null || typeof modelUnknown !== 'object') {
-    return <div style={{ padding: 16, color: '#666' }}>JsonUI: no valid model</div>
-  }
+  const rootNode = useMemo(() => normalizeRootModel(model), [model])
 
   return (
     // TODO: the style looks like strict, how can I use extra styles? need to test.
     <StyleProvider platform={platform}>
       <MessageReceiver stores={stores} />
       <RenderNode
-        node={model}
+        node={rootNode}
         components={allComponents}
         functions={functions}
         stores={stores}
