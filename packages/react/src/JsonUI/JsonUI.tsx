@@ -4,7 +4,6 @@ import type {
   FunctionMap,
   TranslationsMap,
   OnStateExportType,
-  JSONValue,
   JSONObject,
   StylePlatform,
   ValidationRegistry,
@@ -90,7 +89,7 @@ export function JsonUI({
         const root = getRootStore(stores)
         onStateExport({
           id: idRef.current,
-          formState: root.getState() as JSONValue,
+          formState: root.getLogicalStoresMap(),
         })
       }
     }

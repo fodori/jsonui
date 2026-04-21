@@ -81,6 +81,7 @@ export type ModifierMap = FunctionMap
 /** Emitted when JsonUI unmounts or when model/defaultValues/id changes (main parity). */
 export interface OnStateExportProps {
   id?: string
+  /** Same shape as `JsonUI` `defaultValues`: logical stores `{ data: {...}, "data.touch": {...}, ... }` (no internal `storeRoot` wrapper). */
   formState: JSONValue
 }
 

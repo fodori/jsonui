@@ -8,7 +8,7 @@
  */
 
 import { get as ptrGet, resolvePath, normalizePath, parsePath } from './json-pointer.js'
-import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX } from './types.js'
+import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX, type JSONValue } from './types.js'
 
 function isTouchOrErrorShadowStore(storeName: string): boolean {
   return storeName.endsWith(TOUCH_STORE_SUFFIX) || storeName.endsWith(ERROR_STORE_SUFFIX)
@@ -33,6 +33,19 @@ export class Store {
 
   getState(): Readonly<StoreState> {
     return this.state
+  }
+
+  /**
+   * Logical JsonUI stores snapshot — same shape as `JsonUI` `defaultValues`:
+   * `{ data: {...}, "data.touch": {...}, "data.error": {...} }`.
+   * Omits the internal `/storeRoot` wrapper returned by {@link getState}.
+   */
+  getLogicalStoresMap(): Record<string, JSONValue> {
+    const slice = ptrGet(this.state, STORE_ROOT_PATH)
+    if (slice === undefined || slice === null || typeof slice !== 'object' || Array.isArray(slice)) {
+      return {}
+    }
+    return cloneDeep(slice) as Record<string, JSONValue>
   }
 
   get(path: string): unknown {

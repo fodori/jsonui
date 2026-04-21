@@ -49,7 +49,7 @@ describe('portability parity (main JsonUI)', () => {
     const arg = onStateExport.mock.calls[0][0] as OnStateExportProps
     expect(arg.id).toBe('form-1')
     expect(arg.formState).toBeDefined()
-    expect((arg.formState as Record<string, unknown>).storeRoot).toBeDefined()
+    expect((arg.formState as Record<string, unknown>).data).toEqual({ x: 1 })
 
     document.body.removeChild(container)
   })

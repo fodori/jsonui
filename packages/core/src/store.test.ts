@@ -99,6 +99,17 @@ describe('Store core API', () => {
     })
   })
 
+  describe('getLogicalStoresMap', () => {
+    it('returns the same shape as JsonUI defaultValues (no storeRoot wrapper)', () => {
+      const store = new Store()
+      store.setForStore('data', '/x', 1)
+      const logical = store.getLogicalStoresMap()
+      expect(logical.data).toEqual({ x: 1 })
+      expect((logical as Record<string, unknown>)['data.touch']).toEqual({ x: true })
+      expect((store.getState()).storeRoot).toBeDefined()
+    })
+  })
+
   describe('resolveStorePath', () => {
     it('returns absolute paths unchanged (normalized)', () => {
       expect(resolveStorePath('/a//b/', '/ignored')).toBe('/a/b')
