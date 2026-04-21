@@ -25,7 +25,7 @@ const listModel = {
         $comp: 'View',
         $children: [
           {
-            $comp: 'Input',
+            $comp: 'Edit',
             value: { $modifier: 'get', store: 'data', path: '.' },
             onChange: { $action: 'set', store: 'data', path: '.' },
             style: { width: 50, height: 20 },

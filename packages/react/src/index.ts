@@ -9,7 +9,7 @@ export {
   View,
   Text,
   Button,
-  Input,
+  Edit,
   Fragment,
   Image,
   StoreDebugger,

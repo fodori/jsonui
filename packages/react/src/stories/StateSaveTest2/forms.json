@@ -3,7 +3,7 @@
     "$comp": "Fragment",
     "$children": [
       {
-        "$comp": "Input",
+        "$comp": "Edit",
         "value": { "$modifier": "get", "store": "data", "path": "firstname" },
         "label": "Form 1",
         "onChange": {
@@ -13,7 +13,7 @@
         }
       },
       {
-        "$comp": "Input",
+        "$comp": "Edit",
         "value": {
           "$modifier": "get",
           "store": "data",
@@ -26,7 +26,7 @@
     ]
   },
   "form2": {
-    "$comp": "Input",
+    "$comp": "Edit",
     "value": { "$modifier": "get", "store": "data", "path": "firstname" },
     "label": "Form 2",
     "onChange": {
@@ -42,7 +42,7 @@
     }
   },
   "form3": {
-    "$comp": "Input",
+    "$comp": "Edit",
     "value": { "$modifier": "get", "store": "data", "path": "firstname" },
     "label": "Form 3",
     "onChange": {

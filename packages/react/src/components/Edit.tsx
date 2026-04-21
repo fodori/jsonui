@@ -1,7 +1,7 @@
 import React from 'react'
 import { useControlledInputValue } from '../hooks/useControlledInputValue.js'
 
-export function Input({ value, onChange, onPress, style, error, helperText, ...rest }: Record<string, unknown>) {
+export function Edit({ value, onChange, onPress, style, error, helperText, ...rest }: Record<string, unknown>) {
   const handleChange = (onChange ?? onPress) as React.ChangeEventHandler<HTMLInputElement> | undefined
   const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string, handleChange)
 

@@ -46,7 +46,7 @@ export const TableTest: Story = {
                 $children: [
                   'test3',
                   {
-                    $comp: 'Input',
+                    $comp: 'Edit',
                     value: { $modifier: 'get', store: 'data', path: '.' },
                     onChange: { $action: 'set', store: 'data', path: '.' },
                   },

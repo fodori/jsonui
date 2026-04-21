@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import type { JSONValue, JsonUINode, JSONObject } from '@jsonui/core'
-import JsonUI, { Input } from '@jsonui/react'
+import JsonUI from '@jsonui/react'
 
 const forms: Record<'form1' | 'form2' | 'form3', JsonUINode> = {
   form1: {
@@ -105,7 +105,6 @@ const App = () => {
       </button>
       <JsonUI
         model={model}
-        components={{ Edit: Input }}
         defaultValues={defaultValue as Record<string, JSONObject>}
         onStateExport={(p) => {
           getFormState.current = () => p.formState

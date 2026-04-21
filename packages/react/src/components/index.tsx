@@ -2,7 +2,7 @@ import type { ComponentMap } from '../componentMap.js'
 import { View } from './View.js'
 import { Text } from './Text.js'
 import { Button } from './Button.js'
-import { Input } from './Input.js'
+import { Edit } from './Edit.js'
 import { Slider } from './Slider.js'
 import { Fragment } from './Fragment.js'
 import { Image } from './Image.js'
@@ -15,7 +15,7 @@ export const builtinComponents: ComponentMap = {
   View,
   Text,
   Button,
-  Input,
+  Edit,
   Fragment,
   Image,
   StoreDebugger,
@@ -25,4 +25,4 @@ export const builtinComponents: ComponentMap = {
   _Undefined: Undefined,
 }
 
-export { View, Text, Button, Input, Fragment, Image, StoreDebugger, SubmitButton, FormLayout, Slider, Undefined }
+export { View, Text, Button, Edit, Fragment, Image, StoreDebugger, SubmitButton, FormLayout, Slider, Undefined }

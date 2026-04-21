@@ -20,7 +20,7 @@ It will be able to access with this example:
 
 ```json
 {
-  "$comp": "Input",
+  "$comp": "Edit",
   "value": {
     "$modifier": "get",
     "store": "questionnaire",

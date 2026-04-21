@@ -16,21 +16,24 @@ export const Axios: Story = {
   render: () => (
     <JsonUI
       functions={{ axios }}
-      model={[
-        {
-          $comp: 'Button',
-          $children: 'Send a post',
-          onClick: {
-            $action: 'axios',
-            method: 'post',
-            url: '/user/12345',
-            data: {
-              firstName: 'Fred',
-              lastName: 'Flintstone',
+      model={{
+        $comp: 'View',
+        $children: [
+          {
+            $comp: 'Button',
+            $children: 'Send a post',
+            onClick: {
+              $action: 'axios',
+              method: 'post',
+              url: '/user/12345',
+              data: {
+                firstName: 'Fred',
+                lastName: 'Flintstone',
+              },
             },
           },
-        },
-      ]}
+        ],
+      }}
     />
   ),
 }

@@ -28,7 +28,7 @@ export const ReduxLikeTest: Story = {
       $comp: 'Fragment',
       $children: [
         {
-          $comp: 'Input',
+          $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: 'age' },
           label: 'Field level validation',
           helperText: "it's a child age",
@@ -40,7 +40,7 @@ export const ReduxLikeTest: Story = {
           },
         },
         {
-          $comp: 'Input',
+          $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: 'age0' },
           label: 'Field level validation',
           helperText: "it's a child age",

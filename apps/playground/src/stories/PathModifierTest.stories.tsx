@@ -36,7 +36,7 @@ export const PathModifierTest: Story = {
           },
           $children: [
             {
-              $comp: 'Input',
+              $comp: 'Edit',
               value: { $modifier: 'get', store: 'data', path: 'test1' },
               label: 'Edit test 1',
               onChange: {
@@ -60,7 +60,7 @@ export const PathModifierTest: Story = {
           ],
         },
         {
-          $comp: 'Input',
+          $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: 'test2' },
           label: 'Edit test 2',
           onChange: {
@@ -74,13 +74,13 @@ export const PathModifierTest: Story = {
           },
         },
         {
-          $comp: 'Input',
+          $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: '/test4' },
           label: 'Edit test root',
           onChange: { $action: 'set', store: 'data', path: '/test4' },
         },
         {
-          $comp: 'Input',
+          $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: 'test3' },
           label: 'Edit test 3',
           onChange: {

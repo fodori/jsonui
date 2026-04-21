@@ -94,7 +94,7 @@ export const ValidationTest: Story = {
           },
         },
         {
-          $comp: 'Input',
+          $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: 'firstname' },
           label: 'First Name',
           helperText: 'more than 2 character and less than 10',
@@ -115,7 +115,7 @@ export const ValidationTest: Story = {
           },
         },
         {
-          $comp: 'Input',
+          $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: 'email' },
           label: 'E-mail address',
           helperText: "we don't accept any another format",
@@ -132,7 +132,7 @@ export const ValidationTest: Story = {
           },
         },
         {
-          $comp: 'Input',
+          $comp: 'Edit',
           value: {
             $modifier: 'get',
             store: 'data',

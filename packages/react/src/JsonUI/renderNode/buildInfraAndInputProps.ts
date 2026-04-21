@@ -25,7 +25,7 @@ export function applyInputErrorFromValueBinding(args: {
   mergedProps: Record<string, unknown>
 }): void {
   const { compName, effectiveNode, stores, mergedProps } = args
-  if (compName !== 'Input') return
+  if (compName !== 'Edit') return
 
   const valueSpec = (effectiveNode as Record<string, unknown>).value
   if (!valueSpec || typeof valueSpec !== 'object' || !(MODIFIER_KEY in valueSpec) || (valueSpec as Record<string, unknown>)[MODIFIER_KEY] !== 'get') {

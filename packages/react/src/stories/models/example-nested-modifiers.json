@@ -119,7 +119,7 @@
           }
         },
         {
-          "$comp": "Input",
+          "$comp": "Edit",
           "value": {
             "$modifier": "get",
             "store": "data",
@@ -138,7 +138,7 @@
           }
         },
         {
-          "$comp": "Input",
+          "$comp": "Edit",
           "id": "111",
           "value": {
             "$modifier": "get",
@@ -157,7 +157,7 @@
           }
         },
         {
-          "$comp": "Input",
+          "$comp": "Edit",
           "store": "data",
           "path": "/simplifiedField",
           "label": "Simplified field",
@@ -182,7 +182,7 @@
           ]
         },
         {
-          "$comp": "Input",
+          "$comp": "Edit",
           "value": {
             "$modifier": "get",
             "store": "data",
@@ -283,7 +283,7 @@
                   },
                   "$children": [
                     {
-                      "$comp": "Input",
+                      "$comp": "Edit",
                       "store": "data",
                       "path": "name",
                       "style": {
@@ -293,7 +293,7 @@
                       }
                     },
                     {
-                      "$comp": "Input",
+                      "$comp": "Edit",
                       "store": "data",
                       "path": "score",
                       "style": {

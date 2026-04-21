@@ -17,7 +17,7 @@
       },
       "$children": [
         {
-          "$comp": "Input",
+          "$comp": "Edit",
           "value": {
             "$modifier": "get",
             "store": "data",
@@ -36,7 +36,7 @@
           }
         },
         {
-          "$comp": "Input",
+          "$comp": "Edit",
           "value": { "$modifier": "get", "store": "data", "path": "/lastName" },
           "onChange": {
             "$action": "set",

@@ -7,5 +7,5 @@ export type { ChangeDefaultValueFunc, ChangeDefaultValueFuncProp } from './Messa
 export { MessageReceiver } from './MessageReceiver.js'
 export type { OnStateExportProps, OnStateExportType } from '@jsonui/core'
 export { expandSimplifiedNode } from '@jsonui/core'
-export { View, Text, Button, Input, Fragment, Image, StoreDebugger, SubmitButton, FormLayout, Slider, Undefined } from '../components/index.js'
+export { View, Text, Button, Edit, Fragment, Image, StoreDebugger, SubmitButton, FormLayout, Slider, Undefined } from '../components/index.js'
 export { builtinComponents } from '../components/index.js'
