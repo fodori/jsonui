@@ -8,8 +8,7 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "rootDir": "src",
     "isolatedModules": true
   },
-  "include": ["src"]
+  "include": ["src/**/*", ".storybook/**/*"]
 }

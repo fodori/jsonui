@@ -26,16 +26,25 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "rollup -c",
+    "start": "rollup -c --watch",
+    "lint": "eslint src .storybook",
+    "lint:fix": "eslint src .storybook --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \".storybook/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \".storybook/**/*.ts\"",
+    "storybook": "storybook dev -p 6007",
+    "build-storybook": "storybook build",
     "test": "vitest run"
   },
   "dependencies": {
@@ -46,12 +55,33 @@
     "react-dom": "^18 || ^19"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@storybook/react-vite": "^10.2.17",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.4",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^3.10.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-storybook": "^0.11.1",
     "jsdom": "^29.0.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "prettier": "^3.6.2",
+    "rollup": "^4.53.2",
+    "rollup-plugin-dts": "^6.2.3",
+    "rollup-plugin-visualizer": "^6.0.5",
+    "storybook": "^10.2.17",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0",
+    "vite": "^7.3.1",
     "vitest": "^3.2.4"
   },
   "browserslist": {

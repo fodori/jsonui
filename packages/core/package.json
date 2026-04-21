@@ -11,29 +11,36 @@
     "url": "https://github.com/fodori/jsonui/issues"
   },
   "description": "JsonUI core: validation, store, JsonUI resolution engine",
+  "source": "src/index.ts",
   "keywords": [
     "json",
     "jsonui",
     "ui",
     "schema"
   ],
-  "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
     }
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "rollup -c --compact",
+    "start": "rollup -c --watch",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
     "test": "vitest run",
     "test:watch": "vitest --watch"
   },
@@ -44,7 +51,20 @@
     "jsonata": "^2.1.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "rollup": "^4.53.2",
+    "rollup-plugin-dts": "^6.2.3",
+    "rollup-plugin-visualizer": "^6.0.5",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^3.10.1",
+    "eslint-plugin-import": "^2.31.0",
+    "prettier": "^3.6.2",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0",
     "vitest": "^3.2.4"
   }
 }
