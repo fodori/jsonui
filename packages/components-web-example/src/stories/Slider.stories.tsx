@@ -12,13 +12,16 @@ const Template: ComponentStory<typeof React.Component> = () => (
   <div style={{ display: 'flex', gridGap: 10, flexDirection: 'column' }}>
     <JsonUI
       components={{ ...builtinComponents, MUISlider }}
-      defaultValues={{ anotherstore: {} }}
+      defaultValues={{ anotherstore: { age: 30 } }}
       model={{
         $comp: 'Fragment',
         $children: [
           {
             $comp: 'MUISlider',
             name: 'age',
+            min: 0,
+            max: 100,
+            step: 1,
             value: { $modifier: 'get', store: 'anotherstore', path: '/age' },
             onChange: { $action: 'set', store: 'anotherstore', path: '/age' },
           },
