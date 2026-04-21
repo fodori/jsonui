@@ -5,7 +5,6 @@ import {
   resolveStorePath,
   type ModifierContext,
   type FunctionMap,
-  type FunctionHandler,
   ERROR_STORE_SUFFIX,
   TOUCH_STORE_SUFFIX,
 } from '@jsonui/core'
@@ -49,7 +48,8 @@ export function SubmitButton(props: Record<string, unknown>) {
 
   const storeName = store as string | undefined
   const pathStr = path as string | undefined
-  const allStores = (stores as Record<string, Store>) ?? {}
+  const allStores: Record<string, Store> =
+    stores !== undefined && stores !== null ? (stores as Record<string, Store>) : {}
 
   const root = getRootStore(allStores)
 
@@ -79,7 +79,7 @@ export function SubmitButton(props: Record<string, unknown>) {
   const disabled = !isTouched || hasError
 
   const fnMap = (functions ?? {}) as FunctionMap
-  const submitFn = fnMap.submit as FunctionHandler | undefined
+  const submitFn = fnMap.submit
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()

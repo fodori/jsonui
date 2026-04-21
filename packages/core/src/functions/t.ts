@@ -16,7 +16,7 @@ export function t(params: Record<string, unknown>, ctx: ModifierContext): string
   const entry = translations[key]
   // If we're in the base language, or there is no translation table
   // for this key, just return the key as-is (baseline text).
-  if (activeLang === baseLang || !entry) return key
+  if (activeLang === baseLang || entry === undefined) return key
 
   // Otherwise, use the requested language if available, falling back to key.
   return entry[activeLang] ?? key

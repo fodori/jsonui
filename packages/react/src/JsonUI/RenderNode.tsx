@@ -52,11 +52,9 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   const compName = node[V_COMP]
   if (!compName) return null
 
-  let Comp = components[compName]
-  if (!Comp) {
-    Comp = components._Undefined ?? (builtinComponents as Record<string, React.ComponentType<unknown>>)._Undefined
-  }
-  if (!Comp) return null
+  const fallbackUndefined =
+    components._Undefined ?? (builtinComponents as Record<string, React.ComponentType<unknown>>)._Undefined
+  const Comp = components[compName] ?? fallbackUndefined
 
   const eventProps = buildRenderNodeEventProps({
     effectiveNode,
@@ -101,7 +99,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
     ...multiChildSlots,
   }
 
-  if (!components[compName]) {
+  if (components[compName] === undefined) {
     mergedProps.compName = compName
   }
 

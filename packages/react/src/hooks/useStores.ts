@@ -17,7 +17,7 @@ export function useStores(initialStore?: Store, defaultValues?: Record<string, J
         if (!name || name.length === 0) continue
         // Initialise logical stores without marking them as "touched" –
         // touched tracking is for user interactions, not default values.
-        root.setForStore(name, '/', data ?? {}, false)
+        root.setForStore(name, '/', data, false)
       }
     }
 

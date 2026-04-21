@@ -45,5 +45,5 @@ export function StyleProvider({
 }
 
 export function useStyleConfig(): StyleConfigValue {
-  return useContext(StyleContext) ?? defaultConfig
+  return useContext(StyleContext)
 }

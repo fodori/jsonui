@@ -3,7 +3,7 @@ import { act, createElement } from 'react'
 import { createRoot } from 'react-dom/client'
 import { computeListSliceRange } from '@jsonui/core'
 import { JsonUI } from '../JsonUI/JsonUI.js'
-import type { JsonUINode } from '@jsonui/core'
+import type { JsonUINode, OnStateExportProps } from '@jsonui/core'
 
 describe('portability parity (main JsonUI)', () => {
   it('list pagination matches main defaults (full range when unset)', () => {
@@ -46,10 +46,10 @@ describe('portability parity (main JsonUI)', () => {
     })
 
     expect(onStateExport).toHaveBeenCalledTimes(1)
-    const arg = onStateExport.mock.calls[0][0]
+    const arg = onStateExport.mock.calls[0][0] as OnStateExportProps
     expect(arg.id).toBe('form-1')
     expect(arg.formState).toBeDefined()
-    expect((arg.formState as Record<string, unknown>)?.storeRoot).toBeDefined()
+    expect((arg.formState as Record<string, unknown>).storeRoot).toBeDefined()
 
     document.body.removeChild(container)
   })

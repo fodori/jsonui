@@ -17,6 +17,7 @@
     "build:libs": "yarn workspace @jsonui/core run build && yarn workspace @jsonui/react run build",
     "build": "yarn build:libs && yarn workspace @jsonui/playground run build",
     "buildweb": "yarn build:libs",
+    "type-check": "yarn workspace @jsonui/core run type-check && yarn workspace @jsonui/react run type-check",
     "test": "yarn workspace @jsonui/core run test && yarn workspace @jsonui/react run test",
     "test:watch": "yarn workspace @jsonui/core run test:watch",
     "startTestReact": "yarn workspace jsonui-test-react run start",
@@ -29,7 +30,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky",
-    "release:verify": "yarn build:libs && yarn test && yarn lint && yarn format:check",
+    "release:verify": "yarn build:libs && yarn type-check && yarn test && yarn lint && yarn format:check",
     "copyDocs": "yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
   },
   "devDependencies": {

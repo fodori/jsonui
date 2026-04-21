@@ -53,7 +53,7 @@ export type ActionHandler = (params: Record<string, unknown>, context?: Modifier
 export type ModifierHandler = FunctionHandler
 
 // key -> { langCode -> value }
-export type TranslationsMap = Record<string, Record<string, string>>
+export type TranslationsMap = Record<string, Record<string, string> | undefined>
 
 export interface ModifierContext {
   stores: Record<string, Store>
@@ -70,7 +70,7 @@ export interface ModifierContext {
 }
 
 /** All `$action` and `$modifier` implementations live in this single map. */
-export type FunctionMap = Record<string, FunctionHandler>
+export type FunctionMap = Record<string, FunctionHandler | undefined>
 
 /** @deprecated Use `FunctionMap`. */
 export type ActionMap = FunctionMap

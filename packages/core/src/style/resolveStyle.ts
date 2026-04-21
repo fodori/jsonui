@@ -7,7 +7,7 @@ import type { CanonicalStyle, ResponsiveStyle, StyleInput, BreakpointKey, Resolv
 import { BREAKPOINT_ORDER } from './types.js'
 
 function isResponsiveStyle(style: StyleInput): style is ResponsiveStyle {
-  if (!style || typeof style !== 'object') return false
+  if (typeof style !== 'object') return false
   const keys = Object.keys(style)
   return keys.some((k) => BREAKPOINT_ORDER.includes(k as BreakpointKey))
 }
@@ -115,7 +115,7 @@ const LENGTH_KEYS = new Set([
 ])
 
 function ensureLengthUnit(key: string, value: string | number | undefined): string | number | undefined {
-  if (value === undefined || value === null) return value
+  if (value === undefined) return value
   if (!LENGTH_KEYS.has(key)) return value
   if (typeof value === 'number') return `${value}px`
   if (typeof value === 'string' && /^\d+(\.\d+)?$/.test(value.trim())) {

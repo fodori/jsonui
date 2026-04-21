@@ -14,7 +14,7 @@ function getBreakpointFromWidth(width: number, breakpoints: Record<BreakpointKey
   let current: BreakpointKey = 'base'
   for (const key of BREAKPOINT_ORDER) {
     const threshold = breakpoints[key]
-    if (threshold !== undefined && width >= threshold) {
+    if (width >= threshold) {
       current = key
     }
   }

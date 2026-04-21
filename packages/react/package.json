@@ -39,10 +39,11 @@
   "scripts": {
     "build": "rollup -c",
     "start": "rollup -c --watch",
-    "lint": "eslint src .storybook",
-    "lint:fix": "eslint src .storybook --fix",
+    "lint": "eslint src .storybook --max-warnings 0",
+    "lint:fix": "eslint src .storybook --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \".storybook/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \".storybook/**/*.ts\"",
+    "type-check": "tsc -p tsconfig.json --noEmit",
     "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build",
     "test": "vitest run"

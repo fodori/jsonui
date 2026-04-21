@@ -19,7 +19,7 @@ export function mergeEffectivePathModifiers(
   }
 
   for (const [storeName, spec] of Object.entries(ownPathModifiers)) {
-    if (!spec || typeof spec !== 'object') continue
+    if (typeof spec !== 'object') continue
     const rawPath = (spec as { path?: string }).path
     if (typeof rawPath !== 'string' || rawPath.length === 0) continue
 

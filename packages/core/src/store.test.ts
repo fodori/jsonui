@@ -4,7 +4,7 @@ import { Store, createStores, getRootStore, makeStorePath, resolveStorePath, STO
 describe('Store core API', () => {
   describe('makeStorePath', () => {
     it('throws for empty store name', () => {
-      expect(() => makeStorePath('' as any, '/a')).toThrow()
+      expect(() => makeStorePath('', '/a')).toThrow()
     })
 
     it('builds base path when logical path is root', () => {

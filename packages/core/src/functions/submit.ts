@@ -7,8 +7,8 @@ export function submit(params: Record<string, unknown>): void {
 }
 
 export function submitErrors(params: Record<string, unknown>, ctx: ModifierContext): void {
-  const storeName = params?.store as string | undefined
-  const path = (params?.path as string) ?? '/'
+  const storeName = params.store as string | undefined
+  const path = (params.path as string | undefined) ?? '/'
   if (!storeName) {
     alert('submitErrors requires a store name (e.g. { "store": "myStore" })')
     return

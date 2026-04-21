@@ -18,10 +18,13 @@ export type StoreState = Record<string, unknown>
 
 // Simple dev flag without relying on Node typings; bundlerek általában kicserélik
 // process.env.NODE_ENV-et build időben, de itt óvatosan, típus-hiba nélkül ellenőrzünk.
-const g = globalThis as typeof globalThis & {
+const nodeGlobal = globalThis as unknown as {
   process?: { env?: { NODE_ENV?: string } }
 }
-const __DEV__ = typeof globalThis !== 'undefined' && typeof g.process !== 'undefined' && g.process?.env?.NODE_ENV !== 'production'
+const __DEV__ =
+  nodeGlobal.process === undefined ||
+  nodeGlobal.process.env === undefined ||
+  nodeGlobal.process.env.NODE_ENV !== 'production'
 
 export type Listener = () => void
 export type StoreChangeListener = (storeName: string, logicalPath: string) => void
@@ -41,7 +44,6 @@ export class Store {
   }
 
   set(path: string, value: unknown): void {
-    if (this.state == null) this.state = {}
     this.state = setImmutable(this.state, path, value)
     if (__DEV__) {
       deepFreeze(this.state)
@@ -103,7 +105,7 @@ export class Store {
   }
 
   replaceState(state: StoreState): void {
-    this.state = state ?? {}
+    this.state = state
     if (__DEV__) {
       deepFreeze(this.state)
     }
@@ -117,7 +119,7 @@ export function createStores(initialState: Record<string, StoreState> = {}): Sto
   const stores: StoreMap = {}
   for (const [name, state] of Object.entries(initialState)) {
     const store = new Store()
-    store.replaceState(state ?? {})
+    store.replaceState(state)
     stores[name] = store
   }
   return stores
@@ -146,12 +148,11 @@ function setImmutable(root: StoreState, pathStr: string, value: unknown): StoreS
   const segments = parsePath(pathStr)
   if (segments.length === 0) return root
 
-  // Ensure we always work from a non-null root object.
-  const originalRoot = root ?? {}
+  const originalRoot = root
 
   function cloneContainer(container: unknown): Record<string, unknown> | unknown[] {
     if (Array.isArray(container)) {
-      return container.slice()
+      return (container as unknown[]).slice()
     }
     if (container && typeof container === 'object') {
       return { ...(container as Record<string, unknown>) }
@@ -162,9 +163,6 @@ function setImmutable(root: StoreState, pathStr: string, value: unknown): StoreS
   function setAt(current: unknown, index: number): { cloned: Record<string, unknown> | unknown[]; result: unknown } {
     const isLast = index === segments.length - 1
     const seg = segments[index]
-    const nextSeg = segments[index + 1]
-    const nextKey = nextSeg === '' || /^\d+$/.test(nextSeg ?? '') ? parseInt(nextSeg ?? '0', 10) : nextSeg
-
     const container = cloneContainer(current)
 
     if (isLast) {
@@ -179,6 +177,9 @@ function setImmutable(root: StoreState, pathStr: string, value: unknown): StoreS
 
       return { cloned: container, result: container }
     }
+
+    const nextSeg = segments[index + 1]
+    const nextKey = nextSeg === '' || /^\d+$/.test(nextSeg) ? parseInt(nextSeg, 10) : nextSeg
 
     // Non-last segment: ensure child container exists before descending.
     const keyForChild: string | number = seg
@@ -277,8 +278,12 @@ export function getRootStore(stores: StoreMap): Store {
  */
 export function resolveStorePath(pathStr: string, currentPath: string, pathModifiers?: Record<string, { path: string }>, storeName?: string): string {
   let resolved: string
-  if (pathModifiers && storeName && pathModifiers[storeName]) {
-    resolved = resolvePath(pathModifiers[storeName].path, pathStr)
+  const modifier =
+    pathModifiers !== undefined && storeName !== undefined && Object.prototype.hasOwnProperty.call(pathModifiers, storeName)
+      ? pathModifiers[storeName]
+      : undefined
+  if (modifier !== undefined) {
+    resolved = resolvePath(modifier.path, pathStr)
   } else if (pathStr.startsWith('/')) {
     resolved = pathStr
   } else {

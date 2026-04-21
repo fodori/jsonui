@@ -72,7 +72,7 @@ export function resolveAction(
         // Resolve to logical path so validations work with lists, pathModifiers,
         // and relative paths (e.g. "score" inside /players/0).
         const logicalPath = resolveStorePath(rawPath, modCtx.currentPath, modCtx.pathModifiers, storeName)
-        runValidationsForPath(modCtx.validators as ValidationRegistry, stores, storeName, logicalPath)
+        runValidationsForPath(modCtx.validators, stores, storeName, logicalPath)
       }
     }
   }

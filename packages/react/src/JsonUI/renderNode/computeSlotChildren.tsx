@@ -86,19 +86,22 @@ export function computeRenderNodeSlotChildren(args: {
     const listItem = listConfig[LIST_ITEM]
     const listPathModifiers = listConfig[PATH_MODIFIERS_KEY]
 
-    const storeName = Object.keys(effectivePathModifiers ?? {}).find((k) => (listPathModifiers ?? {})[k]) ?? Object.keys(listPathModifiers ?? {})[0]
+    const effKeys = effectivePathModifiers !== undefined ? Object.keys(effectivePathModifiers) : []
+    const listPm = listPathModifiers ?? {}
+    const storeName =
+      effKeys.find((k) => Object.prototype.hasOwnProperty.call(listPm, k)) ?? Object.keys(listPm)[0]
 
     const baseListPath =
       storeName && effectivePathModifiers?.[storeName]
         ? effectivePathModifiers[storeName].path
         : storeName && listPathModifiers?.[storeName]?.path
-          ? resolveStorePath(listPathModifiers[storeName].path ?? '', currentPath, pathModifiers, storeName)
+          ? resolveStorePath(listPathModifiers[storeName].path, currentPath, pathModifiers, storeName)
           : undefined
     const listPath = baseListPath
     const root = getRootStore(stores)
     const listData = storeName && listPath != null && listPath !== '' ? (root.getForStore(storeName, listPath) as unknown[]) : []
 
-    if (!Array.isArray(listData) || !listItem) return null
+    if (!Array.isArray(listData)) return null
 
     const listCfgRaw = listConfig as Record<string, unknown>
     const { indices } = computeListSliceRange({

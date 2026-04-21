@@ -7,7 +7,7 @@ export function coercePrimitiveChild(value: unknown): React.ReactNode {
   if (value === null) return 'null'
   if (value === undefined) return undefined
   if (React.isValidElement(value)) return value
-  if (value && typeof value === 'object') {
+  if (typeof value === 'object') {
     const obj = value as Record<string, unknown>
     if (MODIFIER_KEY in obj) {
       return undefined

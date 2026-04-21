@@ -29,18 +29,25 @@ function runValidationSpecsFromNode(
   const specs = Array.isArray(rawValidation) ? rawValidation : rawValidation ? [rawValidation] : []
 
   for (const spec of specs) {
-    if (spec && typeof spec === 'object' && spec.store && typeof spec.store === 'string' && spec.path && typeof spec.path === 'string' && spec.schema) {
-      runInlineValidation(
-        {
-          store: spec.store,
-          path: spec.path,
-          schema: spec.schema,
-        },
-        stores,
-        currentPath,
-        effectivePathModifiers
-      )
-    }
+    const raw: unknown = spec
+    if (raw === null || typeof raw !== 'object') continue
+    const s = raw as Record<string, unknown>
+    const store = s.store
+    const pathStr = s.path
+    const schema = s.schema
+    if (typeof store !== 'string' || store.length === 0) continue
+    if (typeof pathStr !== 'string' || pathStr.length === 0) continue
+    if (schema === undefined) continue
+    runInlineValidation(
+      {
+        store,
+        path: pathStr,
+        schema,
+      },
+      stores,
+      currentPath,
+      effectivePathModifiers
+    )
   }
 }
 

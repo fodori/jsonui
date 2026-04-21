@@ -71,8 +71,8 @@ export function JsonUI({
       if (!table || typeof table !== 'object') continue
       for (const [key, val] of Object.entries(table as Record<string, unknown>)) {
         if (typeof val !== 'string' || !key) continue
-        if (!map[key]) map[key] = {}
-        map[key][lang] = val
+        const entry = (map[key] ??= {})
+        entry[lang] = val
       }
     }
 
@@ -97,7 +97,8 @@ export function JsonUI({
   }, [model, defaultValues, onStateExport, id, stores])
 
   // TODO: the model could be something else, like array, number, string, boolean, etc.
-  if (!model || typeof model !== 'object') {
+  const modelUnknown: unknown = model
+  if (modelUnknown === null || typeof modelUnknown !== 'object') {
     return <div style={{ padding: 16, color: '#666' }}>JsonUI: no valid model</div>
   }
 

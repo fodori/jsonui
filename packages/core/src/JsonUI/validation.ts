@@ -10,7 +10,8 @@ export interface ValidationRule {
   store: string
 }
 
-export type ValidationRegistry = Record<string, Record<string, ValidateFunction[]>>
+/** Nested maps may be missing until first validator is registered for a path. */
+export type ValidationRegistry = Partial<Record<string, Partial<Record<string, ValidateFunction[]>>>>
 
 // Inline (field-level) validation spec defined on a node via `$validation`.
 export interface InlineValidationSpec {
@@ -40,13 +41,11 @@ export function buildValidationRegistry(rules: ValidationRule[] | undefined): Va
   ajvErrors(ajv)
 
   for (const rule of rules) {
-    if (!rule || !rule.schema || !rule.store || !rule.path) continue
+    if (rule.schema === undefined || rule.schema === null || !rule.store || !rule.path) continue
     const validate = ajv.compile(rule.schema)
-    if (!registry[rule.store]) registry[rule.store] = {}
-    if (!registry[rule.store][rule.path]) {
-      registry[rule.store][rule.path] = []
-    }
-    registry[rule.store][rule.path].push(validate)
+    const byStore = registry[rule.store] ?? (registry[rule.store] = {})
+    const list = byStore[rule.path] ?? (byStore[rule.path] = [])
+    list.push(validate)
   }
 
   return registry
@@ -68,7 +67,7 @@ export function runInlineValidation(
   currentPath: string,
   pathModifiers?: Record<string, { path: string }>
 ): void {
-  if (!spec || !spec.store || !spec.path || !spec.schema) return
+  if (!spec.store || !spec.path || spec.schema == null) return
 
   const storeName = spec.store
   const logicalPath = resolveStorePath(spec.path, currentPath, pathModifiers, storeName)
@@ -83,7 +82,7 @@ export function runInlineValidation(
   const valid = validate(value)
   if (!valid && validate.errors) {
     for (const err of validate.errors) {
-      if (err?.message) messages.push(err.message)
+      if (err.message) messages.push(err.message)
     }
   }
 
@@ -111,7 +110,7 @@ export function runValidationsForPath(registry: ValidationRegistry, stores: Reco
   const errorStoreName = `${storeName}${ERROR_STORE_SUFFIX}`
 
   // Collect new error messages per *concrete* target path (e.g. '/players/0/score').
-  const perPathMessages: Record<string, string[]> = {}
+  const perPathMessages: Partial<Record<string, string[]>> = {}
   const affectedErrorPaths = new Set<string>()
 
   // Include any existing error leaf paths under matching rule paths so we can clear
@@ -137,12 +136,13 @@ export function runValidationsForPath(registry: ValidationRegistry, stores: Reco
   // Example: action path '/a/b/c' should trigger validators registered for
   // '/', '/a', '/a/b', and '/a/b/c'.
   for (const [rulePath, validators] of Object.entries(storeValidators)) {
+    if (!validators) continue
     if (!isPathPrefix(rulePath, path)) continue
 
     // Track existing error paths under this rule so we can clear them.
     const existingSubtree = root.getForStore(errorStoreName, rulePath)
     if (existingSubtree !== undefined) {
-      collectExistingPaths(rulePath || '/', existingSubtree)
+      collectExistingPaths(rulePath === '' ? '/' : rulePath, existingSubtree)
     }
 
     const valueAtRulePath = root.getForStore(storeName, rulePath)
@@ -150,17 +150,17 @@ export function runValidationsForPath(registry: ValidationRegistry, stores: Reco
       const valid = validate(valueAtRulePath)
       if (!valid && validate.errors) {
         for (const err of validate.errors) {
-          if (!err?.message) continue
-          const instancePath = err.instancePath ?? ''
+          if (!err.message) continue
+          const instancePath = err.instancePath
           // instancePath is relative to rulePath, e.g. '/0/score'
           let targetPath: string
-          if (!rulePath || rulePath === '/') {
-            targetPath = instancePath || '/'
+          if (rulePath === '' || rulePath === '/') {
+            targetPath = instancePath && instancePath.length > 0 ? instancePath : '/'
           } else {
-            targetPath = instancePath ? `${rulePath}${instancePath}` : rulePath
+            targetPath = instancePath && instancePath.length > 0 ? `${rulePath}${instancePath}` : rulePath
           }
-          if (!perPathMessages[targetPath]) perPathMessages[targetPath] = []
-          perPathMessages[targetPath].push(err.message)
+          const list = perPathMessages[targetPath] ?? (perPathMessages[targetPath] = [])
+          list.push(err.message)
           affectedErrorPaths.add(targetPath)
         }
       }

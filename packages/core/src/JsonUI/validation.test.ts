@@ -20,8 +20,11 @@ describe('JsonUI validation helpers', () => {
       ]
       const registry = buildValidationRegistry(rules)
       expect(Object.keys(registry)).toEqual(['data'])
-      expect(Object.keys(registry.data)).toEqual(['/user/name'])
-      expect(registry.data['/user/name']).toHaveLength(1)
+      const dataValidators = registry.data
+      expect(dataValidators).toBeDefined()
+      if (!dataValidators) throw new Error('expected data validators')
+      expect(Object.keys(dataValidators)).toEqual(['/user/name'])
+      expect(dataValidators['/user/name']).toHaveLength(1)
     })
   })
 

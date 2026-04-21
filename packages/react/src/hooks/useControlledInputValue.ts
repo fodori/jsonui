@@ -20,7 +20,7 @@ export function useControlledInputValue(
   onChange: ChangeEventHandler<HTMLInputElement>
   ref: RefObject<HTMLInputElement | null>
 } {
-  const propValue = value ?? ''
+  const propValue = value
   const [localValue, setLocalValue] = useState(propValue)
   const lastValueWeSent = useRef<string | null>(null)
   const lastPropValue = useRef<string>(propValue)
@@ -49,7 +49,7 @@ export function useControlledInputValue(
     if (selectionToRestore.current && inputRef.current) {
       const { start, end } = selectionToRestore.current
       selectionToRestore.current = null
-      const len = (inputRef.current.value ?? '').length
+      const len = inputRef.current.value.length
       inputRef.current.selectionStart = Math.min(start, len)
       inputRef.current.selectionEnd = Math.min(end, len)
     }

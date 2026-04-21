@@ -15,12 +15,12 @@
 import type { JsonUINode } from '../types.js'
 import { MODIFIER_KEY, ACTION_KEY, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../types.js'
 
-function isSimplifiedNode(node: JsonUINode): node is JsonUINode & {
+function isSimplifiedNode(node: unknown): node is JsonUINode & {
   [key: string]: unknown
   store: string
   path: string
 } {
-  if (!node || typeof node !== 'object') return false
+  if (typeof node !== 'object' || node === null) return false
   const r = node as Record<string, unknown>
   const store = r.store
   const path = r.path
