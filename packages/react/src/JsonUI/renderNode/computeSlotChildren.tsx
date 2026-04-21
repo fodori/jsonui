@@ -88,8 +88,7 @@ export function computeRenderNodeSlotChildren(args: {
 
     const effKeys = effectivePathModifiers !== undefined ? Object.keys(effectivePathModifiers) : []
     const listPm = listPathModifiers ?? {}
-    const storeName =
-      effKeys.find((k) => Object.prototype.hasOwnProperty.call(listPm, k)) ?? Object.keys(listPm)[0]
+    const storeName = effKeys.find((k) => Object.prototype.hasOwnProperty.call(listPm, k)) ?? Object.keys(listPm)[0]
 
     const baseListPath =
       storeName && effectivePathModifiers?.[storeName]

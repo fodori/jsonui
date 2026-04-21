@@ -41,9 +41,7 @@ export default [
       if (/node_modules/.test(id)) {
         return true
       }
-      return ['react', 'react-dom', 'react/jsx-runtime', '@jsonui/core', 'tslib'].some(
-        (pkg) => id === pkg || id.startsWith(`${pkg}/`),
-      )
+      return ['react', 'react-dom', 'react/jsx-runtime', '@jsonui/core', 'tslib'].some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
     },
   },
   {

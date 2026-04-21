@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "types": [],
     "baseUrl": "./src/",
     "target": "ES2020",

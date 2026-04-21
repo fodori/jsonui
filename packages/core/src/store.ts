@@ -21,10 +21,7 @@ export type StoreState = Record<string, unknown>
 const nodeGlobal = globalThis as unknown as {
   process?: { env?: { NODE_ENV?: string } }
 }
-const __DEV__ =
-  nodeGlobal.process === undefined ||
-  nodeGlobal.process.env === undefined ||
-  nodeGlobal.process.env.NODE_ENV !== 'production'
+const __DEV__ = nodeGlobal.process === undefined || nodeGlobal.process.env === undefined || nodeGlobal.process.env.NODE_ENV !== 'production'
 
 export type Listener = () => void
 export type StoreChangeListener = (storeName: string, logicalPath: string) => void

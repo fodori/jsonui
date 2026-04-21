@@ -52,8 +52,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   const compName = node[V_COMP]
   if (!compName) return null
 
-  const fallbackUndefined =
-    components._Undefined ?? (builtinComponents as Record<string, React.ComponentType<unknown>>)._Undefined
+  const fallbackUndefined = components._Undefined ?? (builtinComponents as Record<string, React.ComponentType<unknown>>)._Undefined
   const Comp = components[compName] ?? fallbackUndefined
 
   const eventProps = buildRenderNodeEventProps({

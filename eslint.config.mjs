@@ -117,6 +117,12 @@ export default tseslint.config(
   },
   ...storybook.configs['flat/recommended'],
   {
+    rules: {
+      // @storybook/react-vite re-exports runtime from @storybook/react, but its published .d.ts is broken for CSF types (TS2305).
+      'storybook/no-renderer-packages': 'off',
+    },
+  },
+  {
     files: ['**/*.stories.{ts,tsx,js,jsx}'],
     rules: {
       'storybook/default-exports': 'off',

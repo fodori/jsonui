@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  type Store,
-  getRootStore,
-  resolveStorePath,
-  type ModifierContext,
-  type FunctionMap,
-  ERROR_STORE_SUFFIX,
-  TOUCH_STORE_SUFFIX,
-} from '@jsonui/core'
+import { type Store, getRootStore, resolveStorePath, type ModifierContext, type FunctionMap, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '@jsonui/core'
 
 function hasAnyError(value: unknown): boolean {
   if (value === null || value === undefined) return false
@@ -48,8 +40,7 @@ export function SubmitButton(props: Record<string, unknown>) {
 
   const storeName = store as string | undefined
   const pathStr = path as string | undefined
-  const allStores: Record<string, Store> =
-    stores !== undefined && stores !== null ? (stores as Record<string, Store>) : {}
+  const allStores: Record<string, Store> = stores !== undefined && stores !== null ? (stores as Record<string, Store>) : {}
 
   const root = getRootStore(allStores)
 
