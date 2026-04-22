@@ -24,7 +24,7 @@ function Try() {
     { name: 'Button', content: testButton, help: 'Button sample' },
     { name: 'Edit Field', content: testInput, help: 'Edit Field example with setter and getter' },
   ]
-  const format = (data: unknown) => jsonFormat(JSON.stringify(data), { space: { size: 1 }, type: 'space' })
+  const format = (data: unknown) => jsonFormat(data, { space: { size: 1 }, type: 'space' })
 
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [jsonVal, setJsonVal] = useState(format(tries[selectedIndex].content))
@@ -45,7 +45,13 @@ function Try() {
     }
     return true
   }
-
+  console.log(jsonVal)
+  // console.log(jsonValid)
+  // console.log(harError)
+  // console.log(selectedIndex)
+  // console.log(tries)
+  // console.log(format(tries[selectedIndex].content))
+  // console.log(format(tries[selectedIndex].content))
   return (
     <>
       <FormControl fullWidth>
