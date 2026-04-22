@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@jsonui/core": "0.10.0",
     "@jsonui/react": "0.10.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
