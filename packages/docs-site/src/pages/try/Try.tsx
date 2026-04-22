@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-// import type { JsonUINode } from '@jsonui/core'
+import type { JsonUINode } from '@jsonui/core'
 import { Stack, ListItemText, Paper, Typography } from '@mui/material'
 // import JSONInput from 'react-json-editor-ajrm'
 import Editor from '../../simpleCodeEditor'
@@ -28,7 +28,7 @@ function Try() {
 
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [jsonVal, setJsonVal] = useState(format(tries[selectedIndex].content))
-  const [jsonValid, setJsonValid] = useState(tries[selectedIndex].content)
+  const [jsonValid, setJsonValid] = useState<JsonUINode>(tries[selectedIndex].content as JsonUINode)
   const [harError, setHasError] = useState(false)
 
   const handleSetSelectedIndex = (event: SelectChangeEvent<number>) => {
@@ -39,11 +39,15 @@ function Try() {
   }
   const isJsonString = (str: string) => {
     try {
-      JSON.parse(str)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const json = JSON.parse(str)
+      if (typeof json === 'object' && json !== null) {
+        return true
+      }
     } catch {
       return false
     }
-    return true
+    return false
   }
   return (
     <>

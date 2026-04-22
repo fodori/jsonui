@@ -1,187 +1,190 @@
-[
-  {
-    "$comp": "View",
-    "style": {
-      "display": "flex",
-      "flexDirection": "column",
-      "flexWrap": "wrap",
-      "alignContent": "center",
-      "justifyContent": "center",
-      "alignItems": "stretch",
-      "margin": 24
-    },
-    "$children": [
-      {
-        "$comp": "Text",
-        "$children": "This is a complex example",
-        "style": {
-          "fontSize": 25,
-          "textAlign": "center"
-        }
+{
+  "$comp": "View",
+  "$children": [
+    {
+      "$comp": "View",
+      "style": {
+        "display": "flex",
+        "flexDirection": "column",
+        "flexWrap": "wrap",
+        "alignContent": "center",
+        "justifyContent": "center",
+        "alignItems": "stretch",
+        "margin": 24
       },
-      {
-        "$comp": "Text",
-        "$children": "API call example: called google search, for make it easy (if you want to debug: Inspect mode -> Network tab).",
-        "style": {
-          "fontSize": 14,
-          "textAlign": "left"
-        }
-      },
-      {
-        "$comp": "Text",
-        "$children": "Added extra components: Mui TextField, Slider, Checkbox, Button to show how it is easy to integrate components and functions,",
-        "style": {
-          "fontSize": 14,
-          "textAlign": "left",
-          "marginBottom": 40
-        }
-      },
-      {
-        "$comp": "TextField",
-        "name": "q",
-        "label": "Search for",
-        "helperText": "all these words",
-        "value": {
-          "$modifier": "get",
-          "store": "googleSearch",
-          "path": "/q"
-        },
-        "onChange": {
-          "$action": "set",
-          "store": "googleSearch",
-          "path": "/q"
-        }
-      },
-      {
-        "$comp": "Text",
-        "$children": {
-          "$modifier": "get",
-          "store": "googleSearch",
-          "path": "/num",
-          "jsonataDef": "'Number of show result: ' & ($not($)?'nothing':$)"
-        },
-        "style": {
-          "fontSize": 14,
-          "textAlign": "left"
-        }
-      },
-      {
-        "$comp": "Slider",
-        "name": "num",
-        "value": {
-          "$modifier": "get",
-          "store": "googleSearch",
-          "path": "/num"
-        },
-        "onChange": {
-          "$action": "set",
-          "store": "googleSearch",
-          "path": "/num"
-        }
-      },
-      {
-        "$comp": "View",
-        "style": {
-          "display": "flex",
-          "flexDirection": "row",
-          "flexWrap": "nowrap",
-          "alignContent": "flex-start",
-          "justifyContent": "flex-start",
-          "alignItems": "flex-start"
-        },
-        "$children": [
-          {
-            "$comp": "Checkbox",
-            "name": "adtest",
-            "checked": {
-              "$modifier": "get",
-              "store": "googleSearch",
-              "path": "/adtest"
-            },
-            "onChange": {
-              "$action": "set",
-              "store": "googleSearch",
-              "path": "/adtest"
-            }
-          },
-          {
-            "$comp": "Text",
-            "$children": "Controls whether personalised search is on or not",
-            "style": {
-              "fontSize": 14,
-              "textAlign": "left"
-            }
+      "$children": [
+        {
+          "$comp": "Text",
+          "$children": "This is a complex example",
+          "style": {
+            "fontSize": 25,
+            "textAlign": "center"
           }
-        ]
-      }
-    ]
-  },
-  {
-    "$comp": "View",
-    "style": {
-      "display": "flex",
-      "flexDirection": "row",
-      "flexWrap": "nowrap",
-      "alignContent": "space-around",
-      "justifyContent": "flex-end",
-      "alignItems": "baseline",
-      "gap": 10
-    },
-    "$children": [
-      {
-        "$comp": "Button",
-        "variant": "outlined",
-        "$children": [
-          {
-            "$comp": "Text",
-            "$children": "API request",
-            "style": {
-              "margin": 0,
-              "marginRight": 8
-            }
-          },
-          {
-            "$comp": "Icon",
-            "name": "settings"
+        },
+        {
+          "$comp": "Text",
+          "$children": "API call example: called google search, for make it easy (if you want to debug: Inspect mode -> Network tab).",
+          "style": {
+            "fontSize": 14,
+            "textAlign": "left"
           }
-        ],
-        "onClick": {
-          "$action": "axios",
-          "method": "post",
-          "url": "localhost",
-          "data": {
+        },
+        {
+          "$comp": "Text",
+          "$children": "Added extra components: Mui TextField, Slider, Checkbox, Button to show how it is easy to integrate components and functions,",
+          "style": {
+            "fontSize": 14,
+            "textAlign": "left",
+            "marginBottom": 40
+          }
+        },
+        {
+          "$comp": "TextField",
+          "name": "q",
+          "label": "Search for",
+          "helperText": "all these words",
+          "value": {
             "$modifier": "get",
             "store": "googleSearch",
-            "path": "/"
-          }
-        }
-      },
-      {
-        "$comp": "Button",
-        "variant": "outlined",
-        "$children": [
-          {
-            "$comp": "Text",
-            "$children": "Request query",
-            "style": {
-              "margin": 0,
-              "marginRight": 8
-            }
+            "path": "/q"
           },
-          {
-            "$comp": "Icon",
-            "type": "FontAwesome",
-            "name": "search"
+          "onChange": {
+            "$action": "set",
+            "store": "googleSearch",
+            "path": "/q"
           }
-        ],
-        "href": {
-          "$modifier": "get",
-          "store": "googleSearch",
-          "path": "/",
-          "target": "_blank",
-          "jsonataDef": "'https://www.google.com/search?q=' & $encodeUrl($.q) & '&num=' & $.num & '&adtest=' & ($exists($.adtest)?$boolean($.adtest):false)"
+        },
+        {
+          "$comp": "Text",
+          "$children": {
+            "$modifier": "get",
+            "store": "googleSearch",
+            "path": "/num",
+            "jsonataDef": "'Number of show result: ' & ($not($)?'nothing':$)"
+          },
+          "style": {
+            "fontSize": 14,
+            "textAlign": "left"
+          }
+        },
+        {
+          "$comp": "Slider",
+          "name": "num",
+          "value": {
+            "$modifier": "get",
+            "store": "googleSearch",
+            "path": "/num"
+          },
+          "onChange": {
+            "$action": "set",
+            "store": "googleSearch",
+            "path": "/num"
+          }
+        },
+        {
+          "$comp": "View",
+          "style": {
+            "display": "flex",
+            "flexDirection": "row",
+            "flexWrap": "nowrap",
+            "alignContent": "flex-start",
+            "justifyContent": "flex-start",
+            "alignItems": "flex-start"
+          },
+          "$children": [
+            {
+              "$comp": "Checkbox",
+              "name": "adtest",
+              "checked": {
+                "$modifier": "get",
+                "store": "googleSearch",
+                "path": "/adtest"
+              },
+              "onChange": {
+                "$action": "set",
+                "store": "googleSearch",
+                "path": "/adtest"
+              }
+            },
+            {
+              "$comp": "Text",
+              "$children": "Controls whether personalised search is on or not",
+              "style": {
+                "fontSize": 14,
+                "textAlign": "left"
+              }
+            }
+          ]
         }
-      }
-    ]
-  }
-]
+      ]
+    },
+    {
+      "$comp": "View",
+      "style": {
+        "display": "flex",
+        "flexDirection": "row",
+        "flexWrap": "nowrap",
+        "alignContent": "space-around",
+        "justifyContent": "flex-end",
+        "alignItems": "baseline",
+        "gap": 10
+      },
+      "$children": [
+        {
+          "$comp": "Button",
+          "variant": "outlined",
+          "$children": [
+            {
+              "$comp": "Text",
+              "$children": "API request",
+              "style": {
+                "margin": 0,
+                "marginRight": 8
+              }
+            },
+            {
+              "$comp": "Icon",
+              "name": "settings"
+            }
+          ],
+          "onClick": {
+            "$action": "axios",
+            "method": "post",
+            "url": "localhost",
+            "data": {
+              "$modifier": "get",
+              "store": "googleSearch",
+              "path": "/"
+            }
+          }
+        },
+        {
+          "$comp": "Button",
+          "variant": "outlined",
+          "$children": [
+            {
+              "$comp": "Text",
+              "$children": "Request query",
+              "style": {
+                "margin": 0,
+                "marginRight": 8
+              }
+            },
+            {
+              "$comp": "Icon",
+              "type": "FontAwesome",
+              "name": "search"
+            }
+          ],
+          "href": {
+            "$modifier": "get",
+            "store": "googleSearch",
+            "path": "/",
+            "target": "_blank",
+            "jsonataDef": "'https://www.google.com/search?q=' & $encodeUrl($.q) & '&num=' & $.num & '&adtest=' & ($exists($.adtest)?$boolean($.adtest):false)"
+          }
+        }
+      ]
+    }
+  ]
+}
