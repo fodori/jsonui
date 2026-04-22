@@ -1,11 +1,13 @@
 import React from 'react'
 import { JsonUI, type ComponentMap } from '@jsonui/react'
 import { axios } from '@jsonui/functions-example'
-import { Button, TextField, Radio, Select, Checkbox, Icon, Slider, Switch, Tooltip } from '@jsonui/components-web-example'
+import { Button, TextField, Checkbox, Icon, Slider } from '@jsonui/components-web-example'
 import '@jsonui/components-web-example/dist/style.css'
 import { Stack, Paper } from '@mui/material'
 import Editor from '../../simpleCodeEditor'
-import { highlight, languages } from 'prismjs/components/prism-core'
+import Prism from 'prismjs'
+import 'prismjs/components/prism-clike'
+import 'prismjs/components/prism-javascript'
 import jsonFormat from 'json-format'
 import model from './model.json'
 import ErrorBoundary from '../../ErrorBoundary'
@@ -15,19 +17,14 @@ function AllInOne() {
   return (
     <Stack spacing={2} direction="column" sx={{ width: '100%' }}>
       <Paper elevation={3} sx={{ p: 1 }}>
-        <JsonUI
-          model={model}
-          functions={{ axios }}
-          components={{ Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip } as unknown as ComponentMap}
-        />
+        <JsonUI model={model} functions={{ axios }} components={{ Button, TextField, Checkbox, Icon, Slider } as unknown as ComponentMap} />
       </Paper>
       <Paper elevation={3} sx={{ p: 1 }}>
         <ErrorBoundary>
           <Editor
             value={format(model)}
             onValueChange={() => {}}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-            highlight={(code) => highlight(code, languages.js)}
+            highlight={(code) => Prism.highlight(code, Prism.languages.javascript, 'javascript')}
             padding={0}
             style={{
               fontFamily: '"Fira code", "Fira Mono", monospace',
