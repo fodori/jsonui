@@ -1,14 +1,16 @@
 {
   "editor.formatOnSave": true,
+  "eslint.enable": true,
+  "eslint.quiet": false,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     {
-      "language": "typesscript",
+      "language": "typescript",
       "autofix": true
     },
     {
-      "language": "typesscriptreact",
+      "language": "typescriptreact",
       "autofix": true
     }
   ],

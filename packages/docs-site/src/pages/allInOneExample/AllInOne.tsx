@@ -1,5 +1,4 @@
 import React from 'react'
-import type { JsonUINode } from '@jsonui/core'
 import { JsonUI, type ComponentMap } from '@jsonui/react'
 import { axios } from '@jsonui/functions-example'
 import { Button, TextField, Radio, Select, Checkbox, Icon, Slider, Switch, Tooltip } from '@jsonui/components-web-example'
@@ -9,6 +8,7 @@ import Editor from 'react-simple-code-editor'
 import { highlight, languages } from 'prismjs/components/prism-core'
 import jsonFormat from 'json-format'
 import model from './model.json'
+import ErrorBoundary from '../../ErrorBoundary'
 
 function AllInOne() {
   const format = (str: any) => jsonFormat(str, { space: { size: 1 }, type: 'space' })
@@ -16,23 +16,26 @@ function AllInOne() {
     <Stack spacing={2} direction="column" sx={{ width: '100%' }}>
       <Paper elevation={3} sx={{ p: 1 }}>
         <JsonUI
-          model={model as unknown as JsonUINode}
+          model={model}
           functions={{ axios }}
           components={{ Button, TextField, Checkbox, Radio, Select, Icon, Slider, Switch, Tooltip } as unknown as ComponentMap}
         />
       </Paper>
       <Paper elevation={3} sx={{ p: 1 }}>
-        <Editor
-          value={format(model)}
-          onValueChange={() => {}}
-          highlight={(code) => highlight(code, languages.js)}
-          padding={0}
-          style={{
-            fontFamily: '"Fira code", "Fira Mono", monospace',
-            fontSize: 12,
-            outline: 'transparent',
-          }}
-        />
+        <ErrorBoundary>
+          <Editor
+            value={format(model)}
+            onValueChange={() => {}}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            highlight={(code) => highlight(code, languages.js)}
+            padding={0}
+            style={{
+              fontFamily: '"Fira code", "Fira Mono", monospace',
+              fontSize: 12,
+              outline: 'transparent',
+            }}
+          />
+        </ErrorBoundary>
       </Paper>
     </Stack>
   )

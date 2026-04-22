@@ -80,7 +80,11 @@ export function JsonUI({
     () => buildValidationRegistry((top?.$validations as ValidationRule[] | undefined) ?? []),
     [top]
   )
-  const allComponents = useMemo(() => (Object.keys(components).length ? components : builtinComponents), [components])
+  const allComponents = useMemo(
+    () =>
+      Object.keys(components).length > 0 ? { ...builtinComponents, ...components } : builtinComponents,
+    [components]
+  )
 
   const resolvedLanguage = activeLanguage ?? defaultLanguage
 

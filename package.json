@@ -31,7 +31,7 @@
     "format:check": "prettier --check .",
     "prepare": "husky",
     "release:verify": "yarn build:libs && yarn type-check && yarn test && yarn lint && yarn format:check",
-    "copyDocs": "yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
+    "copyDocs": "VITE_BASE_PATH=/jsonui/ yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
