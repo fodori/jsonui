@@ -45,13 +45,6 @@ function Try() {
     }
     return true
   }
-  console.log(jsonVal)
-  // console.log(jsonValid)
-  // console.log(harError)
-  // console.log(selectedIndex)
-  // console.log(tries)
-  // console.log(format(tries[selectedIndex].content))
-  // console.log(format(tries[selectedIndex].content))
   return (
     <>
       <FormControl fullWidth>
