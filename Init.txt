@@ -21,8 +21,6 @@ git clone jsonui.....
 cd jsonui
 yarn init -yp
 echo "node_modules" > .gitignore
-yarn add lerna microbundle --dev -W
-yarn lerna init --independent
 
 mkdir -p packages/jsonui-common/src
 cd packages/jsonui-common
@@ -34,13 +32,8 @@ cd packages/jsonui-react
 yarn init -y
 cd ~/
 yarn config set workspaces-experimental true
-yarn lerna add @jsonui/core --scope=@jsonui/react
 yarn workspace @jsonui/react run start 
 yarn workspace @jsonui/core run start
-yarn lerna add ajv jsonpointer immer traverse lodash jsonata redux-persist redux key-value-replace url --scope=@jsonui/core
-yarn lerna add react-redux react-router-dom @emotion/react lodash redux redux-persist traverse batchflow --scope=@jsonui/react
-
-yarn lerna add eslint-config-airbnb -D --scope=@jsonui/react
 
 cd packages
 yarn create react-app test-react --template typescript
@@ -54,8 +47,6 @@ testReactNativeWeb
 remove _names
 noChildren is not configurable
  
-yarn lerna add @jsonui/react --scope=@jsonui/test-react
-
 // added react native project
 have created outside, because an error on create time
 
@@ -69,17 +60,11 @@ yarn workspace @jsonui/testReactNative run start
 N/A: version "N/A -> N/A" is not yet installed.
 nvm alias default node
 
-yarn lerna add react-native-web --scope=jsonui-test-react-native-web
-
 npx create-react-app docs-site jsonui-react --template typescript
-yarn lerna add @mui/material --scope=docs-site
 
 yarn add gh-pages --dev
-yarn lerna gh-pages --dev
 
-yarn lerna add @babel/preset-react -D --scope=@jsonui/react
 jest--init
-yarn lerna add ts-node -D --scope=@jsonui/react
 
 ###### BEGIN publish new version, from main repo
 
