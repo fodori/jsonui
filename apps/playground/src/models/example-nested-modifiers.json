@@ -87,16 +87,8 @@
         },
         {
           "$comp": "Slider",
-          "value": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/sliderValue"
-          },
-          "onChange": {
-            "$action": "set",
-            "store": "data",
-            "path": "/sliderValue"
-          },
+          "store": "data",
+          "path": "/sliderValue",
           "min": 0,
           "max": 100,
           "step": 1,
@@ -140,16 +132,8 @@
         {
           "$comp": "Edit",
           "id": "111",
-          "value": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/score"
-          },
-          "onChange": {
-            "$action": "set",
-            "store": "data",
-            "path": "/score"
-          },
+          "store": "data",
+          "path": "/score",
           "placeholder": "Just Number allowed",
           "style": {
             "padding": 8,
@@ -183,16 +167,8 @@
         },
         {
           "$comp": "Edit",
-          "value": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "score2"
-          },
-          "onChange": {
-            "$action": "set",
-            "store": "data",
-            "path": "score2"
-          },
+          "store": "data",
+          "path": "score2",
           "$validation": [
             {
               "store": "data",

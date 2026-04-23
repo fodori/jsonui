@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { expandSimplifiedNode, getOwnPathModifiers, mergeEffectivePathModifiers, V_COMP } from '@jsonui/core'
+import { ACTION_KEY, expandSimplifiedNode, getOwnPathModifiers, mergeEffectivePathModifiers, V_COMP } from '@jsonui/core'
 import { useStyleConfig } from '../style/StyleContext.js'
 import type { RenderNodeProps } from './renderNode/types.js'
 export type { RenderNodeProps } from './renderNode/types.js'
@@ -51,6 +51,13 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   const { props: resolvedProps, resolvedSlots } = resolvedState
   const compName = node[V_COMP]
   if (!compName) return null
+
+  //TODO tempo
+  if (compName === 'SubmitButton') {
+    effectiveNode.onClick = {
+      [ACTION_KEY]: 'submit',
+    }
+  }
 
   const fallbackUndefined = components._Undefined ?? (builtinComponents as Record<string, React.ComponentType<unknown>>)._Undefined
   const Comp = components[compName] ?? fallbackUndefined

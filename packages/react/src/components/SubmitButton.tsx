@@ -1,28 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { type Store, getRootStore, resolveStorePath, type ModifierContext, type FunctionMap, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '@jsonui/core'
-
-function hasAnyError(value: unknown): boolean {
-  if (value === null || value === undefined) return false
-  if (Array.isArray(value)) {
-    return value.some((v) => hasAnyError(v))
-  }
-  if (typeof value === 'object') {
-    return Object.values(value as Record<string, unknown>).some((v) => hasAnyError(v))
-  }
-  return true
-}
-
-function hasAnyTouched(value: unknown): boolean {
-  if (value === true) return true
-  if (value === null || value === undefined) return false
-  if (Array.isArray(value)) {
-    return value.some((v) => hasAnyTouched(v))
-  }
-  if (typeof value === 'object') {
-    return Object.values(value as Record<string, unknown>).some((v) => hasAnyTouched(v))
-  }
-  return false
-}
+import { type Store, getRootStore } from '@jsonui/core'
 
 export function SubmitButton(props: Record<string, unknown>) {
   const {
@@ -30,76 +7,36 @@ export function SubmitButton(props: Record<string, unknown>) {
     style,
     store,
     path,
+    fieldErrors,
+    fieldTouched,
+    error,
+    touched,
     // internal context from RenderNode:
     stores,
     functions,
     currentPath,
     pathModifiers,
+    onClick,
+    value,
     ...rest
   } = props
+  console.log('SubmitButton props', props)
+  // const storeName = store as string | undefined
+  // const allStores: Record<string, Store> = stores !== undefined && stores !== null ? (stores as Record<string, Store>) : {}
 
-  const storeName = store as string | undefined
-  const pathStr = path as string | undefined
-  const allStores: Record<string, Store> = stores !== undefined && stores !== null ? (stores as Record<string, Store>) : {}
-
-  const root = getRootStore(allStores)
-
-  // Resolve logical path the same way as get/set actions, including
-  // support for relative paths and $pathModifiers / list context.
-  const logicalPath =
-    storeName && pathStr
-      ? resolveStorePath(pathStr, (currentPath as string | undefined) ?? '/', pathModifiers as Record<string, { path: string }> | undefined, storeName)
-      : '/'
+  // const root = getRootStore(allStores)
 
   // Subscribe to any store update so we re-render and re-read value/error/touched.
   // RenderNode doesn't collect deps for static store/path props, so without this
   // the button would never update. Using subscribe() (not only subscribeChange)
   // ensures we see every set() including .touch and .error writes.
-  const [, setTick] = useState(0)
-  useEffect(() => {
-    if (!storeName || typeof root.subscribe !== 'function') return
-    return root.subscribe(() => setTick((n) => n + 1))
-  }, [root, storeName])
+  // const [, setTick] = useState(0)
+  // useEffect(() => {
+  //   if (!storeName || typeof root.subscribe !== 'function') return
+  //   return root.subscribe(() => setTick((n) => n + 1))
+  // }, [root, storeName])
 
-  const value = storeName && logicalPath ? root.getForStore(storeName, logicalPath) : undefined
-  const errorTree = storeName && logicalPath ? root.getForStore(`${storeName}${ERROR_STORE_SUFFIX}`, logicalPath) : undefined
-  const touchedTree = storeName && logicalPath ? root.getForStore(`${storeName}${TOUCH_STORE_SUFFIX}`, logicalPath) : undefined
-
-  const hasError = hasAnyError(errorTree)
-  const isTouched = hasAnyTouched(touchedTree)
-  const disabled = !isTouched || hasError
-
-  const fnMap = (functions ?? {}) as FunctionMap
-  const submitFn = fnMap.submit
-
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault()
-    if (disabled || !submitFn || !storeName) return
-
-    void (async () => {
-      const ctx: ModifierContext = {
-        stores: allStores,
-        currentPath: logicalPath,
-        pathModifiers: pathModifiers as Record<string, { path: string }> | undefined,
-        validators: undefined,
-        translations: undefined,
-        defaultLanguage: 'en',
-        activeLanguage: 'en',
-      }
-
-      const result = submitFn(
-        {
-          store: storeName,
-          path: logicalPath,
-          value,
-        },
-        ctx
-      )
-      if (result instanceof Promise) {
-        await result
-      }
-    })()
-  }
+  const disabled = !fieldTouched || !!fieldErrors
 
   return (
     <button
@@ -108,7 +45,8 @@ export function SubmitButton(props: Record<string, unknown>) {
         ...(disabled ? { opacity: 0.5, cursor: 'not-allowed' } : {}),
       }}
       disabled={disabled}
-      onClick={handleClick}
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      onClick={onClick as any}
       {...rest}
     >
       {children as React.ReactNode}

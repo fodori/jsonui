@@ -36,4 +36,52 @@ describe('input-style store binding (get / set)', () => {
 
     expect(root.getForStore('data', '/age')).toBe('test@example.com')
   })
+
+  it('resolveModifier get with type ERROR returns undefined for leaf-less error containers', async () => {
+    const stores = makeStoresWithData(42)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const root = stores.__root__!
+    root.setForStore('data.error', '/', { players: [{}] }, false)
+
+    const ctx: ModifierContext = {
+      stores,
+      currentPath: '/',
+    }
+
+    const value = await resolveModifier({ $modifier: 'get', store: 'data', path: '/', type: 'ERROR' }, {}, ctx)
+    expect(value).toBeUndefined()
+  })
+
+  it('resolveModifier get with type ERROR returns value when a real error leaf exists', async () => {
+    const stores = makeStoresWithData(42)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const root = stores.__root__!
+    root.setForStore('data.error', '/', { players: [{ name: 'required' }] }, false)
+
+    const ctx: ModifierContext = {
+      stores,
+      currentPath: '/',
+    }
+
+    const value = await resolveModifier({ $modifier: 'get', store: 'data', path: '/', type: 'ERROR' }, {}, ctx)
+    expect(value).toEqual({ players: [{ name: 'required' }] })
+  })
+
+  it('resolveModifier get with type ERROR uses base store pathModifiers for relative paths', async () => {
+    const stores = makeStoresWithData(42)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const root = stores.__root__!
+    root.setForStore('data.error', '/players/0/name', 'required', false)
+
+    const ctx: ModifierContext = {
+      stores,
+      currentPath: '/',
+      pathModifiers: {
+        data: { path: '/players/0' },
+      },
+    }
+
+    const value = await resolveModifier({ $modifier: 'get', store: 'data', path: 'name', type: 'ERROR' }, {}, ctx)
+    expect(value).toBe('required')
+  })
 })

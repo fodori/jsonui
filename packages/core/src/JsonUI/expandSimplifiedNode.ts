@@ -13,7 +13,7 @@
  */
 
 import type { JsonUINode } from '../types.js'
-import { MODIFIER_KEY, ACTION_KEY, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../types.js'
+import { MODIFIER_KEY, ACTION_KEY } from '../types.js'
 
 function isSimplifiedNode(node: unknown): node is JsonUINode & {
   [key: string]: unknown
@@ -39,8 +39,6 @@ export function expandSimplifiedNode(node: JsonUINode): JsonUINode {
   const record = node as Record<string, unknown>
   const store = record.store as string
   const path = record.path as string
-  const errorStore = `${store}${ERROR_STORE_SUFFIX}`
-  const touchedStore = `${store}${TOUCH_STORE_SUFFIX}`
 
   const expanded: Record<string, unknown> = {}
 
@@ -61,20 +59,24 @@ export function expandSimplifiedNode(node: JsonUINode): JsonUINode {
     store,
     path,
   }
+  // TODO need to remove, the fieldErrors is enough
   expanded.error = {
     [MODIFIER_KEY]: 'get',
-    store: errorStore,
+    store,
     path,
+    type: 'ERROR',
   }
   expanded.fieldErrors = {
     [MODIFIER_KEY]: 'get',
-    store: errorStore,
+    store,
     path,
+    type: 'ERROR',
   }
   expanded.fieldTouched = {
     [MODIFIER_KEY]: 'get',
-    store: touchedStore,
+    store,
     path,
+    type: 'TOUCH',
   }
 
   return expanded
