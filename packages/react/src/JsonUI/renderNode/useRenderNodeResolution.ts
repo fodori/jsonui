@@ -5,7 +5,7 @@ import {
   isPathPrefix,
   type JsonUINode,
   type ModifierContext,
-  type FunctionMap,
+  type ModifierMap,
   type Store,
   type TranslationsMap,
   type ValidationRegistry,
@@ -18,7 +18,7 @@ import {
 export function useRenderNodeResolution(args: {
   effectiveNode: JsonUINode
   node: JsonUINode
-  functions: FunctionMap
+  modifiers: ModifierMap
   stores: Record<string, Store>
   currentPath: string
   effectivePathModifiers: Record<string, { path: string }> | undefined
@@ -37,7 +37,7 @@ export function useRenderNodeResolution(args: {
   const {
     effectiveNode,
     node,
-    functions,
+    modifiers,
     stores,
     currentPath,
     effectivePathModifiers,
@@ -97,7 +97,7 @@ export function useRenderNodeResolution(args: {
         const { state, deps } = await runRenderNodeResolution({
           effectiveNode,
           node,
-          functions,
+          modifiers,
           ctx,
           stores,
           currentPath,
@@ -130,7 +130,7 @@ export function useRenderNodeResolution(args: {
     return () => {
       cancelled = true
     }
-  }, [effectiveNode, functions, stores, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint])
+  }, [effectiveNode, modifiers, stores, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint])
   /* eslint-enable react-hooks/exhaustive-deps */
 
   return {

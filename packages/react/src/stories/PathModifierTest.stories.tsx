@@ -1,11 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { functions as baseFunctions } from '@jsonui/core'
-import type { FunctionMap } from '@jsonui/core'
+import { modifiers, actions } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '@jsonui/react'
-
-const storyFunctions: FunctionMap = {
-  ...baseFunctions,
-}
 
 const meta = {
   title: 'JsonUI/PathModifierTest',
@@ -126,6 +121,7 @@ export const PathModifierTest: Story = {
         test4: 'Test4',
       },
     },
-    functions: storyFunctions,
+    modifiers,
+    actions,
   },
 }

@@ -10,7 +10,7 @@ import { computeRenderNodeSlotChildren } from './renderNode/computeSlotChildren.
 import { builtinComponents } from '../components/index.js'
 
 function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
-  const { node, components, functions, stores, currentPath, pathModifiers, validators, translations, defaultLanguage, activeLanguage } = props
+  const { node, components, modifiers, actions, stores, currentPath, pathModifiers, validators, translations, defaultLanguage, activeLanguage } = props
 
   const styleConfig = useStyleConfig()
   const ownPathModifiers = getOwnPathModifiers(node)
@@ -25,7 +25,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   const { resolvedState, resolveError } = useRenderNodeResolution({
     effectiveNode,
     node,
-    functions,
+    modifiers,
     stores,
     currentPath,
     effectivePathModifiers,
@@ -62,22 +62,11 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   const fallbackUndefined = components._Undefined ?? (builtinComponents as Record<string, React.ComponentType<unknown>>)._Undefined
   const Comp = components[compName] ?? fallbackUndefined
 
-  const eventProps = buildRenderNodeEventProps({
-    effectiveNode,
-    functions,
-    stores,
-    currentPath,
-    effectivePathModifiers,
-    validators,
-    translations,
-    defaultLanguage,
-    activeLanguage,
-  })
-
   const infraProps = buildInfraPropsForComponent({
     compName,
     stores,
-    functions,
+    modifiers,
+    actions,
     currentPath,
     effectivePathModifiers,
   })
@@ -90,7 +79,8 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
     currentPath,
     stores,
     components,
-    functions,
+    modifiers,
+    actions,
     validators,
     translations,
     defaultLanguage,
@@ -98,11 +88,32 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
     renderNested,
   })
 
-  const mergedProps: Record<string, unknown> = {
+  const componentActionProps: Record<string, unknown> = {
     ...resolvedProps,
-    ...eventProps,
     ...infraProps,
     ...multiChildSlots,
+    children: mainChildren,
+  }
+
+  const eventProps = buildRenderNodeEventProps({
+    effectiveNode,
+    modifiers,
+    actions,
+    stores,
+    currentPath,
+    componentProps: componentActionProps,
+    effectivePathModifiers,
+    validators,
+    translations,
+    defaultLanguage,
+    activeLanguage,
+  })
+
+  const mergedProps: Record<string, unknown> = {
+    ...resolvedProps,
+    ...infraProps,
+    ...multiChildSlots,
+    ...eventProps,
   }
 
   if (components[compName] === undefined) {
@@ -123,7 +134,8 @@ function propsAreEqual(prev: RenderNodeProps, next: RenderNodeProps): boolean {
   return (
     prev.node === next.node &&
     prev.components === next.components &&
-    prev.functions === next.functions &&
+    prev.modifiers === next.modifiers &&
+    prev.actions === next.actions &&
     prev.stores === next.stores &&
     prev.currentPath === next.currentPath &&
     prev.pathModifiers === next.pathModifiers &&

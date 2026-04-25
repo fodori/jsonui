@@ -40,17 +40,9 @@ export interface JsonUINode {
   [V_CHILDREN]?: JsonUIValue
 }
 
-/**
- * Handlers registered on JsonUI's `functions` prop. Used for both `$modifier`
- * and `$action` in the model (same name → same implementation).
- */
-export type FunctionHandler = (params: Record<string, unknown>, context: ModifierContext) => unknown | Promise<unknown>
+export type ModifierHandler = (params: Record<string, unknown>, context: ModifierContext) => unknown | Promise<unknown>
 
-/** @deprecated Use `FunctionHandler` — actions use the same `functions` map. */
-export type ActionHandler = (params: Record<string, unknown>, context?: ModifierContext) => void | Promise<void>
-
-/** @deprecated Use `FunctionHandler` — modifiers use the same `functions` map. */
-export type ModifierHandler = FunctionHandler
+export type ActionHandler = (params: Record<string, unknown>, context: ActionContext) => void | Promise<void>
 
 // key -> { langCode -> value }
 export type TranslationsMap = Record<string, Record<string, string> | undefined>
@@ -69,14 +61,15 @@ export interface ModifierContext {
   activeLanguage?: string
 }
 
-/** All `$action` and `$modifier` implementations live in this single map. */
-export type FunctionMap = Record<string, FunctionHandler | undefined>
+export type ComponentActionProps = Record<string, unknown>
 
-/** @deprecated Use `FunctionMap`. */
-export type ActionMap = FunctionMap
+export interface ActionContext extends ModifierContext {
+  componentProps: ComponentActionProps
+}
 
-/** @deprecated Use `FunctionMap`. */
-export type ModifierMap = FunctionMap
+export type ModifierMap = Record<string, ModifierHandler | undefined>
+
+export type ActionMap = Record<string, ActionHandler | undefined>
 
 /** Emitted when JsonUI unmounts or when model/defaultValues/id changes (main parity). */
 export interface OnStateExportProps {

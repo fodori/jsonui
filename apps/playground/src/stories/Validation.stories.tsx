@@ -2,7 +2,7 @@ import type { ChangeEvent } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { JsonUI, builtinComponents } from '@jsonui/react'
-import { functions, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '@jsonui/core'
+import { modifiers, actions, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '@jsonui/core'
 
 const FormResult = (props: Record<string, unknown>) => <pre style={{ fontSize: 12 }}>{JSON.stringify(props.value, null, 2)}</pre>
 
@@ -224,6 +224,7 @@ export const ValidationTest: Story = {
       },
     },
     components: { ...builtinComponents, FormResult, RadioGroupField },
-    functions,
+    modifiers,
+    actions,
   },
 }

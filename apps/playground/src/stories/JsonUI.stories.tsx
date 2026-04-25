@@ -5,7 +5,7 @@ import type { JsonUINode, JSONObject } from '@jsonui/core'
 import modelJson from '../models/example-nested-modifiers.json'
 import defaultValuesJson from '../models/example-nested-defaultValues.json'
 import { builtinComponents } from '@jsonui/react'
-import { functions } from '@jsonui/core'
+import { modifiers, actions } from '@jsonui/core'
 
 const model = modelJson as JsonUINode
 const defaultValues = defaultValuesJson as Record<string, JSONObject>
@@ -15,7 +15,8 @@ const meta = {
   component: JsonUI,
   args: {
     components: builtinComponents,
-    functions,
+    modifiers,
+    actions,
   },
 } satisfies Meta<typeof JsonUI>
 

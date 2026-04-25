@@ -54,22 +54,60 @@ const model = {
 return <JsonUI model={model} components={{ Switch: MySwitch }} />
 ```
 
-### functions: _Record<string, () => any>_
+### modifiers: _Record<string, (params, context) => unknown>_
 
-This is the way to add more functions. For example:
+Use this prop to register handlers referenced by `"$modifier"`.
+
+### actions: _Record<string, (params, context) => void | Promise<void>>_
+
+Use this prop to register handlers referenced by `"$action"`. Action context always includes `componentProps`.
+
+Action example:
 
 ```js
 import Button from '@mui/material/Button'
 
-const MyFunction = () => {
-  console.log('Hello World')
+const MyAction = ({ value }, context) => {
+  console.log('Hello World', value, context.componentProps)
 }
 const model = {
   $comp: 'Button',
-  onClick: { $action: 'MyFunction' },
+  onClick: { $action: 'MyAction', value: 42 },
 }
 
-return <JsonUI model={model} functions={{ MyFunction }} components={{ Button }} />
+return <JsonUI model={model} modifiers={{}} actions={{ MyAction }} components={{ Button }} />
+```
+
+Modifier example:
+
+```js
+const MyModifier = ({ key }) => `value:${key}`
+
+const model = {
+  $comp: 'Text',
+  $children: { $modifier: 'MyModifier', key: 'age' },
+}
+
+return <JsonUI model={model} modifiers={{ MyModifier }} actions={{}} />
+```
+
+### Rendering Flow
+
+```mermaid
+flowchart TD
+  A[JSON model input] --> B[JsonUI props: model + stores + modifiers + actions]
+  B --> C[expandSimplifiedNode]
+  C --> D[runRenderNodeResolution]
+  D --> E[resolveModifier for non-event props]
+  E --> F[resolvedProps + resolvedSlots]
+  F --> G[assemble componentActionProps]
+  G --> H[buildRenderNodeEventProps]
+  H --> I[resolveAction for on* handlers]
+  I --> J[ActionContext includes componentProps]
+  J --> K[merge props and render React component]
+  K --> L[user event triggers action]
+  L --> M[store update]
+  M --> D
 ```
 
 #### onStateExport: ({ id?: string, formState: JSONValue}) => void

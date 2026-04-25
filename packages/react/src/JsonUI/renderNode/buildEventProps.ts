@@ -1,26 +1,31 @@
-import type { JsonUINode, FunctionMap, TranslationsMap, Store, ValidationRegistry } from '@jsonui/core'
+import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, ValidationRegistry } from '@jsonui/core'
 import { resolveAction } from '@jsonui/core'
 
 export function buildRenderNodeEventProps(args: {
   effectiveNode: JsonUINode
-  functions: FunctionMap
+  modifiers: ModifierMap
+  actions: ActionMap
   stores: Record<string, Store>
   currentPath: string
+  componentProps: Record<string, unknown>
   effectivePathModifiers: Record<string, { path: string }> | undefined
   validators: ValidationRegistry | undefined
   translations: TranslationsMap | undefined
   defaultLanguage: string | undefined
   activeLanguage: string | undefined
 }): Record<string, unknown> {
-  const { effectiveNode, functions, stores, currentPath, effectivePathModifiers, validators, translations, defaultLanguage, activeLanguage } = args
+  const { effectiveNode, modifiers, actions, stores, currentPath, componentProps, effectivePathModifiers, validators, translations, defaultLanguage, activeLanguage } =
+    args
 
   const actionCtx = {
+    stores,
     currentPath,
     pathModifiers: effectivePathModifiers,
     validators,
     translations,
     defaultLanguage,
     activeLanguage,
+    componentProps,
   }
 
   const eventProps: Record<string, unknown> = {}
@@ -34,7 +39,7 @@ export function buildRenderNodeEventProps(args: {
     //TODO: it could be array id need multiple action one by one
     if (Array.isArray(value)) {
       const handlers: ((e: unknown) => Promise<void>)[] = value
-        .map((v) => resolveAction(v, functions, stores, actionCtx))
+        .map((v) => resolveAction(v, actions, modifiers, stores, actionCtx))
         .filter((h): h is (e: unknown) => Promise<void> => !!h)
       if (handlers.length) {
         handler = async (e: unknown) => {
@@ -44,7 +49,7 @@ export function buildRenderNodeEventProps(args: {
         }
       }
     } else {
-      handler = resolveAction(value, functions, stores, actionCtx)
+      handler = resolveAction(value, actions, modifiers, stores, actionCtx)
     }
     if (handler) eventProps[key] = handler
   }

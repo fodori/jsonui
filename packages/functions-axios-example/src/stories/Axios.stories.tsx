@@ -2,6 +2,7 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { JsonUI } from '@jsonui/react'
 import { axios } from '../index'
+import { actions, modifiers } from '@jsonui/core'
 
 const meta = {
   title: 'mui/Axios',
@@ -15,7 +16,8 @@ export const Axios: Story = {
   args: {},
   render: () => (
     <JsonUI
-      functions={{ axios }}
+      modifiers={modifiers}
+      actions={{ ...actions, axios }}
       model={{
         $comp: 'View',
         $children: [

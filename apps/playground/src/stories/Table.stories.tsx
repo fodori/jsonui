@@ -2,14 +2,15 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { JsonUI } from '@jsonui/react'
 import { builtinComponents } from '@jsonui/react'
-import { functions } from '@jsonui/core'
+import { modifiers, actions } from '@jsonui/core'
 
 const meta = {
   title: 'JsonUI/TableTest',
   component: JsonUI,
   args: {
     components: builtinComponents,
-    functions,
+    modifiers,
+    actions,
   },
 } satisfies Meta<typeof JsonUI>
 

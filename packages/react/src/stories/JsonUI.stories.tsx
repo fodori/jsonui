@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import type { JsonUINode } from '@jsonui/core'
-import { functions } from '@jsonui/core'
+import { modifiers, actions } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '@jsonui/react'
 
 const model: JsonUINode = {
@@ -14,7 +14,8 @@ const meta = {
   component: JsonUI,
   args: {
     components: builtinComponents,
-    functions,
+    modifiers,
+    actions,
     model,
   },
 } satisfies Meta<typeof JsonUI>

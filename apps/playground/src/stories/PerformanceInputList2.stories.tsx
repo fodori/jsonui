@@ -5,7 +5,7 @@ import { JsonUI } from '@jsonui/react'
 
 type JsonUIStoryArgs = ComponentProps<typeof JsonUI> & { iteration?: number }
 import { builtinComponents } from '@jsonui/react'
-import { functions } from '@jsonui/core'
+import { modifiers, actions } from '@jsonui/core'
 
 const listModel = {
   $comp: 'Fragment',
@@ -59,7 +59,8 @@ const meta: Meta<JsonUIStoryArgs> = {
   component: JsonUI,
   args: {
     components: builtinComponents,
-    functions,
+    modifiers,
+    actions,
   },
 }
 

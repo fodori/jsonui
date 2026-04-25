@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import jsonata from 'jsonata'
 
 import { JsonUI, builtinComponents, useControlledInputValue } from '@jsonui/react'
-import { functions } from '@jsonui/core'
+import { modifiers, actions } from '@jsonui/core'
 
 const EditMultiChild = (props: Record<string, unknown>) => {
   const { fieldErrors, validation, value, childLabel, childHelperText, onChange, children, ...ownProps } = props
@@ -124,7 +124,8 @@ export const MultiChildTest: Story = {
       ],
     },
     components: { ...builtinComponents, EditMultiChild },
-    functions,
+    modifiers,
+    actions,
     defaultValues: {
       data: {
         firstname: 'John',

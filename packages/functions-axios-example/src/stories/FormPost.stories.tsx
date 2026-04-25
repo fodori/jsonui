@@ -2,6 +2,7 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { JsonUI } from '@jsonui/react'
 import { axios } from '../index'
+import { actions, modifiers } from '@jsonui/core'
 
 const meta = {
   title: 'mui/Axios Form Data Send',
@@ -16,7 +17,8 @@ export const AxiosFormDataSend: Story = {
   render: () => (
     <div style={{ display: 'flex', gridGap: 10, flexDirection: 'column' }}>
       <JsonUI
-        functions={{ axios }}
+        modifiers={modifiers}
+        actions={{ ...actions, axios }}
         model={{
           $comp: 'View',
           $children: [

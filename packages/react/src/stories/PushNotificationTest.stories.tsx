@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useContext, useMemo } from 'react'
 import { JsonUI, builtinComponents, MessageHandler, MessageHandlerContext } from '@jsonui/react'
-import { functions } from '@jsonui/core'
+import { modifiers, actions } from '@jsonui/core'
 import type { JsonUINode } from '@jsonui/core'
 import modelJson from './models/example-table.json' with { type: 'json' }
 
@@ -46,7 +46,8 @@ export const PartialValueUpdateTest: Story = {
   args: {
     model,
     components: builtinComponents,
-    functions,
+    modifiers,
+    actions,
     defaultValues: {
       data: {
         level1: {

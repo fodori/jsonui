@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { functions } from '@jsonui/core'
+import { modifiers, actions } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '@jsonui/react'
 
 type JsonUIStoryArgs = ComponentProps<typeof JsonUI> & { iteration?: number }
@@ -57,7 +57,8 @@ const meta: Meta<JsonUIStoryArgs> = {
   component: JsonUI,
   args: {
     components: builtinComponents,
-    functions,
+    modifiers,
+    actions,
   },
 }
 

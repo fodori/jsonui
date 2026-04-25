@@ -1,4 +1,4 @@
-import type { ModifierContext, FunctionMap } from '../types.js'
+import type { ModifierContext, ModifierMap } from '../types.js'
 import { MODIFIER_KEY } from '../types.js'
 import { createGetModifier } from './getModifier.js'
 
@@ -9,7 +9,7 @@ import { createGetModifier } from './getModifier.js'
  * We recurse into objects and arrays so every occurrence is resolved.
  */
 //TODO add unit test to the resolveModifier
-export async function resolveModifier(value: unknown, functions: FunctionMap, ctx: ModifierContext): Promise<unknown> {
+export async function resolveModifier(value: unknown, modifiers: ModifierMap, ctx: ModifierContext): Promise<unknown> {
   // If it's a direct modifier object: { $modifier: 'x', ...params }
   if (value != null && typeof value === 'object' && MODIFIER_KEY in value) {
     const mod = (value as Record<string, unknown>)[MODIFIER_KEY] as string
@@ -18,10 +18,10 @@ export async function resolveModifier(value: unknown, functions: FunctionMap, ct
 
     const resolvedParams: Record<string, unknown> = {}
     for (const [k, v] of Object.entries(params)) {
-      resolvedParams[k] = await resolveModifier(v, functions, ctx)
+      resolvedParams[k] = await resolveModifier(v, modifiers, ctx)
     }
 
-    const handler = functions[mod] ?? (mod === 'get' ? createGetModifier(ctx.stores) : undefined)
+    const handler = modifiers[mod] ?? (mod === 'get' ? createGetModifier(ctx.stores) : undefined)
     if (!handler) return undefined
 
     const result = handler(resolvedParams, ctx)
@@ -30,7 +30,7 @@ export async function resolveModifier(value: unknown, functions: FunctionMap, ct
 
   // If it's an array, resolve modifiers in each element.
   if (Array.isArray(value)) {
-    const resolved = await Promise.all(value.map((item) => resolveModifier(item, functions, ctx)))
+    const resolved = await Promise.all(value.map((item) => resolveModifier(item, modifiers, ctx)))
     return resolved
   }
 
@@ -43,7 +43,7 @@ export async function resolveModifier(value: unknown, functions: FunctionMap, ct
 
     const resolvedObj: Record<string, unknown> = {}
     for (const [k, v] of entries) {
-      resolvedObj[k] = await resolveModifier(v, functions, ctx)
+      resolvedObj[k] = await resolveModifier(v, modifiers, ctx)
     }
     return resolvedObj
   }

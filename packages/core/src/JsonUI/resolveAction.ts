@@ -1,6 +1,6 @@
 import type { Store } from '../store.js'
 import { resolveStorePath } from '../store.js'
-import type { ActionHandler, ModifierContext, FunctionMap, TranslationsMap } from '../types.js'
+import type { ActionContext, ActionMap, ModifierMap } from '../types.js'
 import { ACTION_KEY } from '../types.js'
 import { createSetAction } from './setAction.js'
 import { resolveModifier } from './resolveModifier.js'
@@ -8,15 +8,11 @@ import { runValidationsForPath, type ValidationRegistry } from './validation.js'
 
 export function resolveAction(
   value: unknown,
-  functions: FunctionMap,
+  actions: ActionMap,
+  modifiers: ModifierMap,
   stores: Record<string, Store>,
-  ctx: {
-    currentPath: string
-    pathModifiers?: Record<string, { path: string }>
+  ctx: ActionContext & {
     validators?: ValidationRegistry
-    translations?: TranslationsMap
-    defaultLanguage?: string
-    activeLanguage?: string
   }
 ): ((e: unknown) => Promise<void>) | undefined {
   if (value != null && typeof value === 'object' && ACTION_KEY in value) {
@@ -25,7 +21,8 @@ export function resolveAction(
     delete params[ACTION_KEY]
     const hasExplicitValue = Object.prototype.hasOwnProperty.call(value, 'value')
 
-    const modCtx: ModifierContext = {
+    //TODO the whole ctx need to check fully.
+    const actionCtx: ActionContext = {
       stores,
       currentPath: ctx.currentPath,
       pathModifiers: ctx.pathModifiers,
@@ -33,15 +30,10 @@ export function resolveAction(
       translations: ctx.translations,
       defaultLanguage: ctx.defaultLanguage,
       activeLanguage: ctx.activeLanguage,
+      componentProps: ctx.componentProps,
     }
 
-    const fn = functions[actionName]
-    let handler: ActionHandler | undefined = fn
-      ? (p) => {
-          const result = fn(p, modCtx)
-          return result instanceof Promise ? result.then(() => undefined) : undefined
-        }
-      : undefined
+    let handler = actions[actionName]
 
     if (!handler && actionName === 'set') {
       handler = createSetAction(stores)
@@ -50,7 +42,7 @@ export function resolveAction(
     if (!handler) return undefined
 
     return async (e: unknown) => {
-      const resolvedParams: Record<string, unknown> = { ...params }
+      const resolvedParams: Record<string, unknown> = { ...ctx.componentProps, ...params }
       // Case 1: value from event (input onChange) – only when the model
       // did NOT define a value explicitly.
       if (!hasExplicitValue && e != null && typeof e === 'object' && 'target' in e) {
@@ -60,19 +52,19 @@ export function resolveAction(
       // Cases 2 & 3: static JSON value or nested $modifier value – both
       // flow through resolveModifier below and are preserved.
       for (const [k, v] of Object.entries(resolvedParams)) {
-        resolvedParams[k] = await resolveModifier(v, functions, modCtx)
+        resolvedParams[k] = await resolveModifier(v, modifiers, actionCtx)
       }
-      const result = handler(resolvedParams, modCtx)
+      const result = handler(resolvedParams, actionCtx)
       if (result instanceof Promise) await result
 
       // Run validations for this store/path if configured
       const storeName = resolvedParams.store as string | undefined
       const rawPath = resolvedParams.path as string | undefined
-      if (modCtx.validators && storeName && rawPath) {
+      if (actionCtx.validators && storeName && rawPath) {
         // Resolve to logical path so validations work with lists, pathModifiers,
         // and relative paths (e.g. "score" inside /players/0).
-        const logicalPath = resolveStorePath(rawPath, modCtx.currentPath, modCtx.pathModifiers, storeName)
-        runValidationsForPath(modCtx.validators, stores, storeName, logicalPath)
+        const logicalPath = resolveStorePath(rawPath, actionCtx.currentPath, actionCtx.pathModifiers, storeName)
+        runValidationsForPath(actionCtx.validators, stores, storeName, logicalPath)
       }
     }
   }

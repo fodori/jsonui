@@ -54,12 +54,12 @@ Easily.
 ```js
 
 const Canvas = () => <JsonUI model={jsonData}
-  "functions"={
-    {
-     translate: ({key}) => translate(key)
-     navigate: ({route}) => navigate(route)
-    }
-  }/>
+  "modifiers"={{
+    translate: ({key}) => translate(key)
+  }}
+  "actions"={{
+    navigate: ({route}) => navigate(route)
+  }}/>
 ```
 
 ### State management or data storage
@@ -67,7 +67,7 @@ const Canvas = () => <JsonUI model={jsonData}
 The state management stores form state or any information what is needed to store. It is independent from **model**. It represents a permissive and dynamic tree graf structure. Like a JSON file. Each JSONUI instance has multiple stores (each one has a name/key) representing multiple data tree or separate storage. What you need is, just use a specific name in JSON Definition.
 JSONUI use [json-pointer](https://www.npmjs.com/package/json-pointer) to tell the `path` what kind of data we need.
 
-We have 2 built-in functions which can help to read and write your state management.
+We have 2 built-in handlers which can help to read and write your state management.
 
 Let's see some example
 
@@ -101,7 +101,7 @@ Let's see some example
   "$comp": "Button",
   "$children": "Change username",
   "onPress": {
-    "$modifier": "set",
+    "$action": "set",
     "store": "users",
     "path": "/0/userName",
     "value": "John Doe 2"

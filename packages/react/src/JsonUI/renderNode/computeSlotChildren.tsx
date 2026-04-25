@@ -12,7 +12,7 @@ import {
   PATH_MODIFIERS_KEY,
   computeListSliceRange,
 } from '@jsonui/core'
-import type { JsonUINode, FunctionMap, TranslationsMap, Store, ValidationRegistry } from '@jsonui/core'
+import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, ValidationRegistry } from '@jsonui/core'
 import type { ComponentMap } from '../../componentMap.js'
 import type { RenderNodeProps } from './types.js'
 import { coercePrimitiveChild } from './coercePrimitiveChild.js'
@@ -33,7 +33,8 @@ export function computeRenderNodeSlotChildren(args: {
   currentPath: string
   stores: Record<string, Store>
   components: ComponentMap
-  functions: FunctionMap
+  modifiers: ModifierMap
+  actions: ActionMap
   validators: ValidationRegistry | undefined
   translations: TranslationsMap | undefined
   defaultLanguage: string | undefined
@@ -51,7 +52,8 @@ export function computeRenderNodeSlotChildren(args: {
     currentPath,
     stores,
     components,
-    functions,
+    modifiers,
+    actions,
     validators,
     translations,
     defaultLanguage,
@@ -61,7 +63,8 @@ export function computeRenderNodeSlotChildren(args: {
 
   const nestedPropsBase = {
     components,
-    functions,
+    modifiers,
+    actions,
     stores,
     validators,
     translations,

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { functions } from '@jsonui/core'
+import { modifiers, actions } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '@jsonui/react'
 
 const boxModel = {
@@ -54,7 +54,8 @@ const meta = {
   component: JsonUI,
   args: {
     components: builtinComponents,
-    functions,
+    modifiers,
+    actions,
     model: boxModel,
   },
 } satisfies Meta<typeof JsonUI>
@@ -76,7 +77,7 @@ export const PerformanceBoxesTest: Story = {
       <JsonUI
         model={args.model}
         components={args.components}
-        functions={args.functions}
+        modifiers={args.modifiers} actions={args.actions}
         defaultValues={{ data: { list: Array(BOX_COUNT).fill('a', 0) } }}
       />
     </>

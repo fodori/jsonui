@@ -89,7 +89,7 @@ The action is really a predefined function when it will fire, when the event has
 
 #### 3, Modifiers
 
-The `"$action"` can add a dynamic value for properties or components. It's a function which will be called at render time of the component. Depends on environment data. For example JSONUI contains a basic internalisation solution.
+The `"$modifier"` can add a dynamic value for properties or components. It's a function which will be called at render time of the component. Depends on environment data. For example JSONUI contains a basic internalisation solution.
 
 ```json
 { "$comp": "Text", "$children": "Hello World" }
@@ -108,9 +108,14 @@ const Canvas = () => <JsonUI model={jsonData}
      nagivate: ({route}) => navigate(route)
     }
   }
-  "functions"={
+  "modifiers"={
     {
      t: ({key}) => t(key)
+    }
+  }
+  "actions"={
+    {
+      navigate: ({route}) => navigate(route)
     }
   }/>
 ```
@@ -124,7 +129,7 @@ Actually the `data` store is persistent. (it will be configurable soon if there 
 You can define unlimited data store. What you need is, just use a specific name in JSON Definition, and it will automatically create at the first use.
 JSONUI use [json-pointer](https://www.npmjs.com/package/json-pointer) to tell the `path` what kind of data we need.
 
-We have 2 built-in function which can help to read and write your state management.
+We have 2 built-in handlers which can help to read and write your state management.
 
 Let's see some example
 
@@ -144,10 +149,10 @@ Let's see some example
 
 #### Write data
 
-##### When the user click on the button, it will modify the data
+##### When the user clicks on the button, it will modify the data
 
 ```json
-{ "$comp": "Button", "$children": "Change username", "onPress": { "$modifier": "set", "store": "data", "path": "/users/0/username", "value": "John Doe 2" } }
+{ "$comp": "Button", "$children": "Change username", "onPress": { "$action": "set", "store": "data", "path": "/users/0/username", "value": "John Doe 2" } }
 ```
 
 ##### Data will be:

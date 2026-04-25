@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 import type {
   JsonUINode,
-  FunctionMap,
+  ActionMap,
+  ModifierMap,
   TranslationsMap,
   OnStateExportType,
   JSONObject,
@@ -20,8 +21,10 @@ import { MessageReceiver } from './MessageReceiver.js'
 export interface JsonUIProps {
   model: JsonUINode
   components?: ComponentMap
-  /** Handlers for both `$action` and `$modifier` in the model. */
-  functions?: FunctionMap
+  /** Handlers for `$modifier` in the model. */
+  modifiers?: ModifierMap
+  /** Handlers for `$action` in the model. */
+  actions?: ActionMap
   // Single root store instance (optional)
   stores?: Store
   // defaultValues: Record<storeName, JSON>
@@ -40,7 +43,8 @@ export interface JsonUIProps {
 export function JsonUI({
   model,
   components = {},
-  functions = {},
+  modifiers = {},
+  actions = {},
   stores: initialStores,
   defaultValues = {},
   defaultLanguage = 'en',
@@ -62,7 +66,7 @@ export function JsonUI({
 
   const resolvedLanguage = activeLanguage ?? defaultLanguage
 
-  // could we move the translation into a functions?
+  // could we move the translation into a modifier?
   const translations: TranslationsMap = useMemo(() => {
     const raw = (model as unknown as { $translate?: unknown }).$translate
     if (!raw || typeof raw !== 'object') return {}
@@ -112,7 +116,8 @@ export function JsonUI({
       <RenderNode
         node={model}
         components={allComponents}
-        functions={functions}
+        modifiers={modifiers}
+        actions={actions}
         stores={stores}
         validators={validationRegistry}
         translations={translations}

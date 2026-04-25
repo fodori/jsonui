@@ -1,6 +1,6 @@
 import type { ChangeEvent, ReactNode } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX, functions } from '@jsonui/core'
+import { ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX, modifiers, actions } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '@jsonui/react'
 
 const RadioGroupField = (props: Record<string, unknown>) => {
@@ -230,6 +230,7 @@ export const ValidationTest: Story = {
       },
     },
     components: { ...builtinComponents, RadioGroupField },
-    functions,
+    modifiers,
+    actions,
   },
 }

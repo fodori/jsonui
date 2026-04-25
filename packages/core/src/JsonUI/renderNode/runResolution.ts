@@ -1,4 +1,4 @@
-import type { JsonUINode, ModifierContext, FunctionMap } from '../../types.js'
+import type { JsonUINode, ModifierContext, ModifierMap } from '../../types.js'
 import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
@@ -54,7 +54,7 @@ function runValidationSpecsFromNode(
 export async function runRenderNodeResolution(args: {
   effectiveNode: JsonUINode
   node: JsonUINode
-  functions: FunctionMap
+  modifiers: ModifierMap
   ctx: ModifierContext
   stores: Record<string, Store>
   currentPath: string
@@ -65,7 +65,7 @@ export async function runRenderNodeResolution(args: {
   state: ResolvedRenderNodeState
   deps: StorePathDependency[]
 }> {
-  const { effectiveNode, node, functions, ctx, stores, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint } = args
+  const { effectiveNode, node, modifiers, ctx, stores, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint } = args
 
   const props: Record<string, unknown> = {}
   const deps: StorePathDependency[] = []
@@ -73,14 +73,14 @@ export async function runRenderNodeResolution(args: {
   for (const [key, value] of Object.entries(effectiveNode)) {
     if (key.startsWith('$')) continue
     collectGetModifierDependencies(value, currentPath, effectivePathModifiers, deps)
-    props[key] = await resolveModifier(value, functions, ctx)
+    props[key] = await resolveModifier(value, modifiers, ctx)
   }
 
   const resolvedSlots: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(node)) {
     if (!key.startsWith('$child')) continue
     collectGetModifierDependencies(value, currentPath, effectivePathModifiers, deps)
-    resolvedSlots[key] = await resolveModifier(value, functions, ctx)
+    resolvedSlots[key] = await resolveModifier(value, modifiers, ctx)
   }
 
   if (props.style != null && typeof props.style === 'object') {

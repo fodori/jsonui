@@ -69,11 +69,16 @@ function App() {
                 </TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
-                <TableCell align="left">functions</TableCell>
-                <TableCell align="left">{'Record<string, () => any>'}</TableCell>
+                <TableCell align="left">modifiers</TableCell>
+                <TableCell align="left">{'Record<string, (params, context) => unknown>'}</TableCell>
                 <TableCell align="left">
-                  List of functions to use for `$modifier` or for `$action`. It will be available for use in `model` definition.{' '}
+                  List of handlers to use for `$modifier`. It will be available for use in `model` definition.
                 </TableCell>
+              </TableRow>
+              <TableRow hover tabIndex={-1}>
+                <TableCell align="left">actions</TableCell>
+                <TableCell align="left">{'Record<string, (params, context) => void | Promise<void>>'}</TableCell>
+                <TableCell align="left">List of handlers to use for `$action`. Action context contains `componentProps`.</TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">onStateExport</TableCell>

@@ -2,13 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { JsonUI } from '@jsonui/react'
 import { builtinComponents } from '@jsonui/react'
-import { functions as baseFunctions } from '@jsonui/core'
-import type { FunctionMap } from '@jsonui/core'
+import { modifiers as baseModifiers, actions } from '@jsonui/core'
 
 const MyFunction = () => 'age'
 
-const functions: FunctionMap = {
-  ...baseFunctions,
+const modifiers = {
+  ...baseModifiers,
   MyFunction,
 }
 
@@ -98,6 +97,7 @@ export const ReduxLikeTest: Story = {
         age: 'Test1',
       },
     },
-    functions,
+    modifiers,
+    actions,
   },
 }
