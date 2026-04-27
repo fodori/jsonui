@@ -1,11 +1,10 @@
 import type { ComponentProps } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { JsonUI } from '@jsonui/react'
+import { actions, JsonUI, modifiers } from '@jsonui/react'
 
 type JsonUIStoryArgs = ComponentProps<typeof JsonUI> & { iteration?: number }
 import { builtinComponents } from '@jsonui/react'
-import { modifiers, actions } from '@jsonui/core'
 
 const listModel = {
   $comp: 'Fragment',

@@ -1,8 +1,7 @@
 import type { ChangeEvent } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { JsonUI, builtinComponents } from '@jsonui/react'
-import { modifiers, actions, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '@jsonui/core'
+import { ERROR_STORE_SUFFIX, JsonUI, TOUCH_STORE_SUFFIX, actions, builtinComponents, modifiers } from '@jsonui/react'
 
 const FormResult = (props: Record<string, unknown>) => <pre style={{ fontSize: 12 }}>{JSON.stringify(props.value, null, 2)}</pre>
 

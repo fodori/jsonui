@@ -2,8 +2,7 @@ import type { ChangeEventHandler } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import jsonata from 'jsonata'
 
-import { JsonUI, builtinComponents, useControlledInputValue } from '@jsonui/react'
-import { modifiers, actions } from '@jsonui/core'
+import { JsonUI, actions, builtinComponents, modifiers, useControlledInputValue } from '@jsonui/react'
 
 const EditMultiChild = (props: Record<string, unknown>) => {
   const { fieldErrors, validation, value, childLabel, childHelperText, onChange, children, ...ownProps } = props

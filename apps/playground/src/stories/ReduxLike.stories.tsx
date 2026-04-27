@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { JsonUI } from '@jsonui/react'
+import { actions, modifiers as baseModifiers, JsonUI } from '@jsonui/react'
 import { builtinComponents } from '@jsonui/react'
-import { modifiers as baseModifiers, actions } from '@jsonui/core'
 
 const MyFunction = () => 'age'
 
