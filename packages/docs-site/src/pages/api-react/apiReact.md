@@ -91,25 +91,6 @@ const model = {
 return <JsonUI model={model} modifiers={{ MyModifier }} actions={{}} />
 ```
 
-### Rendering Flow
-
-```mermaid
-flowchart TD
-  A[JSON model input] --> B[JsonUI props: model + stores + modifiers + actions]
-  B --> C[expandSimplifiedNode]
-  C --> D[runRenderNodeResolution]
-  D --> E[resolveModifier for non-event props]
-  E --> F[resolvedProps + resolvedSlots]
-  F --> G[assemble componentActionProps]
-  G --> H[buildRenderNodeEventProps]
-  H --> I[resolveAction for on* handlers]
-  I --> J[ActionContext includes componentProps]
-  J --> K[merge props and render React component]
-  K --> L[user event triggers action]
-  L --> M[store update]
-  M --> D
-```
-
 #### onStateExport: ({ id?: string, formState: JSONValue}) => void
 
 When the JsonUI react component need to re-render to show a new form, need to save the previous state if it is not finished. Use id comes from JsonUI id property. Use it, to make sure it's export on the right time. Example in the storybook stories.
