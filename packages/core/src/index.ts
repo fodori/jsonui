@@ -26,11 +26,14 @@ import {
 } from './util/contants.js'
 import { normalizePath } from './util/json-pointer.js'
 import {
+  ActionContext,
+  ActionHandler,
   ActionMap,
   JSONObject,
   JsonUINode,
   JSONValue,
   ModifierContext,
+  ModifierHandler,
   ModifierMap,
   OnStateExportProps,
   OnStateExportType,
@@ -84,6 +87,9 @@ export type {
   TranslationsMap,
   ValidationRegistry,
   ValidationRule,
+  ActionHandler,
+  ModifierHandler,
+  ActionContext,
 }
 
 //   type,

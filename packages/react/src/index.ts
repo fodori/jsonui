@@ -1,4 +1,39 @@
-export {
+import {
+  ACTION_KEY,
+  actions,
+  BREAKPOINT_ORDER,
+  DEFAULT_BREAKPOINTS,
+  ERROR_STORE_SUFFIX,
+  LIST_ITEM_PER_PAGE,
+  LIST_ITEM,
+  LIST_LENGTH,
+  LIST_PAGE,
+  LIST_SEMAPHORE,
+  MODIFIER_KEY,
+  modifiers,
+  PATH_MODIFIERS_KEY,
+  Store,
+  TOUCH_STORE_SUFFIX,
+  V_CHILDREN,
+  V_COMP,
+} from '@jsonui/core'
+import type {
+  ActionMap,
+  BreakpointKey,
+  JSONObject,
+  JsonUINode,
+  JSONValue,
+  ModifierContext,
+  OnStateExportProps,
+  OnStateExportType,
+  StylePlatform,
+  TranslationsMap,
+  ActionHandler,
+  ModifierHandler,
+  ActionContext,
+} from '@jsonui/core'
+
+import {
   JsonUI,
   RenderNode,
   builtinComponents,
@@ -18,8 +53,66 @@ export {
   Slider,
   Undefined,
 } from './JsonUI/index.js'
-export type { JsonUIProps, RenderNodeProps, OnStateExportProps, OnStateExportType, ChangeDefaultValueFunc, ChangeDefaultValueFuncProp } from './JsonUI/index.js'
-export type { ComponentMap } from './componentMap.js'
-export { ErrorBoundary } from './ErrorBoundary.js'
-export { useControlledInputValue } from './hooks/useControlledInputValue.js'
-export { JsonUI as default } from './JsonUI/index.js'
+import type { JsonUIProps, RenderNodeProps, ChangeDefaultValueFunc, ChangeDefaultValueFuncProp } from './JsonUI/index.js'
+import { useControlledInputValue } from './hooks/useControlledInputValue.js'
+
+export {
+  ACTION_KEY,
+  actions,
+  BREAKPOINT_ORDER,
+  DEFAULT_BREAKPOINTS,
+  ERROR_STORE_SUFFIX,
+  LIST_ITEM_PER_PAGE,
+  LIST_ITEM,
+  LIST_LENGTH,
+  LIST_PAGE,
+  LIST_SEMAPHORE,
+  MODIFIER_KEY,
+  modifiers,
+  PATH_MODIFIERS_KEY,
+  Store,
+  TOUCH_STORE_SUFFIX,
+  V_CHILDREN,
+  V_COMP,
+  JsonUI,
+  RenderNode,
+  builtinComponents,
+  MessageHandlerContext,
+  MessageHandler,
+  MessageReceiver,
+  expandSimplifiedNode,
+  View,
+  Text,
+  Button,
+  Edit,
+  Fragment,
+  Image,
+  StoreDebugger,
+  SubmitButton,
+  FormLayout,
+  Slider,
+  Undefined,
+  useControlledInputValue,
+}
+
+export type {
+  ActionMap,
+  BreakpointKey,
+  JSONObject,
+  JsonUINode,
+  JSONValue,
+  ModifierContext,
+  OnStateExportProps,
+  OnStateExportType,
+  StylePlatform,
+  TranslationsMap,
+  ActionHandler,
+  ModifierHandler,
+  ActionContext,
+  JsonUIProps,
+  RenderNodeProps,
+  ChangeDefaultValueFunc,
+  ChangeDefaultValueFuncProp,
+}
+
+export default JsonUI

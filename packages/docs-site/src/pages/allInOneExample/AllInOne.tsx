@@ -1,6 +1,5 @@
 import React from 'react'
-import { actions, modifiers } from '@jsonui/core'
-import { JsonUI, type ComponentMap } from '@jsonui/react'
+import { actions, JsonUI, modifiers, type ComponentMap } from '@jsonui/react'
 import { axios } from '@jsonui/functions-example'
 import { Button, TextField, Checkbox, Icon, Slider } from '@jsonui/components-web-example'
 import '@jsonui/components-web-example/dist/style.css'

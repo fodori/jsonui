@@ -1,8 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { JsonUI } from '@jsonui/react'
+import { actions, JsonUI, modifiers } from '@jsonui/react'
 import { axios } from '../index'
-import { actions, modifiers } from '@jsonui/core'
 
 const meta = {
   title: 'mui/Axios',

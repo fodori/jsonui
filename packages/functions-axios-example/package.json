@@ -38,7 +38,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@jsonui/core": "0.10.0",
     "@jsonui/react": "0.10.0",
     "axios": "^1.15.2"
   },

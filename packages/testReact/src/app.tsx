@@ -1,7 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import type { JsonUINode, JSONObject, OnStateExportProps } from '@jsonui/core'
-import { modifiers, actions } from '@jsonui/core'
-import { JsonUI, builtinComponents } from '@jsonui/react'
+import { JSONObject, JsonUI, JsonUINode, OnStateExportProps, actions, builtinComponents, modifiers } from '@jsonui/react'
 import forms from './forms.json' with { type: 'json' }
 
 type Keys = 'form1' | 'form2' | 'form3'
@@ -71,7 +69,8 @@ const App = () => {
         onStateExport={onStateExport}
         defaultValues={defaultValues}
         components={builtinComponents}
-        modifiers={modifiers} actions={actions}
+        modifiers={modifiers}
+        actions={actions}
       />
     </div>
   )
