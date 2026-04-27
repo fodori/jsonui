@@ -1,5 +1,5 @@
-import type { ModifierContext, ModifierMap } from '../types.js'
-import { MODIFIER_KEY } from '../types.js'
+import { MODIFIER_KEY } from '../util/contants.js'
+import type { ModifierContext, ModifierMap } from '../util/types.js'
 import { createGetModifier } from './getModifier.js'
 
 /**

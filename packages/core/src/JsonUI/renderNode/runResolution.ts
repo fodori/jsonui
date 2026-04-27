@@ -1,9 +1,9 @@
-import type { JsonUINode, ModifierContext, ModifierMap } from '../../types.js'
+import type { JsonUINode, ModifierContext, ModifierMap } from '../../util/types.js'
 import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
 import { runInlineValidation } from '../validation.js'
-import type { Store } from '../../store.js'
+import type { Store } from '../../store/store.js'
 import type { ResolvedRenderNodeState, StorePathDependency } from './resolutionTypes.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
 

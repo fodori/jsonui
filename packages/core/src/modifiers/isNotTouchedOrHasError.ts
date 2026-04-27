@@ -1,4 +1,4 @@
-import { hasAnyError, hasAnyTouched } from './helpers.js'
+import { hasAnyError, hasAnyTouched } from '../util/helpers'
 
 export function isNotTouchedOrHasError(params: Record<string, unknown>): boolean {
   const { error, touched } = params as {

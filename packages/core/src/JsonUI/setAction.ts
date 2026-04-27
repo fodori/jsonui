@@ -1,5 +1,5 @@
-import type { Store } from '../store.js'
-import { getRootStore, resolveStorePath } from '../store.js'
+import type { Store } from '../store/store.js'
+import { getRootStore, resolveStorePath } from '../store/store.js'
 
 export function createSetAction(stores: Record<string, Store>) {
   return async (

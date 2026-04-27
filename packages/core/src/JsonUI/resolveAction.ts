@@ -1,10 +1,10 @@
-import type { Store } from '../store.js'
-import { resolveStorePath } from '../store.js'
-import type { ActionContext, ActionMap, ModifierMap } from '../types.js'
-import { ACTION_KEY } from '../types.js'
+import type { Store } from '../store/store.js'
+import { resolveStorePath } from '../store/store.js'
+import type { ActionContext, ActionMap, ModifierMap } from '../util/types.js'
 import { createSetAction } from './setAction.js'
 import { resolveModifier } from './resolveModifier.js'
 import { runValidationsForPath, type ValidationRegistry } from './validation.js'
+import { ACTION_KEY } from '../util/contants.js'
 
 export function resolveAction(
   value: unknown,

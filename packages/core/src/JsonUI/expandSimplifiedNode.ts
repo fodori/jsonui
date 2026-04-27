@@ -12,8 +12,8 @@
  * resolution and the expanded props are passed through normally.
  */
 
-import type { JsonUINode } from '../types.js'
-import { MODIFIER_KEY, ACTION_KEY } from '../types.js'
+import { MODIFIER_KEY, ACTION_KEY } from '../util/contants.js'
+import type { JsonUINode } from '../util/types.js'
 
 function isSimplifiedNode(node: unknown): node is JsonUINode & {
   [key: string]: unknown

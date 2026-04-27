@@ -106,7 +106,7 @@ describe('Store core API', () => {
       const logical = store.getLogicalStoresMap()
       expect(logical.data).toEqual({ x: 1 })
       expect((logical as Record<string, unknown>)['data.touch']).toEqual({ x: true })
-      expect((store.getState()).storeRoot).toBeDefined()
+      expect(store.getState().storeRoot).toBeDefined()
     })
   })
 

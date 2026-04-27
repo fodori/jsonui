@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { Store } from '../store.js'
+import { Store } from '../store/store.js'
 import { resolveModifier } from './resolveModifier.js'
 import { resolveAction } from './resolveAction.js'
-import type { ModifierContext } from '../types.js'
+import type { ModifierContext } from '../util/types.js'
 
 function makeStoresWithData(age: string | number = ''): Record<string, Store> {
   const root = new Store()
@@ -36,6 +36,7 @@ describe('input-style store binding (get / set)', () => {
     })
     expect(handler).toBeDefined()
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await handler!({ target: { value: 'test@example.com' } })
 
     expect(root.getForStore('data', '/age')).toBe('test@example.com')
@@ -43,7 +44,7 @@ describe('input-style store binding (get / set)', () => {
 
   it('resolveModifier get with type ERROR returns undefined for leaf-less error containers', async () => {
     const stores = makeStoresWithData(42)
-     
+
     const root = stores.__root__
     root.setForStore('data.error', '/', { players: [{}] }, false)
 
@@ -58,7 +59,7 @@ describe('input-style store binding (get / set)', () => {
 
   it('resolveModifier get with type ERROR returns value when a real error leaf exists', async () => {
     const stores = makeStoresWithData(42)
-     
+
     const root = stores.__root__
     root.setForStore('data.error', '/', { players: [{ name: 'required' }] }, false)
 
@@ -82,6 +83,7 @@ describe('input-style store binding (get / set)', () => {
     })
 
     expect(handler).toBeDefined()
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await handler!({})
 
     expect(submitSpy).toHaveBeenCalledTimes(1)
@@ -104,6 +106,7 @@ describe('input-style store binding (get / set)', () => {
     })
 
     expect(handler).toBeDefined()
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await handler!({})
 
     expect(submitSpy).toHaveBeenCalledTimes(1)
@@ -114,7 +117,7 @@ describe('input-style store binding (get / set)', () => {
 
   it('resolveModifier get with type ERROR uses base store pathModifiers for relative paths', async () => {
     const stores = makeStoresWithData(42)
-     
+
     const root = stores.__root__
     root.setForStore('data.error', '/players/0/name', 'required', false)
 

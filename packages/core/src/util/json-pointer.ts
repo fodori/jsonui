@@ -6,7 +6,7 @@
  * segments can be object keys or array indices (numeric strings).
  */
 
-export const SEPARATOR = '/'
+import { JSON_SEPARATOR } from './contants'
 
 /**
  * Normalize a path: remove empty segments and trailing/leading slashes.
@@ -16,14 +16,14 @@ export const SEPARATOR = '/'
 export function normalizePath(pathStr: string): string {
   if (!pathStr || pathStr === '/') return '/'
   const trimmed = pathStr.startsWith('/') ? pathStr.slice(1) : pathStr
-  const segments = trimmed.split(SEPARATOR).filter((s) => s !== '')
-  return segments.length === 0 ? '/' : SEPARATOR + segments.join(SEPARATOR)
+  const segments = trimmed.split(JSON_SEPARATOR).filter((s) => s !== '')
+  return segments.length === 0 ? '/' : JSON_SEPARATOR + segments.join(JSON_SEPARATOR)
 }
 
 export function parsePath(pathStr: string): string[] {
   const normalized = normalizePath(pathStr)
   if (normalized === '/') return []
-  return normalized.slice(1).split(SEPARATOR).map(decode)
+  return normalized.slice(1).split(JSON_SEPARATOR).map(decode)
 }
 
 function decode(segment: string): string {
@@ -81,7 +81,7 @@ export function resolvePath(basePath: string, relativePath: string): string {
   if (relativePath.startsWith('/')) return relativePath
 
   const baseSegments = parsePath(basePath)
-  const relSegments = relativePath.split(SEPARATOR).filter(Boolean)
+  const relSegments = relativePath.split(JSON_SEPARATOR).filter(Boolean)
 
   for (const seg of relSegments) {
     if (seg === '..') {
@@ -91,5 +91,5 @@ export function resolvePath(basePath: string, relativePath: string): string {
     }
   }
 
-  return SEPARATOR + baseSegments.map(encode).join(SEPARATOR)
+  return JSON_SEPARATOR + baseSegments.map(encode).join(JSON_SEPARATOR)
 }

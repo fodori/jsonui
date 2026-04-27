@@ -1,8 +1,8 @@
 import Ajv, { type ValidateFunction } from 'ajv'
 import addFormats from 'ajv-formats'
 import ajvErrors from 'ajv-errors'
-import { Store, getRootStore, resolveStorePath } from '../store.js'
-import { ERROR_STORE_SUFFIX } from '../types.js'
+import { Store, getRootStore, resolveStorePath } from '../store/store.js'
+import { ERROR_STORE_SUFFIX } from '../util/contants.js'
 
 export interface ValidationRule {
   schema: unknown

@@ -1,6 +1,6 @@
-import type { ActionContext } from '../types.js'
-import { getRootStore } from '../store.js'
-import { ERROR_STORE_SUFFIX } from '../types.js'
+import type { ActionContext } from '../util/types.js'
+import { getRootStore } from '../store/store.js'
+import { ERROR_STORE_SUFFIX } from '../util/contants.js'
 
 export function submit(params: Record<string, unknown>, ctx: ActionContext): void {
   console.log('Submit clicked', ctx.componentProps.value)

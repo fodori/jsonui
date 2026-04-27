@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest'
-import { normalizePath, parsePath, get, set, resolvePath, SEPARATOR } from './json-pointer.js'
+import { normalizePath, parsePath, get, set, resolvePath } from './json-pointer.js'
+import { JSON_SEPARATOR } from './contants.js'
 
 describe('json-pointer utilities', () => {
   describe('normalizePath', () => {
     it('returns root for empty or root-like paths', () => {
-      expect(normalizePath('')).toBe(SEPARATOR)
-      expect(normalizePath('/')).toBe(SEPARATOR)
-      expect(normalizePath('////')).toBe(SEPARATOR)
+      expect(normalizePath('')).toBe(JSON_SEPARATOR)
+      expect(normalizePath('/')).toBe(JSON_SEPARATOR)
+      expect(normalizePath('////')).toBe(JSON_SEPARATOR)
     })
 
     it('removes duplicate, leading and trailing slashes', () => {

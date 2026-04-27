@@ -1,5 +1,5 @@
-import { resolveStorePath } from '../../store.js'
-import { ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX, V_COMP, MODIFIER_KEY } from '../../types.js'
+import { resolveStorePath } from '../../store/store.js'
+import { V_COMP, MODIFIER_KEY, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../../util/contants.js'
 import type { StorePathDependency } from './resolutionTypes.js'
 
 export function collectGetModifierDependencies(

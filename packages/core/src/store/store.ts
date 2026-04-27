@@ -7,9 +7,9 @@
  * applied consistently in getForStore/setForStore.
  */
 
-import { get as ptrGet, resolvePath, normalizePath, parsePath } from './json-pointer.js'
-import type { JSONValue } from './types.js'
-import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX } from './types.js'
+import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX } from '../util/contants.js'
+import { get as ptrGet, resolvePath, normalizePath, parsePath } from '../util/json-pointer.js'
+import type { JSONValue } from '../util/types.js'
 
 function isTouchOrErrorShadowStore(storeName: string): boolean {
   return storeName.endsWith(TOUCH_STORE_SUFFIX) || storeName.endsWith(ERROR_STORE_SUFFIX)

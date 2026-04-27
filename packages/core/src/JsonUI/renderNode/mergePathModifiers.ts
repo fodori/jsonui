@@ -1,6 +1,6 @@
-import type { JsonUINode } from '../../types.js'
-import { PATH_MODIFIERS_KEY } from '../../types.js'
-import { resolveStorePath } from '../../store.js'
+import type { JsonUINode } from '../../util/types.js'
+import { resolveStorePath } from '../../store/store.js'
+import { PATH_MODIFIERS_KEY } from '../../util/contants.js'
 
 export function getOwnPathModifiers(node: JsonUINode): Record<string, { path: string }> | undefined {
   return (node as Record<string, unknown>)[PATH_MODIFIERS_KEY] as Record<string, { path: string }> | undefined

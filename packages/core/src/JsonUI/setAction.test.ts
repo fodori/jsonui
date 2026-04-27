@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { createSetAction } from './setAction.js'
-import { Store } from '../store.js'
+import { Store } from '../store/store.js'
 
 describe('createSetAction', () => {
   it('sets value in the specified logical store and path', async () => {

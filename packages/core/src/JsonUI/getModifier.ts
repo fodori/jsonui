@@ -1,7 +1,7 @@
-import type { Store } from '../store.js'
-import { getRootStore, resolveStorePath } from '../store.js'
-import type { ModifierContext } from '../types.js'
-import { ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../types.js'
+import type { Store } from '../store/store.js'
+import { getRootStore, resolveStorePath } from '../store/store.js'
+import { ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../util/contants.js'
+import type { ModifierContext } from '../util/types.js'
 
 function hasAnyError(value: unknown): boolean {
   if (value === null || value === undefined) return false

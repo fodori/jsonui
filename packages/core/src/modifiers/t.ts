@@ -1,4 +1,4 @@
-import type { ModifierContext } from '../types.js'
+import type { ModifierContext } from '../util/types.js'
 
 /**
  * Translation function: looks up key in ctx.translations using active language.
