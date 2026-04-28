@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { Store, createStores, getRootStore, makeStorePath, resolveStorePath, STORE_ROOT_PATH, type StoreMap } from './store.js'
+import { Store, createStores, getRootStore, makeStorePath, resolveStorePath, type StoreMap } from './store.js'
+import { STORE_ROOT_PATH } from '../util/contants.js'
 
 describe('Store core API', () => {
   describe('makeStorePath', () => {
@@ -115,15 +116,40 @@ describe('Store core API', () => {
       expect(resolveStorePath('/a//b/', '/ignored')).toBe('/a/b')
     })
 
+    it('normalizes absolute paths with trailing slash', () => {
+      expect(resolveStorePath('/a/b/', '/ignored')).toBe('/a/b')
+    })
+
     it('resolves relative paths against currentPath when no modifier', () => {
       expect(resolveStorePath('c', '/a/b')).toBe('/a/b/c')
     })
 
+    it('resolves relative path against root currentPath', () => {
+      expect(resolveStorePath('name', '/')).toBe('/name')
+    })
+
     it('uses pathModifiers for matching store when present', () => {
-      const pathModifiers = {
-        data: { path: '/items/0' },
-      }
+      const pathModifiers = { data: { path: '/items/0' } }
       expect(resolveStorePath('score', '/a/b', pathModifiers, 'data')).toBe('/items/0/score')
+    })
+
+    it('ignores pathModifiers when storeName does not match', () => {
+      const pathModifiers = { data: { path: '/items/0' } }
+      expect(resolveStorePath('score', '/a/b', pathModifiers, 'other')).toBe('/a/b/score')
+    })
+
+    it('ignores pathModifiers when storeName is undefined', () => {
+      const pathModifiers = { data: { path: '/items/0' } }
+      expect(resolveStorePath('score', '/a/b', pathModifiers, undefined)).toBe('/a/b/score')
+    })
+
+    it('falls back to currentPath when pathModifiers is undefined', () => {
+      expect(resolveStorePath('field', '/parent', undefined, 'data')).toBe('/parent/field')
+    })
+
+    it('handles absolute path when pathModifiers are provided for different store', () => {
+      const pathModifiers = { data: { path: '/items/0' } }
+      expect(resolveStorePath('/abs/path', '/current', pathModifiers, 'other')).toBe('/abs/path')
     })
   })
 })

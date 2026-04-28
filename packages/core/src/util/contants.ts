@@ -20,3 +20,7 @@ export const ERROR_STORE_SUFFIX = '.error'
 export const TOUCH_STORE_SUFFIX = '.touch'
 
 export const JSON_SEPARATOR = '/'
+
+// Single-root store layout helper.
+// All logical stores live under `/storeRoot/{storeName}/...`.
+export const STORE_ROOT_PATH = '/storeRoot'

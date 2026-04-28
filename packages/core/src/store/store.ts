@@ -7,25 +7,19 @@
  * applied consistently in getForStore/setForStore.
  */
 
-import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX } from '../util/contants.js'
+import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX, STORE_ROOT_PATH } from '../util/contants.js'
+import { cloneDeep } from '../util/helpers.js'
 import { get as ptrGet, resolvePath, normalizePath, parsePath } from '../util/json-pointer.js'
 import type { JSONValue } from '../util/types.js'
+
+export type StoreState = Record<string, unknown>
+export type Listener = () => void
+export type StoreChangeListener = (storeName: string, logicalPath: string) => void
+export type StoreMap = Record<string, Store>
 
 function isTouchOrErrorShadowStore(storeName: string): boolean {
   return storeName.endsWith(TOUCH_STORE_SUFFIX) || storeName.endsWith(ERROR_STORE_SUFFIX)
 }
-
-export type StoreState = Record<string, unknown>
-
-// Simple dev flag without relying on Node typings; bundlerek általában kicserélik
-// process.env.NODE_ENV-et build időben, de itt óvatosan, típus-hiba nélkül ellenőrzünk.
-const nodeGlobal = globalThis as unknown as {
-  process?: { env?: { NODE_ENV?: string } }
-}
-const __DEV__ = nodeGlobal.process === undefined || nodeGlobal.process.env === undefined || nodeGlobal.process.env.NODE_ENV !== 'production'
-
-export type Listener = () => void
-export type StoreChangeListener = (storeName: string, logicalPath: string) => void
 
 export class Store {
   private state: StoreState = {}
@@ -56,9 +50,6 @@ export class Store {
 
   set(path: string, value: unknown): void {
     this.state = setImmutable(this.state, path, value)
-    if (__DEV__) {
-      deepFreeze(this.state)
-    }
     this.notify()
   }
 
@@ -117,14 +108,9 @@ export class Store {
 
   replaceState(state: StoreState): void {
     this.state = state
-    if (__DEV__) {
-      deepFreeze(this.state)
-    }
     this.notify()
   }
 }
-
-export type StoreMap = Record<string, Store>
 
 export function createStores(initialState: Record<string, StoreState> = {}): StoreMap {
   const stores: StoreMap = {}
@@ -135,10 +121,6 @@ export function createStores(initialState: Record<string, StoreState> = {}): Sto
   }
   return stores
 }
-
-// Single-root store layout helper.
-// All logical stores live under `/storeRoot/{storeName}/...`.
-export const STORE_ROOT_PATH = '/storeRoot'
 
 export function makeStorePath(storeName: string, path: string): string {
   if (!storeName || storeName.length === 0) {
@@ -218,56 +200,6 @@ function setImmutable(root: StoreState, pathStr: string, value: unknown): StoreS
 
   const { result } = setAt(originalRoot, 0)
   return result as StoreState
-}
-
-/**
- * Deep-freeze helper used only in dev mode to catch unexpected mutations.
- * Returns the same reference for convenience.
- */
-function deepFreeze<T>(value: T): T {
-  if (value == null) return value
-  if (typeof value !== 'object') return value
-
-  const seen = new WeakSet()
-
-  function freezeRec(obj: unknown): void {
-    if (obj == null || typeof obj !== 'object') return
-    const o = obj as Record<string, unknown>
-    if (seen.has(o)) return
-    seen.add(o)
-
-    const propNames = Object.getOwnPropertyNames(o)
-    for (const name of propNames) {
-      freezeRec(o[name])
-    }
-
-    if (!Object.isFrozen(o)) {
-      Object.freeze(o)
-    }
-  }
-
-  freezeRec(value)
-  return value
-}
-
-/**
- * Deep clone helper used by get() so callers cannot mutate the internal store state.
- * Objects and arrays are cloned recursively; primitives and functions are returned as-is.
- */
-function cloneDeep<T>(value: T): T {
-  if (value == null) return value
-  if (typeof value !== 'object') return value
-
-  if (Array.isArray(value)) {
-    return (value as unknown[]).map((item) => cloneDeep(item)) as unknown as T
-  }
-
-  const obj = value as Record<string, unknown>
-  const result: Record<string, unknown> = {}
-  for (const key of Object.keys(obj)) {
-    result[key] = cloneDeep(obj[key])
-  }
-  return result as unknown as T
 }
 
 export function getRootStore(stores: StoreMap): Store {
