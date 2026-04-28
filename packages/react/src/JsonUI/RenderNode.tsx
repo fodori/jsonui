@@ -91,8 +91,6 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   const componentActionProps: Record<string, unknown> = {
     ...resolvedProps,
     ...infraProps,
-    ...multiChildSlots,
-    children: mainChildren,
   }
 
   const eventProps = buildRenderNodeEventProps({
