@@ -12,7 +12,6 @@ The project is a **yarn workspaces monorepo** with these key packages:
 | -------------------- | ---------------------------------------------------------------------------------- |
 | `packages/core`      | Framework-agnostic logic: store, modifier/action resolution, node expansion, types |
 | `packages/react`     | React bindings: `JsonUI` component, `RenderNode`, built-in components              |
-| `apps/playground`    | Storybook playground for manual testing                                            |
 | `packages/docs-site` | Documentation website                                                              |
 
 ## Code Style
