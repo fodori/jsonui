@@ -4,17 +4,17 @@ import { resolveModifier } from './resolveModifier.js'
 import { resolveAction } from './resolveAction.js'
 import type { ModifierContext } from '../util/types.js'
 
-function makeStoresWithData(age: string | number = ''): Record<string, Store> {
+function makeStoresWithData(age: string | number = ''): Store {
   const root = new Store()
   root.setForStore('data', '/', { age }, false)
-  return { __root__: root }
+  return root
 }
 
 describe('input-style store binding (get / set)', () => {
   it('resolveModifier get reads /age from data store with empty ModifierMap', async () => {
-    const stores = makeStoresWithData(42)
+    const store = makeStoresWithData(42)
     const ctx: ModifierContext = {
-      stores,
+      store,
       currentPath: '/',
     }
     const value = await resolveModifier({ $modifier: 'get', store: 'data', path: '/age' }, {}, ctx)
@@ -22,15 +22,13 @@ describe('input-style store binding (get / set)', () => {
   })
 
   it('resolveAction set writes event target value to data/age with empty ActionMap', async () => {
-    const stores = makeStoresWithData('')
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unnecessary-type-assertion
-    const root = stores.__root__!
+    const store = makeStoresWithData('')
     const ctx = {
       currentPath: '/' as const,
       pathModifiers: undefined,
     }
-    const handler = resolveAction({ $action: 'set', store: 'data', path: '/age' }, {}, {}, stores, {
-      stores,
+    const handler = resolveAction({ $action: 'set', store: 'data', path: '/age' }, {}, {}, store, {
+      store,
       ...ctx,
       componentProps: {},
     })
@@ -39,17 +37,16 @@ describe('input-style store binding (get / set)', () => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await handler!({ target: { value: 'test@example.com' } })
 
-    expect(root.getForStore('data', '/age')).toBe('test@example.com')
+    expect(store.getForStore('data', '/age')).toBe('test@example.com')
   })
 
   it('resolveModifier get with type ERROR returns undefined for leaf-less error containers', async () => {
-    const stores = makeStoresWithData(42)
+    const store = makeStoresWithData(42)
 
-    const root = stores.__root__
-    root.setForStore('data.error', '/', { players: [{}] }, false)
+    store.setForStore('data.error', '/', { players: [{}] }, false)
 
     const ctx: ModifierContext = {
-      stores,
+      store,
       currentPath: '/',
     }
 
@@ -58,13 +55,12 @@ describe('input-style store binding (get / set)', () => {
   })
 
   it('resolveModifier get with type ERROR returns value when a real error leaf exists', async () => {
-    const stores = makeStoresWithData(42)
+    const store = makeStoresWithData(42)
 
-    const root = stores.__root__
-    root.setForStore('data.error', '/', { players: [{ name: 'required' }] }, false)
+    store.setForStore('data.error', '/', { players: [{ name: 'required' }] }, false)
 
     const ctx: ModifierContext = {
-      stores,
+      store,
       currentPath: '/',
     }
 
@@ -73,11 +69,11 @@ describe('input-style store binding (get / set)', () => {
   })
 
   it('resolveAction passes component props as fallback params to action handlers', async () => {
-    const stores = makeStoresWithData(42)
+    const store = makeStoresWithData(42)
     const submitSpy = vi.fn()
 
-    const handler = resolveAction({ $action: 'submit', store: 'data', path: '/' }, { submit: submitSpy }, {}, stores, {
-      stores,
+    const handler = resolveAction({ $action: 'submit', store: 'data', path: '/' }, { submit: submitSpy }, {}, store, {
+      store,
       currentPath: '/',
       componentProps: { value: { score: '10' }, fieldTouched: true },
     })
@@ -96,11 +92,11 @@ describe('input-style store binding (get / set)', () => {
   })
 
   it('resolveAction explicit params override component props', async () => {
-    const stores = makeStoresWithData(42)
+    const store = makeStoresWithData(42)
     const submitSpy = vi.fn()
 
-    const handler = resolveAction({ $action: 'submit', value: { score: '20' } }, { submit: submitSpy }, {}, stores, {
-      stores,
+    const handler = resolveAction({ $action: 'submit', value: { score: '20' } }, { submit: submitSpy }, {}, store, {
+      store,
       currentPath: '/',
       componentProps: { value: { score: '10' } },
     })
@@ -116,13 +112,12 @@ describe('input-style store binding (get / set)', () => {
   })
 
   it('resolveModifier get with type ERROR uses base store pathModifiers for relative paths', async () => {
-    const stores = makeStoresWithData(42)
+    const store = makeStoresWithData(42)
 
-    const root = stores.__root__
-    root.setForStore('data.error', '/players/0/name', 'required', false)
+    store.setForStore('data.error', '/players/0/name', 'required', false)
 
     const ctx: ModifierContext = {
-      stores,
+      store,
       currentPath: '/',
       pathModifiers: {
         data: { path: '/players/0' },

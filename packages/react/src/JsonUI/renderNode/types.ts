@@ -6,7 +6,7 @@ export interface RenderNodeProps {
   components: ComponentMap
   modifiers: ModifierMap
   actions: ActionMap
-  stores: Record<string, Store>
+  store: Store
   currentPath: string
   pathModifiers?: Record<string, { path: string }>
   validators?: ValidationRegistry

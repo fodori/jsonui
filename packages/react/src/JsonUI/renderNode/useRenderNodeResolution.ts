@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react'
 import {
-  getRootStore,
   runRenderNodeResolution,
   isPathPrefix,
   type JsonUINode,
@@ -19,7 +18,7 @@ export function useRenderNodeResolution(args: {
   effectiveNode: JsonUINode
   node: JsonUINode
   modifiers: ModifierMap
-  stores: Record<string, Store>
+  store: Store
   currentPath: string
   effectivePathModifiers: Record<string, { path: string }> | undefined
   validators: ValidationRegistry | undefined
@@ -38,7 +37,7 @@ export function useRenderNodeResolution(args: {
     effectiveNode,
     node,
     modifiers,
-    stores,
+    store,
     currentPath,
     effectivePathModifiers,
     validators,
@@ -57,10 +56,9 @@ export function useRenderNodeResolution(args: {
   const resolutionVersionRef = useRef(0)
 
   useEffect(() => {
-    const root = getRootStore(stores)
     const unsubscribe =
-      typeof root.subscribeChange === 'function'
-        ? root.subscribeChange((changedStore, changedPath) => {
+      typeof store.subscribeChange === 'function'
+        ? store.subscribeChange((changedStore, changedPath) => {
             const deps = dependenciesRef.current
             for (const dep of deps) {
               if (dep.store !== changedStore) continue
@@ -74,7 +72,7 @@ export function useRenderNodeResolution(args: {
     return () => {
       if (unsubscribe) unsubscribe()
     }
-  }, [stores])
+  }, [store])
 
   /* eslint-disable react-hooks/exhaustive-deps -- legacy JsonUI resolution deps */
   useEffect(() => {
@@ -83,7 +81,7 @@ export function useRenderNodeResolution(args: {
     const version = ++resolutionVersionRef.current
 
     const ctx: ModifierContext = {
-      stores,
+      store,
       currentPath,
       pathModifiers: effectivePathModifiers,
       validators,
@@ -99,7 +97,7 @@ export function useRenderNodeResolution(args: {
           node,
           modifiers,
           ctx,
-          stores,
+          store,
           currentPath,
           effectivePathModifiers,
           stylePlatform,
@@ -130,7 +128,7 @@ export function useRenderNodeResolution(args: {
     return () => {
       cancelled = true
     }
-  }, [effectiveNode, modifiers, stores, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint])
+  }, [effectiveNode, modifiers, store, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint])
   /* eslint-enable react-hooks/exhaustive-deps */
 
   return {

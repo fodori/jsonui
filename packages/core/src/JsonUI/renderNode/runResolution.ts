@@ -9,7 +9,7 @@ import { collectGetModifierDependencies } from './collectGetDeps.js'
 
 function runValidationSpecsFromNode(
   node: JsonUINode,
-  stores: Record<string, Store>,
+  storeInstance: Store,
   currentPath: string,
   effectivePathModifiers: Record<string, { path: string }> | undefined
 ): void {
@@ -44,7 +44,7 @@ function runValidationSpecsFromNode(
         path: pathStr,
         schema,
       },
-      stores,
+      storeInstance,
       currentPath,
       effectivePathModifiers
     )
@@ -56,7 +56,7 @@ export async function runRenderNodeResolution(args: {
   node: JsonUINode
   modifiers: ModifierMap
   ctx: ModifierContext
-  stores: Record<string, Store>
+  store: Store
   currentPath: string
   effectivePathModifiers: Record<string, { path: string }> | undefined
   stylePlatform: StylePlatform
@@ -65,7 +65,7 @@ export async function runRenderNodeResolution(args: {
   state: ResolvedRenderNodeState
   deps: StorePathDependency[]
 }> {
-  const { effectiveNode, node, modifiers, ctx, stores, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint } = args
+  const { effectiveNode, node, modifiers, ctx, store, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint } = args
 
   const props: Record<string, unknown> = {}
   const deps: StorePathDependency[] = []
@@ -91,7 +91,7 @@ export async function runRenderNodeResolution(args: {
     props.style = resolved ?? props.style
   }
 
-  runValidationSpecsFromNode(node, stores, currentPath, effectivePathModifiers)
+  runValidationSpecsFromNode(node, store, currentPath, effectivePathModifiers)
 
   return {
     state: { props, resolvedSlots },

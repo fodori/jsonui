@@ -8,7 +8,7 @@ import { runRenderNodeResolution } from './JsonUI/renderNode/runResolution.js'
 import { resolveAction } from './JsonUI/resolveAction.js'
 import { buildValidationRegistry, ValidationRegistry, ValidationRule } from './JsonUI/validation.js'
 import modifiers from './modifiers/index.js'
-import { getRootStore, resolveStorePath, Store } from './store/store.js'
+import { resolveStorePath, Store } from './store/store.js'
 import { BREAKPOINT_ORDER, BreakpointKey, DEFAULT_BREAKPOINTS, StylePlatform } from './style/types.js'
 import {
   MODIFIER_KEY,
@@ -49,7 +49,6 @@ export {
   ERROR_STORE_SUFFIX,
   expandSimplifiedNode,
   getOwnPathModifiers,
-  getRootStore,
   isPathPrefix,
   LIST_ITEM_PER_PAGE,
   LIST_ITEM,

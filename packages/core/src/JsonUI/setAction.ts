@@ -1,7 +1,7 @@
 import type { Store } from '../store/store.js'
-import { getRootStore, resolveStorePath } from '../store/store.js'
+import { resolveStorePath } from '../store/store.js'
 
-export function createSetAction(stores: Record<string, Store>) {
+export function createSetAction(store: Store) {
   return async (
     params: Record<string, unknown>,
     ctx?: {
@@ -25,8 +25,7 @@ export function createSetAction(stores: Record<string, Store>) {
       }
     }
 
-    const root = getRootStore(stores)
     const logicalPath = resolveStorePath(path, ctx?.currentPath ?? '/', ctx?.pathModifiers, storeName)
-    root.setForStore(storeName, logicalPath, value)
+    store.setForStore(storeName, logicalPath, value)
   }
 }

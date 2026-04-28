@@ -1,5 +1,5 @@
 import type { Store } from '../store/store.js'
-import { getRootStore, resolveStorePath } from '../store/store.js'
+import { resolveStorePath } from '../store/store.js'
 import { ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../util/contants.js'
 import type { ModifierContext } from '../util/types.js'
 
@@ -26,13 +26,13 @@ function hasAnyTouched(value: unknown): boolean {
   return false
 }
 
-export function createGetModifier(stores: Record<string, Store>) {
+export function createGetModifier(store: Store) {
   return async (params: Record<string, unknown>, ctx: ModifierContext): Promise<unknown> => {
     const storeName = params.store as string
     const path = params.path as string
     const type = params.type as string | undefined
     const jsonataDef = params.jsonataDef as string | undefined
-    const root = getRootStore(stores)
+    const root = store
 
     const resolvedStoreName = type === 'ERROR' ? `${storeName}${ERROR_STORE_SUFFIX}` : type === 'TOUCH' ? `${storeName}${TOUCH_STORE_SUFFIX}` : storeName
 

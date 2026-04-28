@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { Store, createStores, getRootStore, makeStorePath, resolveStorePath, type StoreMap } from './store.js'
+import { Store, makeStorePath, resolveStorePath } from './store.js'
 import { STORE_ROOT_PATH } from '../util/contants.js'
 
 describe('Store core API', () => {
@@ -21,21 +21,6 @@ describe('Store core API', () => {
     it('normalizes nested logical paths', () => {
       expect(makeStorePath('data', 'a/b')).toBe(`${STORE_ROOT_PATH}/data/a/b`)
       expect(makeStorePath('data', '/a//b/')).toBe(`${STORE_ROOT_PATH}/data/a/b`)
-    })
-  })
-
-  describe('createStores & getRootStore', () => {
-    it('creates stores with initial state', () => {
-      const stores = createStores({ data: { x: 1 } })
-      expect(stores.data.get('/x')).toEqual(1)
-    })
-
-    it('getRootStore creates default root when none exists', () => {
-      const stores: StoreMap = {}
-      const root = getRootStore(stores)
-      expect(root).toBeInstanceOf(Store)
-      // Calling again should return the same instance.
-      expect(getRootStore(stores)).toBe(root)
     })
   })
 

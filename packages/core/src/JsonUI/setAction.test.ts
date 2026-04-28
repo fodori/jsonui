@@ -5,8 +5,7 @@ import { Store } from '../store/store.js'
 describe('createSetAction', () => {
   it('sets value in the specified logical store and path', async () => {
     const root = new Store()
-    const stores: Record<string, Store> = { root }
-    const setAction = createSetAction(stores)
+    const setAction = createSetAction(root)
 
     await setAction({
       store: 'data',
@@ -21,8 +20,7 @@ describe('createSetAction', () => {
 
   it('sets value in the specified logical store and path', async () => {
     const root = new Store()
-    const stores: Record<string, Store> = { root }
-    const setAction = createSetAction(stores)
+    const setAction = createSetAction(root)
 
     await setAction({
       store: 'data',
@@ -37,8 +35,7 @@ describe('createSetAction', () => {
 
   it('sets value in the specified logical store and path', async () => {
     const root = new Store()
-    const stores: Record<string, Store> = { root }
-    const setAction = createSetAction(stores)
+    const setAction = createSetAction(root)
 
     await setAction({
       store: 'data',
@@ -53,8 +50,7 @@ describe('createSetAction', () => {
 
   it('resolves relative paths using currentPath and pathModifiers', async () => {
     const root = new Store()
-    const stores: Record<string, Store> = { root }
-    const setAction = createSetAction(stores)
+    const setAction = createSetAction(root)
 
     await setAction(
       {
@@ -75,8 +71,7 @@ describe('createSetAction', () => {
 
   it('resolves relative paths using currentPath and pathModifiers', async () => {
     const root = new Store()
-    const stores: Record<string, Store> = { root }
-    const setAction = createSetAction(stores)
+    const setAction = createSetAction(root)
 
     await setAction(
       {
@@ -98,8 +93,7 @@ describe('createSetAction', () => {
 
   it('resolves relative paths using currentPath and pathModifiers', async () => {
     const root = new Store()
-    const stores: Record<string, Store> = { root }
-    const setAction = createSetAction(stores)
+    const setAction = createSetAction(root)
 
     await setAction(
       {
@@ -121,8 +115,7 @@ describe('createSetAction', () => {
 
   it('applies jsonataDef to value before set (root $ is incoming value)', async () => {
     const root = new Store()
-    const stores: Record<string, Store> = { root }
-    const setAction = createSetAction(stores)
+    const setAction = createSetAction(root)
 
     await setAction({
       store: 'data',

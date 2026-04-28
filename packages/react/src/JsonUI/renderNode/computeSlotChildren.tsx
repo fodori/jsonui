@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  getRootStore,
   resolveStorePath,
   V_COMP,
   V_CHILDREN,
@@ -31,7 +30,7 @@ export function computeRenderNodeSlotChildren(args: {
   effectivePathModifiers: Record<string, { path: string }> | undefined
   pathModifiers: Record<string, { path: string }> | undefined
   currentPath: string
-  stores: Record<string, Store>
+  store: Store
   components: ComponentMap
   modifiers: ModifierMap
   actions: ActionMap
@@ -50,7 +49,7 @@ export function computeRenderNodeSlotChildren(args: {
     effectivePathModifiers,
     pathModifiers,
     currentPath,
-    stores,
+    store,
     components,
     modifiers,
     actions,
@@ -65,7 +64,7 @@ export function computeRenderNodeSlotChildren(args: {
     components,
     modifiers,
     actions,
-    stores,
+    store,
     validators,
     translations,
     defaultLanguage,
@@ -100,7 +99,7 @@ export function computeRenderNodeSlotChildren(args: {
           ? resolveStorePath(listPathModifiers[storeName].path, currentPath, pathModifiers, storeName)
           : undefined
     const listPath = baseListPath
-    const root = getRootStore(stores)
+    const root = store
     const listData = storeName && listPath != null && listPath !== '' ? (root.getForStore(storeName, listPath) as unknown[]) : []
 
     if (!Array.isArray(listData)) return null

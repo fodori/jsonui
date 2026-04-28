@@ -1,7 +1,7 @@
 import Ajv, { type ValidateFunction } from 'ajv'
 import addFormats from 'ajv-formats'
 import ajvErrors from 'ajv-errors'
-import { Store, getRootStore, resolveStorePath } from '../store/store.js'
+import { Store, resolveStorePath } from '../store/store.js'
 import { ERROR_STORE_SUFFIX } from '../util/contants.js'
 
 export interface ValidationRule {
@@ -61,20 +61,14 @@ export function buildValidationRegistry(rules: ValidationRule[] | undefined): Va
  * - Writes errors to `${store}.error` at the resolved logical path, but only
  *   if the error value actually changes.
  */
-export function runInlineValidation(
-  spec: InlineValidationSpec,
-  stores: Record<string, Store>,
-  currentPath: string,
-  pathModifiers?: Record<string, { path: string }>
-): void {
+export function runInlineValidation(spec: InlineValidationSpec, store: Store, currentPath: string, pathModifiers?: Record<string, { path: string }>): void {
   if (!spec.store || !spec.path || spec.schema == null) return
 
   const storeName = spec.store
   const logicalPath = resolveStorePath(spec.path, currentPath, pathModifiers, storeName)
 
-  const root = getRootStore(stores)
   const errorStoreName = `${storeName}${ERROR_STORE_SUFFIX}`
-  const value = root.getForStore(storeName, logicalPath)
+  const value = store.getForStore(storeName, logicalPath)
 
   const ajv = getInlineAjv()
   const validate = ajv.compile(spec.schema)
@@ -87,18 +81,18 @@ export function runInlineValidation(
   }
 
   const newError = messages.length > 0 ? messages.join('; ') : undefined
-  const currentError = root.getForStore(errorStoreName, logicalPath)
+  const currentError = store.getForStore(errorStoreName, logicalPath)
 
   if (currentError === newError) return
 
   if (messages.length > 0) {
-    root.setForStore(errorStoreName, logicalPath, newError, false)
+    store.setForStore(errorStoreName, logicalPath, newError, false)
   } else {
-    root.setForStore(errorStoreName, logicalPath, undefined, false)
+    store.setForStore(errorStoreName, logicalPath, undefined, false)
   }
 }
 
-export function runValidationsForPath(registry: ValidationRegistry, stores: Record<string, Store>, storeName: string, path: string): void {
+export function runValidationsForPath(registry: ValidationRegistry, store: Store, storeName: string, path: string): void {
   const storeValidators = registry[storeName]
 
   // No validators registered for this store at all
@@ -106,7 +100,6 @@ export function runValidationsForPath(registry: ValidationRegistry, stores: Reco
     return
   }
 
-  const root = getRootStore(stores)
   const errorStoreName = `${storeName}${ERROR_STORE_SUFFIX}`
 
   // Collect new error messages per *concrete* target path (e.g. '/players/0/score').
@@ -140,12 +133,12 @@ export function runValidationsForPath(registry: ValidationRegistry, stores: Reco
     if (!isPathPrefix(rulePath, path)) continue
 
     // Track existing error paths under this rule so we can clear them.
-    const existingSubtree = root.getForStore(errorStoreName, rulePath)
+    const existingSubtree = store.getForStore(errorStoreName, rulePath)
     if (existingSubtree !== undefined) {
       collectExistingPaths(rulePath === '' ? '/' : rulePath, existingSubtree)
     }
 
-    const valueAtRulePath = root.getForStore(storeName, rulePath)
+    const valueAtRulePath = store.getForStore(storeName, rulePath)
     for (const validate of validators) {
       const valid = validate(valueAtRulePath)
       if (!valid && validate.errors) {
@@ -171,9 +164,9 @@ export function runValidationsForPath(registry: ValidationRegistry, stores: Reco
   for (const targetPath of affectedErrorPaths) {
     const messages = perPathMessages[targetPath] ?? []
     const newError = messages.length > 0 ? messages.join('; ') : undefined
-    const currentError = root.getForStore(errorStoreName, targetPath)
+    const currentError = store.getForStore(errorStoreName, targetPath)
     if (currentError === newError) continue
-    root.setForStore(errorStoreName, targetPath, newError, false)
+    store.setForStore(errorStoreName, targetPath, newError, false)
   }
 }
 

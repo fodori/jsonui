@@ -10,7 +10,7 @@ export function resolveAction(
   value: unknown,
   actions: ActionMap,
   modifiers: ModifierMap,
-  stores: Record<string, Store>,
+  store: Store,
   ctx: ActionContext & {
     validators?: ValidationRegistry
   }
@@ -23,7 +23,7 @@ export function resolveAction(
 
     //TODO the whole ctx need to check fully.
     const actionCtx: ActionContext = {
-      stores,
+      store,
       currentPath: ctx.currentPath,
       pathModifiers: ctx.pathModifiers,
       validators: ctx.validators,
@@ -36,7 +36,7 @@ export function resolveAction(
     let handler = actions[actionName]
 
     if (!handler && actionName === 'set') {
-      handler = createSetAction(stores)
+      handler = createSetAction(store)
     }
 
     if (!handler) return undefined
@@ -64,7 +64,7 @@ export function resolveAction(
         // Resolve to logical path so validations work with lists, pathModifiers,
         // and relative paths (e.g. "score" inside /players/0).
         const logicalPath = resolveStorePath(rawPath, actionCtx.currentPath, actionCtx.pathModifiers, storeName)
-        runValidationsForPath(actionCtx.validators, stores, storeName, logicalPath)
+        runValidationsForPath(actionCtx.validators, store, storeName, logicalPath)
       }
     }
   }

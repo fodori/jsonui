@@ -5,7 +5,7 @@ export function buildRenderNodeEventProps(args: {
   effectiveNode: JsonUINode
   modifiers: ModifierMap
   actions: ActionMap
-  stores: Record<string, Store>
+  store: Store
   currentPath: string
   componentProps: Record<string, unknown>
   effectivePathModifiers: Record<string, { path: string }> | undefined
@@ -14,11 +14,22 @@ export function buildRenderNodeEventProps(args: {
   defaultLanguage: string | undefined
   activeLanguage: string | undefined
 }): Record<string, unknown> {
-  const { effectiveNode, modifiers, actions, stores, currentPath, componentProps, effectivePathModifiers, validators, translations, defaultLanguage, activeLanguage } =
-    args
+  const {
+    effectiveNode,
+    modifiers,
+    actions,
+    store,
+    currentPath,
+    componentProps,
+    effectivePathModifiers,
+    validators,
+    translations,
+    defaultLanguage,
+    activeLanguage,
+  } = args
 
   const actionCtx = {
-    stores,
+    store,
     currentPath,
     pathModifiers: effectivePathModifiers,
     validators,
@@ -39,7 +50,7 @@ export function buildRenderNodeEventProps(args: {
     //TODO: it could be array id need multiple action one by one
     if (Array.isArray(value)) {
       const handlers: ((e: unknown) => Promise<void>)[] = value
-        .map((v) => resolveAction(v, actions, modifiers, stores, actionCtx))
+        .map((v) => resolveAction(v, actions, modifiers, store, actionCtx))
         .filter((h): h is (e: unknown) => Promise<void> => !!h)
       if (handlers.length) {
         handler = async (e: unknown) => {
@@ -49,7 +60,7 @@ export function buildRenderNodeEventProps(args: {
         }
       }
     } else {
-      handler = resolveAction(value, actions, modifiers, stores, actionCtx)
+      handler = resolveAction(value, actions, modifiers, store, actionCtx)
     }
     if (handler) eventProps[key] = handler
   }

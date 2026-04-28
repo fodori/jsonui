@@ -21,7 +21,7 @@ export async function resolveModifier(value: unknown, modifiers: ModifierMap, ct
       resolvedParams[k] = await resolveModifier(v, modifiers, ctx)
     }
 
-    const handler = modifiers[mod] ?? (mod === 'get' ? createGetModifier(ctx.stores) : undefined)
+    const handler = modifiers[mod] ?? (mod === 'get' ? createGetModifier(ctx.store) : undefined)
     if (!handler) return undefined
 
     const result = handler(resolvedParams, ctx)

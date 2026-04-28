@@ -10,7 +10,7 @@ import { computeRenderNodeSlotChildren } from './renderNode/computeSlotChildren.
 import { builtinComponents } from '../components/index.js'
 
 function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
-  const { node, components, modifiers, actions, stores, currentPath, pathModifiers, validators, translations, defaultLanguage, activeLanguage } = props
+  const { node, components, modifiers, actions, store, currentPath, pathModifiers, validators, translations, defaultLanguage, activeLanguage } = props
 
   const styleConfig = useStyleConfig()
   const ownPathModifiers = getOwnPathModifiers(node)
@@ -26,7 +26,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
     effectiveNode,
     node,
     modifiers,
-    stores,
+    store,
     currentPath,
     effectivePathModifiers,
     validators,
@@ -64,7 +64,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
 
   const infraProps = buildInfraPropsForComponent({
     compName,
-    stores,
+    store,
     modifiers,
     actions,
     currentPath,
@@ -77,7 +77,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
     effectivePathModifiers,
     pathModifiers,
     currentPath,
-    stores,
+    store,
     components,
     modifiers,
     actions,
@@ -99,7 +99,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
     effectiveNode,
     modifiers,
     actions,
-    stores,
+    store,
     currentPath,
     componentProps: componentActionProps,
     effectivePathModifiers,
@@ -123,7 +123,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   applyInputErrorFromValueBinding({
     compName,
     effectiveNode,
-    stores,
+    store,
     mergedProps,
   })
 
@@ -136,7 +136,7 @@ function propsAreEqual(prev: RenderNodeProps, next: RenderNodeProps): boolean {
     prev.components === next.components &&
     prev.modifiers === next.modifiers &&
     prev.actions === next.actions &&
-    prev.stores === next.stores &&
+    prev.store === next.store &&
     prev.currentPath === next.currentPath &&
     prev.pathModifiers === next.pathModifiers &&
     prev.validators === next.validators &&

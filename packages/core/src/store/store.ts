@@ -15,7 +15,6 @@ import type { JSONValue } from '../util/types.js'
 export type StoreState = Record<string, unknown>
 export type Listener = () => void
 export type StoreChangeListener = (storeName: string, logicalPath: string) => void
-export type StoreMap = Record<string, Store>
 
 function isTouchOrErrorShadowStore(storeName: string): boolean {
   return storeName.endsWith(TOUCH_STORE_SUFFIX) || storeName.endsWith(ERROR_STORE_SUFFIX)
@@ -112,16 +111,6 @@ export class Store {
   }
 }
 
-export function createStores(initialState: Record<string, StoreState> = {}): StoreMap {
-  const stores: StoreMap = {}
-  for (const [name, state] of Object.entries(initialState)) {
-    const store = new Store()
-    store.replaceState(state)
-    stores[name] = store
-  }
-  return stores
-}
-
 export function makeStorePath(storeName: string, path: string): string {
   if (!storeName || storeName.length === 0) {
     throw new Error('storeName must be a non-empty string')
@@ -200,15 +189,6 @@ function setImmutable(root: StoreState, pathStr: string, value: unknown): StoreS
 
   const { result } = setAt(originalRoot, 0)
   return result as StoreState
-}
-
-export function getRootStore(stores: StoreMap): Store {
-  const anyStores = Object.values(stores)
-  if (anyStores.length > 0) return anyStores[0]
-  const root = new Store()
-  // Default key; callers typically won't care which key it is.
-  stores['__root__'] = root
-  return root
 }
 
 /**

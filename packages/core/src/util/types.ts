@@ -4,6 +4,7 @@
 
 import type { Store } from '../store/store.js'
 import { V_COMP, V_CHILDREN } from './contants.js'
+export type { Store }
 
 export type JsonUIValue = string | number | boolean | null | JsonUINode | JsonUIValue[]
 
@@ -28,7 +29,7 @@ export type ActionHandler = (params: Record<string, unknown>, context: ActionCon
 export type TranslationsMap = Record<string, Record<string, string> | undefined>
 
 export interface ModifierContext {
-  stores: Record<string, Store>
+  store: Store
   currentPath: string
   pathModifiers?: Record<string, { path: string }>
   // Optional validation registry (shape owned by JsonUI/validation)
