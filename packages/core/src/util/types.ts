@@ -28,10 +28,12 @@ export type ActionHandler = (params: Record<string, unknown>, context: ActionCon
 // key -> { langCode -> value }
 export type TranslationsMap = Record<string, Record<string, string> | undefined>
 
+export type PathModifier = Record<string, { path: string }>
+
 export interface ModifierContext {
   store: Store
   currentPath: string
-  pathModifiers?: Record<string, { path: string }>
+  pathModifiers?: PathModifier
   // Optional validation registry (shape owned by JsonUI/validation)
   validators?: unknown
   // Optional translation map built from model.$translate

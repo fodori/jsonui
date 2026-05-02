@@ -114,7 +114,7 @@ const LENGTH_KEYS = new Set([
   'gap',
 ])
 
-function ensureLengthUnit(key: string, value: string | number | undefined): string | number | undefined {
+function ensureLengthUnit(key: string, value?: string | number): string | number | undefined {
   if (value === undefined) return value
   if (!LENGTH_KEYS.has(key)) return value
   if (typeof value === 'number') return `${value}px`

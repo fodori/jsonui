@@ -1,4 +1,4 @@
-import type { JsonUINode, ModifierContext, ModifierMap } from '../../util/types.js'
+import type { JsonUINode, ModifierContext, ModifierMap, PathModifier } from '../../util/types.js'
 import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
@@ -7,12 +7,7 @@ import type { Store } from '../../store/store.js'
 import type { ResolvedRenderNodeState, StorePathDependency } from './resolutionTypes.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
 
-function runValidationSpecsFromNode(
-  node: JsonUINode,
-  storeInstance: Store,
-  currentPath: string,
-  effectivePathModifiers: Record<string, { path: string }> | undefined
-): void {
+function runValidationSpecsFromNode(node: JsonUINode, storeInstance: Store, currentPath: string, effectivePathModifiers?: PathModifier): void {
   const rawValidation = (node as Record<string, unknown>).$validation as
     | {
         store?: string
@@ -58,9 +53,9 @@ export async function runRenderNodeResolution(args: {
   ctx: ModifierContext
   store: Store
   currentPath: string
-  effectivePathModifiers: Record<string, { path: string }> | undefined
+  effectivePathModifiers?: PathModifier
   stylePlatform: StylePlatform
-  styleBreakpoint: BreakpointKey | undefined
+  styleBreakpoint?: BreakpointKey
 }): Promise<{
   state: ResolvedRenderNodeState
   deps: StorePathDependency[]

@@ -3,6 +3,7 @@ import addFormats from 'ajv-formats'
 import ajvErrors from 'ajv-errors'
 import { Store, resolveStorePath } from '../store/store.js'
 import { ERROR_STORE_SUFFIX } from '../util/contants.js'
+import { PathModifier } from '../util/types.js'
 
 export interface ValidationRule {
   schema: unknown
@@ -31,7 +32,7 @@ function getInlineAjv(): Ajv {
   return inlineAjv
 }
 
-export function buildValidationRegistry(rules: ValidationRule[] | undefined): ValidationRegistry {
+export function buildValidationRegistry(rules?: ValidationRule[]): ValidationRegistry {
   const registry: ValidationRegistry = {}
   if (!rules || rules.length === 0) return registry
 
@@ -61,7 +62,7 @@ export function buildValidationRegistry(rules: ValidationRule[] | undefined): Va
  * - Writes errors to `${store}.error` at the resolved logical path, but only
  *   if the error value actually changes.
  */
-export function runInlineValidation(spec: InlineValidationSpec, store: Store, currentPath: string, pathModifiers?: Record<string, { path: string }>): void {
+export function runInlineValidation(spec: InlineValidationSpec, store: Store, currentPath: string, pathModifiers?: PathModifier): void {
   if (!spec.store || !spec.path || spec.schema == null) return
 
   const storeName = spec.store

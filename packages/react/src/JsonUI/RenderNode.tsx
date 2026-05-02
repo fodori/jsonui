@@ -16,7 +16,12 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   const ownPathModifiers = getOwnPathModifiers(node)
 
   const effectivePathModifiers = useMemo(
-    () => mergeEffectivePathModifiers(ownPathModifiers, pathModifiers, currentPath),
+    () =>
+      mergeEffectivePathModifiers({
+        ownPathModifiers,
+        pathModifiers,
+        currentPath,
+      }),
     [ownPathModifiers, pathModifiers, currentPath]
   )
 

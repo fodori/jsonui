@@ -10,7 +10,7 @@
 import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX, STORE_ROOT_PATH } from '../util/contants.js'
 import { cloneDeep } from '../util/helpers.js'
 import { get as ptrGet, resolvePath, normalizePath, parsePath } from '../util/json-pointer.js'
-import type { JSONValue } from '../util/types.js'
+import type { JSONValue, PathModifier } from '../util/types.js'
 
 export type StoreState = Record<string, unknown>
 export type Listener = () => void
@@ -199,7 +199,7 @@ function setImmutable(root: StoreState, pathStr: string, value: unknown): StoreS
  *   access "data" or any other store.
  * Returns a normalized path (no empty segments, no trailing slash).
  */
-export function resolveStorePath(pathStr: string, currentPath: string, pathModifiers?: Record<string, { path: string }>, storeName?: string): string {
+export function resolveStorePath(pathStr: string, currentPath: string, pathModifiers?: PathModifier, storeName?: string): string {
   let resolved: string
   const modifier =
     pathModifiers !== undefined && storeName !== undefined && Object.prototype.hasOwnProperty.call(pathModifiers, storeName)

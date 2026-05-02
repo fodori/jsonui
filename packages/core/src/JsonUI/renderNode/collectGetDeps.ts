@@ -1,13 +1,9 @@
 import { resolveStorePath } from '../../store/store.js'
 import { V_COMP, MODIFIER_KEY, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../../util/contants.js'
+import { PathModifier } from '../../util/types.js'
 import type { StorePathDependency } from './resolutionTypes.js'
 
-export function collectGetModifierDependencies(
-  val: unknown,
-  currentPath: string,
-  effectivePathModifiers: Record<string, { path: string }> | undefined,
-  deps: StorePathDependency[]
-): void {
+export function collectGetModifierDependencies(val: unknown, currentPath: string, effectivePathModifiers?: PathModifier, deps: StorePathDependency[]): void {
   if (val && typeof val === 'object' && !Array.isArray(val) && V_COMP in val) {
     return
   }
