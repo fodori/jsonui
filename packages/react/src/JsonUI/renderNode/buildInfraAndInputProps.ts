@@ -1,4 +1,4 @@
-import { MODIFIER_KEY, ERROR_STORE_SUFFIX, type JsonUINode, type ActionMap, type ModifierMap, type Store } from '@jsonui/core'
+import { MODIFIER_KEY, ERROR_STORE_SUFFIX, type JsonUINode, type ActionMap, type ModifierMap, type Store, type ModifierContext } from '@jsonui/core'
 
 export function buildInfraPropsForComponent(args: {
   compName: string
@@ -6,7 +6,7 @@ export function buildInfraPropsForComponent(args: {
   modifiers: ModifierMap
   actions: ActionMap
   currentPath: string
-  effectivePathModifiers: Record<string, { path: string }> | undefined
+  effectivePathModifiers?: ModifierContext['pathModifiers']
 }): Record<string, unknown> {
   const { compName, store, modifiers, actions, currentPath, effectivePathModifiers } = args
   const infraProps: Record<string, unknown> = {}

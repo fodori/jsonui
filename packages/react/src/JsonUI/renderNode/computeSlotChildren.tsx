@@ -11,7 +11,7 @@ import {
   PATH_MODIFIERS_KEY,
   computeListSliceRange,
 } from '@jsonui/core'
-import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, ValidationRegistry } from '@jsonui/core'
+import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, ValidationRegistry, ModifierContext } from '@jsonui/core'
 import type { ComponentMap } from '../../componentMap.js'
 import type { RenderNodeProps } from './types.js'
 import { coercePrimitiveChild } from './coercePrimitiveChild.js'
@@ -21,14 +21,14 @@ export type NestedRenderNode = (props: RenderNodeProps) => React.ReactElement | 
 type ListBranchNode = JsonUINode & {
   [LIST_SEMAPHORE]: boolean
   [LIST_ITEM]: JsonUINode
-  [PATH_MODIFIERS_KEY]?: Record<string, { path: string }>
+  [PATH_MODIFIERS_KEY]?: ModifierContext['pathModifiers']
 }
 
 export function computeRenderNodeSlotChildren(args: {
   node: JsonUINode
   resolvedSlots: Record<string, unknown> | undefined
-  effectivePathModifiers: Record<string, { path: string }> | undefined
-  pathModifiers: Record<string, { path: string }> | undefined
+  effectivePathModifiers?: ModifierContext['pathModifiers']
+  pathModifiers?: ModifierContext['pathModifiers']
   currentPath: string
   store: Store
   components: ComponentMap

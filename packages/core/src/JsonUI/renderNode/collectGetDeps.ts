@@ -3,7 +3,7 @@ import { V_COMP, MODIFIER_KEY, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '..
 import { PathModifier } from '../../util/types.js'
 import type { StorePathDependency } from './resolutionTypes.js'
 
-export function collectGetModifierDependencies(val: unknown, currentPath: string, effectivePathModifiers?: PathModifier, deps: StorePathDependency[]): void {
+export function collectGetModifierDependencies(val: unknown, currentPath: string, deps: StorePathDependency[], effectivePathModifiers?: PathModifier): void {
   if (val && typeof val === 'object' && !Array.isArray(val) && V_COMP in val) {
     return
   }
@@ -23,12 +23,12 @@ export function collectGetModifierDependencies(val: unknown, currentPath: string
     return
   }
   if (Array.isArray(val)) {
-    val.forEach((v) => collectGetModifierDependencies(v, currentPath, effectivePathModifiers, deps))
+    val.forEach((v) => collectGetModifierDependencies(v, currentPath, deps, effectivePathModifiers))
     return
   }
   if (val && typeof val === 'object') {
     for (const v of Object.values(val as Record<string, unknown>)) {
-      collectGetModifierDependencies(v, currentPath, effectivePathModifiers, deps)
+      collectGetModifierDependencies(v, currentPath, deps, effectivePathModifiers)
     }
   }
 }

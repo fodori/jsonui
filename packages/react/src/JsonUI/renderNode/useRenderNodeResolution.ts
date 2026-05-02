@@ -20,7 +20,7 @@ export function useRenderNodeResolution(args: {
   modifiers: ModifierMap
   store: Store
   currentPath: string
-  effectivePathModifiers: Record<string, { path: string }> | undefined
+  effectivePathModifiers?: ModifierContext['pathModifiers']
   validators: ValidationRegistry | undefined
   translations: TranslationsMap | undefined
   defaultLanguage: string | undefined

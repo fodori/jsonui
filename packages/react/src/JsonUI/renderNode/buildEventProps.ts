@@ -1,4 +1,4 @@
-import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, ValidationRegistry } from '@jsonui/core'
+import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, ValidationRegistry, ModifierContext } from '@jsonui/core'
 import { resolveAction } from '@jsonui/core'
 
 export function buildRenderNodeEventProps(args: {
@@ -8,7 +8,7 @@ export function buildRenderNodeEventProps(args: {
   store: Store
   currentPath: string
   componentProps: Record<string, unknown>
-  effectivePathModifiers: Record<string, { path: string }> | undefined
+  effectivePathModifiers?: ModifierContext['pathModifiers']
   validators: ValidationRegistry | undefined
   translations: TranslationsMap | undefined
   defaultLanguage: string | undefined

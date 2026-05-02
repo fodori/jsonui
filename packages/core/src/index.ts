@@ -38,6 +38,7 @@ import {
   OnStateExportProps,
   OnStateExportType,
   TranslationsMap,
+  PathModifier,
 } from './util/types.js'
 
 export {
@@ -89,6 +90,7 @@ export type {
   ActionHandler,
   ModifierHandler,
   ActionContext,
+  PathModifier,
 }
 
 //   type,

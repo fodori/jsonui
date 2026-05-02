@@ -1,4 +1,4 @@
-import type { Store, JsonUINode, ActionMap, ModifierMap, TranslationsMap, ValidationRegistry } from '@jsonui/core'
+import type { Store, JsonUINode, ActionMap, ModifierMap, TranslationsMap, ValidationRegistry, ModifierContext } from '@jsonui/core'
 import type { ComponentMap } from '../../componentMap.js'
 
 export interface RenderNodeProps {
@@ -8,7 +8,7 @@ export interface RenderNodeProps {
   actions: ActionMap
   store: Store
   currentPath: string
-  pathModifiers?: Record<string, { path: string }>
+  pathModifiers?: ModifierContext['pathModifiers']
   validators?: ValidationRegistry
   translations?: TranslationsMap
   defaultLanguage?: string

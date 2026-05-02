@@ -67,14 +67,14 @@ export async function runRenderNodeResolution(args: {
 
   for (const [key, value] of Object.entries(effectiveNode)) {
     if (key.startsWith('$')) continue
-    collectGetModifierDependencies(value, currentPath, effectivePathModifiers, deps)
+    collectGetModifierDependencies(value, currentPath, deps, effectivePathModifiers)
     props[key] = await resolveModifier(value, modifiers, ctx)
   }
 
   const resolvedSlots: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(node)) {
     if (!key.startsWith('$child')) continue
-    collectGetModifierDependencies(value, currentPath, effectivePathModifiers, deps)
+    collectGetModifierDependencies(value, currentPath, deps, effectivePathModifiers)
     resolvedSlots[key] = await resolveModifier(value, modifiers, ctx)
   }
 
