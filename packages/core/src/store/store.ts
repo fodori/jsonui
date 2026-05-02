@@ -116,7 +116,8 @@ export function makeStorePath(storeName: string, path: string): string {
     throw new Error('storeName must be a non-empty string')
   }
   const base = `${STORE_ROOT_PATH}/${storeName}`
-  const normalized = normalizePath(path)
+  const pointerPath = !path || path === '/' ? '/' : path.startsWith('/') ? path : `/${path}`
+  const normalized = normalizePath(pointerPath)
   if (normalized === '/') return base
   return base + normalized
 }

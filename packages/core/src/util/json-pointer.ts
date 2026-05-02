@@ -8,6 +8,8 @@
 
 import { JSON_SEPARATOR } from './contants'
 
+const DANGEROUS_KEYS = new Set(['__proto__', 'prototype', 'constructor'])
+
 /**
  * Normalize a path: remove empty segments and trailing/leading slashes.
  * Prevents accidental keys like "" from paths such as "//" or "/a/".
@@ -21,12 +23,23 @@ export function normalizePath(pathStr: string): string {
 }
 
 export function parsePath(pathStr: string): string[] {
-  const normalized = normalizePath(pathStr)
-  if (normalized === '/') return []
-  return normalized.slice(1).split(JSON_SEPARATOR).map(decode)
+  if (!pathStr || pathStr === '/') return []
+  if (!pathStr.startsWith(JSON_SEPARATOR)) {
+    throw new Error(`Invalid JSON Pointer path: ${pathStr}`)
+  }
+  return pathStr.slice(1).split(JSON_SEPARATOR).map(decode)
 }
 
 function decode(segment: string): string {
+  for (let i = 0; i < segment.length; i++) {
+    if (segment[i] === '~') {
+      const next = segment[i + 1]
+      if (next !== '0' && next !== '1') {
+        throw new Error(`Invalid JSON Pointer escape in segment: ${segment}`)
+      }
+      i += 1
+    }
+  }
   return segment.replace(/~1/g, '/').replace(/~0/g, '~')
 }
 
@@ -51,8 +64,12 @@ export function set(obj: Record<string, unknown>, pathStr: string, value: unknow
   let current: Record<string, unknown> = obj
   for (let i = 0; i < segments.length - 1; i++) {
     const seg = segments[i]
+    if (DANGEROUS_KEYS.has(seg)) {
+      throw new Error(`Unsafe JSON Pointer segment: ${seg}`)
+    }
+
     const nextSeg = segments[i + 1]
-    const nextKey = nextSeg === '' || /^\d+$/.test(nextSeg) ? parseInt(nextSeg, 10) : nextSeg
+    const nextKey = isArrayIndexToken(nextSeg) ? parseInt(nextSeg, 10) : nextSeg
 
     if (!(seg in current) || current[seg] == null) {
       current[seg] = typeof nextKey === 'number' ? [] : {}
@@ -65,9 +82,16 @@ export function set(obj: Record<string, unknown>, pathStr: string, value: unknow
   }
 
   const lastSeg = segments[segments.length - 1]
-  const lastKey = lastSeg === '' || /^\d+$/.test(lastSeg) ? parseInt(lastSeg, 10) : lastSeg
+  if (DANGEROUS_KEYS.has(lastSeg)) {
+    throw new Error(`Unsafe JSON Pointer segment: ${lastSeg}`)
+  }
+
+  const lastKey = isArrayIndexToken(lastSeg) ? parseInt(lastSeg, 10) : lastSeg
   if (Array.isArray(current)) {
-    ;(current as unknown[])[lastKey as number] = value
+    if (typeof lastKey !== 'number') {
+      throw new Error(`Invalid array index segment: ${lastSeg}`)
+    }
+    ;(current as unknown[])[lastKey] = value
   } else {
     current[lastSeg] = value
   }
@@ -78,7 +102,7 @@ export function set(obj: Record<string, unknown>, pathStr: string, value: unknow
  * Supports arbitrary depth; excess ".." yields root then appends remaining segments.
  */
 export function resolvePath(basePath: string, relativePath: string): string {
-  if (relativePath.startsWith('/')) return relativePath
+  if (relativePath.startsWith('/')) return normalizePath(relativePath)
 
   const baseSegments = parsePath(basePath)
   const relSegments = relativePath.split(JSON_SEPARATOR).filter(Boolean)
@@ -87,9 +111,15 @@ export function resolvePath(basePath: string, relativePath: string): string {
     if (seg === '..') {
       baseSegments.pop()
     } else if (seg !== '.') {
-      baseSegments.push(seg)
+      baseSegments.push(decode(seg))
     }
   }
 
   return JSON_SEPARATOR + baseSegments.map(encode).join(JSON_SEPARATOR)
+}
+
+function isArrayIndexToken(token: string): boolean {
+  if (token.length === 0) return false
+  if (token === '0') return true
+  return /^[1-9]\d*$/.test(token)
 }

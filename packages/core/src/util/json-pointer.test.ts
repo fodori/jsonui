@@ -25,6 +25,20 @@ describe('json-pointer utilities', () => {
       expect(parsePath('/a/b')).toEqual(['a', 'b'])
       expect(parsePath('/foo~0bar~1baz')).toEqual(['foo~bar/baz'])
     })
+
+    it('preserves empty reference tokens', () => {
+      expect(parsePath('/a/')).toEqual(['a', ''])
+      expect(parsePath('//')).toEqual(['', ''])
+    })
+
+    it('rejects non-absolute pointer strings', () => {
+      expect(() => parsePath('a/b')).toThrow('Invalid JSON Pointer path')
+    })
+
+    it('throws on invalid escape sequences', () => {
+      expect(() => parsePath('/a/~2b')).toThrow('Invalid JSON Pointer escape')
+      expect(() => parsePath('/a/~')).toThrow('Invalid JSON Pointer escape')
+    })
   })
 
   describe('get', () => {
@@ -57,6 +71,24 @@ describe('json-pointer utilities', () => {
       set(obj, '/items/1', 'y')
       expect(obj).toEqual({ items: ['x', 'y'] })
     })
+
+    it('treats leading-zero numeric-looking keys as object keys', () => {
+      const obj: Record<string, unknown> = {}
+      set(obj, '/items/01/value', 1)
+      expect(obj).toEqual({ items: { '01': { value: 1 } } })
+    })
+
+    it('rejects unsafe prototype segments', () => {
+      const obj: Record<string, unknown> = {}
+      expect(() => set(obj, '/__proto__/polluted', true)).toThrow('Unsafe JSON Pointer segment')
+      expect(() => set(obj, '/safe/constructor', true)).toThrow('Unsafe JSON Pointer segment')
+      expect(({} as Record<string, unknown>).polluted).toBeUndefined()
+    })
+
+    it('rejects non-numeric final segment when writing to arrays', () => {
+      const obj: Record<string, unknown> = { items: [] }
+      expect(() => set(obj, '/items/foo', 'x')).toThrow('Invalid array index segment')
+    })
   })
 
   describe('resolvePath', () => {
@@ -75,6 +107,11 @@ describe('json-pointer utilities', () => {
 
     it('does not go above root when using many ".."', () => {
       expect(resolvePath('/a/b', '../../../c')).toBe('/c')
+    })
+
+    it('does not double-escape already escaped relative tokens', () => {
+      expect(resolvePath('/a', '~1b')).toBe('/a/~1b')
+      expect(resolvePath('/a', 'x~0y')).toBe('/a/x~0y')
     })
   })
 })
