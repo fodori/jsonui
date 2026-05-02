@@ -1,5 +1,112 @@
 import { describe, it, expect } from 'vitest'
-import { cloneDeep } from './helpers.js'
+import { cloneDeep, hasAnyError, hasAnyTouched } from './helpers.js'
+
+describe('hasAnyError', () => {
+  it('returns false for null', () => {
+    expect(hasAnyError(null)).toBe(false)
+  })
+
+  it('returns false for undefined', () => {
+    expect(hasAnyError(undefined)).toBe(false)
+  })
+
+  it('returns true for a non-null primitive', () => {
+    expect(hasAnyError('Required')).toBe(true)
+    expect(hasAnyError(0)).toBe(true)
+    expect(hasAnyError(false)).toBe(true)
+  })
+
+  it('returns false for an empty object', () => {
+    expect(hasAnyError({})).toBe(false)
+  })
+
+  it('returns false for an empty array', () => {
+    expect(hasAnyError([])).toBe(false)
+  })
+
+  it('returns true when any object value has an error', () => {
+    expect(hasAnyError({ field: 'Too short', other: null })).toBe(true)
+  })
+
+  it('returns false when all object values are null/undefined', () => {
+    expect(hasAnyError({ a: null, b: undefined })).toBe(false)
+  })
+
+  it('returns true when any array element has an error', () => {
+    expect(hasAnyError([null, 'error', null])).toBe(true)
+  })
+
+  it('returns false when all array elements are null/undefined', () => {
+    expect(hasAnyError([null, undefined])).toBe(false)
+  })
+
+  it('recurses into nested objects', () => {
+    expect(hasAnyError({ a: { b: { c: 'deep error' } } })).toBe(true)
+    expect(hasAnyError({ a: { b: { c: null } } })).toBe(false)
+  })
+
+  it('recurses into nested arrays', () => {
+    expect(hasAnyError([[null], ['error']])).toBe(true)
+    expect(hasAnyError([[null], [null]])).toBe(false)
+  })
+})
+
+describe('hasAnyTouched', () => {
+  it('returns false for null', () => {
+    expect(hasAnyTouched(null)).toBe(false)
+  })
+
+  it('returns false for undefined', () => {
+    expect(hasAnyTouched(undefined)).toBe(false)
+  })
+
+  it('returns true for literal true', () => {
+    expect(hasAnyTouched(true)).toBe(true)
+  })
+
+  it('returns false for false', () => {
+    expect(hasAnyTouched(false)).toBe(false)
+  })
+
+  it('returns false for other primitives', () => {
+    expect(hasAnyTouched(0)).toBe(false)
+    expect(hasAnyTouched('touched')).toBe(false)
+  })
+
+  it('returns false for an empty object', () => {
+    expect(hasAnyTouched({})).toBe(false)
+  })
+
+  it('returns false for an empty array', () => {
+    expect(hasAnyTouched([])).toBe(false)
+  })
+
+  it('returns true when any object value is true', () => {
+    expect(hasAnyTouched({ field: true, other: false })).toBe(true)
+  })
+
+  it('returns false when no object value is true', () => {
+    expect(hasAnyTouched({ a: false, b: null })).toBe(false)
+  })
+
+  it('returns true when any array element is true', () => {
+    expect(hasAnyTouched([false, true, false])).toBe(true)
+  })
+
+  it('returns false when no array element is true', () => {
+    expect(hasAnyTouched([false, null, undefined])).toBe(false)
+  })
+
+  it('recurses into nested objects', () => {
+    expect(hasAnyTouched({ a: { b: { c: true } } })).toBe(true)
+    expect(hasAnyTouched({ a: { b: { c: false } } })).toBe(false)
+  })
+
+  it('recurses into nested arrays', () => {
+    expect(hasAnyTouched([[false], [true]])).toBe(true)
+    expect(hasAnyTouched([[false], [false]])).toBe(false)
+  })
+})
 
 describe('cloneDeep', () => {
   it('returns null as-is', () => {
