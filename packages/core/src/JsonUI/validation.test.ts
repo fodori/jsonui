@@ -59,7 +59,7 @@ describe('JsonUI validation helpers', () => {
       // Make value valid and rerun
       store.setForStore('data', '/user/age', 20)
       runInlineValidation(spec, store, '/')
-      expect(store.getForStore('data.error', '/user/age')).toBeUndefined()
+      expect(store.getForStore('data.error', '/user/age')).toBeNull()
     })
   })
 
@@ -121,7 +121,7 @@ describe('JsonUI validation helpers', () => {
       // Fix the score and rerun
       store.setForStore('data', '/players/0/score', 10)
       runValidationsForPath(registry, store, 'data', '/players/0/score')
-      expect(store.getForStore('data.error', '/players/0/score')).toBeUndefined()
+      expect(store.getForStore('data.error', '/players/0/score')).toBeNull()
     })
   })
 })

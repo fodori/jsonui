@@ -8,7 +8,7 @@
  */
 
 import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX, STORE_ROOT_PATH } from '../util/contants.js'
-import { cloneDeep } from '../util/helpers.js'
+import { assertJsonCompatible, cloneDeep } from '../util/helpers.js'
 import { get as ptrGet, resolvePath, normalizePath, parsePath } from '../util/json-pointer.js'
 import type { JSONValue, PathModifier } from '../util/types.js'
 
@@ -48,6 +48,7 @@ export class Store {
   }
 
   set(path: string, value: unknown): void {
+    assertJsonCompatible(value)
     this.state = setImmutable(this.state, path, value)
     this.notify()
   }
@@ -106,6 +107,7 @@ export class Store {
   }
 
   replaceState(state: StoreState): void {
+    assertJsonCompatible(state)
     this.state = state
     this.notify()
   }

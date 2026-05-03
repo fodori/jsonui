@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { cloneDeep, hasAnyError, hasAnyTouched } from './helpers.js'
+import { assertJsonCompatible, cloneDeep, hasAnyError, hasAnyTouched } from './helpers.js'
 
 describe('hasAnyError', () => {
   it('returns false for null', () => {
@@ -108,6 +108,71 @@ describe('hasAnyTouched', () => {
   })
 })
 
+describe('assertJsonCompatible', () => {
+  it('accepts null', () => {
+    expect(() => assertJsonCompatible(null)).not.toThrow()
+  })
+
+  it('accepts JSON primitives', () => {
+    expect(() => assertJsonCompatible('hello')).not.toThrow()
+    expect(() => assertJsonCompatible(42)).not.toThrow()
+    expect(() => assertJsonCompatible(0)).not.toThrow()
+    expect(() => assertJsonCompatible(true)).not.toThrow()
+    expect(() => assertJsonCompatible(false)).not.toThrow()
+  })
+
+  it('accepts plain objects and arrays', () => {
+    expect(() => assertJsonCompatible({ a: 1, b: [2, 3] })).not.toThrow()
+    expect(() => assertJsonCompatible([1, 'two', null, { x: true }])).not.toThrow()
+    expect(() => assertJsonCompatible({})).not.toThrow()
+    expect(() => assertJsonCompatible([])).not.toThrow()
+  })
+
+  it('rejects undefined', () => {
+    expect(() => assertJsonCompatible(undefined)).toThrow('undefined is not JSON-compatible')
+  })
+
+  it('rejects functions', () => {
+    expect(() => assertJsonCompatible(() => {})).toThrow('function is not JSON-compatible')
+  })
+
+  it('rejects symbols', () => {
+    expect(() => assertJsonCompatible(Symbol('s'))).toThrow('symbol is not JSON-compatible')
+  })
+
+  it('rejects bigint', () => {
+    expect(() => assertJsonCompatible(BigInt(1))).toThrow('bigint is not JSON-compatible')
+  })
+
+  it('rejects NaN', () => {
+    expect(() => assertJsonCompatible(NaN)).toThrow('Non-finite number')
+  })
+
+  it('rejects Infinity', () => {
+    expect(() => assertJsonCompatible(Infinity)).toThrow('Non-finite number')
+    expect(() => assertJsonCompatible(-Infinity)).toThrow('Non-finite number')
+  })
+
+  it('rejects a function nested inside an object', () => {
+    expect(() => assertJsonCompatible({ ok: 1, bad: () => {} })).toThrow('function is not JSON-compatible')
+  })
+
+  it('rejects a function nested inside an array', () => {
+    expect(() => assertJsonCompatible([1, () => {}])).toThrow('function is not JSON-compatible')
+  })
+
+  it('rejects circular references', () => {
+    const a: Record<string, unknown> = {}
+    a.self = a
+    expect(() => assertJsonCompatible(a)).toThrow('Circular reference')
+  })
+
+  it('allows the same object reference appearing in two separate branches (diamond)', () => {
+    const shared = { x: 1 }
+    expect(() => assertJsonCompatible({ a: shared, b: shared })).not.toThrow()
+  })
+})
+
 describe('cloneDeep', () => {
   it('returns null as-is', () => {
     expect(cloneDeep(null)).toBeNull()
@@ -175,5 +240,21 @@ describe('cloneDeep', () => {
     const clone = cloneDeep(original)
     clone.nested.value = 0
     expect(original.nested.value).toBe(42)
+  })
+
+  it('throws for a function value', () => {
+    expect(() => cloneDeep(() => {})).toThrow('function is not JSON-compatible')
+  })
+
+  it('throws for a symbol value', () => {
+    expect(() => cloneDeep(Symbol('s'))).toThrow('symbol is not JSON-compatible')
+  })
+
+  it('throws for NaN', () => {
+    expect(() => cloneDeep(NaN)).toThrow('Non-finite number')
+  })
+
+  it('throws for a function nested in an object', () => {
+    expect(() => cloneDeep({ fn: () => {} })).toThrow('function is not JSON-compatible')
   })
 })

@@ -81,16 +81,12 @@ export function runInlineValidation(spec: InlineValidationSpec, store: Store, cu
     }
   }
 
-  const newError = messages.length > 0 ? messages.join('; ') : undefined
+  const newError: string | null = messages.length > 0 ? messages.join('; ') : null
   const currentError = store.getForStore(errorStoreName, logicalPath)
 
-  if (currentError === newError) return
+  if ((currentError ?? null) === newError) return
 
-  if (messages.length > 0) {
-    store.setForStore(errorStoreName, logicalPath, newError, false)
-  } else {
-    store.setForStore(errorStoreName, logicalPath, undefined, false)
-  }
+  store.setForStore(errorStoreName, logicalPath, newError, false)
 }
 
 export function runValidationsForPath(registry: ValidationRegistry, store: Store, storeName: string, path: string): void {
@@ -164,9 +160,9 @@ export function runValidationsForPath(registry: ValidationRegistry, store: Store
   // Apply updates for all affected error paths (both existing and new).
   for (const targetPath of affectedErrorPaths) {
     const messages = perPathMessages[targetPath] ?? []
-    const newError = messages.length > 0 ? messages.join('; ') : undefined
+    const newError: string | null = messages.length > 0 ? messages.join('; ') : null
     const currentError = store.getForStore(errorStoreName, targetPath)
-    if (currentError === newError) continue
+    if ((currentError ?? null) === newError) continue
     store.setForStore(errorStoreName, targetPath, newError, false)
   }
 }
