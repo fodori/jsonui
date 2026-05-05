@@ -5,7 +5,7 @@ describe('computeListSliceRange', () => {
   it('page 0 with itemPerPage slices from the start', () => {
     expect(
       computeListSliceRange({
-        listDataLength: 100,
+        realDataLength: 100,
         page: 0,
         itemPerPage: 3,
         listLength: 10,
@@ -16,7 +16,7 @@ describe('computeListSliceRange', () => {
   it('page 0 is the default when page is omitted', () => {
     expect(
       computeListSliceRange({
-        listDataLength: 5,
+        realDataLength: 5,
         itemPerPage: 2,
         listLength: 5,
       })
@@ -26,7 +26,7 @@ describe('computeListSliceRange', () => {
   it('last page can be a short remainder', () => {
     expect(
       computeListSliceRange({
-        listDataLength: 20,
+        realDataLength: 20,
         page: 3,
         itemPerPage: 3,
         listLength: 10,
@@ -37,7 +37,7 @@ describe('computeListSliceRange', () => {
   it('when page * itemPerPage exceeds listLength, offset resets to 0', () => {
     expect(
       computeListSliceRange({
-        listDataLength: 100,
+        realDataLength: 100,
         page: 5,
         itemPerPage: 3,
         listLength: 10,
@@ -48,7 +48,7 @@ describe('computeListSliceRange', () => {
   it('non-integer or negative page coerces to 0', () => {
     expect(
       computeListSliceRange({
-        listDataLength: 10,
+        realDataLength: 10,
         page: -1,
         itemPerPage: 2,
         listLength: 10,
@@ -56,7 +56,7 @@ describe('computeListSliceRange', () => {
     ).toEqual([0, 1])
     expect(
       computeListSliceRange({
-        listDataLength: 10,
+        realDataLength: 10,
         page: 1.5,
         itemPerPage: 2,
         listLength: 10,
@@ -64,7 +64,7 @@ describe('computeListSliceRange', () => {
     ).toEqual([0, 1])
     expect(
       computeListSliceRange({
-        listDataLength: 10,
+        realDataLength: 10,
         page: 'nope',
         itemPerPage: 2,
         listLength: 10,
@@ -76,7 +76,7 @@ describe('computeListSliceRange', () => {
     const full = [0, 1, 2, 3, 4]
     expect(
       computeListSliceRange({
-        listDataLength: 5,
+        realDataLength: 5,
         page: 0,
         itemPerPage: -2,
         listLength: 5,
@@ -84,7 +84,7 @@ describe('computeListSliceRange', () => {
     ).toEqual(full)
     expect(
       computeListSliceRange({
-        listDataLength: 5,
+        realDataLength: 5,
         page: 0,
         itemPerPage: 2.5,
         listLength: 5,
@@ -92,10 +92,10 @@ describe('computeListSliceRange', () => {
     ).toEqual(full)
   })
 
-  it('listLength caps the slice even when listDataLength is larger', () => {
+  it('listLength caps the slice even when realDataLength is larger', () => {
     expect(
       computeListSliceRange({
-        listDataLength: 100,
+        realDataLength: 100,
         page: 0,
         itemPerPage: 20,
         listLength: 4,
@@ -103,10 +103,10 @@ describe('computeListSliceRange', () => {
     ).toEqual({ offset: 0, end: 4, indices: [0, 1, 2, 3] })
   })
 
-  it('omitted listLength uses listDataLength', () => {
+  it('omitted listLength uses realDataLength', () => {
     expect(
       computeListSliceRange({
-        listDataLength: 4,
+        realDataLength: 4,
         page: 0,
         itemPerPage: 10,
       })
@@ -116,7 +116,7 @@ describe('computeListSliceRange', () => {
   it('empty logical list yields empty indices', () => {
     expect(
       computeListSliceRange({
-        listDataLength: 0,
+        realDataLength: 0,
         page: 0,
         itemPerPage: 5,
         listLength: 0,

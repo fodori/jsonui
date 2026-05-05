@@ -1,14 +1,14 @@
-import type { JsonUINode, ModifierContext, ModifierMap, PathModifier } from '../../util/types.js'
+import type { JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency } from '../../util/types.js'
 import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
 import { runInlineValidation } from '../validation.js'
 import type { Store } from '../../store/store.js'
-import type { ResolvedRenderNodeState, StorePathDependency } from './resolutionTypes.js'
+import { V_VALIDATIONS } from '../../util/contants.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
 
 function runValidationSpecsFromNode(node: JsonUINode, storeInstance: Store, currentPath: string, effectivePathModifiers?: PathModifier): void {
-  const rawValidation = (node as Record<string, unknown>).$validation as
+  const rawValidation = (node as Record<string, unknown>)[V_VALIDATIONS as string] as
     | {
         store?: string
         path?: string

@@ -10,7 +10,7 @@ import type {
   ValidationRegistry,
   ValidationRule,
 } from '@jsonui/core'
-import { buildValidationRegistry, Store } from '@jsonui/core'
+import { buildValidationRegistry, Store, V_VALIDATIONS } from '@jsonui/core'
 import type { ComponentMap } from '../componentMap.js'
 import { useStore } from '../hooks/useStores.js'
 import { builtinComponents } from '../components/index.js'
@@ -55,7 +55,7 @@ export function JsonUI({
 }: JsonUIProps): React.ReactElement | null {
   const store: Store = useStore(initialStore, defaultValues)
   const validationRegistry: ValidationRegistry = useMemo(
-    () => buildValidationRegistry((model as unknown as { $validations?: ValidationRule[] }).$validations ?? []),
+    () => buildValidationRegistry((model as unknown as Record<string, unknown>)[V_VALIDATIONS] as ValidationRule[] ?? []),
     [model]
   )
   const allComponents = useMemo(() => (Object.keys(components).length > 0 ? { ...builtinComponents, ...components } : builtinComponents), [components])

@@ -106,7 +106,7 @@ export function computeRenderNodeSlotChildren(args: {
 
     const listCfgRaw = listConfig as Record<string, unknown>
     const { indices } = computeListSliceRange({
-      listDataLength: listData.length,
+      realDataLength: listData.length,
       page: listCfgRaw[LIST_PAGE],
       itemPerPage: listCfgRaw[LIST_ITEM_PER_PAGE],
       listLength: listCfgRaw[LIST_LENGTH],

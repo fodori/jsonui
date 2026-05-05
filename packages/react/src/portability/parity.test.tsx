@@ -8,14 +8,14 @@ import type { JsonUINode, OnStateExportProps } from '@jsonui/core'
 describe('portability parity (main JsonUI)', () => {
   it('list pagination matches main defaults (full range when unset)', () => {
     const { indices } = computeListSliceRange({
-      listDataLength: 5,
+      realDataLength: 5,
     })
     expect(indices).toEqual([0, 1, 2, 3, 4])
   })
 
   it('list pagination respects $page and $itemPerPage', () => {
     const { indices } = computeListSliceRange({
-      listDataLength: 100,
+      realDataLength: 100,
       page: 1,
       itemPerPage: 3,
       listLength: 10,

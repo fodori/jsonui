@@ -14,7 +14,7 @@ export interface ValidationRule {
 /** Nested maps may be missing until first validator is registered for a path. */
 export type ValidationRegistry = Partial<Record<string, Partial<Record<string, ValidateFunction[]>>>>
 
-// Inline (field-level) validation spec defined on a node via `$validation`.
+// Inline (field-level) validation spec defined on a node via `$validations`.
 export interface InlineValidationSpec {
   store: string
   path: string // may be absolute or relative
@@ -55,7 +55,7 @@ export function buildValidationRegistry(rules?: ValidationRule[]): ValidationReg
 /**
  * Run a single inline (field-level) validation spec against the current store state.
  *
- * - Respects $validation.store and $validation.path.
+ * - Respects $validations[].store and $validations[].path.
  * - If the path is relative (does not start with '/'), it is resolved using
  *   resolveStorePath with currentPath and pathModifiers so list items and
  *   global path modifiers work as expected.

@@ -14,6 +14,9 @@ export const LIST_LENGTH = '$listLength'
 /** Main JsonUI nested locale blobs merged into the translation map. */
 export const REF_LOCALES = '$locales'
 
+/** Field-level inline validation spec key on a node. */
+export const V_VALIDATIONS = '$validations'
+
 // Store-name suffixes for parallel trees (errors, touch-state, etc.).
 export const ERROR_STORE_SUFFIX = '.error'
 /** Shadow store for field touched state (aligned with main JsonUI `.touch`). */
