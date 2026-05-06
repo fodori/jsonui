@@ -69,3 +69,9 @@ export type ResolvedRenderNodeState = {
   props: Record<string, unknown>
   resolvedSlots: Record<string, unknown>
 }
+
+export interface ValidationRule {
+  schema: unknown
+  path: string
+  store: string
+}

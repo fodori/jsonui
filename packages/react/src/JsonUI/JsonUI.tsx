@@ -54,10 +54,10 @@ export function JsonUI({
   onStateExport,
 }: JsonUIProps): React.ReactElement | null {
   const store: Store = useStore(initialStore, defaultValues)
-  const validationRegistry: ValidationRegistry = useMemo(
-    () => buildValidationRegistry((model as unknown as Record<string, unknown>)[V_VALIDATIONS] as ValidationRule[] ?? []),
-    [model]
-  )
+  const validationRegistry: ValidationRegistry = useMemo(() => {
+    const validations = (model as unknown as Record<string, unknown>)[V_VALIDATIONS] as ValidationRule[] | undefined
+    return buildValidationRegistry(validations ?? [])
+  }, [model])
   const allComponents = useMemo(() => (Object.keys(components).length > 0 ? { ...builtinComponents, ...components } : builtinComponents), [components])
 
   const resolvedLanguage = activeLanguage ?? defaultLanguage

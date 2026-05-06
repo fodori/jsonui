@@ -3,13 +3,7 @@ import addFormats from 'ajv-formats'
 import ajvErrors from 'ajv-errors'
 import { Store, resolveStorePath } from '../store/store.js'
 import { ERROR_STORE_SUFFIX } from '../util/contants.js'
-import { PathModifier } from '../util/types.js'
-
-export interface ValidationRule {
-  schema: unknown
-  path: string
-  store: string
-}
+import { PathModifier, ValidationRule } from '../util/types.js'
 
 /** Nested maps may be missing until first validator is registered for a path. */
 export type ValidationRegistry = Partial<Record<string, Partial<Record<string, ValidateFunction[]>>>>

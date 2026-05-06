@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type MutableRefObject } from 'react'
+import { useEffect, useRef, useState, type RefObject } from 'react'
 import {
   runRenderNodeResolution,
   isPathPrefix,
@@ -14,7 +14,7 @@ import {
   type BreakpointKey,
 } from '@jsonui/core'
 
-export function useRenderNodeResolution(args: {
+interface UseRenderNodeResolutionArgs {
   effectiveNode: JsonUINode
   node: JsonUINode
   modifiers: ModifierMap
@@ -26,28 +26,29 @@ export function useRenderNodeResolution(args: {
   defaultLanguage: string | undefined
   activeLanguage: string | undefined
   stylePlatform: StylePlatform
-  styleBreakpoint: BreakpointKey | undefined
-}): {
+  styleBreakpoint?: BreakpointKey
+}
+interface UseRenderNodeResolutionResult {
   resolvedState: ResolvedRenderNodeState | null
   resolveError: Error | null
-  dependenciesRef: MutableRefObject<StorePathDependency[]>
-  runResolutionRef: MutableRefObject<() => void>
-} {
-  const {
-    effectiveNode,
-    node,
-    modifiers,
-    store,
-    currentPath,
-    effectivePathModifiers,
-    validators,
-    translations,
-    defaultLanguage,
-    activeLanguage,
-    stylePlatform,
-    styleBreakpoint,
-  } = args
+  dependenciesRef: RefObject<StorePathDependency[]>
+  runResolutionRef: RefObject<() => void>
+}
 
+export function useRenderNodeResolution({
+  effectiveNode,
+  node,
+  modifiers,
+  store,
+  currentPath,
+  effectivePathModifiers,
+  validators,
+  translations,
+  defaultLanguage,
+  activeLanguage,
+  stylePlatform,
+  styleBreakpoint,
+}: UseRenderNodeResolutionArgs): UseRenderNodeResolutionResult {
   const [resolvedState, setResolvedState] = useState<ResolvedRenderNodeState | null>(null)
   const [resolveError, setResolveError] = useState<Error | null>(null)
 

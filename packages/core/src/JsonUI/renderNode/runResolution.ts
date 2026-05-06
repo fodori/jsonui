@@ -1,4 +1,4 @@
-import type { JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency } from '../../util/types.js'
+import type { JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency, ValidationRule } from '../../util/types.js'
 import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
@@ -8,31 +8,19 @@ import { V_VALIDATIONS } from '../../util/contants.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
 
 function runValidationSpecsFromNode(node: JsonUINode, storeInstance: Store, currentPath: string, effectivePathModifiers?: PathModifier): void {
-  const rawValidation = (node as Record<string, unknown>)[V_VALIDATIONS as string] as
-    | {
-        store?: string
-        path?: string
-        schema?: unknown
-      }
-    | {
-        store?: string
-        path?: string
-        schema?: unknown
-      }[]
-    | undefined
+  const rawValidation = (node as Record<string, unknown>)[V_VALIDATIONS as string] as Partial<ValidationRule | null>[] | undefined
 
-  const specs = Array.isArray(rawValidation) ? rawValidation : rawValidation ? [rawValidation] : []
+  if (!rawValidation || !Array.isArray(rawValidation) || rawValidation.length === 0) return
 
-  for (const spec of specs) {
-    const raw: unknown = spec
-    if (raw === null || typeof raw !== 'object') continue
-    const s = raw as Record<string, unknown>
+  for (const item of rawValidation) {
+    if (item === null || typeof item !== 'object') continue
+    const s = item
     const store = s.store
     const pathStr = s.path
     const schema = s.schema
     if (typeof store !== 'string' || store.length === 0) continue
     if (typeof pathStr !== 'string' || pathStr.length === 0) continue
-    if (schema === undefined) continue
+    if (schema === undefined || schema === null) continue
     runInlineValidation(
       {
         store,
@@ -45,8 +33,7 @@ function runValidationSpecsFromNode(node: JsonUINode, storeInstance: Store, curr
     )
   }
 }
-
-export async function runRenderNodeResolution(args: {
+interface RunRenderNodeResolutionArgs {
   effectiveNode: JsonUINode
   node: JsonUINode
   modifiers: ModifierMap
@@ -56,12 +43,22 @@ export async function runRenderNodeResolution(args: {
   effectivePathModifiers?: PathModifier
   stylePlatform: StylePlatform
   styleBreakpoint?: BreakpointKey
-}): Promise<{
+}
+
+export async function runRenderNodeResolution({
+  effectiveNode,
+  node,
+  modifiers,
+  ctx,
+  store,
+  currentPath,
+  effectivePathModifiers,
+  stylePlatform,
+  styleBreakpoint,
+}: RunRenderNodeResolutionArgs): Promise<{
   state: ResolvedRenderNodeState
   deps: StorePathDependency[]
 }> {
-  const { effectiveNode, node, modifiers, ctx, store, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint } = args
-
   const props: Record<string, unknown> = {}
   const deps: StorePathDependency[] = []
 
