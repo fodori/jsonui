@@ -10,7 +10,9 @@ import { computeRenderNodeSlotChildren } from './renderNode/computeSlotChildren.
 import { builtinComponents } from '../components/index.js'
 
 function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
-  const { node, components, modifiers, actions, store, currentPath, pathModifiers, validators, translations, defaultLanguage, activeLanguage } = props
+  const { node: origNode, components, modifiers, actions, store, currentPath, pathModifiers, validators, translations, defaultLanguage, activeLanguage } = props
+
+  const node = useMemo(() => expandSimplifiedNode(origNode), [origNode])
 
   const styleConfig = useStyleConfig()
   const ownPathModifiers = getOwnPathModifiers(node)
@@ -25,10 +27,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
     [ownPathModifiers, pathModifiers, currentPath]
   )
 
-  const effectiveNode = useMemo(() => expandSimplifiedNode(node), [node])
-
   const { resolvedState, resolveError } = useRenderNodeResolution({
-    effectiveNode,
     node,
     modifiers,
     store,
@@ -59,7 +58,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
 
   //TODO tempo
   if (compName === 'SubmitButton') {
-    effectiveNode.onClick = {
+    node.onClick = {
       [ACTION_KEY]: 'submit',
     }
   }
@@ -99,7 +98,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   }
 
   const eventProps = buildRenderNodeEventProps({
-    effectiveNode,
+    node,
     modifiers,
     actions,
     store,
@@ -125,7 +124,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
 
   applyInputErrorFromValueBinding({
     compName,
-    effectiveNode,
+    node,
     store,
     mergedProps,
   })

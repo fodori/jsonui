@@ -15,7 +15,6 @@ import {
 } from '@jsonui/core'
 
 interface UseRenderNodeResolutionArgs {
-  effectiveNode: JsonUINode
   node: JsonUINode
   modifiers: ModifierMap
   store: Store
@@ -36,7 +35,6 @@ interface UseRenderNodeResolutionResult {
 }
 
 export function useRenderNodeResolution({
-  effectiveNode,
   node,
   modifiers,
   store,
@@ -94,7 +92,6 @@ export function useRenderNodeResolution({
     const run = async () => {
       try {
         const { state, deps } = await runRenderNodeResolution({
-          effectiveNode,
           node,
           modifiers,
           ctx,
@@ -129,7 +126,7 @@ export function useRenderNodeResolution({
     return () => {
       cancelled = true
     }
-  }, [effectiveNode, modifiers, store, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint])
+  }, [node, modifiers, store, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint])
   /* eslint-enable react-hooks/exhaustive-deps */
 
   return {

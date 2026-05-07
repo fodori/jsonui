@@ -2,7 +2,7 @@ import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, Valida
 import { resolveAction } from '@jsonui/core'
 
 export function buildRenderNodeEventProps(args: {
-  effectiveNode: JsonUINode
+  node: JsonUINode
   modifiers: ModifierMap
   actions: ActionMap
   store: Store
@@ -14,19 +14,8 @@ export function buildRenderNodeEventProps(args: {
   defaultLanguage: string | undefined
   activeLanguage: string | undefined
 }): Record<string, unknown> {
-  const {
-    effectiveNode,
-    modifiers,
-    actions,
-    store,
-    currentPath,
-    componentProps,
-    effectivePathModifiers,
-    validators,
-    translations,
-    defaultLanguage,
-    activeLanguage,
-  } = args
+  const { node, modifiers, actions, store, currentPath, componentProps, effectivePathModifiers, validators, translations, defaultLanguage, activeLanguage } =
+    args
 
   const actionCtx = {
     store,
@@ -40,7 +29,7 @@ export function buildRenderNodeEventProps(args: {
   }
 
   const eventProps: Record<string, unknown> = {}
-  for (const [key, value] of Object.entries(effectiveNode)) {
+  for (const [key, value] of Object.entries(node)) {
     if (key.startsWith('$')) continue
     // TODO check if there is a limitation somewhere else
     // TODO need to add documentation

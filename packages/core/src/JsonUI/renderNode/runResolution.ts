@@ -34,7 +34,6 @@ function runValidationSpecsFromNode(node: JsonUINode, storeInstance: Store, curr
   }
 }
 interface RunRenderNodeResolutionArgs {
-  effectiveNode: JsonUINode
   node: JsonUINode
   modifiers: ModifierMap
   ctx: ModifierContext
@@ -46,7 +45,6 @@ interface RunRenderNodeResolutionArgs {
 }
 
 export async function runRenderNodeResolution({
-  effectiveNode,
   node,
   modifiers,
   ctx,
@@ -62,7 +60,7 @@ export async function runRenderNodeResolution({
   const props: Record<string, unknown> = {}
   const deps: StorePathDependency[] = []
 
-  for (const [key, value] of Object.entries(effectiveNode)) {
+  for (const [key, value] of Object.entries(node)) {
     if (key.startsWith('$')) continue
     collectGetModifierDependencies(value, currentPath, deps, effectivePathModifiers)
     props[key] = await resolveModifier(value, modifiers, ctx)

@@ -20,16 +20,11 @@ export function buildInfraPropsForComponent(args: {
   return infraProps
 }
 
-export function applyInputErrorFromValueBinding(args: {
-  compName: string
-  effectiveNode: JsonUINode
-  store: Store
-  mergedProps: Record<string, unknown>
-}): void {
-  const { compName, effectiveNode, store, mergedProps } = args
+export function applyInputErrorFromValueBinding(args: { compName: string; node: JsonUINode; store: Store; mergedProps: Record<string, unknown> }): void {
+  const { compName, node, store, mergedProps } = args
   if (compName !== 'Edit') return
 
-  const valueSpec = (effectiveNode as Record<string, unknown>).value
+  const valueSpec = (node as Record<string, unknown>).value
   if (!valueSpec || typeof valueSpec !== 'object' || !(MODIFIER_KEY in valueSpec) || (valueSpec as Record<string, unknown>)[MODIFIER_KEY] !== 'get') {
     return
   }
