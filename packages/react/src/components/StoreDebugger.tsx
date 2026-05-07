@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function StoreDebugger({ data, error, touched }: Record<string, unknown>) {
+export const StoreDebugger = ({ data, error, touched }: Record<string, unknown>) => {
   return (
     <div
       style={{

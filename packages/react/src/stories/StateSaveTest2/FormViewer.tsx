@@ -11,7 +11,7 @@ const EMPTY_DEFAULT_VALUES: Record<string, JSONObject> = {
   data: { firstname: '' },
 }
 
-function savedSnapshotToDefaultValues(saved: unknown): Record<string, JSONObject> {
+const savedSnapshotToDefaultValues = (saved: unknown): Record<string, JSONObject> => {
   if (saved === null || typeof saved !== 'object' || Array.isArray(saved)) {
     return EMPTY_DEFAULT_VALUES
   }
@@ -64,7 +64,8 @@ const FormViewer = () => {
         defaultValues={defaultValues}
         id={actualKey}
         components={builtinComponents}
-        modifiers={modifiers} actions={actions}
+        modifiers={modifiers}
+        actions={actions}
       />
     </div>
   )

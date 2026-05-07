@@ -1,7 +1,7 @@
 import React from 'react'
 import { MODIFIER_KEY } from '@jsonui/core'
 
-export function coercePrimitiveChild(value: unknown): React.ReactNode {
+export const coercePrimitiveChild = (value: unknown): React.ReactNode => {
   if (value === true) return 'true'
   if (value === false) return 'false'
   if (value === null) return 'null'

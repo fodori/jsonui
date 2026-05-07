@@ -29,13 +29,13 @@ export interface StyleProviderProps {
  * Provides platform and breakpoint to the style layer.
  * Wrap your app or JsonUI tree with this to enable responsive and platform-specific style resolution.
  */
-export function StyleProvider({
+export const StyleProvider = ({
   children,
   platform = 'web',
   breakpoint: breakpointProp,
   getWidth,
   breakpoints = DEFAULT_BREAKPOINTS,
-}: StyleProviderProps): React.ReactElement {
+}: StyleProviderProps): React.ReactElement => {
   const breakpointFromHook = useBreakpoint(breakpointProp === undefined ? { getWidth, breakpoints } : {})
   const breakpoint = breakpointProp ?? breakpointFromHook
 
@@ -44,6 +44,6 @@ export function StyleProvider({
   return <StyleContext.Provider value={value}>{children}</StyleContext.Provider>
 }
 
-export function useStyleConfig(): StyleConfigValue {
+export const useStyleConfig = (): StyleConfigValue => {
   return useContext(StyleContext)
 }

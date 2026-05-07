@@ -1,5 +1,5 @@
 /** Segment-aware path overlap check (aligned with validation.ts). */
-export function isPathPrefix(rulePath: string, targetPath: string): boolean {
+export const isPathPrefix = (rulePath: string, targetPath: string): boolean => {
   const r = rulePath === '' ? '/' : rulePath
   const t = targetPath === '' ? '/' : targetPath
   if (r === '/') return true

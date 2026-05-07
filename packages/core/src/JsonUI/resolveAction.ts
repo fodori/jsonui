@@ -6,7 +6,7 @@ import { resolveModifier } from './resolveModifier.js'
 import { runValidationsForPath, type ValidationRegistry } from './validation.js'
 import { ACTION_KEY } from '../util/contants.js'
 
-export function resolveAction(
+export const resolveAction = (
   value: unknown,
   actions: ActionMap,
   modifiers: ModifierMap,
@@ -14,7 +14,7 @@ export function resolveAction(
   ctx: ActionContext & {
     validators?: ValidationRegistry
   }
-): ((e: unknown) => Promise<void>) | undefined {
+): ((e: unknown) => Promise<void>) | undefined => {
   if (value != null && typeof value === 'object' && ACTION_KEY in value) {
     const actionName = (value as Record<string, unknown>)[ACTION_KEY] as string
     const params = { ...(value as Record<string, unknown>) }

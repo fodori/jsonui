@@ -10,7 +10,7 @@ const defaultGetWidth: GetWidth = () => (typeof window !== 'undefined' ? window.
  * Get current breakpoint key from viewport width (mobile-first).
  * Uses the largest breakpoint whose threshold is <= width.
  */
-function getBreakpointFromWidth(width: number, breakpoints: Record<BreakpointKey, number>): BreakpointKey {
+const getBreakpointFromWidth = (width: number, breakpoints: Record<BreakpointKey, number>): BreakpointKey => {
   let current: BreakpointKey = 'base'
   for (const key of BREAKPOINT_ORDER) {
     const threshold = breakpoints[key]
@@ -31,7 +31,7 @@ export interface UseBreakpointOptions {
  * On web, use default getWidth (window.innerWidth).
  * On React Native, pass getWidth: () => Dimensions.get('window').width.
  */
-export function useBreakpoint(options: UseBreakpointOptions = {}): BreakpointKey {
+export const useBreakpoint = (options: UseBreakpointOptions = {}): BreakpointKey => {
   const { getWidth = defaultGetWidth, breakpoints = DEFAULT_BREAKPOINTS } = options
 
   const [breakpoint, setBreakpoint] = useState<BreakpointKey>(() => getBreakpointFromWidth(getWidth(), breakpoints))

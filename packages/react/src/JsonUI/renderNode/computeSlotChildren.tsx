@@ -24,7 +24,7 @@ type ListBranchNode = JsonUINode & {
   [PATH_MODIFIERS_KEY]?: ModifierContext['pathModifiers']
 }
 
-export function computeRenderNodeSlotChildren(args: {
+export const computeRenderNodeSlotChildren = (args: {
   node: JsonUINode
   resolvedSlots: Record<string, unknown> | undefined
   effectivePathModifiers?: ModifierContext['pathModifiers']
@@ -42,7 +42,7 @@ export function computeRenderNodeSlotChildren(args: {
 }): {
   mainChildren: React.ReactNode
   multiChildSlots: Record<string, React.ReactNode>
-} {
+} => {
   const {
     node,
     resolvedSlots,

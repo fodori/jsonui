@@ -10,13 +10,13 @@ import { builtinComponents, Edit } from './components/index.js'
  * and a wrapped Edit + render counter. Waits for async node
  * resolution before touching the DOM. */
 
-function setNativeInputValue(el: HTMLInputElement, value: string): void {
+const setNativeInputValue = (el: HTMLInputElement, value: string): void => {
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
   setter?.call(el, value)
 }
 
-function fireInputChange(el: HTMLInputElement, value: string): void {
+const fireInputChange = (el: HTMLInputElement, value: string): void => {
   setNativeInputValue(el, value)
   el.dispatchEvent(new Event('input', { bubbles: true }))
   el.dispatchEvent(new Event('change', { bubbles: true }))

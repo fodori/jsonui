@@ -7,7 +7,7 @@ import type { Store } from '../../store/store.js'
 import { V_VALIDATIONS } from '../../util/contants.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
 
-function runValidationSpecsFromNode(node: JsonUINode, storeInstance: Store, currentPath: string, effectivePathModifiers?: PathModifier): void {
+const runValidationSpecsFromNode = (node: JsonUINode, storeInstance: Store, currentPath: string, effectivePathModifiers?: PathModifier): void => {
   const rawValidation = (node as Record<string, unknown>)[V_VALIDATIONS as string] as Partial<ValidationRule | null>[] | undefined
 
   if (!rawValidation || !Array.isArray(rawValidation) || rawValidation.length === 0) return
@@ -44,7 +44,7 @@ interface RunRenderNodeResolutionArgs {
   styleBreakpoint?: BreakpointKey
 }
 
-export async function runRenderNodeResolution({
+export const runRenderNodeResolution = async ({
   node,
   modifiers,
   ctx,
@@ -56,7 +56,7 @@ export async function runRenderNodeResolution({
 }: RunRenderNodeResolutionArgs): Promise<{
   state: ResolvedRenderNodeState
   deps: StorePathDependency[]
-}> {
+}> => {
   const props: Record<string, unknown> = {}
   const deps: StorePathDependency[] = []
   const resolvedSlots: Record<string, unknown> = {}

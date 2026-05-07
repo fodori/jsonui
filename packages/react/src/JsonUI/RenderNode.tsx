@@ -9,7 +9,7 @@ import { buildInfraPropsForComponent, applyInputErrorFromValueBinding } from './
 import { computeRenderNodeSlotChildren } from './renderNode/computeSlotChildren.js'
 import { builtinComponents } from '../components/index.js'
 
-function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
+const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
   const { node: origNode, components, modifiers, actions, store, currentPath, pathModifiers, validators, translations, defaultLanguage, activeLanguage } = props
 
   const node = useMemo(() => expandSimplifiedNode(origNode), [origNode])
@@ -132,7 +132,7 @@ function RenderNodeInner(props: RenderNodeProps): React.ReactElement | null {
   return <Comp {...mergedProps}>{mainChildren}</Comp>
 }
 
-function propsAreEqual(prev: RenderNodeProps, next: RenderNodeProps): boolean {
+const propsAreEqual = (prev: RenderNodeProps, next: RenderNodeProps): boolean => {
   return (
     prev.node === next.node &&
     prev.components === next.components &&

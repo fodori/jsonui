@@ -1,6 +1,6 @@
 import { hasAnyError, hasAnyTouched } from '../util/helpers'
 
-export function isNotTouchedOrHasError(params: Record<string, unknown>): boolean {
+export const isNotTouchedOrHasError = (params: Record<string, unknown>): boolean => {
   const { error, touched } = params as {
     error?: unknown
     touched?: unknown

@@ -17,7 +17,7 @@ export interface InlineValidationSpec {
 
 let inlineAjv: Ajv | null = null
 
-function getInlineAjv(): Ajv {
+const getInlineAjv = (): Ajv => {
   if (!inlineAjv) {
     inlineAjv = new Ajv({ allErrors: true, strict: false })
     addFormats(inlineAjv)
@@ -26,7 +26,7 @@ function getInlineAjv(): Ajv {
   return inlineAjv
 }
 
-export function buildValidationRegistry(rules?: ValidationRule[]): ValidationRegistry {
+export const buildValidationRegistry = (rules?: ValidationRule[]): ValidationRegistry => {
   const registry: ValidationRegistry = {}
   if (!rules || rules.length === 0) return registry
 
@@ -56,7 +56,7 @@ export function buildValidationRegistry(rules?: ValidationRule[]): ValidationReg
  * - Writes errors to `${store}.error` at the resolved logical path, but only
  *   if the error value actually changes.
  */
-export function runInlineValidation(spec: InlineValidationSpec, store: Store, currentPath: string, pathModifiers?: PathModifier): void {
+export const runInlineValidation = (spec: InlineValidationSpec, store: Store, currentPath: string, pathModifiers?: PathModifier): void => {
   if (!spec.store || !spec.path || spec.schema == null) return
 
   const storeName = spec.store
@@ -83,7 +83,7 @@ export function runInlineValidation(spec: InlineValidationSpec, store: Store, cu
   store.setForStore(errorStoreName, logicalPath, newError, false)
 }
 
-export function runValidationsForPath(registry: ValidationRegistry, store: Store, storeName: string, path: string): void {
+export const runValidationsForPath = (registry: ValidationRegistry, store: Store, storeName: string, path: string): void => {
   const storeValidators = registry[storeName]
 
   // No validators registered for this store at all
@@ -162,7 +162,7 @@ export function runValidationsForPath(registry: ValidationRegistry, store: Store
 }
 
 /** Match whole segments only; works for paths of any depth (e.g. /a/b/0/c). */
-function isPathPrefix(rulePath: string, targetPath: string): boolean {
+const isPathPrefix = (rulePath: string, targetPath: string): boolean => {
   const r = rulePath === '' ? '/' : rulePath
   const t = targetPath === '' ? '/' : targetPath
 

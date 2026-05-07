@@ -15,14 +15,14 @@ const DANGEROUS_KEYS = new Set(['__proto__', 'prototype', 'constructor'])
  * Prevents accidental keys like "" from paths such as "//" or "/a/".
  * Does not decode segments (e.g. ~1 stays so one segment is preserved).
  */
-export function normalizePath(pathStr: string): string {
+export const normalizePath = (pathStr: string): string => {
   if (!pathStr || pathStr === '/') return '/'
   const trimmed = pathStr.startsWith('/') ? pathStr.slice(1) : pathStr
   const segments = trimmed.split(JSON_SEPARATOR).filter((s) => s !== '')
   return segments.length === 0 ? '/' : JSON_SEPARATOR + segments.join(JSON_SEPARATOR)
 }
 
-export function parsePath(pathStr: string): string[] {
+export const parsePath = (pathStr: string): string[] => {
   if (!pathStr || pathStr === '/') return []
   if (!pathStr.startsWith(JSON_SEPARATOR)) {
     throw new Error(`Invalid JSON Pointer path: ${pathStr}`)
@@ -30,7 +30,7 @@ export function parsePath(pathStr: string): string[] {
   return pathStr.slice(1).split(JSON_SEPARATOR).map(decode)
 }
 
-function decode(segment: string): string {
+const decode = (segment: string): string => {
   for (let i = 0; i < segment.length; i++) {
     if (segment[i] === '~') {
       const next = segment[i + 1]
@@ -43,11 +43,11 @@ function decode(segment: string): string {
   return segment.replace(/~1/g, '/').replace(/~0/g, '~')
 }
 
-function encode(segment: string): string {
+const encode = (segment: string): string => {
   return String(segment).replace(/~/g, '~0').replace(/\//g, '~1')
 }
 
-export function get(obj: unknown, pathStr: string): unknown {
+export const get = (obj: unknown, pathStr: string): unknown => {
   const segments = parsePath(pathStr) // parsePath normalizes, so /a//b/ -> /a/b
   let current: unknown = obj
   for (const seg of segments) {
@@ -57,7 +57,7 @@ export function get(obj: unknown, pathStr: string): unknown {
   return current
 }
 
-export function set(obj: Record<string, unknown>, pathStr: string, value: unknown): void {
+export const set = (obj: Record<string, unknown>, pathStr: string, value: unknown): void => {
   const segments = parsePath(pathStr)
   if (segments.length === 0) return
 
@@ -101,7 +101,7 @@ export function set(obj: Record<string, unknown>, pathStr: string, value: unknow
  * Resolve a path against a base path (for relative paths like ./x, ../y).
  * Supports arbitrary depth; excess ".." yields root then appends remaining segments.
  */
-export function resolvePath(basePath: string, relativePath: string): string {
+export const resolvePath = (basePath: string, relativePath: string): string => {
   if (relativePath.startsWith('/')) return normalizePath(relativePath)
 
   const baseSegments = parsePath(basePath)
@@ -118,7 +118,7 @@ export function resolvePath(basePath: string, relativePath: string): string {
   return JSON_SEPARATOR + baseSegments.map(encode).join(JSON_SEPARATOR)
 }
 
-function isArrayIndexToken(token: string): boolean {
+const isArrayIndexToken = (token: string): boolean => {
   if (token.length === 0) return false
   if (token === '0') return true
   return /^[1-9]\d*$/.test(token)

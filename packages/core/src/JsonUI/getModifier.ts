@@ -3,7 +3,7 @@ import { resolveStorePath } from '../store/store.js'
 import { ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../util/contants.js'
 import type { ModifierContext } from '../util/types.js'
 
-function hasAnyError(value: unknown): boolean {
+const hasAnyError = (value: unknown): boolean => {
   if (value === null || value === undefined) return false
   if (Array.isArray(value)) {
     return value.some((v) => hasAnyError(v))
@@ -14,7 +14,7 @@ function hasAnyError(value: unknown): boolean {
   return true
 }
 
-function hasAnyTouched(value: unknown): boolean {
+const hasAnyTouched = (value: unknown): boolean => {
   if (value === true) return true
   if (value === null || value === undefined) return false
   if (Array.isArray(value)) {
@@ -26,7 +26,7 @@ function hasAnyTouched(value: unknown): boolean {
   return false
 }
 
-export function createGetModifier(store: Store) {
+export const createGetModifier = (store: Store) => {
   return async (params: Record<string, unknown>, ctx: ModifierContext): Promise<unknown> => {
     const storeName = params.store as string
     const path = params.path as string

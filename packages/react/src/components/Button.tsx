@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Button({ children, onPress, onClick, style, disabled, ...rest }: Record<string, unknown>) {
+export const Button = ({ children, onPress, onClick, style, disabled, ...rest }: Record<string, unknown>) => {
   return (
     <button
       style={{

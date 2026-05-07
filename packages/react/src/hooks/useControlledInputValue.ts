@@ -12,14 +12,14 @@ import { useState, useRef, useEffect, useLayoutEffect, type ChangeEventHandler, 
  * @returns { value, onChange, ref } — pass value and onChange to the input,
  *   and ref to the actual <input> DOM element so the hook can restore selection.
  */
-export function useControlledInputValue(
+export const useControlledInputValue = (
   value: string,
   onChange?: ChangeEventHandler<HTMLInputElement>
 ): {
   value: string
   onChange: ChangeEventHandler<HTMLInputElement>
   ref: RefObject<HTMLInputElement | null>
-} {
+} => {
   const propValue = value
   const [localValue, setLocalValue] = useState(propValue)
   const lastValueWeSent = useRef<string | null>(null)

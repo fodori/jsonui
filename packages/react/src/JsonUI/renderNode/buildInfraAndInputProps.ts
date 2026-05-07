@@ -1,13 +1,13 @@
 import { MODIFIER_KEY, ERROR_STORE_SUFFIX, type JsonUINode, type ActionMap, type ModifierMap, type Store, type ModifierContext } from '@jsonui/core'
 
-export function buildInfraPropsForComponent(args: {
+export const buildInfraPropsForComponent = (args: {
   compName: string
   store: Store
   modifiers: ModifierMap
   actions: ActionMap
   currentPath: string
   effectivePathModifiers?: ModifierContext['pathModifiers']
-}): Record<string, unknown> {
+}): Record<string, unknown> => {
   const { compName, store, modifiers, actions, currentPath, effectivePathModifiers } = args
   const infraProps: Record<string, unknown> = {}
   if (compName === 'SubmitButton') {
@@ -20,7 +20,7 @@ export function buildInfraPropsForComponent(args: {
   return infraProps
 }
 
-export function applyInputErrorFromValueBinding(args: { compName: string; node: JsonUINode; store: Store; mergedProps: Record<string, unknown> }): void {
+export const applyInputErrorFromValueBinding = (args: { compName: string; node: JsonUINode; store: Store; mergedProps: Record<string, unknown> }): void => {
   const { compName, node, store, mergedProps } = args
   if (compName !== 'Edit') return
 

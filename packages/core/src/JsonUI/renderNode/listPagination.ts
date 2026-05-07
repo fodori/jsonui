@@ -26,12 +26,12 @@ export interface ComputeListSliceRangeResult {
   indices: number[]
 }
 
-export function computeListSliceRange({
+export const computeListSliceRange = ({
   realDataLength,
   page: pageRaw,
   itemPerPage: itemPerPageRaw,
   listLength: listLengthRaw,
-}: ComputeListSliceRangeArgs): ComputeListSliceRangeResult {
+}: ComputeListSliceRangeArgs): ComputeListSliceRangeResult => {
   const coerceNonNegInt = (v: unknown, fallback: number): number => {
     if (typeof v === 'number' && Number.isInteger(v) && v >= 0) return v
     return fallback

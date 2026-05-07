@@ -4,7 +4,7 @@ import { resolveModifier } from './resolveModifier.js'
 import { resolveAction } from './resolveAction.js'
 import type { ModifierContext } from '../util/types.js'
 
-function makeStoresWithData(age: string | number = ''): Store {
+const makeStoresWithData = (age: string | number = ''): Store => {
   const root = new Store()
   root.setForStore('data', '/', { age }, false)
   return root

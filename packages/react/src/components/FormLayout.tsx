@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function FormLayout({ children, childTop, childBottom, style, ...rest }: Record<string, unknown>) {
+export const FormLayout = ({ children, childTop, childBottom, style, ...rest }: Record<string, unknown>) => {
   return (
     <div
       style={{

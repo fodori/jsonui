@@ -15,11 +15,13 @@
 import { MODIFIER_KEY, ACTION_KEY } from '../util/contants.js'
 import type { JsonUINode } from '../util/types.js'
 
-function isSimplifiedNode(node: unknown): node is JsonUINode & {
+const isSimplifiedNode = (
+  node: unknown
+): node is JsonUINode & {
   [key: string]: unknown
   store: string
   path: string
-} {
+} => {
   if (typeof node !== 'object' || node === null) return false
   const r = node as Record<string, unknown>
   const store = r.store
@@ -33,7 +35,7 @@ function isSimplifiedNode(node: unknown): node is JsonUINode & {
  * not passed as component props.
  * If the node is not simplified, returns the same node reference.
  */
-export function expandSimplifiedNode(node: JsonUINode): JsonUINode {
+export const expandSimplifiedNode = (node: JsonUINode): JsonUINode => {
   if (!isSimplifiedNode(node)) return node
 
   const record = node as Record<string, unknown>

@@ -1,14 +1,7 @@
 import React from 'react'
 
-export function SubmitButton(props: Record<string, unknown>) {
-  const {
-    children,
-    style,
-    fieldErrors,
-    fieldTouched,
-    onClick,
-    ...rest
-  } = props
+export const SubmitButton = (props: Record<string, unknown>) => {
+  const { children, style, fieldErrors, fieldTouched, onClick, ...rest } = props
 
   const disabled = !fieldTouched || !!fieldErrors
 

@@ -34,7 +34,7 @@ interface UseRenderNodeResolutionResult {
   runResolutionRef: RefObject<() => void>
 }
 
-export function useRenderNodeResolution({
+export const useRenderNodeResolution = ({
   node,
   modifiers,
   store,
@@ -46,7 +46,7 @@ export function useRenderNodeResolution({
   activeLanguage,
   stylePlatform,
   styleBreakpoint,
-}: UseRenderNodeResolutionArgs): UseRenderNodeResolutionResult {
+}: UseRenderNodeResolutionArgs): UseRenderNodeResolutionResult => {
   const [resolvedState, setResolvedState] = useState<ResolvedRenderNodeState | null>(null)
   const [resolveError, setResolveError] = useState<Error | null>(null)
 

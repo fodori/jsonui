@@ -2,7 +2,7 @@ import type { Store } from '../store/store.js'
 import { resolveStorePath } from '../store/store.js'
 import { PathModifier } from '../util/types.js'
 
-export function createSetAction(store: Store) {
+export const createSetAction = (store: Store) => {
   return async (
     params: Record<string, unknown>,
     ctx?: {

@@ -9,7 +9,7 @@ import { PathModifier, StorePathDependency } from '../../util/types.js'
  * and appends it to the `deps` array. Nodes with a `$comp` key are skipped to avoid
  * descending into nested component definitions.
  */
-export function collectGetModifierDependencies(val: unknown, currentPath: string, deps: StorePathDependency[], effectivePathModifiers?: PathModifier): void {
+export const collectGetModifierDependencies = (val: unknown, currentPath: string, deps: StorePathDependency[], effectivePathModifiers?: PathModifier): void => {
   if (val && typeof val === 'object' && !Array.isArray(val) && V_COMP in val) {
     return
   }

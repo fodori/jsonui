@@ -6,7 +6,7 @@
 import type { CanonicalStyle, ResponsiveStyle, StyleInput, BreakpointKey, ResolveStyleOptions } from './types.js'
 import { BREAKPOINT_ORDER } from './types.js'
 
-function isResponsiveStyle(style: StyleInput): style is ResponsiveStyle {
+const isResponsiveStyle = (style: StyleInput): style is ResponsiveStyle => {
   if (typeof style !== 'object') return false
   const keys = Object.keys(style)
   return keys.some((k) => BREAKPOINT_ORDER.includes(k as BreakpointKey))
@@ -16,7 +16,7 @@ function isResponsiveStyle(style: StyleInput): style is ResponsiveStyle {
  * Merge responsive style into a single style: base + all breakpoints up to and including current.
  * Mobile-first: current breakpoint index determines how many layers we merge.
  */
-function mergeResponsive(responsive: ResponsiveStyle, currentBreakpoint: BreakpointKey): CanonicalStyle {
+const mergeResponsive = (responsive: ResponsiveStyle, currentBreakpoint: BreakpointKey): CanonicalStyle => {
   const idx = BREAKPOINT_ORDER.indexOf(currentBreakpoint)
   const merged: CanonicalStyle = {}
   for (let i = 0; i <= idx; i++) {
@@ -32,11 +32,13 @@ function mergeResponsive(responsive: ResponsiveStyle, currentBreakpoint: Breakpo
 /**
  * Parse "1px solid #ccc" or similar border shorthand into parts.
  */
-function parseBorder(value: string): {
+const parseBorder = (
+  value: string
+): {
   width?: number
   style?: string
   color?: string
-} {
+} => {
   const parts = value.trim().split(/\s+/)
   const result: { width?: number; style?: string; color?: string } = {}
   for (const p of parts) {
@@ -57,7 +59,7 @@ function parseBorder(value: string): {
  * - cursor is not supported on RN, omit
  * - numeric values kept as-is where RN expects numbers
  */
-function toNativeStyle(canonical: CanonicalStyle): Record<string, unknown> {
+const toNativeStyle = (canonical: CanonicalStyle): Record<string, unknown> => {
   const out: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(canonical)) {
     if (value === undefined) continue
@@ -114,7 +116,7 @@ const LENGTH_KEYS = new Set([
   'gap',
 ])
 
-function ensureLengthUnit(key: string, value?: string | number): string | number | undefined {
+const ensureLengthUnit = (key: string, value?: string | number): string | number | undefined => {
   if (value === undefined) return value
   if (!LENGTH_KEYS.has(key)) return value
   if (typeof value === 'number') return `${value}px`
@@ -128,7 +130,7 @@ function ensureLengthUnit(key: string, value?: string | number): string | number
  * Web: pass through with minimal changes. Normalize length props (e.g. fontSize)
  * so numeric or numeric-string values get "px" and the browser applies them.
  */
-function toWebStyle(canonical: CanonicalStyle): Record<string, unknown> {
+const toWebStyle = (canonical: CanonicalStyle): Record<string, unknown> => {
   const out: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(canonical)) {
     out[key] = ensureLengthUnit(key, value)
@@ -141,7 +143,7 @@ function toWebStyle(canonical: CanonicalStyle): Record<string, unknown> {
  * - If style is responsive (has base/xs/sm/md/lg/xl), merge up to current breakpoint, then resolve.
  * - If no breakpoint is provided for a responsive style, only "base" is used.
  */
-export function resolveStyle(style: StyleInput | null | undefined, options: ResolveStyleOptions): Record<string, unknown> | undefined {
+export const resolveStyle = (style: StyleInput | null | undefined, options: ResolveStyleOptions): Record<string, unknown> | undefined => {
   if (!style || typeof style !== 'object') return undefined
 
   let canonical: CanonicalStyle

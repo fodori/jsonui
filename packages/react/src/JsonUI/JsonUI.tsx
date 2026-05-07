@@ -40,7 +40,7 @@ export interface JsonUIProps {
   platform?: StylePlatform
 }
 
-export function JsonUI({
+export const JsonUI = ({
   model,
   components = {},
   modifiers = {},
@@ -52,7 +52,7 @@ export function JsonUI({
   platform = 'web',
   id,
   onStateExport,
-}: JsonUIProps): React.ReactElement | null {
+}: JsonUIProps): React.ReactElement | null => {
   const store: Store = useStore(initialStore, defaultValues)
   const validationRegistry: ValidationRegistry = useMemo(() => {
     const validations = (model as unknown as Record<string, unknown>)[V_VALIDATIONS] as ValidationRule[] | undefined

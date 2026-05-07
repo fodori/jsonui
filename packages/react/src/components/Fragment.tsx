@@ -1,5 +1,5 @@
 import React from 'react'
 
-export function Fragment({ children }: Record<string, unknown>) {
+export const Fragment = ({ children }: Record<string, unknown>) => {
   return <>{children as React.ReactNode}</>
 }

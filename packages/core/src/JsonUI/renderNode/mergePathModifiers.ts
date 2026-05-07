@@ -2,11 +2,11 @@ import type { JsonUINode, PathModifier } from '../../util/types.js'
 import { resolveStorePath } from '../../store/store.js'
 import { PATH_MODIFIERS_KEY } from '../../util/contants.js'
 
-export function getOwnPathModifiers(node: JsonUINode): PathModifier | undefined {
+export const getOwnPathModifiers = (node: JsonUINode): PathModifier | undefined => {
   return (node as Record<string, unknown>)[PATH_MODIFIERS_KEY] as PathModifier | undefined
 }
 
-export function mergeEffectivePathModifiers({
+export const mergeEffectivePathModifiers = ({
   ownPathModifiers,
   pathModifiers,
   currentPath,
@@ -14,7 +14,7 @@ export function mergeEffectivePathModifiers({
   ownPathModifiers?: PathModifier
   pathModifiers?: PathModifier
   currentPath: string
-}): PathModifier | undefined {
+}): PathModifier | undefined => {
   if (!ownPathModifiers || typeof ownPathModifiers !== 'object') {
     return pathModifiers
   }

@@ -2,7 +2,7 @@
  * Shared helpers for function handlers.
  */
 
-export function hasAnyError(value: unknown): boolean {
+export const hasAnyError = (value: unknown): boolean => {
   if (value === null || value === undefined) return false
   if (Array.isArray(value)) {
     return value.some((v) => hasAnyError(v))
@@ -14,7 +14,7 @@ export function hasAnyError(value: unknown): boolean {
   return true
 }
 
-export function hasAnyTouched(value: unknown): boolean {
+export const hasAnyTouched = (value: unknown): boolean => {
   if (value === true) return true
   if (value === null || value === undefined) return false
   if (Array.isArray(value)) {
@@ -30,7 +30,7 @@ export function hasAnyTouched(value: unknown): boolean {
  * Throws if value contains anything that cannot round-trip through JSON:
  * undefined, function, symbol, bigint, NaN, non-finite numbers, or circular references.
  */
-export function assertJsonCompatible(value: unknown, seen = new WeakSet()): void {
+export const assertJsonCompatible = (value: unknown, seen = new WeakSet()): void => {
   if (value === null) return
   if (value === undefined) throw new Error('undefined is not JSON-compatible')
 
@@ -61,7 +61,7 @@ export function assertJsonCompatible(value: unknown, seen = new WeakSet()): void
  * Deep clone helper used by get() so callers cannot mutate the internal store state.
  * Only JSON-compatible values are accepted; functions and other non-JSON types throw.
  */
-export function cloneDeep<T>(value: T): T {
+export const cloneDeep = <T>(value: T): T => {
   if (value === null || value === undefined) return value
 
   const type = typeof value

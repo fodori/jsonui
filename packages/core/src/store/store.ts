@@ -16,7 +16,7 @@ export type StoreState = Record<string, unknown>
 export type Listener = () => void
 export type StoreChangeListener = (storeName: string, logicalPath: string) => void
 
-function isTouchOrErrorShadowStore(storeName: string): boolean {
+const isTouchOrErrorShadowStore = (storeName: string): boolean => {
   return storeName.endsWith(TOUCH_STORE_SUFFIX) || storeName.endsWith(ERROR_STORE_SUFFIX)
 }
 
@@ -113,7 +113,7 @@ export class Store {
   }
 }
 
-export function makeStorePath(storeName: string, path: string): string {
+export const makeStorePath = (storeName: string, path: string): string => {
   if (!storeName || storeName.length === 0) {
     throw new Error('storeName must be a non-empty string')
   }
@@ -129,13 +129,13 @@ export function makeStorePath(storeName: string, path: string): string {
  * without mutating the original tree. Only the objects/arrays along the path are
  * shallow-copied; unrelated subtrees are structurally shared for performance.
  */
-function setImmutable(root: StoreState, pathStr: string, value: unknown): StoreState {
+const setImmutable = (root: StoreState, pathStr: string, value: unknown): StoreState => {
   const segments = parsePath(pathStr)
   if (segments.length === 0) return root
 
   const originalRoot = root
 
-  function cloneContainer(container: unknown): Record<string, unknown> | unknown[] {
+  const cloneContainer = (container: unknown): Record<string, unknown> | unknown[] => {
     if (Array.isArray(container)) {
       return (container as unknown[]).slice()
     }
@@ -145,7 +145,7 @@ function setImmutable(root: StoreState, pathStr: string, value: unknown): StoreS
     return {}
   }
 
-  function setAt(current: unknown, index: number): { cloned: Record<string, unknown> | unknown[]; result: unknown } {
+  const setAt = (current: unknown, index: number): { cloned: Record<string, unknown> | unknown[]; result: unknown } => {
     const isLast = index === segments.length - 1
     const seg = segments[index]
     const container = cloneContainer(current)
@@ -202,7 +202,7 @@ function setImmutable(root: StoreState, pathStr: string, value: unknown): StoreS
  *   access "data" or any other store.
  * Returns a normalized path (no empty segments, no trailing slash).
  */
-export function resolveStorePath(pathStr: string, currentPath: string, pathModifiers?: PathModifier, storeName?: string): string {
+export const resolveStorePath = (pathStr: string, currentPath: string, pathModifiers?: PathModifier, storeName?: string): string => {
   let resolved: string
   const modifier =
     pathModifiers !== undefined && storeName !== undefined && Object.prototype.hasOwnProperty.call(pathModifiers, storeName)

@@ -8,7 +8,7 @@ import { Store, type JSONObject } from '@jsonui/core'
  * - defaultValues: Record<storeName, JSON> where each value is a JSON object
  *   representing that logical store's root.
  */
-export function useStore(initialStore?: Store, defaultValues?: Record<string, JSONObject>): Store {
+export const useStore = (initialStore?: Store, defaultValues?: Record<string, JSONObject>): Store => {
   return useMemo(() => {
     const root: Store = initialStore ?? new Store()
 

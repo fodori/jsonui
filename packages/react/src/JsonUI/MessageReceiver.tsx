@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react'
 import { normalizePath, type Store } from '@jsonui/core'
 import { MessageHandlerContext, type ChangeDefaultValueFunc } from './MessageReceiverContext.js'
 
-function normalizeLogicalPath(path: string): string {
+const normalizeLogicalPath = (path: string): string => {
   const p = path.trim()
   if (!p || p === '/') return '/'
   const withSlash = p.startsWith('/') ? p : `/${p}`
@@ -12,7 +12,7 @@ function normalizeLogicalPath(path: string): string {
 /**
  * Subscribes the root store setter to `MessageHandler` (main JsonUI parity).
  */
-export function MessageReceiver({ store }: { store: Store }) {
+export const MessageReceiver = ({ store }: { store: Store }) => {
   const messageHandler = useContext(MessageHandlerContext)
 
   useEffect(() => {
