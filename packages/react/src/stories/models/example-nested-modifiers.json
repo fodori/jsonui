@@ -167,7 +167,7 @@
             "padding": 8,
             "border": "1px solid #ccc"
           },
-          "$validation": [
+          "$validations": [
             {
               "store": "data",
               "path": "/simplifiedField",
@@ -193,7 +193,7 @@
             "store": "data",
             "path": "score2"
           },
-          "$validation": [
+          "$validations": [
             {
               "store": "data",
               "path": "score2",

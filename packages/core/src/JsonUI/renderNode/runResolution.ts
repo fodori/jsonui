@@ -59,18 +59,17 @@ export async function runRenderNodeResolution({
 }> {
   const props: Record<string, unknown> = {}
   const deps: StorePathDependency[] = []
-
-  for (const [key, value] of Object.entries(node)) {
-    if (key.startsWith('$')) continue
-    collectGetModifierDependencies(value, currentPath, deps, effectivePathModifiers)
-    props[key] = await resolveModifier(value, modifiers, ctx)
-  }
-
   const resolvedSlots: Record<string, unknown> = {}
+
   for (const [key, value] of Object.entries(node)) {
-    if (!key.startsWith('$child')) continue
-    collectGetModifierDependencies(value, currentPath, deps, effectivePathModifiers)
-    resolvedSlots[key] = await resolveModifier(value, modifiers, ctx)
+    if (key.startsWith('$child') || !key.startsWith('$')) {
+      collectGetModifierDependencies(value, currentPath, deps, effectivePathModifiers)
+      if (key.startsWith('$child')) {
+        resolvedSlots[key] = await resolveModifier(value, modifiers, ctx)
+      } else if (!key.startsWith('$')) {
+        props[key] = await resolveModifier(value, modifiers, ctx)
+      }
+    }
   }
 
   if (props.style != null && typeof props.style === 'object') {
