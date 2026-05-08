@@ -1,7 +1,7 @@
 import React from 'react'
 import { useControlledInputValue } from '../hooks/useControlledInputValue.js'
 
-export const Edit = ({ value, onChange, onPress, style, error, helperText, ...rest }: Record<string, unknown>) => {
+export const Edit = ({ value, onChange, onPress, style, fieldErrors, helperText, ...rest }: Record<string, unknown>) => {
   const handleChange = (onChange ?? onPress) as React.ChangeEventHandler<HTMLInputElement> | undefined
   const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string, handleChange)
 
@@ -14,15 +14,15 @@ export const Edit = ({ value, onChange, onPress, style, error, helperText, ...re
       }}
     >
       <input ref={inputRef} style={style as React.CSSProperties} value={inputValue} onChange={inputOnChange} {...rest} />
-      {error || helperText ? (
+      {fieldErrors || helperText ? (
         <div
           style={{
-            color: error ? '#c00' : undefined,
+            color: fieldErrors ? '#c00' : undefined,
             fontSize: 12,
             marginTop: 4,
           }}
         >
-          {error ? String(error) : <>{helperText}</>}
+          {fieldErrors ? String(fieldErrors) : <>{helperText}</>}
         </div>
       ) : null}
     </div>

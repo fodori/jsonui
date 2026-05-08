@@ -341,13 +341,15 @@
       },
       "error": {
         "$modifier": "get",
-        "store": "data.error",
-        "path": "/"
+        "store": "data",
+        "path": "/",
+        "type": "ERROR"
       },
       "touched": {
         "$modifier": "get",
-        "store": "data.touch",
-        "path": "/"
+        "store": "data",
+        "path": "/",
+        "type": "TOUCH"
       }
     }
   ],

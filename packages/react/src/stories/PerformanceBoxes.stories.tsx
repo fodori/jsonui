@@ -37,13 +37,15 @@ const boxModel = {
       },
       error: {
         $modifier: 'get',
-        store: 'data.error',
+        store: 'data',
         path: '/',
+        type: 'ERROR',
       },
       touched: {
         $modifier: 'get',
-        store: 'data.touch',
+        store: 'data',
         path: '/',
+        type: 'TOUCH',
       },
     },
   ],
@@ -77,7 +79,8 @@ export const PerformanceBoxesTest: Story = {
       <JsonUI
         model={args.model}
         components={args.components}
-        modifiers={args.modifiers} actions={args.actions}
+        modifiers={args.modifiers}
+        actions={args.actions}
         defaultValues={{ data: { list: Array(BOX_COUNT).fill('a', 0) } }}
       />
     </>

@@ -168,13 +168,15 @@ export const ValidationTest: Story = {
           },
           error: {
             $modifier: 'get',
-            store: 'data.error',
+            store: 'data',
             path: '/',
+            type: 'ERROR',
           },
           touched: {
             $modifier: 'get',
-            store: `data${TOUCH_STORE_SUFFIX}`,
+            store: 'data',
             path: '/',
+            type: 'TOUCH',
           },
         },
       ],

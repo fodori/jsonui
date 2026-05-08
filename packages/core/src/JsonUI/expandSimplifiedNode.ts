@@ -12,7 +12,7 @@
  * resolution and the expanded props are passed through normally.
  */
 
-import { MODIFIER_KEY, ACTION_KEY } from '../util/contants.js'
+import { MODIFIER_KEY, ACTION_KEY, V_COMP } from '../util/contants.js'
 import type { JsonUINode } from '../util/types.js'
 
 const isSimplifiedNode = (
@@ -36,49 +36,51 @@ const isSimplifiedNode = (
  * If the node is not simplified, returns the same node reference.
  */
 export const expandSimplifiedNode = (node: JsonUINode): JsonUINode => {
-  if (!isSimplifiedNode(node)) return node
-
-  const record = node as Record<string, unknown>
-  const store = record.store as string
-  const path = record.path as string
-
-  const expanded: Record<string, unknown> = {}
-
-  for (const [key, value] of Object.entries(record)) {
-    if (key === 'store' || key === 'path') {
-      continue
-    }
-    expanded[key] = value
+  if (!isSimplifiedNode(node) && node[V_COMP] === 'SubmitButton') {
+    return node
   }
 
-  expanded.value = {
-    [MODIFIER_KEY]: 'get',
-    store,
-    path,
-  }
-  expanded.onChange = {
-    [ACTION_KEY]: 'set',
-    store,
-    path,
-  }
-  // TODO need to remove, the fieldErrors is enough
-  expanded.error = {
-    [MODIFIER_KEY]: 'get',
-    store,
-    path,
-    type: 'ERROR',
-  }
-  expanded.fieldErrors = {
-    [MODIFIER_KEY]: 'get',
-    store,
-    path,
-    type: 'ERROR',
-  }
-  expanded.fieldTouched = {
-    [MODIFIER_KEY]: 'get',
-    store,
-    path,
-    type: 'TOUCH',
+  const { store, path, ...rest } = node as Record<string, unknown>
+
+  const expanded = {
+    ...(node[V_COMP] === 'SubmitButton'
+      ? {
+          onClick: {
+            [ACTION_KEY]: 'submit',
+          },
+        }
+      : {}),
+    ...(isSimplifiedNode(node)
+      ? {
+          value: {
+            [MODIFIER_KEY]: 'get',
+            store,
+            path,
+          },
+          onChange: {
+            [ACTION_KEY]: 'set',
+            store,
+            path,
+          },
+          fieldErrors: {
+            [MODIFIER_KEY]: 'get',
+            store,
+            path,
+            type: 'ERROR',
+          },
+          fieldTouched: {
+            [MODIFIER_KEY]: 'get',
+            store,
+            path,
+            type: 'TOUCH',
+          },
+        }
+      : {
+          //if is not a simplified node, we should add store and path props
+          store,
+          path,
+        }),
+    ...rest,
   }
 
   return expanded

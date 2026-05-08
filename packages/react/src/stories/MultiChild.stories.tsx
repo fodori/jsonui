@@ -111,13 +111,15 @@ export const MultiChildTest: Story = {
           },
           error: {
             $modifier: 'get',
-            store: 'data.error',
+            store: 'data',
             path: '/',
+            type: 'ERROR',
           },
           touched: {
             $modifier: 'get',
-            store: 'data.touch',
+            store: 'data',
             path: '/',
+            type: 'TOUCH',
           },
         },
       ],
