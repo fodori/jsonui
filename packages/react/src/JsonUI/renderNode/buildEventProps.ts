@@ -1,4 +1,4 @@
-import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, ValidationRegistry, ModifierContext } from '@jsonui/core'
+import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, ValidationRegistry, ModifierContext, ActionContext } from '@jsonui/core'
 import { resolveAction } from '@jsonui/core'
 
 export const buildRenderNodeEventProps = (args: {
@@ -17,7 +17,7 @@ export const buildRenderNodeEventProps = (args: {
   const { node, modifiers, actions, store, currentPath, componentProps, effectivePathModifiers, validators, translations, defaultLanguage, activeLanguage } =
     args
 
-  const actionCtx = {
+  const actionCtx: ActionContext = {
     store,
     currentPath,
     pathModifiers: effectivePathModifiers,
@@ -30,7 +30,8 @@ export const buildRenderNodeEventProps = (args: {
 
   const eventProps: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(node)) {
-    if (key.startsWith('$')) continue
+    // don't delete it, it's important if we change the logic in future.
+    // if (key.startsWith('$')) continue
     // TODO check if there is a limitation somewhere else
     // TODO need to add documentation
     if (!key.startsWith('on')) continue
@@ -39,7 +40,7 @@ export const buildRenderNodeEventProps = (args: {
     //TODO: it could be array id need multiple action one by one
     if (Array.isArray(value)) {
       const handlers: ((e: unknown) => Promise<void>)[] = value
-        .map((v) => resolveAction(v, actions, modifiers, store, actionCtx))
+        .map((v) => resolveAction(v, actions, modifiers, actionCtx))
         .filter((h): h is (e: unknown) => Promise<void> => !!h)
       if (handlers.length) {
         handler = async (e: unknown) => {
@@ -49,7 +50,7 @@ export const buildRenderNodeEventProps = (args: {
         }
       }
     } else {
-      handler = resolveAction(value, actions, modifiers, store, actionCtx)
+      handler = resolveAction(value, actions, modifiers, actionCtx)
     }
     if (handler) eventProps[key] = handler
   }

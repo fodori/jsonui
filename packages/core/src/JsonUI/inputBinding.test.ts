@@ -27,11 +27,16 @@ describe('input-style store binding (get / set)', () => {
       currentPath: '/' as const,
       pathModifiers: undefined,
     }
-    const handler = resolveAction({ $action: 'set', store: 'data', path: '/age' }, {}, {}, store, {
-      store,
-      ...ctx,
-      componentProps: {},
-    })
+    const handler = resolveAction(
+      { $action: 'set', store: 'data', path: '/age' },
+      {},
+      {},
+      {
+        store,
+        ...ctx,
+        componentProps: {},
+      }
+    )
     expect(handler).toBeDefined()
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -72,11 +77,16 @@ describe('input-style store binding (get / set)', () => {
     const store = makeStoresWithData(42)
     const submitSpy = vi.fn()
 
-    const handler = resolveAction({ $action: 'submit', store: 'data', path: '/' }, { submit: submitSpy }, {}, store, {
-      store,
-      currentPath: '/',
-      componentProps: { value: { score: '10' }, fieldTouched: true },
-    })
+    const handler = resolveAction(
+      { $action: 'submit', store: 'data', path: '/' },
+      { submit: submitSpy },
+      {},
+      {
+        store,
+        currentPath: '/',
+        componentProps: { value: { score: '10' }, fieldTouched: true },
+      }
+    )
 
     expect(handler).toBeDefined()
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -95,11 +105,16 @@ describe('input-style store binding (get / set)', () => {
     const store = makeStoresWithData(42)
     const submitSpy = vi.fn()
 
-    const handler = resolveAction({ $action: 'submit', value: { score: '20' } }, { submit: submitSpy }, {}, store, {
-      store,
-      currentPath: '/',
-      componentProps: { value: { score: '10' } },
-    })
+    const handler = resolveAction(
+      { $action: 'submit', value: { score: '20' } },
+      { submit: submitSpy },
+      {},
+      {
+        store,
+        currentPath: '/',
+        componentProps: { value: { score: '10' } },
+      }
+    )
 
     expect(handler).toBeDefined()
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

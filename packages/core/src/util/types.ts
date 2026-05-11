@@ -5,6 +5,7 @@
 import type { Store } from '../store/store.js'
 import { V_COMP, V_CHILDREN } from './contants.js'
 export type { Store }
+import { type ValidateFunction } from 'ajv'
 
 export type JsonUIValue = string | number | boolean | null | JsonUINode | JsonUIValue[]
 
@@ -48,6 +49,7 @@ export type ComponentActionProps = Record<string, unknown>
 
 export interface ActionContext extends ModifierContext {
   componentProps: ComponentActionProps
+  validators?: ValidationRegistry
 }
 
 export type ModifierMap = Record<string, ModifierHandler | undefined>
@@ -74,4 +76,14 @@ export interface ValidationRule {
   schema: unknown
   path: string
   store: string
+}
+
+/** Nested maps may be missing until first validator is registered for a path. */
+export type ValidationRegistry = Partial<Record<string, Partial<Record<string, ValidateFunction[]>>>>
+
+// Inline (field-level) validation spec defined on a node via `$validations`.
+export interface InlineValidationSpec {
+  store: string
+  path: string // may be absolute or relative
+  schema: unknown
 }

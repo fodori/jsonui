@@ -1,19 +1,9 @@
-import Ajv, { type ValidateFunction } from 'ajv'
+import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
 import ajvErrors from 'ajv-errors'
 import { Store, resolveStorePath } from '../store/store.js'
 import { ERROR_STORE_SUFFIX } from '../util/contants.js'
-import { PathModifier, ValidationRule } from '../util/types.js'
-
-/** Nested maps may be missing until first validator is registered for a path. */
-export type ValidationRegistry = Partial<Record<string, Partial<Record<string, ValidateFunction[]>>>>
-
-// Inline (field-level) validation spec defined on a node via `$validations`.
-export interface InlineValidationSpec {
-  store: string
-  path: string // may be absolute or relative
-  schema: unknown
-}
+import { InlineValidationSpec, PathModifier, ValidationRegistry, ValidationRule } from '../util/types.js'
 
 let inlineAjv: Ajv | null = null
 

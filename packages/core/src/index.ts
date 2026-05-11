@@ -20,10 +20,11 @@ import {
   TranslationsMap,
   PathModifier,
   ValidationRule,
+  ValidationRegistry,
 } from './util/types.js'
 import { runRenderNodeResolution } from './JsonUI/renderNode/runResolution.js'
 import { resolveAction } from './JsonUI/resolveAction.js'
-import { buildValidationRegistry, ValidationRegistry } from './JsonUI/validation.js'
+import { buildValidationRegistry } from './JsonUI/validation.js'
 import modifiers from './modifiers/index.js'
 import { resolveStorePath, Store } from './store/store.js'
 import { BREAKPOINT_ORDER, BreakpointKey, DEFAULT_BREAKPOINTS, StylePlatform } from './style/types.js'

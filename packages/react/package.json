@@ -46,7 +46,8 @@
     "type-check": "tsc -p tsconfig.json --noEmit",
     "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "all": "clear && yarn test && yarn lint && yarn type-check && yarn build"
   },
   "dependencies": {
     "@jsonui/core": "0.10.0"

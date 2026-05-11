@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { buildValidationRegistry, runInlineValidation, runValidationsForPath } from './validation.js'
 import { Store } from '../store/store.js'
-import type { InlineValidationSpec } from './validation.js'
-import { ValidationRule } from '../util/types.js'
+import { InlineValidationSpec, ValidationRule } from '../util/types.js'
 
 describe('JsonUI validation helpers', () => {
   describe('buildValidationRegistry', () => {

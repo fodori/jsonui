@@ -43,7 +43,8 @@
     "format:check": "prettier --check \"src/**/*.ts\"",
     "type-check": "tsc -p tsconfig.typecheck.json --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "all": "clear && yarn test && yarn lint && yarn type-check && yarn build"
   },
   "dependencies": {
     "ajv": "^8.18.0",
