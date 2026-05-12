@@ -22,6 +22,7 @@ export const resolveAction = (value: unknown, actions: ActionMap, modifiers: Mod
     if (!handler) return undefined
 
     return async (e: unknown) => {
+      // TODO: research, why componentProps need
       const resolvedParams: Record<string, unknown> = { ...componentProps, ...params }
       // Case 1: value from event (input onChange) – only when the model
       // did NOT define a value explicitly.

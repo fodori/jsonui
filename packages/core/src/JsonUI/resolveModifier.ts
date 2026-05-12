@@ -12,16 +12,14 @@ import { createGetModifier } from './getModifier.js'
 export async function resolveModifier(value: unknown, modifiers: ModifierMap, ctx: ModifierContext): Promise<unknown> {
   // If it's a direct modifier object: { $modifier: 'x', ...params }
   if (value != null && typeof value === 'object' && MODIFIER_KEY in value) {
-    const mod = (value as Record<string, unknown>)[MODIFIER_KEY] as string
-    const params = { ...(value as Record<string, unknown>) }
-    delete params[MODIFIER_KEY]
+    const { [MODIFIER_KEY]: mod, ...params } = value as Record<string, unknown>
 
     const resolvedParams: Record<string, unknown> = {}
     for (const [k, v] of Object.entries(params)) {
       resolvedParams[k] = await resolveModifier(v, modifiers, ctx)
     }
 
-    const handler = modifiers[mod] ?? (mod === 'get' ? createGetModifier(ctx.store) : undefined)
+    const handler = modifiers[mod as string] ?? (mod === 'get' ? createGetModifier(ctx.store) : undefined)
     if (!handler) return undefined
 
     const result = handler(resolvedParams, ctx)

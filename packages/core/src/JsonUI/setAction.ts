@@ -1,15 +1,9 @@
 import type { Store } from '../store/store.js'
 import { resolveStorePath } from '../store/store.js'
-import { PathModifier } from '../util/types.js'
+import { ActionContext } from '../util/types.js'
 
 export const createSetAction = (store: Store) => {
-  return async (
-    params: Record<string, unknown>,
-    ctx?: {
-      currentPath: string
-      pathModifiers?: PathModifier
-    }
-  ): Promise<void> => {
+  return async (params: Record<string, unknown>, ctx?: Pick<ActionContext, 'currentPath' | 'pathModifiers'>): Promise<void> => {
     const storeName = params.store as string
     const path = params.path as string
     let value = params.value

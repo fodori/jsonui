@@ -9,6 +9,7 @@ let inlineAjv: Ajv | null = null
 
 const getInlineAjv = (): Ajv => {
   if (!inlineAjv) {
+    // TODO why it's no strict?
     inlineAjv = new Ajv({ allErrors: true, strict: false })
     addFormats(inlineAjv)
     ajvErrors(inlineAjv)
