@@ -21,6 +21,20 @@ describe('input-style store binding (get / set)', () => {
     expect(value).toBe(42)
   })
 
+  it('resolveModifier get cannot escape to another store via relative traversal path', async () => {
+    const store = new Store()
+    store.setForStore('data', '/name', 'fred', false)
+    store.setForStore('anotherstore', '/name', 'alex', false)
+
+    const ctx: ModifierContext = {
+      store,
+      currentPath: '/name',
+    }
+
+    const value = await resolveModifier({ $modifier: 'get', store: 'data', path: '../anotherstore/name' }, {}, ctx)
+    expect(value).toBeUndefined()
+  })
+
   it('resolveAction set writes event target value to data/age with empty ActionMap', async () => {
     const store = makeStoresWithData('')
     const ctx = {
@@ -43,6 +57,31 @@ describe('input-style store binding (get / set)', () => {
     await handler!({ target: { value: 'test@example.com' } })
 
     expect(store.getForStore('data', '/age')).toBe('test@example.com')
+  })
+
+  it('resolveAction set cannot write to another store via relative traversal path', async () => {
+    const store = new Store()
+    store.setForStore('data', '/name', 'fred', false)
+    store.setForStore('anotherstore', '/name', 'alex', false)
+
+    const handler = resolveAction(
+      { $action: 'set', store: 'data', path: '../anotherstore/name' },
+      {},
+      {},
+      {
+        store,
+        currentPath: '/name',
+        pathModifiers: undefined,
+        componentProps: {},
+      }
+    )
+
+    expect(handler).toBeDefined()
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    await handler!({ target: { value: 'hacked' } })
+
+    expect(store.getForStore('data', '/anotherstore/name')).toBe('hacked')
+    expect(store.getForStore('anotherstore', '/name')).toBe('alex')
   })
 
   it('resolveModifier get with type ERROR returns undefined for leaf-less error containers', async () => {

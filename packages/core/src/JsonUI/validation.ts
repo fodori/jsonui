@@ -103,6 +103,8 @@ export const runInlineValidation = async (
   }
 }
 
+// Runs all validators whose rule path matches the changed path prefix for the given store.
+// Aggregates current validation messages and writes or clears them in the matching .error store paths.
 export const runValidationsForPath = (registry: ValidationRegistry, store: Store, storeName: string, path: string): void => {
   const storeValidators = registry[storeName]
 
