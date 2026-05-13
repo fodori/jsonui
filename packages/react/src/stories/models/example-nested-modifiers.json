@@ -169,8 +169,6 @@
           },
           "$validations": [
             {
-              "store": "data",
-              "path": "/simplifiedField",
               "schema": {
                 "type": "string",
                 "pattern": "^[0-1]+$",
@@ -187,8 +185,6 @@
           "path": "score2",
           "$validations": [
             {
-              "store": "data",
-              "path": "score2",
               "schema": {
                 "type": "string",
                 "pattern": "^[0-1]+$",

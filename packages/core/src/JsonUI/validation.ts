@@ -1,9 +1,10 @@
 import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
 import ajvErrors from 'ajv-errors'
-import { Store, resolveStorePath } from '../store/store.js'
+import { Store } from '../store/store.js'
 import { ERROR_STORE_SUFFIX } from '../util/contants.js'
-import { InlineValidationSpec, PathModifier, ValidationRegistry, ValidationRule } from '../util/types.js'
+import { InlineValidationSpec, ModifierContext, ModifierMap, ValidationRegistry, ValidationRule } from '../util/types.js'
+import { resolveModifier } from './resolveModifier.js'
 
 let inlineAjv: Ajv | null = null
 
@@ -40,38 +41,66 @@ export const buildValidationRegistry = (rules?: ValidationRule[]): ValidationReg
 /**
  * Run a single inline (field-level) validation spec against the current store state.
  *
- * - Respects $validations[].store and $validations[].path.
- * - If the path is relative (does not start with '/'), it is resolved using
- *   resolveStorePath with currentPath and pathModifiers so list items and
- *   global path modifiers work as expected.
- * - Writes errors to `${store}.error` at the resolved logical path, but only
- *   if the error value actually changes.
+ * The component's own store name and resolved logical path are passed in directly —
+ * they come from the simplified component's `store`/`path` props, not from the spec.
+ *
+ * Supports two validation styles:
+ *   - schema: AJV JSON Schema validation
+ *   - jsonataDef + errorMessage: JSONata expression; error shown when result is
+ *     not null, undefined, empty string, or true. errorMessage may be a plain string
+ *     or a { $modifier: ... } expression resolved via resolveModifier.
  */
-export const runInlineValidation = (spec: InlineValidationSpec, store: Store, currentPath: string, pathModifiers?: PathModifier): void => {
-  if (!spec.store || !spec.path || spec.schema == null) return
+export const runInlineValidation = async (
+  spec: InlineValidationSpec,
+  store: Store,
+  componentStoreName: string,
+  componentLogicalPath: string,
+  modifiers: ModifierMap,
+  ctx: ModifierContext
+): Promise<void> => {
+  const errorStoreName = `${componentStoreName}${ERROR_STORE_SUFFIX}`
+  const value = store.getForStore(componentStoreName, componentLogicalPath)
 
-  const storeName = spec.store
-  const logicalPath = resolveStorePath(spec.path, currentPath, pathModifiers, storeName)
-
-  const errorStoreName = `${storeName}${ERROR_STORE_SUFFIX}`
-  const value = store.getForStore(storeName, logicalPath)
-
-  const ajv = getInlineAjv()
-  const validate = ajv.compile(spec.schema)
-  const messages: string[] = []
-  const valid = validate(value)
-  if (!valid && validate.errors) {
-    for (const err of validate.errors) {
-      if (err.message) messages.push(err.message)
+  if (spec.schema != null) {
+    const ajv = getInlineAjv()
+    const validate = ajv.compile(spec.schema)
+    const messages: string[] = []
+    const valid = validate(value)
+    //TODO: need to outsource validation to separate function and test it
+    if (!valid && validate.errors) {
+      for (const err of validate.errors) {
+        if (err.message) messages.push(err.message)
+      }
     }
+
+    const newError: string | null = messages.length > 0 ? messages.join('; ') : null
+    const currentError = store.getForStore(errorStoreName, componentLogicalPath)
+    if ((currentError ?? null) !== newError) {
+      store.setForStore(errorStoreName, componentLogicalPath, newError, false)
+    }
+    return
   }
 
-  const newError: string | null = messages.length > 0 ? messages.join('; ') : null
-  const currentError = store.getForStore(errorStoreName, logicalPath)
+  if (spec.jsonataDef != null && spec.errorMessage != null) {
+    let result: unknown
+    try {
+      const jsonata = (await import('jsonata')).default
+      const expr = jsonata(spec.jsonataDef)
+      result = await expr.evaluate(value)
+    } catch {
+      result = undefined
+    }
 
-  if ((currentError ?? null) === newError) return
+    const hasError = result !== null && result !== undefined && result !== '' && result !== true
 
-  store.setForStore(errorStoreName, logicalPath, newError, false)
+    const newError: string | null = hasError ? String(await resolveModifier(spec.errorMessage, modifiers, ctx)) : null
+
+    const currentError = store.getForStore(errorStoreName, componentLogicalPath)
+    if ((currentError ?? null) !== newError) {
+      store.setForStore(errorStoreName, componentLogicalPath, newError, false)
+    }
+    return
+  }
 }
 
 export const runValidationsForPath = (registry: ValidationRegistry, store: Store, storeName: string, path: string): void => {

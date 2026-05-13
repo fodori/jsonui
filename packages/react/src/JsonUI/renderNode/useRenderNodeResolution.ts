@@ -26,6 +26,10 @@ interface UseRenderNodeResolutionArgs {
   activeLanguage: string | undefined
   stylePlatform: StylePlatform
   styleBreakpoint?: BreakpointKey
+  /** Store name from the simplified component's own `store` prop, if any. */
+  componentStore?: string
+  /** Path from the simplified component's own `path` prop, if any. */
+  componentPath?: string
 }
 interface UseRenderNodeResolutionResult {
   resolvedState: ResolvedRenderNodeState | null
@@ -46,6 +50,8 @@ export const useRenderNodeResolution = ({
   activeLanguage,
   stylePlatform,
   styleBreakpoint,
+  componentStore,
+  componentPath,
 }: UseRenderNodeResolutionArgs): UseRenderNodeResolutionResult => {
   const [resolvedState, setResolvedState] = useState<ResolvedRenderNodeState | null>(null)
   const [resolveError, setResolveError] = useState<Error | null>(null)
@@ -100,6 +106,8 @@ export const useRenderNodeResolution = ({
           effectivePathModifiers,
           stylePlatform,
           styleBreakpoint,
+          componentStore,
+          componentPath,
         })
 
         if (!cancelled && resolutionVersionRef.current === version) {
@@ -126,7 +134,7 @@ export const useRenderNodeResolution = ({
     return () => {
       cancelled = true
     }
-  }, [node, modifiers, store, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint])
+  }, [node, modifiers, store, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint, componentStore, componentPath])
   /* eslint-enable react-hooks/exhaustive-deps */
 
   return {

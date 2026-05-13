@@ -82,8 +82,13 @@ export interface ValidationRule {
 export type ValidationRegistry = Partial<Record<string, Partial<Record<string, ValidateFunction[]>>>>
 
 // Inline (field-level) validation spec defined on a node via `$validations`.
+// store and path come from the simplified component, not from the spec itself.
 export interface InlineValidationSpec {
-  store: string
-  path: string // may be absolute or relative
-  schema: unknown
+  // Schema-based validation (AJV)
+  schema?: unknown
+  // JSONata-based validation: error shown when result is not null/undefined/""/true
+  jsonataDef?: string
+  // Error message shown for jsonataDef validation failures.
+  // May be a plain string or a { $modifier: ... } expression.
+  errorMessage?: unknown
 }

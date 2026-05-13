@@ -14,6 +14,12 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
 
   const node = useMemo(() => expandSimplifiedNode(origNode), [origNode])
 
+  const s = (origNode as Record<string, unknown>).store
+  const componentStore = typeof s === 'string' && s.length > 0 ? s : undefined
+
+  const p = (origNode as Record<string, unknown>).path
+  const componentPath = typeof p === 'string' ? p : undefined
+
   const styleConfig = useStyleConfig()
   const ownPathModifiers = getOwnPathModifiers(node)
 
@@ -39,6 +45,8 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
     activeLanguage,
     stylePlatform: styleConfig.platform,
     styleBreakpoint: styleConfig.breakpoint,
+    componentStore,
+    componentPath,
   })
 
   const renderNested = useCallback((p: RenderNodeProps) => <RenderNode {...p} />, [])

@@ -36,7 +36,7 @@ const isSimplifiedNode = (
  * If the node is not simplified, returns the same node reference.
  */
 export const expandSimplifiedNode = (node: JsonUINode): JsonUINode => {
-  if (!isSimplifiedNode(node) && node[V_COMP] === 'SubmitButton') {
+  if (!isSimplifiedNode(node) && node[V_COMP] !== 'SubmitButton') {
     return node
   }
 

@@ -1,36 +1,29 @@
-import type { JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency, ValidationRule } from '../../util/types.js'
+import type { JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency } from '../../util/types.js'
 import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
 import { runInlineValidation } from '../validation.js'
 import type { Store } from '../../store/store.js'
+import { resolveStorePath } from '../../store/store.js'
 import { V_VALIDATIONS } from '../../util/contants.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
 
-const runValidationSpecsFromNode = (node: JsonUINode, storeInstance: Store, currentPath: string, effectivePathModifiers?: PathModifier): void => {
-  const rawValidation = (node as Record<string, unknown>)[V_VALIDATIONS as string] as Partial<ValidationRule | null>[] | undefined
+const runValidationSpecsFromNode = async (
+  node: JsonUINode,
+  store: Store,
+  modifiers: ModifierMap,
+  ctx: ModifierContext,
+  componentStoreName: string | undefined,
+  componentLogicalPath: string | undefined
+): Promise<void> => {
+  const rawValidation = (node as Record<string, unknown>)[V_VALIDATIONS] as unknown[] | undefined
 
   if (!rawValidation || !Array.isArray(rawValidation) || rawValidation.length === 0) return
+  if (!componentStoreName || componentLogicalPath == null) return
 
   for (const item of rawValidation) {
     if (item === null || typeof item !== 'object') continue
-    const s = item
-    const store = s.store
-    const pathStr = s.path
-    const schema = s.schema
-    if (typeof store !== 'string' || store.length === 0) continue
-    if (typeof pathStr !== 'string' || pathStr.length === 0) continue
-    if (schema === undefined || schema === null) continue
-    runInlineValidation(
-      {
-        store,
-        path: pathStr,
-        schema,
-      },
-      storeInstance,
-      currentPath,
-      effectivePathModifiers
-    )
+    await runInlineValidation(item, store, componentStoreName, componentLogicalPath, modifiers, ctx)
   }
 }
 interface RunRenderNodeResolutionArgs {
@@ -42,6 +35,10 @@ interface RunRenderNodeResolutionArgs {
   effectivePathModifiers?: PathModifier
   stylePlatform: StylePlatform
   styleBreakpoint?: BreakpointKey
+  /** Store name from the simplified component's own `store` prop, if any. */
+  componentStore?: string
+  /** Logical path from the simplified component's own `path` prop, if any. */
+  componentPath?: string
 }
 
 export const runRenderNodeResolution = async ({
@@ -53,6 +50,8 @@ export const runRenderNodeResolution = async ({
   effectivePathModifiers,
   stylePlatform,
   styleBreakpoint,
+  componentStore,
+  componentPath,
 }: RunRenderNodeResolutionArgs): Promise<{
   state: ResolvedRenderNodeState
   deps: StorePathDependency[]
@@ -80,7 +79,10 @@ export const runRenderNodeResolution = async ({
     props.style = resolved ?? props.style
   }
 
-  runValidationSpecsFromNode(node, store, currentPath, effectivePathModifiers)
+  const resolvedComponentPath =
+    componentStore && componentPath != null ? resolveStorePath(componentPath, currentPath, effectivePathModifiers, componentStore) : undefined
+
+  await runValidationSpecsFromNode(node, store, modifiers, ctx, componentStore, resolvedComponentPath)
 
   return {
     state: { props, resolvedSlots },
