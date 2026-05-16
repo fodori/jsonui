@@ -2,7 +2,9 @@
 
 This page documents the JSON model format consumed by `JsonUI`.
 
-## Core Keys $comp
+## Core Keys
+
+### `$comp`
 
 Defines which component should be rendered.
 
@@ -193,6 +195,7 @@ JSONata inline validation semantics:
 - No error when result is `null`, `undefined`, `""`, or `true`
 - Any other result means validation error
 - `errorMessage` can be static text or a modifier expression
+- if no `errorMessage`, then JSONata string result will be the error
 
 ## Lists and Path Modifiers
 
