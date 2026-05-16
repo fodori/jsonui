@@ -46,17 +46,8 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Build and deploy docs
+      - name: Build docs
         run: yarn copyDocs
-        env:
-          VITE_BASE_PATH: /jsonui/
-
-      - name: Deploy docs to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          cname: jsonui.org
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
