@@ -26,7 +26,7 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
 
   const node = useMemo(() => expandSimplifiedNode(origNode), [origNode])
 
-  const s = (origNode as Record<string, unknown>).formStore
+  const s = (origNode as Record<string, unknown>).store
   const componentStore = typeof s === 'string' && s.length > 0 ? s : undefined
 
   const p = (origNode as Record<string, unknown>).path
