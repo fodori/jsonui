@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build:libs": "yarn workspace @jsonui/core run build && yarn workspace @jsonui/react run build",
-    "build": "yarn build:libs && yarn workspace @jsonui/playground run build",
+    "build": "yarn build:libs && yarn workspace @jsonui/functions-example run build && yarn workspace @jsonui/components-web-example run build",
     "buildweb": "yarn build:libs",
     "type-check": "yarn workspace @jsonui/core run type-check && yarn workspace @jsonui/react run type-check",
     "test": "yarn workspace @jsonui/core run test && yarn workspace @jsonui/react run test",
