@@ -81,19 +81,29 @@ export const runInlineValidation = async (
     return
   }
 
-  if (spec.jsonataDef != null && spec.errorMessage != null) {
+  if (spec.jsonataDef != null) {
     let result: unknown
     try {
       const jsonata = (await import('jsonata')).default
       const expr = jsonata(spec.jsonataDef)
       result = await expr.evaluate(value)
-    } catch {
-      result = undefined
+    } catch (e) {
+      if (typeof e === 'string') {
+        result = e
+      } else if (typeof e === 'object' && e !== null && 'message' in e && typeof e.message === 'string') {
+        result = e.message
+      } else {
+        try {
+          result = String(e)
+        } catch {
+          result = 'error'
+        }
+      }
     }
 
     const hasError = result !== null && result !== undefined && result !== '' && result !== true
 
-    const newError: string | null = hasError ? String(await resolveModifier(spec.errorMessage, modifiers, ctx)) : null
+    const newError: string | null = hasError ? (spec.errorMessage ? String(await resolveModifier(spec.errorMessage, modifiers, ctx)) : String(result)) : null
 
     const currentError = formStore.get(errorStoreName, componentLogicalPath)
     if ((currentError ?? null) !== newError) {

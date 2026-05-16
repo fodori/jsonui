@@ -105,6 +105,22 @@
           }
         },
         {
+          "$comp": "Edit",
+          "store": "data",
+          "path": "score3",
+          "label": "Jsonata validation, relative path ",
+          "$validations": [
+            {
+              "jsonataDef": "$number($)>20",
+              "errorMessage": "Value must be greater than 20"
+            }
+          ],
+          "style": {
+            "padding": 8,
+            "border": "1px solid #ccc"
+          }
+        },
+        {
           "$comp": "View",
           "style": {
             "marginTop": 16,
