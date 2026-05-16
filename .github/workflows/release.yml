@@ -41,8 +41,8 @@ jobs:
 
       - name: Publish to npm
         run: |
-          yarn workspace @jsonui/core npm publish --access public
-          yarn workspace @jsonui/react npm publish --access public
+          (cd packages/core && npm publish --access public)
+          (cd packages/react && npm publish --access public)
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
