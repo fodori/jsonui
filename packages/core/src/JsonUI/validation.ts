@@ -59,7 +59,7 @@ export const buildValidationRegistry = (rules?: ValidationRule[]): ValidationReg
  *
  * Supports two validation styles:
  *   - schema: AJV JSON Schema validation
- *   - jsonataDef + errorMessage: JSONata expression; error shown when result is
+ *   - jsonataDef + errorMessage (not mandatory): JSONata expression; error shown when result is
  *     not null, undefined, empty string, or true. errorMessage may be a plain string
  *     or a { $modifier: ... } expression resolved via resolveModifier.
  */

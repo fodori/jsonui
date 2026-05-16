@@ -1,179 +1,223 @@
-### 1, Components
+## Json Model Reference
 
-The `"$comp"` key represents the name of a component. This library contains few predefined components, just for test purpose:
+This page documents the JSON model format consumed by `JsonUI`.
 
-- **View:** it's a simple `div` html tag
-- **Button:** it's a simple `button` html tag
-- **Fragment:** it's a simple `React.Fragment` component
-- **Image:** it's a simple `image` html tag
-- **Text:** it's a simple `p` html tag
+## Core Keys $comp
 
-The props of the components are the same as in the normal react world.
-
-The `"$children"` key represents the children of the component.
-It can be an array, object or primitive like text, number, boolean
+Defines which component should be rendered.
 
 ```json
-{ "$comp": "Text", "$children": "Hello World" }
-{ "$comp": "Text", "$children": 124 }
-{ "$comp": "Text", "$children": [1,2,3] }
-{ "$comp": "Text", "$children": null }
-{ "$comp": "View", "$children": [
-   { "$comp": "Text", "$children": "Hello World" },
-  ]
-}
+{ "$comp": "Text", "$children": "Hello world" }
 ```
 
-### 2, Actions
+### `$children` and `$child*`
 
-When the component has an interaction with a user or a triggered event, the `"$action"` key will represent it, for example, onClick, onChange or onPress.
+`$children` is the default slot. `$child*` keys are named slots for multi-slot components.
 
 ```json
 {
-  "$comp": "Button",
-  "$children": "Login",
-  "onPress": { "$action": "navigate", "route": "LoginPage" }
+  "$comp": "View",
+  "$children": [{ "$comp": "Text", "$children": "Body" }],
+  "$childFooter": { "$comp": "Text", "$children": "Footer" }
 }
 ```
 
-The action is a predefined function that will run when the event has been triggered.
+### `$modifier`
 
-### 3, Modifiers
-
-The `"$modifier"` can add a dynamic value for properties or components. It's a function which will be called at **render time** of the component. For example translate a text.
-
-```json
-{ "$comp": "Text", "$children": "Hello World" }
-{ "$comp": "Text", "$children": { "$modifier": "translate", "key": "Helló Világ" } }
-```
-
-### How can you customise it?
-
-Easily.
-
-```js
-
-const Canvas = () => <JsonUI model={jsonData}
-  "modifiers"={{
-    translate: ({key}) => translate(key)
-  }}
-  "actions"={{
-    navigate: ({route}) => navigate(route)
-  }}/>
-```
-
-### State management or data storage
-
-The state management stores form state or any information what is needed to store. It is independent from **model**. It represents a permissive and dynamic tree graf structure. Like a JSON file. Each JSONUI instance has multiple stores (each one has a name/key) representing multiple data tree or separate storage. What you need is, just use a specific name in JSON Definition.
-JSONUI use [json-pointer](https://www.npmjs.com/package/json-pointer) to tell the `path` what kind of data we need.
-
-We have 2 built-in handlers which can help to read and write your state management.
-
-Let's see some example
-
-#### Read data
-
-##### if your defaultValues looks like:
-
-```json
-{ "users": [{ "userName": "John Doe" }] }
-```
-
-##### Use _/username_ in text field
+Evaluates a value at render time.
 
 ```json
 {
   "$comp": "Text",
   "$children": {
     "$modifier": "get",
-    "store": "users",
-    "path": "/0/userName"
+    "store": "data",
+    "path": "/fullName"
   }
 }
 ```
 
-#### Write data
+### `$action`
 
-##### When the user click on the button, it will modify the data
+Defines event-time behavior (for example `onClick`, `onChange`, `onPress`).
 
 ```json
 {
   "$comp": "Button",
-  "$children": "Change username",
-  "onPress": {
-    "$action": "set",
-    "store": "users",
-    "path": "/0/userName",
-    "value": "John Doe 2"
-  }
+  "$children": "Save",
+  "onClick": { "$action": "set", "store": "data", "path": "/saved", "value": true }
 }
 ```
 
-##### Data will be:
+## Store and Path
+
+JsonUI uses named logical stores plus JSON Pointer paths.
+
+- Store example: `data`
+- Path example: `/profile/firstName`
+
+Supported path forms:
 
 ```json
-{ "users": [{ "userName": "John Doe 2" }] }
+{ "path": "/profile/firstName" }
+{ "path": "profile/firstName" }
+{ "path": "../firstName" }
 ```
 
-##### A simple input field solution
+## Simplification: `store` + `path` Shorthand
+
+If a node contains `store` and `path`, JsonUI expands it automatically.
+
+Input model:
 
 ```json
 {
   "$comp": "Edit",
-  "value": { "$modifier": "get", "store": "questionnaire", "path": "/firstName" },
-  "onChange": { "$action": "set", "store": "questionnaire", "path": "/firstName" }
+  "store": "data",
+  "path": "/profile/firstName",
+  "label": "First name"
 }
 ```
 
-You can manipulate the data when read or write it with [jsonata](https://jsonata.org/).
+Effective behavior:
+
+- `value` is auto-bound with `$modifier: "get"`
+- `onChange` is auto-bound with `$action: "set"`
+- `fieldErrors` is auto-bound to the error shadow store (`type: "ERROR"`)
+- `fieldTouched` is auto-bound to the touch shadow store (`type: "TOUCH"`)
+
+This is the recommended way to model form fields.
+
+### SubmitButton simplification
+
+`SubmitButton` gets `onClick: { "$action": "submit" }` automatically.
+
+## Built-in Modifiers and Actions
+
+### Built-in modifiers
+
+- `get`: reads from a store/path, supports `jsonataDef`
+- `jsonata`: evaluates a JSONata expression from arbitrary input parameters
+- `t`: translation lookup
+- `isNotTouchedOrHasError`: helper for validation-driven UI state
+
+### Built-in actions
+
+- `set`: writes to store/path and updates touch state automatically
+
+## JSONata Usage
+
+JsonUI supports JSONata in both reads and writes.
+
+### JSONata in `get`
 
 ```json
 {
   "$comp": "Text",
-  "children": {
+  "$children": {
     "$modifier": "get",
     "store": "data",
-    "path": "/prevNumber",
-    "jsonataDef": "'Next Number: ' & (1+$)"
+    "path": "/amount",
+    "jsonataDef": "'$' & $string($)"
   }
 }
 ```
 
-### Advanced technique
+### JSONata in `set`
 
-#### Relative, absolute
-
-You can use absolute, relative path and ./ ../ still works.
-few examples
+`set` can transform `value` before persisting it.
 
 ```json
-{  "path": "/prevNumber" }
-{  "path": "prevNumber" }
-{  "path": "../prevNumber" }
-{  "path": "../../prevNumber" }
+{
+  "$comp": "Button",
+  "$children": "Increment",
+  "onClick": {
+    "$action": "set",
+    "store": "data",
+    "path": "/counter",
+    "value": 1,
+    "jsonataDef": "$ + 1"
+  }
+}
 ```
 
-#### List
+## Inline Validation (`$validations`)
 
-JSONUI we need to handle dynamic data, for example a list.
+Inline validation is field-level validation attached directly to a component node.
 
-##### if your data store looks like:
+Important:
+
+- Inline validation runs for nodes that have `store` and `path` context.
+- Validation messages are written to `<storeName>.error`.
+- Touch state is tracked in `<storeName>.touch`.
+
+### Schema validation (AJV)
 
 ```json
-{ "data": { "users": { "list": [{ "name": "John Doe" }] } } }
+{
+  "$comp": "Edit",
+  "store": "data",
+  "path": "/age",
+  "$validations": [
+    {
+      "schema": {
+        "type": "number",
+        "minimum": 18,
+        "errorMessage": {
+          "minimum": "Age must be at least 18"
+        }
+      }
+    }
+  ]
+}
 ```
+
+### JSONata inline validation
+
+```json
+{
+  "$comp": "Edit",
+  "store": "data",
+  "path": "/score",
+  "$validations": [
+    {
+      "jsonataDef": "$number($) > 10",
+      "errorMessage": "Score must be greater than 10"
+    }
+  ]
+}
+```
+
+JSONata inline validation semantics:
+
+- No error when result is `null`, `undefined`, `""`, or `true`
+- Any other result means validation error
+- `errorMessage` can be static text or a modifier expression
+
+## Lists and Path Modifiers
+
+Use `$isList`, `$pathModifiers`, and `$listItem` for collection rendering.
 
 ```json
 {
   "$comp": "Fragment",
-  "isList": true,
+  "$isList": true,
   "$pathModifiers": {
     "data": { "path": "/users/list" }
   },
-  "listItem": {
+  "$listItem": {
     "$comp": "Edit",
-    "value": { "$modifier": "get", "store": "data", "path": "name" },
-    "onChange": { "$action": "set", "store": "data", "path": "name" }
+    "store": "data",
+    "path": "name"
   }
 }
 ```
+
+This keeps list item models relative while still resolving to absolute store paths.
+
+## Practical Recommendations
+
+- Prefer shorthand (`store` + `path`) for form fields.
+- Keep validation close to fields with `$validations`.
+- Use JSONata for lightweight transformations, not for complex business workflows.
+- Use named stores to separate domain data, UI state, and reference data.
