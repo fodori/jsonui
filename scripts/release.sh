@@ -65,6 +65,8 @@ for PKG in "${CONSUMERS[@]}"; do
   JSON="$ROOT/$PKG/package.json"
   sed -i.bak "s/\"@jsonui\/core\": \"[^\"]*\"/\"@jsonui\/core\": \"$BARE\"/" "$JSON"
   sed -i.bak "s/\"@jsonui\/react\": \"[^\"]*\"/\"@jsonui\/react\": \"$BARE\"/" "$JSON"
+  sed -i.bak "s/\"@jsonui\/components-web-example\": \"[^\"]*\"/\"@jsonui\/components-web-example\": \"$BARE\"/" "$JSON"
+  sed -i.bak "s/\"@jsonui\/functions-example\": \"[^\"]*\"/\"@jsonui\/functions-example\": \"$BARE\"/" "$JSON"
   rm -f "$JSON.bak"
   echo "  updated $PKG/package.json"
 done
