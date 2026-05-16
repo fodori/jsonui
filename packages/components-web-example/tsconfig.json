@@ -1,14 +1,14 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
-    "baseUrl": "./src/",
     "jsx": "react-jsx",
     "module": "ESNext",
     "sourceMap": true,
     "outDir": "dist",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "types": ["node"]
   },
-  "include": ["src"],
+  "include": ["src/**/*", ".storybook/**/*"],
   "exclude": ["src/stories"]
 }

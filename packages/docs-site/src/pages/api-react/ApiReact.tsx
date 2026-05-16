@@ -16,7 +16,7 @@ function App() {
   const [content, setContent] = useState('')
 
   useEffect(() => {
-    fetch(markupFile)
+    void fetch(markupFile)
       .then((res) => res.text())
       .then((md) => {
         setContent(md)
@@ -46,47 +46,66 @@ function App() {
             <TableBody>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">model</TableCell>
-                <TableCell align="left">any (JsonValue)</TableCell>
-                <TableCell align="left">It should be a serializable, non-cyclic object/array/primitive value. Like a JSON.</TableCell>
+                <TableCell align="left">Json</TableCell>
+                <TableCell align="left">Required JSON model that defines component tree, bindings, and behavior.</TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">defaultValues</TableCell>
-                <TableCell align="left">{'Record<string, object>'}</TableCell>
+                <TableCell align="left">{'Record<string, JSONObject>'}</TableCell>
                 <TableCell align="left">
-                  Initial values of stores, the key will be the name of the store. The value can be the initial value of the store when the JsonUI starts.Like a
-                  normal JSON.
+                  Initial values per logical store.
                   <br />
-                  For example: {`{ data : { firstName : 'Jon' } }`}
+                  Example: {`{ data: { firstName: 'Jon' }, ui: { loading: false } }`}
                   <br />
-                  It's store <b>Jon</b> name into <b>firstName</b> attribute of the <b>data</b> store
+                  Initialization does not mark fields as touched.
                 </TableCell>
+              </TableRow>
+              <TableRow hover tabIndex={-1}>
+                <TableCell align="left">initialFormStore</TableCell>
+                <TableCell align="left">FormStore</TableCell>
+                <TableCell align="left">Optional pre-created store instance. Use when store lifecycle is managed outside JsonUI.</TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">components</TableCell>
                 <TableCell align="left">{'Record<string, React.ReactType>'}</TableCell>
-                <TableCell align="left">
-                  List of React components. The key will be the name of the component and it will be available for use in `model` definition.
-                </TableCell>
+                <TableCell align="left">Custom components merged with built-in components. Keys are referenced by `$comp` in the model.</TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
-                <TableCell align="left">functions</TableCell>
-                <TableCell align="left">{'Record<string, () => any>'}</TableCell>
-                <TableCell align="left">
-                  List of functions to use for `$modifier` or for `$action`. It will be available for use in `model` definition.{' '}
-                </TableCell>
+                <TableCell align="left">modifiers</TableCell>
+                <TableCell align="left">{'Record<string, (params, context) => unknown>'}</TableCell>
+                <TableCell align="left">Custom modifier handlers referenced by `$modifier`.</TableCell>
+              </TableRow>
+              <TableRow hover tabIndex={-1}>
+                <TableCell align="left">actions</TableCell>
+                <TableCell align="left">{'Record<string, (params, context) => void | Promise<void>>'}</TableCell>
+                <TableCell align="left">Custom action handlers referenced by `$action`. Action context contains `componentProps`.</TableCell>
+              </TableRow>
+              <TableRow hover tabIndex={-1}>
+                <TableCell align="left">defaultLanguage</TableCell>
+                <TableCell align="left">string</TableCell>
+                <TableCell align="left">Baseline language code for translation modifier usage (`$modifier: "t"`). Default is `en`.</TableCell>
+              </TableRow>
+              <TableRow hover tabIndex={-1}>
+                <TableCell align="left">activeLanguage</TableCell>
+                <TableCell align="left">string</TableCell>
+                <TableCell align="left">Active language code for runtime translation lookup. Falls back to `defaultLanguage`.</TableCell>
+              </TableRow>
+              <TableRow hover tabIndex={-1}>
+                <TableCell align="left">platform</TableCell>
+                <TableCell align="left">{'"web" | "native"'}</TableCell>
+                <TableCell align="left">Style resolution target platform. Default is `web`.</TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">onStateExport</TableCell>
                 <TableCell align="left">{'({ id?: string, formState: JSONValue}) => void'}</TableCell>
                 <TableCell align="left">
-                  When the JsonUI react component need to re-render to show a new form, need to save the previous state if it is not finished. Use id comes from
-                  JsonUI id property. Use it, to make sure it's export on the right time. Example in the storybook stories.
+                  Callback that receives current logical stores and optional id on unmount and on model/defaultValues/id change.
                 </TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">id</TableCell>
                 <TableCell align="left">{'string'}</TableCell>
-                <TableCell align="left">this is used to identify the form, when the form need to export the state, like a form ID or job ID.</TableCell>
+                <TableCell align="left">Optional identifier returned by `onStateExport`.</TableCell>
               </TableRow>
             </TableBody>
           </Table>

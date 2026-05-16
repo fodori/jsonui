@@ -1,7 +1,9 @@
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+/** @type {import('jest').Config} */
 module.exports = {
-  preset: 'ts-jest',
   testEnvironment: 'jsdom',
+  transform: {
+    '^.+\\.[tj]sx?$': 'babel-jest',
+  },
   setupFilesAfterEnv: ['./test/setupTests.ts'],
   snapshotSerializers: ['@emotion/jest/serializer'],
 }

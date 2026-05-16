@@ -1,21 +1,24 @@
-[
-  {
-    "$comp": "Button",
-    "$children": "Change username",
-    "onClick": {
-      "$action": "set",
-      "store": "data",
-      "path": "/profile/0/exampledata",
-      "jsonataDef": "'Clicked at: ' & $now() & ' Value is: ' & $",
-      "value": "John Doe"
+{
+  "$comp": "View",
+  "$children": [
+    {
+      "$comp": "Button",
+      "$children": "Change username",
+      "onClick": {
+        "$action": "set",
+        "store": "data",
+        "path": "/profile/0/exampledata",
+        "jsonataDef": "'Clicked at: ' & $now() & ' Value is: ' & $",
+        "value": "John Doe"
+      }
+    },
+    {
+      "$comp": "Text",
+      "$children": {
+        "$modifier": "get",
+        "store": "data",
+        "path": "/profile/0/exampledata"
+      }
     }
-  },
-  {
-    "$comp": "Text",
-    "$children": {
-      "$modifier": "get",
-      "store": "data",
-      "path": "/profile/0/exampledata"
-    }
-  }
-]
+  ]
+}

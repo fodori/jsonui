@@ -4,11 +4,7 @@ import MUICheckbox, { CheckboxProps as MUICheckboxProps } from '@mui/material/Ch
 export type CheckboxProps = MUICheckboxProps
 
 const Checkbox = ({ onChange, ...props }: MUICheckboxProps & { onChange: any }) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event?.target?.checked)
-  }
-
-  return <MUICheckbox {...props} onChange={handleChange} />
+  return <MUICheckbox {...props} onChange={onChange as React.ChangeEventHandler<HTMLInputElement>} />
 }
 
 export default Checkbox

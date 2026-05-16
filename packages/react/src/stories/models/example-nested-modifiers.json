@@ -1,0 +1,303 @@
+{
+  "$comp": "View",
+  "style": {
+    "padding": 5,
+    "paddingTop": 0,
+    "fontFamily": "system-ui"
+  },
+  "$children": [
+    {
+      "$comp": "FormLayout",
+      "style": {
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": 5
+      },
+      "$childTop": {
+        "$comp": "Text",
+        "$children": "Validation and touch test",
+        "style": {
+          "fontSize": 16,
+          "fontWeight": "bold"
+        }
+      },
+      "$children": [
+        {
+          "$comp": "Edit",
+          "store": "data",
+          "path": "/capitalized",
+          "onChange": {
+            "$action": "set",
+            "store": "data",
+            "jsonataDef": "($ != null and $ != '') ? $uppercase($) : ''",
+            "path": "/capitalized"
+          },
+          "label": "Type lowercase... will be uppercase",
+          "style": {
+            "padding": 8,
+            "border": "1px solid #ccc"
+          }
+        },
+        {
+          "$comp": "Edit",
+          "id": "111",
+          "store": "data",
+          "path": "/score",
+          "label": "Just Number allowed, with global validation",
+          "style": {
+            "padding": 8,
+            "border": "1px solid #ccc"
+          }
+        },
+        {
+          "$comp": "Text",
+          "$children": {
+            "$modifier": "get",
+            "store": "data",
+            "path": "/score",
+            "jsonataDef": "($ != null and $ != '') ? ('Score: ' & $) : 'Enter a score'"
+          },
+          "style": {
+            "color": "#333"
+          }
+        },
+        {
+          "$comp": "Edit",
+          "store": "data",
+          "path": "/simplifiedField",
+          "label": "Binary only, with local validation",
+          "helperText": "Value, onChange, error, fieldTouched are added by the engine.",
+          "style": {
+            "padding": 8,
+            "border": "1px solid #ccc"
+          },
+          "$validations": [
+            {
+              "schema": {
+                "type": "string",
+                "pattern": "^[0-1]+$",
+                "errorMessage": {
+                  "pattern": "binary data only"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$comp": "Edit",
+          "store": "data",
+          "path": "score2",
+          "label": "Binary only, relative path, local validation",
+          "$validations": [
+            {
+              "schema": {
+                "type": "string",
+                "pattern": "^[0-1]+$",
+                "errorMessage": {
+                  "pattern": "binary data only"
+                }
+              }
+            }
+          ],
+          "style": {
+            "padding": 8,
+            "border": "1px solid #ccc"
+          }
+        },
+        {
+          "$comp": "Edit",
+          "store": "data",
+          "path": "score3",
+          "label": "Jsonata validation, relative path ",
+          "$validations": [
+            {
+              "jsonataDef": "$number($)>20",
+              "errorMessage": "Value must be greater than 20"
+            }
+          ],
+          "style": {
+            "padding": 8,
+            "border": "1px solid #ccc"
+          }
+        },
+        {
+          "$comp": "View",
+          "style": {
+            "marginTop": 16,
+            "border": "1px solid #ddd",
+            "padding": 8
+          },
+          "$children": [
+            {
+              "$comp": "Text",
+              "$children": "Players (editable table)",
+              "style": {
+                "fontSize": 14,
+                "fontWeight": "bold",
+                "marginBottom": 8
+              }
+            },
+            {
+              "$comp": "Text",
+              "$children": "Name min length 1, Score number only (validated with schema)",
+              "style": {
+                "fontSize": 14,
+                "marginBottom": 8
+              }
+            },
+            {
+              "$comp": "View",
+              "style": {
+                "display": "grid",
+                "gridTemplateColumns": "2fr 1fr",
+                "gap": 4,
+                "fontSize": 12,
+                "fontWeight": "bold",
+                "borderBottom": "1px solid #ccc",
+                "paddingBottom": 4,
+                "marginBottom": 4
+              },
+              "$children": [
+                {
+                  "$comp": "Text",
+                  "$children": "Name"
+                },
+                {
+                  "$comp": "Text",
+                  "$children": "Score"
+                }
+              ]
+            },
+            {
+              "$comp": "View",
+              "style": {
+                "display": "flex",
+                "flexDirection": "column",
+                "gap": 4
+              },
+              "$children": {
+                "$isList": true,
+                "$listItem": {
+                  "$comp": "View",
+                  "style": {
+                    "display": "grid",
+                    "gridTemplateColumns": "2fr 1fr",
+                    "gap": 4,
+                    "alignItems": "center"
+                  },
+                  "$children": [
+                    {
+                      "$comp": "Edit",
+                      "store": "data",
+                      "path": "name",
+                      "style": {
+                        "padding": 4,
+                        "border": "1px solid #ccc",
+                        "width": "100%"
+                      }
+                    },
+                    {
+                      "$comp": "Edit",
+                      "store": "data",
+                      "path": "score",
+                      "style": {
+                        "padding": 4,
+                        "border": "1px solid #ccc",
+                        "width": "100%"
+                      }
+                    }
+                  ]
+                },
+                "$pathModifiers": {
+                  "data": {
+                    "path": "/players"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "$childBottom": {
+        "$comp": "SubmitButton",
+        "$children": {
+          "$modifier": "t",
+          "key": "Submit"
+        },
+        "store": "data",
+        "path": "/",
+        "style": {
+          "padding": 10,
+          "background": "#28a745",
+          "color": "white",
+          "border": "none",
+          "borderRadius": 4,
+          "cursor": "pointer"
+        }
+      }
+    },
+    {
+      "$comp": "StoreDebugger",
+      "data": {
+        "$modifier": "get",
+        "store": "data",
+        "path": "/"
+      },
+      "error": {
+        "$modifier": "get",
+        "store": "data",
+        "path": "/",
+        "type": "ERROR"
+      },
+      "touched": {
+        "$modifier": "get",
+        "store": "data",
+        "path": "/",
+        "type": "TOUCH"
+      }
+    }
+  ],
+  "$validations": [
+    {
+      "store": "data",
+      "path": "/score",
+      "schema": {
+        "type": "string",
+        "pattern": "^[0-9]+$",
+        "errorMessage": {
+          "pattern": "Score must be a number"
+        }
+      }
+    },
+    {
+      "store": "data",
+      "path": "/players",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "score": {
+              "type": "string",
+              "pattern": "^[0-9]+$",
+              "errorMessage": {
+                "pattern": "Score must be a number"
+              }
+            }
+          },
+          "required": ["name", "score"],
+          "additionalProperties": true
+        }
+      }
+    }
+  ],
+  "$translate": {
+    "hu": {
+      "Submit": "Küldés"
+    }
+  }
+}

@@ -1,5 +1,7 @@
 node_modules
+package-lock.json
 dist
+**/storybook-static
 lerna-debug.log
 stats.html
 .DS_Store

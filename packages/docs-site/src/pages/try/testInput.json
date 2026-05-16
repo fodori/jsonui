@@ -1,25 +1,39 @@
-[
-  {
-    "$comp": "Edit",
-    "label": "First name",
-    "value": { "$modifier": "get", "store": "anotherstore", "path": "/firstName" },
-    "onChange": { "$action": "set", "store": "anotherstore", "path": "/firstName" }
-  },
-  {
-    "$comp": "Text",
-    "$children": {
-      "$modifier": "get",
-      "store": "anotherstore",
-      "path": "/firstName"
+{
+  "$comp": "View",
+  "$children": [
+    {
+      "$comp": "Edit",
+      "label": "First name",
+      "value": {
+        "$modifier": "get",
+        "store": "anotherstore",
+        "path": "/firstName"
+      },
+      "onChange": {
+        "$action": "set",
+        "store": "anotherstore",
+        "path": "/firstName"
+      }
+    },
+    {
+      "$comp": "Text",
+      "$children": {
+        "$modifier": "get",
+        "store": "anotherstore",
+        "path": "/firstName"
+      }
+    },
+    {
+      "$comp": "Text",
+      "style": {
+        "color": "red",
+        "fontSize": 20
+      },
+      "$children": {
+        "$modifier": "get",
+        "store": "anotherstore",
+        "path": "/firstName"
+      }
     }
-  },
-  {
-    "$comp": "Text",
-    "style": { "color": "red", "fontSize": 20 },
-    "$children": {
-      "$modifier": "get",
-      "store": "anotherstore",
-      "path": "/firstName"
-    }
-  }
-]
+  ]
+}

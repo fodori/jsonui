@@ -1,9 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { describe, expect, it } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import App from './App'
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+describe('App', () => {
+  it('renders JsonUI heading', () => {
+    render(<App />)
+    expect(screen.getByRole('heading', { level: 3, name: /^JsonUI$/ })).toBeInTheDocument()
+  })
+})
