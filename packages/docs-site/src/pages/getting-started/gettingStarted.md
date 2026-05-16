@@ -1,29 +1,59 @@
 ## Installation
 
-I assume you have already added react and react-dom.
+Assuming your app already includes React and React DOM:
 
 ```bash
-npm install @jsonui/react batchflow jsonata@1.8.7 lodash react-redux redux
-
-yarn add @jsonui/react batchflow jsonata@1.8.7 lodash react-redux redux
+yarn add @jsonui/react
 ```
 
-## Basic Usage
+or
 
-The `JsonUI` Component is a canvas and the `model` parameter is a definition of content in Json format.
+```bash
+npm install @jsonui/react
+```
 
-```js
-import {JsonUI} from '@jsonui/react';
+If your models use JSONata expressions, install `jsonata` as well.
+
+## Quick Start
+
+```tsx
+import { JsonUI } from '@jsonui/react'
 
 const model = {
-    { "$comp": "Text",
-      "$children": "Hello World",
-      "style": { "fontSize": 30 }
-    }
+  $comp: 'View',
+  $children: [
+    {
+      $comp: 'Text',
+      $children: 'Hello JsonUI',
+    },
+    {
+      $comp: 'Edit',
+      store: 'data',
+      path: '/profile/firstName',
+      label: 'First name',
+    },
+  ],
+}
 
-const Canvas = () => <JsonUI model={model} />
+export function Example() {
+  return (
+    <JsonUI
+      model={model}
+      defaultValues={{
+        data: {
+          profile: { firstName: 'John' },
+        },
+      }}
+    />
+  )
+}
 ```
 
-## Next Steps
+This example already uses simplification (`store` + `path`) so field value, change handling, error binding, and touched binding are wired automatically.
 
-After you see how the JsonUI works, you can write your own component library or own functions to use.
+## What To Learn Next
+
+1. Json model reference: see Json API page.
+2. React integration props: see React API page.
+3. Validation patterns: read inline validation section in Json API.
+4. JSONata transformations: read get/set JSONata examples in Json API.

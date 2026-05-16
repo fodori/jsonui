@@ -21,34 +21,37 @@ export const Template: ComponentStory<typeof React.Component> = () => {
         defaultValues={{
           anotherstore: {},
         }}
-        model={[
-          {
-            label: 'Label 1',
-            $comp: 'MUISelect',
-            options: [{ label: 'Please select an option', disabled: true }, ...options],
-            helperText: 'Please select your currency',
-            value: { $modifier: 'get', store: 'anotherstore', path: '/firstName' },
-            onChange: { $action: 'set', store: 'anotherstore', path: '/firstName' },
-          },
-          {
-            label: 'Label 1',
-            $comp: 'MUISelect',
-            helperText: 'Please select your currency',
-            value: { $modifier: 'get', store: 'anotherstore', path: '/firstName' },
-            onChange: { $action: 'set', store: 'anotherstore', path: '/firstName' },
-            variant: 'filled',
-            options,
-            error: true,
-          },
-          {
-            $comp: 'MUISelect',
-            disabled: true,
-            helperText: 'Please select your currency',
-            value: { $modifier: 'get', store: 'anotherstore', path: '/firstName' },
-            onChange: { $action: 'set', store: 'anotherstore', path: '/firstName' },
-            options,
-          },
-        ]}
+        model={{
+          $comp: 'View',
+          $children: [
+            {
+              label: 'Label 1',
+              $comp: 'MUISelect',
+              options: [{ label: 'Please select an option', disabled: true }, ...options],
+              helperText: 'Please select your currency',
+              value: { $modifier: 'get', store: 'anotherstore', path: '/firstName' },
+              onChange: { $action: 'set', store: 'anotherstore', path: '/firstName' },
+            },
+            {
+              label: 'Label 1',
+              $comp: 'MUISelect',
+              helperText: 'Please select your currency',
+              value: { $modifier: 'get', store: 'anotherstore', path: '/firstName' },
+              onChange: { $action: 'set', store: 'anotherstore', path: '/firstName' },
+              variant: 'filled',
+              options,
+              error: true,
+            },
+            {
+              $comp: 'MUISelect',
+              disabled: true,
+              helperText: 'Please select your currency',
+              value: { $modifier: 'get', store: 'anotherstore', path: '/firstName' },
+              onChange: { $action: 'set', store: 'anotherstore', path: '/firstName' },
+              options,
+            },
+          ],
+        }}
       />
     </div>
   )

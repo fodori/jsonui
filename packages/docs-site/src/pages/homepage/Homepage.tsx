@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
@@ -10,11 +9,6 @@ const FullSizeConceptImg = styled('img')`
   max-width: 837px;
 `
 
-const FullSizeStateContainerImg = styled('img')`
-  width: 100%;
-  max-width: 1092px;
-`
-
 function App() {
   return (
     <>
@@ -22,71 +16,56 @@ function App() {
         JsonUI
       </Typography>
       <Typography variant="subtitle1">
-        JsonUI is a JSON-based data-driven user interface.
+        JsonUI is a JSON-based, data-driven UI runtime.
         <br />
-        It's a language written in JSON. Data-driven because the definition defines what you will see it on the canvas. When you change the definition, the
-        canvas immediately follows it. It saves you development time. JSONUI is available in <b>react</b> and <b>react-native</b>. It can be used for making
-        web, android, iPhone, iPad, OSX, Linux, Windows,... applications.
+        The UI model defines component tree, data bindings, validation rules, and event behavior in one place. When the model changes, rendered UI follows
+        immediately. JsonUI is available in <b>react</b> and <b>react-native</b> environments.
       </Typography>
       <div style={{ textAlign: 'center', marginTop: 20, marginBottom: 10 }}>
         <FullSizeConceptImg src={conceptImage} alt="concept" />
       </div>
       <Typography variant="subtitle1" sx={{ margin: 2 }}>
-        JsonUI definition contains:
+        A JsonUI definition can contain:
         <ul>
-          <li>layout definition</li>
-          <li>components style</li>
-          <li>validation</li>
-          <li>data store logic</li>
+          <li>layout and component configuration</li>
+          <li>store bindings and path-based data access</li>
+          <li>inline field validation (schema or JSONata)</li>
+          <li>action and modifier orchestration</li>
         </ul>
       </Typography>
       <Typography variant="h4" sx={{ margin: 4, marginLeft: 0 }}>
         Core concept
       </Typography>
       <Typography variant="subtitle1">
-        This approach is better than a JSON Schema based solutions, because these have a lot's of limitations. These limitations can make it difficult to create
-        complex user interfaces that are both flexible and easy to maintain. For example, JSON Schema is primarily designed for data validation and does not
-        provide a comprehensive solution for defining the layout and behavior of user interfaces. The layout must follow a specific structure, which can be
-        restrictive. The validation rules are limited to basic data types and formats, making it difficult to implement complex logic.
+        JsonUI is designed for server-driven and dynamic interfaces where UI structure is treated as runtime data. Instead of hardcoding each form and state
+        rule in component code, teams can ship and evolve behavior through JSON definitions.
         <br />
         <br />
-        That was the time when I thought, why not use a more clean, generic approach.
+        The model is expressive enough for complex forms and workflows, while remaining predictable for engineering teams.
         <br />
         <br />
-        The core concept is to use a Lego block approach. We have a set of predefined components, and we can use them to create a user interface. The layout is
-        defined in the Json more freely. Each component can be configured with specific properties. In the application, we follow the same components to
-        communicate with the user. This “common” language is how the program interacts with the user and makes their life easier. Because we follow this, all
-        across the app, we just copy-paste the same pattern everywhere. When we create a new page or a new form we use the same theme, nearly the same behavior.
+        Built-in simplification removes repetitive binding boilerplate: a field with `store` and `path` auto-wires value, set, error, and touched bindings.
         <br />
-        The components of a Lego block could already be pre-defined. For example, input fields, select fields, pie charts, images, checkboxes, radio buttons,
-        buttons, date pickers…. The JSON just tells how to show it, and it contains all instance's specific definitions, for example, style, name, label, etc.
+        This creates a stable contract between backend, frontend, and product teams.
       </Typography>
       <Typography variant="subtitle1" sx={{ margin: 2 }}>
-        Let's see some use-case
+        Typical use cases:
         <ul>
-          <li>
-            Workflow application, where we don’t know what we would like to show to the user. After when we install the app, we make the company-specific forms
-            and ask the user to work with it
-          </li>
-          <li>Form builder company, where the forms will be made separately, and sent to the user device to use it.</li>
-          <li>
-            Company inner solution like a back office, to help develop a quick interface and for an actual problem. If the problem is not big enough to make a
-            bespoke solution.
-          </li>
-          <li>Make rapid applications with minimal effort.</li>
-          <li>Server-driven, remotely controlled UI</li>
+          <li>Workflow applications with configurable forms and role-specific steps.</li>
+          <li>Form builder platforms that publish JSON definitions to many clients.</li>
+          <li>Internal business tools requiring fast delivery without rebuilding UI from scratch.</li>
+          <li>Server-driven UI where behavior can be changed without app redeploy.</li>
         </ul>
       </Typography>
       <Typography variant="h4" sx={{ margin: 4, marginLeft: 0 }}>
         State container
       </Typography>
       <Typography variant="subtitle1">
-        As a form, it needs to store the data that the user makes it. As a form needs some data to be pre-defined, for example for drop-down fields or for
-        example to update a record. Because we use JSON to define UI, we can use it to define data as well.
+        JsonUI keeps UI model and runtime state separate.
         <br />
-        Therefore this canvas has 2 main input parameters, the ui definition and the data, we called it "default values".
+        The renderer accepts a model plus initial state (`defaultValues` and `initialFormStore`) and maintains named logical stores.
         <br />
-        We store it in a state container and the user can manipulate it with component interactions. The data is in separate store. Each store has a name/key.
+        Validation and touch tracking are stored in shadow stores (for example `data.error` and `data.touch`) and are consumed by components through modifiers.
       </Typography>
       <Typography variant="subtitle1" style={{ textAlign: 'center', margin: 20 }}>
         <StateContainer style={{ width: '100%', maxWidth: '1092' }} aria-label="State container" width="80%" />
@@ -96,15 +75,17 @@ function App() {
         Data binding
       </Typography>
       <Typography variant="subtitle1">
-        Each component can read/write data with publish/subscribe logic or simple get/set way. When a component subscribes to data, it will rerender
-        automatically when the data changes. If you are a React developer, you know how long to add a new definition for a form or show/hide logic. Now it’s
-        dead simple. The structure of data stores is independent from the UI definition (this is the freedom sompare to a JSON Shema based solution).
-        <br /> It combines the UI definition and the data binding definition into one JSON structure. The data is in JSON as well and use JSON based data
-        manipulation language. Thanks npm ecosystem, we use{' '}
+        Components read and write via built-in `get` and `set` handlers, plus custom modifiers/actions when needed. Store subscriptions trigger automatic
+        rerender only where data dependencies are used.
+        <br />
+        JSONata support enables inline transformation logic for both read and write paths. For advanced patterns, combine inline field validation, JSONata
+        expressions, and custom handlers in a controlled way.
+        <br />
+        JsonUI uses{' '}
         <a href="https://jsonata.org/" target="_new">
           JSONata
         </a>{' '}
-        for enabling a powerful way to query and manipulate JSON structure.
+        to query and transform JSON values declaratively.
       </Typography>
     </>
   )

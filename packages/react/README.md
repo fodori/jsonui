@@ -1,204 +1,114 @@
 # JSONUI
 
-This is a Json markup language to define User Interface as a canvas where you can draw with Json definition.
+JSONUI is a JSON-based UI runtime for React ecosystems.
 
-When you change the Json definition, the interface immediately reflects on what you defined/changed.
+A single JSON model can define:
 
-Actually JSONUI is available for **react** and **react-native**. It will be able to integrate to 99% of the cross-platform environments, thanks for reactjs ecosystem
+- component tree and layout
+- data bindings and event actions
+- field-level validation
+- runtime value transformations
 
-The UI definition contains a layout definition and components configuration as well. The most important it has a built in **state management system**.
-
-## Core concept
-
-Build a data driven UI. The "definition" is changeable by developer anytime and any reason.
-If you would like to build a remote controlled app or a form generator app, I hope you will love it.
+When the model changes, the rendered UI updates accordingly.
 
 ## Installation
 
-I assume you have already added react and react-dom.
+This repository is a Yarn workspace monorepo.
+
+Use Yarn:
 
 ```bash
-npm install @jsonui/react batchflow jsonata@1.8.7 lodash react-redux redux
-
-yarn add @jsonui/react batchflow jsonata@1.8.7 lodash react-redux redux
+yarn install
 ```
 
-## Basic Usage
+For app-level usage in React projects:
 
-The `JsonUI` Component is a canvas and the `model` parameter contains the UI definition in Json format.
+```bash
+yarn add @jsonui/react
+```
 
-```js
+If your models use JSONata expressions, install `jsonata` in the target app as well.
+
+## Quick Example
+
+```tsx
 import { JsonUI } from '@jsonui/react'
 
-const Canvas = () => <JsonUI model={{ $comp: 'Text', $children: 'Hello World', style: { fontSize: 30 } }} />
-```
-
-### How it works
-
-The Json Markup language has 3 important part
-
-#### 1, Components
-
-The `"$comp"` key represents the name of a predefined react component. The predefined components:
-
-- **View:** it's a simple `div` html tag
-- **Button:** it's a simple `button` html tag
-- **Fragment:** it's a simple `React.Fragment` component
-- **Image:** it's a simple `image` html tag
-- **Text:** it's a simple `p` html tag
-
-The props of the components are the same as in the normal react world.
-
-The `"$children"` key represents the children of the component.
-It can be array, object or primitive like text, number, boolean
-
-```json
-{ "$comp": "Text", "$children": "Hello World" }
-{ "$comp": "Text", "$children": 124 }
-{ "$comp": "Text", "$children": [1,2,3] }
-{ "$comp": "Text", "$children": null }
-{ "$comp": "View", "$children": [
-   { "$comp": "Text", "$children": "Hello World" }
-  ]
-}
-```
-
-#### 2, Actions
-
-When the component has an interaction with user or a triggered event, the `"$action"` key will represent it, for example onClick, onChange or onPress
-
-```json
-{ "$comp": "Button", "$children": "Login", "onPress": { "$action": "navigate", "route": "LoginPage" } }
-```
-
-The action is really a predefined function when it will fire, when the event has triggered.
-
-#### 3, Modifiers
-
-The `"$action"` can add a dynamic value for properties or components. It's a function which will be called at render time of the component. Depends on environment data. For example JSONUI contains a basic internalisation solution.
-
-```json
-{ "$comp": "Text", "$children": "Hello World" }
-{ "$comp": "Text", "$children": { "$modifier": "t", "key": "Helló Világ" } }
-```
-
-### How can you customise it?
-
-Easily.
-
-```js
-
-const Canvas = () => <JsonUI model={jsonData}
-  "components" = {
+const model = {
+  $comp: 'View',
+  $children: [
+    { $comp: 'Text', $children: 'Hello JSONUI' },
     {
-     navigate: ({route}) => navigate(route)
-    }
-  }
-  "functions" = {
-    {
-     t: ({key}) => t(key)
-    }
-  }/>
-```
+      $comp: 'Edit',
+      store: 'data',
+      path: '/profile/firstName',
+      label: 'First name',
+    },
+  ],
+}
 
-### State management or data storage
-
-The state management is another layer of the JSNOUI. It's represent a permissive and dynamic tree graf structure. Like a JSON file.
-Each app has a separated data space, based on the `id` param of `JsonUI` component.
-Each app has multiple `store` represent multiple data tree or separate storage.
-Actually the `data` store is persistent. (it will be configurable soon if there is interest in it)
-You can define unlimited data store. What you need is, just use a specific name in JSON Definition, and it will automatically create at the first use.
-JSONUI use [json-pointer](https://www.npmjs.com/package/json-pointer) to tell the `path` what kind of data we need.
-
-We have 2 built-in function which can help to read and write your state management.
-
-Let's see some example
-
-#### Read data
-
-##### Your data store Looks like:
-
-```json
-{ "users": [{ "username": "John Doe" }] }
-```
-
-##### Use _/username_ in text field
-
-```json
-{ "$comp": "Text", "$children": { "$modifier": "get", "store": "data", "path": "/users/0/username" } }
-```
-
-#### Write data
-
-##### When the user click on the button, it will modify the data
-
-```json
-{ "$comp": "Button", "$children": "Change username", "onPress": { "$modifier": "set", "store": "data", "path": "/users/0/username", "value": "John Doe 2" } }
-```
-
-##### Data will be:
-
-```json
-{ "users": [{ "username": "John Doe2" }] }
-```
-
-##### A simple input field solution
-
-```json
-{
-  "$comp": "Input",
-  "value": { "$modifier": "get", "store": "questionnaire1", "path": "/firstName" },
-  "onChange": { "$action": "set", "store": "questionnaire1", "path": "/firstName" }
+export function Example() {
+  return <JsonUI model={model} defaultValues={{ data: { profile: { firstName: 'John' } } }} />
 }
 ```
 
-You can manipulate the data when read or write it with [jsonata](https://jsonata.org/).
+The `Edit` node uses simplification (`store` + `path`), which auto-wires value/set/error/touched bindings.
 
-```json
-{ "$comp": "Text", "children": { "$modifier": "get", "store": "data", "path": "/prevNumber", "jsonataDef": "'Next Number: ' & (1+$)" } }
-```
+## Core Model Concepts
 
-### Advanced technique
+### Components and Slots
 
-#### Relative, absolute
+- `$comp` chooses the component
+- `$children` is the default slot
+- `$child*` defines named slots
 
-You can use absolute, relative path and ./ ../ still works.
-few examples
+### Modifiers and Actions
 
-```json
-{  "path": "/prevNumber" }
-{  "path": "prevNumber" }
-{  "path": "../prevNumber" }
-{  "path": "../../prevNumber" }
-```
+- `$modifier` computes values at render time
+- `$action` handles runtime events
 
-#### List
+### Built-in Store Access
 
-Somethimes we need to handle dynamic data for example a list.
+- `get` reads from `store` + `path`
+- `set` writes to `store` + `path`
 
-##### Your data store looks like:
+### JSONata Support
 
-```json
-{ "subscribed": { "list": [{ "name": "John Doe" }] } }
-```
+JSONata is supported for both read and write flows.
 
-```json
-{
-  "$comp": "Fragment",
-  "isList": true,
-  "$pathModifiers": {
-    "data": { "path": "/subscribed/list" }
-  },
-  "listItem": {
-    "$comp": "Input",
-    "value": { "$modifier": "get", "store": "data", "path": "name" },
-    "onChange": { "$action": "set", "store": "data", "path": "name" }
-  }
-}
-```
+- read: `get` with `jsonataDef`
+- write: `set` with `jsonataDef`
 
-This little technique can change the relative path nestedly as well.
+### Inline Validation
 
-## LICENSE [MIT](LICENSE)
+`$validations` supports both:
 
-Copyright (c) 2022 Istvan Fodor.
+- AJV schema validation
+- JSONata expression validation
+
+Validation messages are written into `<store>.error`. Touched state is tracked in `<store>.touch`.
+
+## React API Highlights
+
+Important `JsonUI` props:
+
+- `model`
+- `components`
+- `modifiers`
+- `actions`
+- `defaultValues`
+- `initialFormStore`
+- `onStateExport`
+- `id`
+- `defaultLanguage`
+- `activeLanguage`
+- `platform`
+
+## Documentation
+
+- Project docs site: https://jsonui.org
+- Monorepo docs page source: `packages/docs-site`
+
+## License
+
+[MIT](LICENSE)

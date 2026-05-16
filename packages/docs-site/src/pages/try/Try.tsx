@@ -1,18 +1,18 @@
-/* eslint-disable prettier/prettier */
 import React, { useState } from 'react'
 import { Stack, ListItemText, Paper, Typography } from '@mui/material'
 // import JSONInput from 'react-json-editor-ajrm'
-import Editor from 'react-simple-code-editor'
-import { JsonUI } from '@jsonui/react'
+import Editor from '../../simpleCodeEditor'
+import { JsonUI, JsonUINode } from '@jsonui/react'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
-import { highlight, languages } from 'prismjs/components/prism-core'
+import Select, { type SelectChangeEvent } from '@mui/material/Select'
+import Prism from 'prismjs'
 import jsonFormat from 'json-format'
 import testHello from './testHello.json'
 import testButton from './testButton.json'
 import testInput from './testInput.json'
+import ErrorBoundary from '../../ErrorBoundary'
 import 'prismjs/components/prism-clike'
 import 'prismjs/components/prism-javascript'
 import 'prismjs/themes/prism.css' // Example style, you can use another
@@ -23,34 +23,43 @@ function Try() {
     { name: 'Button', content: testButton, help: 'Button sample' },
     { name: 'Edit Field', content: testInput, help: 'Edit Field example with setter and getter' },
   ]
-  const format = (str: string) => jsonFormat(str, { space: { size: 1 }, type: 'space' })
+  const format = (data: unknown) => jsonFormat(data, { space: { size: 1 }, type: 'space' })
 
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [jsonVal, setJsonVal] = useState(format(tries[selectedIndex].content as any))
-  const [jsonValid, setJsonValid] = useState(tries[selectedIndex].content)
+  const [jsonVal, setJsonVal] = useState(format(tries[selectedIndex].content))
+  const [jsonValid, setJsonValid] = useState<JsonUINode>(tries[selectedIndex].content as JsonUINode)
   const [harError, setHasError] = useState(false)
 
-  const handleSetSelectedIndex = (event: any) => {
-    setJsonVal(format(tries[event.target.value].content as any))
-    setJsonValid(tries[event.target.value].content)
-    setSelectedIndex(event.target.value)
+  const handleSetSelectedIndex = (event: SelectChangeEvent<number>) => {
+    const idx = Number(event.target.value)
+    setJsonVal(format(tries[idx].content))
+    setJsonValid(tries[idx].content)
+    setSelectedIndex(idx)
   }
   const isJsonString = (str: string) => {
     try {
-      JSON.parse(str)
-    } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const json = JSON.parse(str)
+      if (typeof json === 'object' && json !== null) {
+        return true
+      }
+    } catch {
       return false
     }
-    return true
+    return false
   }
-
   return (
     <>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Please select</InputLabel>
-        <Select labelId="demo-simple-select-label" id="demo-simple-select" value={selectedIndex} label="Selected Index" onChange={handleSetSelectedIndex}>
+        <Select<number>
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={selectedIndex}
+          label="Selected Index"
+          onChange={handleSetSelectedIndex}
+        >
           {tries.map((item, index) => (
-            // eslint-disable-next-line react/no-array-index-key
             <MenuItem value={index} key={index}>
               <ListItemText
                 primary={item.name}
@@ -76,25 +85,29 @@ function Try() {
           Definition:
         </Typography>
         <Paper elevation={3} sx={{ p: 1 }} style={{ border: harError ? '2px solid red' : '2px solid green' }}>
-          <Editor
-            value={jsonVal}
-            onValueChange={(code) => {
-              setJsonVal(code)
-              if (isJsonString(code)) {
-                setHasError(false)
-                setJsonValid(JSON.parse(code))
-              } else {
-                setHasError(true)
-              }
-            }}
-            highlight={(code) => highlight(code, languages.js)}
-            padding={0}
-            style={{
-              fontFamily: '"Fira code", "Fira Mono", monospace',
-              fontSize: 12,
-              outline: 'transparent',
-            }}
-          />
+          <ErrorBoundary>
+            <Editor
+              value={jsonVal}
+              onValueChange={(code) => {
+                setJsonVal(code)
+                if (isJsonString(code)) {
+                  setHasError(false)
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                  setJsonValid(JSON.parse(code))
+                } else {
+                  setHasError(true)
+                }
+              }}
+              // highlight={(code) => code}
+              highlight={(code) => Prism.highlight(code, Prism.languages.javascript, 'javascript')}
+              padding={0}
+              style={{
+                fontFamily: '"Fira code", "Fira Mono", monospace',
+                fontSize: 12,
+                outline: 'transparent',
+              }}
+            />
+          </ErrorBoundary>
         </Paper>
       </Stack>
     </>

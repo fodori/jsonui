@@ -32,7 +32,7 @@ export default [
         requireReturnsDefault: 'auto',
       }),
       typescript({
-        tsconfig: './tsconfig.json',
+        tsconfig: './tsconfig.rollup.json',
         declaration: false,
         declarationMap: false,
       }),
@@ -51,7 +51,7 @@ export default [
   {
     input: 'src/index.tsx',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    plugins: [dts({ tsconfig: './tsconfig.json' })],
+    plugins: [dts({ tsconfig: './tsconfig.rollup.json' })],
     external: ['react', 'react-dom', 'react/jsx-runtime', '@jsonui/react', '@mui/material', '@mui/icons-material'],
   },
 ]

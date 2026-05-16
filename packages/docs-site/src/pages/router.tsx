@@ -12,7 +12,7 @@ function Router() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="/" element={<MainPage />} />
+        <Route index element={<MainPage />} />
         <Route path="try" element={<TryPage />} />
         <Route path="api-json" element={<ApiJsonPage />} />
         <Route path="api-react" element={<ApiReactPage />} />
