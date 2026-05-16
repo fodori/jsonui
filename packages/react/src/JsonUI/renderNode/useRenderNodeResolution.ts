@@ -5,7 +5,7 @@ import {
   type JsonUINode,
   type ModifierContext,
   type ModifierMap,
-  type Store,
+  type FormStore,
   type TranslationsMap,
   type ValidationRegistry,
   type ResolvedRenderNodeState,
@@ -17,7 +17,7 @@ import {
 interface UseRenderNodeResolutionArgs {
   node: JsonUINode
   modifiers: ModifierMap
-  store: Store
+  formStore: FormStore
   currentPath: string
   effectivePathModifiers?: ModifierContext['pathModifiers']
   validators: ValidationRegistry | undefined
@@ -41,7 +41,7 @@ interface UseRenderNodeResolutionResult {
 export const useRenderNodeResolution = ({
   node,
   modifiers,
-  store,
+  formStore,
   currentPath,
   effectivePathModifiers,
   validators,
@@ -62,8 +62,8 @@ export const useRenderNodeResolution = ({
 
   useEffect(() => {
     const unsubscribe =
-      typeof store.subscribeChange === 'function'
-        ? store.subscribeChange((changedStore, changedPath) => {
+      typeof formStore.subscribeChange === 'function'
+        ? formStore.subscribeChange((changedStore, changedPath) => {
             const deps = dependenciesRef.current
             for (const dep of deps) {
               if (dep.store !== changedStore) continue
@@ -77,7 +77,7 @@ export const useRenderNodeResolution = ({
     return () => {
       if (unsubscribe) unsubscribe()
     }
-  }, [store])
+  }, [formStore])
 
   /* eslint-disable react-hooks/exhaustive-deps -- legacy JsonUI resolution deps */
   useEffect(() => {
@@ -86,7 +86,7 @@ export const useRenderNodeResolution = ({
     const version = ++resolutionVersionRef.current
 
     const ctx: ModifierContext = {
-      store,
+      formStore,
       currentPath,
       pathModifiers: effectivePathModifiers,
       validators,
@@ -101,7 +101,7 @@ export const useRenderNodeResolution = ({
           node,
           modifiers,
           ctx,
-          store,
+          formStore,
           currentPath,
           effectivePathModifiers,
           stylePlatform,
@@ -134,7 +134,7 @@ export const useRenderNodeResolution = ({
     return () => {
       cancelled = true
     }
-  }, [node, modifiers, store, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint, componentStore, componentPath])
+  }, [node, modifiers, formStore, currentPath, effectivePathModifiers, stylePlatform, styleBreakpoint, componentStore, componentPath])
   /* eslint-enable react-hooks/exhaustive-deps */
 
   return {

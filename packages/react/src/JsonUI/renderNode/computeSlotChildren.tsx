@@ -11,7 +11,7 @@ import {
   PATH_MODIFIERS_KEY,
   computeListSliceRange,
 } from '@jsonui/core'
-import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, Store, ValidationRegistry, ModifierContext } from '@jsonui/core'
+import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, FormStore, ValidationRegistry, ModifierContext } from '@jsonui/core'
 import type { ComponentMap } from '../../componentMap.js'
 import type { RenderNodeProps } from './types.js'
 import { coercePrimitiveChild } from './coercePrimitiveChild.js'
@@ -30,7 +30,7 @@ export const computeRenderNodeSlotChildren = (args: {
   effectivePathModifiers?: ModifierContext['pathModifiers']
   pathModifiers?: ModifierContext['pathModifiers']
   currentPath: string
-  store: Store
+  formStore: FormStore
   components: ComponentMap
   modifiers: ModifierMap
   actions: ActionMap
@@ -49,7 +49,7 @@ export const computeRenderNodeSlotChildren = (args: {
     effectivePathModifiers,
     pathModifiers,
     currentPath,
-    store,
+    formStore,
     components,
     modifiers,
     actions,
@@ -64,7 +64,7 @@ export const computeRenderNodeSlotChildren = (args: {
     components,
     modifiers,
     actions,
-    store,
+    formStore,
     validators,
     translations,
     defaultLanguage,
@@ -98,9 +98,7 @@ export const computeRenderNodeSlotChildren = (args: {
         : storeName && listPathModifiers?.[storeName]?.path
           ? resolveStorePath(listPathModifiers[storeName].path, currentPath, pathModifiers, storeName)
           : undefined
-    const listPath = baseListPath
-    const root = store
-    const listData = storeName && listPath != null && listPath !== '' ? (root.getForStore(storeName, listPath) as unknown[]) : []
+    const listData = storeName && baseListPath != null && baseListPath !== '' ? (formStore.getForStore(storeName, baseListPath) as unknown[]) : []
 
     if (!Array.isArray(listData)) return null
 
@@ -113,12 +111,12 @@ export const computeRenderNodeSlotChildren = (args: {
     })
 
     return indices.map((i) => {
-      const itemPath = listPath ? `${listPath}/${i}` : `/${i}`
+      const itemPath = baseListPath ? `${baseListPath}/${i}` : `/${i}`
       const itemPathModifiers =
-        storeName && listPath
+        storeName && baseListPath
           ? {
               ...(effectivePathModifiers ?? {}),
-              [storeName]: { path: `${listPath}/${i}` },
+              [storeName]: { path: `${baseListPath}/${i}` },
             }
           : effectivePathModifiers
       return (

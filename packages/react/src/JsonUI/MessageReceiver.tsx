@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import { normalizePath, type Store } from '@jsonui/core'
+import { normalizePath, type FormStore } from '@jsonui/core'
 import { MessageHandlerContext, type ChangeDefaultValueFunc } from './MessageReceiverContext.js'
 
 const normalizeLogicalPath = (path: string): string => {
@@ -12,17 +12,17 @@ const normalizeLogicalPath = (path: string): string => {
 /**
  * Subscribes the root store setter to `MessageHandler` (main JsonUI parity).
  */
-export const MessageReceiver = ({ store }: { store: Store }) => {
+export const MessageReceiver = ({ formStore }: { formStore: FormStore }) => {
   const messageHandler = useContext(MessageHandlerContext)
 
   useEffect(() => {
     const changeDefaultValue: ChangeDefaultValueFunc = ({ store: storeName, path, value }) => {
       const logicalPath = normalizeLogicalPath(path)
       // Match main DATA_UPDATE: do not mark field touched for host-driven updates.
-      store.setForStore(storeName, logicalPath, value, false)
+      formStore.setForStore(storeName, logicalPath, value, false)
     }
     messageHandler?.set(changeDefaultValue)
-  }, [messageHandler, store])
+  }, [messageHandler, formStore])
 
   return null
 }

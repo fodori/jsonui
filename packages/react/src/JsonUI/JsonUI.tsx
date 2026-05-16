@@ -6,13 +6,14 @@ import type {
   TranslationsMap,
   OnStateExportType,
   JSONObject,
+  FormStore,
   StylePlatform,
   ValidationRegistry,
   ValidationRule,
 } from '@jsonui/core'
-import { buildValidationRegistry, Store, V_VALIDATIONS } from '@jsonui/core'
+import { buildValidationRegistry, V_VALIDATIONS } from '@jsonui/core'
 import type { ComponentMap } from '../componentMap.js'
-import { useStore } from '../hooks/useStores.js'
+import { useFormStore } from '../hooks/useFormStores.js'
 import { builtinComponents } from '../components/index.js'
 import { RenderNode } from './RenderNode.js'
 import { StyleProvider } from '../style/StyleContext.js'
@@ -26,7 +27,7 @@ export interface JsonUIProps {
   /** Handlers for `$action` in the model. */
   actions?: ActionMap
   // Single root store instance (optional)
-  store?: Store
+  initialFormStore?: FormStore
   // defaultValues: Record<storeName, JSON>
   defaultValues?: Record<string, JSONObject>
   id?: string
@@ -45,7 +46,7 @@ export const JsonUI = ({
   components = {},
   modifiers = {},
   actions = {},
-  store: initialStore,
+  initialFormStore,
   defaultValues = {},
   defaultLanguage = 'en',
   activeLanguage,
@@ -53,7 +54,7 @@ export const JsonUI = ({
   id,
   onStateExport,
 }: JsonUIProps): React.ReactElement | null => {
-  const store: Store = useStore(initialStore, defaultValues)
+  const formStore: FormStore = useFormStore(initialFormStore, defaultValues)
   const validationRegistry: ValidationRegistry = useMemo(() => {
     const validations = (model as unknown as Record<string, unknown>)[V_VALIDATIONS] as ValidationRule[] | undefined
     return buildValidationRegistry(validations ?? [])
@@ -92,11 +93,11 @@ export const JsonUI = ({
       if (onStateExport) {
         onStateExport({
           id: idRef.current,
-          formState: store.getLogicalStoresMap(),
+          formState: formStore.getLogicalStoresMap(),
         })
       }
     }
-  }, [model, defaultValues, onStateExport, id, store])
+  }, [model, defaultValues, onStateExport, id, formStore])
 
   // TODO: the model could be something else, like array, number, string, boolean, etc.
   const modelUnknown: unknown = model
@@ -107,13 +108,13 @@ export const JsonUI = ({
   return (
     // TODO: the style looks like strict, how can I use extra styles? need to test.
     <StyleProvider platform={platform}>
-      <MessageReceiver store={store} />
+      <MessageReceiver formStore={formStore} />
       <RenderNode
         node={model}
         components={allComponents}
         modifiers={modifiers}
         actions={actions}
-        store={store}
+        formStore={formStore}
         validators={validationRegistry}
         translations={translations}
         defaultLanguage={defaultLanguage}

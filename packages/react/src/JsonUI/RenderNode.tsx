@@ -10,11 +10,23 @@ import { computeRenderNodeSlotChildren } from './renderNode/computeSlotChildren.
 import { builtinComponents } from '../components/index.js'
 
 const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
-  const { node: origNode, components, modifiers, actions, store, currentPath, pathModifiers, validators, translations, defaultLanguage, activeLanguage } = props
+  const {
+    node: origNode,
+    components,
+    modifiers,
+    actions,
+    formStore,
+    currentPath,
+    pathModifiers,
+    validators,
+    translations,
+    defaultLanguage,
+    activeLanguage,
+  } = props
 
   const node = useMemo(() => expandSimplifiedNode(origNode), [origNode])
 
-  const s = (origNode as Record<string, unknown>).store
+  const s = (origNode as Record<string, unknown>).formStore
   const componentStore = typeof s === 'string' && s.length > 0 ? s : undefined
 
   const p = (origNode as Record<string, unknown>).path
@@ -36,7 +48,7 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
   const { resolvedState, resolveError } = useRenderNodeResolution({
     node,
     modifiers,
-    store,
+    formStore,
     currentPath,
     effectivePathModifiers,
     validators,
@@ -69,7 +81,7 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
 
   const infraProps = buildInfraPropsForComponent({
     compName,
-    store,
+    formStore,
     modifiers,
     actions,
     currentPath,
@@ -82,7 +94,7 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
     effectivePathModifiers,
     pathModifiers,
     currentPath,
-    store,
+    formStore,
     components,
     modifiers,
     actions,
@@ -102,7 +114,7 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
     node,
     modifiers,
     actions,
-    store,
+    formStore,
     currentPath,
     componentProps: componentActionProps,
     effectivePathModifiers,
@@ -126,7 +138,7 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
   applyInputErrorFromValueBinding({
     compName,
     node,
-    store,
+    formStore,
     mergedProps,
   })
 
@@ -139,7 +151,7 @@ const propsAreEqual = (prev: RenderNodeProps, next: RenderNodeProps): boolean =>
     prev.components === next.components &&
     prev.modifiers === next.modifiers &&
     prev.actions === next.actions &&
-    prev.store === next.store &&
+    prev.formStore === next.formStore &&
     prev.currentPath === next.currentPath &&
     prev.pathModifiers === next.pathModifiers &&
     prev.validators === next.validators &&
