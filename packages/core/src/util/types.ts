@@ -2,9 +2,9 @@
  * JSON UI type definitions (framework-agnostic).
  */
 
-import type { Store } from '../store/store.js'
+import type { FormStore } from '../store/formStore.js'
 import { V_COMP, V_CHILDREN } from './contants.js'
-export type { Store }
+export type { FormStore as Store }
 import { type ValidateFunction } from 'ajv'
 
 export type JsonUIValue = string | number | boolean | null | JsonUINode | JsonUIValue[]
@@ -32,7 +32,7 @@ export type TranslationsMap = Record<string, Record<string, string> | undefined>
 export type PathModifier = Record<string, { path: string }>
 
 export interface ModifierContext {
-  store: Store
+  formStore: FormStore
   currentPath: string
   pathModifiers?: PathModifier
   // Optional validation registry (shape owned by JsonUI/validation)

@@ -1,7 +1,7 @@
 import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
 import ajvErrors from 'ajv-errors'
-import { Store } from '../store/store.js'
+import { FormStore } from '../store/formStore.js'
 import { ERROR_STORE_SUFFIX } from '../util/contants.js'
 import { InlineValidationSpec, ModifierContext, ModifierMap, ValidationRegistry, ValidationRule } from '../util/types.js'
 import { resolveModifier } from './resolveModifier.js'
@@ -52,14 +52,14 @@ export const buildValidationRegistry = (rules?: ValidationRule[]): ValidationReg
  */
 export const runInlineValidation = async (
   spec: InlineValidationSpec,
-  store: Store,
+  formStore: FormStore,
   componentStoreName: string,
   componentLogicalPath: string,
   modifiers: ModifierMap,
   ctx: ModifierContext
 ): Promise<void> => {
   const errorStoreName = `${componentStoreName}${ERROR_STORE_SUFFIX}`
-  const value = store.getForStore(componentStoreName, componentLogicalPath)
+  const value = formStore.get(componentStoreName, componentLogicalPath)
 
   if (spec.schema != null) {
     const ajv = getInlineAjv()
@@ -74,9 +74,9 @@ export const runInlineValidation = async (
     }
 
     const newError: string | null = messages.length > 0 ? messages.join('; ') : null
-    const currentError = store.getForStore(errorStoreName, componentLogicalPath)
+    const currentError = formStore.get(errorStoreName, componentLogicalPath)
     if ((currentError ?? null) !== newError) {
-      store.setForStore(errorStoreName, componentLogicalPath, newError, false)
+      formStore.set(errorStoreName, componentLogicalPath, newError, false)
     }
     return
   }
@@ -95,9 +95,9 @@ export const runInlineValidation = async (
 
     const newError: string | null = hasError ? String(await resolveModifier(spec.errorMessage, modifiers, ctx)) : null
 
-    const currentError = store.getForStore(errorStoreName, componentLogicalPath)
+    const currentError = formStore.get(errorStoreName, componentLogicalPath)
     if ((currentError ?? null) !== newError) {
-      store.setForStore(errorStoreName, componentLogicalPath, newError, false)
+      formStore.set(errorStoreName, componentLogicalPath, newError, false)
     }
     return
   }
@@ -105,7 +105,7 @@ export const runInlineValidation = async (
 
 // Runs all validators whose rule path matches the changed path prefix for the given store.
 // Aggregates current validation messages and writes or clears them in the matching .error store paths.
-export const runValidationsForPath = (registry: ValidationRegistry, store: Store, storeName: string, path: string): void => {
+export const runValidationsForPath = (registry: ValidationRegistry, formStore: FormStore, storeName: string, path: string): void => {
   const storeValidators = registry[storeName]
 
   // No validators registered for this store at all
@@ -146,12 +146,12 @@ export const runValidationsForPath = (registry: ValidationRegistry, store: Store
     if (!isPathPrefix(rulePath, path)) continue
 
     // Track existing error paths under this rule so we can clear them.
-    const existingSubtree = store.getForStore(errorStoreName, rulePath)
+    const existingSubtree = formStore.get(errorStoreName, rulePath)
     if (existingSubtree !== undefined) {
       collectExistingPaths(rulePath === '' ? '/' : rulePath, existingSubtree)
     }
 
-    const valueAtRulePath = store.getForStore(storeName, rulePath)
+    const valueAtRulePath = formStore.get(storeName, rulePath)
     for (const validate of validators) {
       const valid = validate(valueAtRulePath)
       if (!valid && validate.errors) {
@@ -177,9 +177,9 @@ export const runValidationsForPath = (registry: ValidationRegistry, store: Store
   for (const targetPath of affectedErrorPaths) {
     const messages = perPathMessages[targetPath] ?? []
     const newError: string | null = messages.length > 0 ? messages.join('; ') : null
-    const currentError = store.getForStore(errorStoreName, targetPath)
+    const currentError = formStore.get(errorStoreName, targetPath)
     if ((currentError ?? null) === newError) continue
-    store.setForStore(errorStoreName, targetPath, newError, false)
+    formStore.set(errorStoreName, targetPath, newError, false)
   }
 }
 

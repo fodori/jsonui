@@ -1,5 +1,5 @@
 import type { JsonUINode, PathModifier } from '../../util/types.js'
-import { resolveStorePath } from '../../store/store.js'
+import { resolveStorePath } from '../../store/formStore.js'
 import { PATH_MODIFIERS_KEY } from '../../util/contants.js'
 
 export const getOwnPathModifiers = (node: JsonUINode): PathModifier | undefined => {

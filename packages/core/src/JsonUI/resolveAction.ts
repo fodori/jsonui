@@ -1,4 +1,4 @@
-import { resolveStorePath } from '../store/store.js'
+import { resolveStorePath } from '../store/formStore.js'
 import type { ActionContext, ActionMap, ModifierMap } from '../util/types.js'
 import { createSetAction } from './setAction.js'
 import { resolveModifier } from './resolveModifier.js'
@@ -16,7 +16,7 @@ export const resolveAction = (value: unknown, actions: ActionMap, modifiers: Mod
     let handler = actions[actionName as string]
 
     if (!handler && actionName === 'set') {
-      handler = createSetAction(ctx.store)
+      handler = createSetAction(ctx.formStore)
     }
 
     if (!handler) return undefined
@@ -45,7 +45,7 @@ export const resolveAction = (value: unknown, actions: ActionMap, modifiers: Mod
         // Resolve to logical path so validations work with lists, pathModifiers,
         // and relative paths (e.g. "score" inside /players/0).
         const logicalPath = resolveStorePath(rawPath, ctx.currentPath, ctx.pathModifiers, storeName)
-        runValidationsForPath(validators, ctx.store, storeName, logicalPath)
+        runValidationsForPath(validators, ctx.formStore, storeName, logicalPath)
       }
     }
   }

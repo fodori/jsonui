@@ -26,7 +26,7 @@ import { runRenderNodeResolution } from './JsonUI/renderNode/runResolution.js'
 import { resolveAction } from './JsonUI/resolveAction.js'
 import { buildValidationRegistry } from './JsonUI/validation.js'
 import modifiers from './modifiers/index.js'
-import { resolveStorePath, Store } from './store/store.js'
+import { resolveStorePath, FormStore } from './store/formStore.js'
 import { BREAKPOINT_ORDER, BreakpointKey, DEFAULT_BREAKPOINTS, StylePlatform } from './style/types.js'
 import {
   MODIFIER_KEY,
@@ -68,7 +68,7 @@ export {
   resolveAction,
   resolveStorePath,
   runRenderNodeResolution,
-  Store,
+  FormStore,
   TOUCH_STORE_SUFFIX,
   V_CHILDREN,
   V_COMP,

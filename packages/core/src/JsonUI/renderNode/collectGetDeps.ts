@@ -1,4 +1,4 @@
-import { resolveStorePath } from '../../store/store.js'
+import { resolveStorePath } from '../../store/formStore.js'
 import { V_COMP, MODIFIER_KEY, ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../../util/contants.js'
 import { PathModifier, StorePathDependency } from '../../util/types.js'
 

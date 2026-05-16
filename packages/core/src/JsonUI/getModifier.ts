@@ -1,5 +1,5 @@
-import type { Store } from '../store/store.js'
-import { resolveStorePath } from '../store/store.js'
+import type { FormStore } from '../store/formStore.js'
+import { resolveStorePath } from '../store/formStore.js'
 import { ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../util/contants.js'
 import type { ModifierContext } from '../util/types.js'
 
@@ -26,20 +26,18 @@ const hasAnyTouched = (value: unknown): boolean => {
   return false
 }
 
-export const createGetModifier = (store: Store) => {
+export const createGetModifier = (formStore: FormStore) => {
   return async (params: Record<string, unknown>, ctx: ModifierContext): Promise<unknown> => {
     const storeName = params.store as string
     const path = params.path as string
     const type = params.type as string | undefined
     const jsonataDef = params.jsonataDef as string | undefined
-    const root = store
-
     const resolvedStoreName = type === 'ERROR' ? `${storeName}${ERROR_STORE_SUFFIX}` : type === 'TOUCH' ? `${storeName}${TOUCH_STORE_SUFFIX}` : storeName
 
     // Path modifiers are keyed by the logical/base store (e.g. "data"),
     // not by shadow stores like "data.error".
     const logicalPath = resolveStorePath(path, ctx.currentPath, ctx.pathModifiers, storeName)
-    let value = root.getForStore(resolvedStoreName, logicalPath)
+    let value = formStore.get(resolvedStoreName, logicalPath)
 
     // For ERROR lookups, leaf-less containers (e.g. { players: [{}] })
     // mean there is no actual validation message in the subtree.

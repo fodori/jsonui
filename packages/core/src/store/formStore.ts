@@ -4,7 +4,7 @@
  *
  * Store paths are unbounded and can be arbitrarily nested (objects and arrays),
  * e.g. /a/b/c/2/d/e/0/f. Logical paths are resolved via resolveStorePath and
- * applied consistently in getForStore/setForStore.
+ * applied consistently in get/set.
  */
 
 import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX, STORE_ROOT_PATH } from '../util/contants.js'
@@ -20,13 +20,12 @@ const isTouchOrErrorShadowStore = (storeName: string): boolean => {
   return storeName.endsWith(TOUCH_STORE_SUFFIX) || storeName.endsWith(ERROR_STORE_SUFFIX)
 }
 
-export class Store {
+export class FormStore {
   private state: StoreState = {}
-  private listeners = new Set<Listener>()
   private changeListeners = new Set<StoreChangeListener>()
 
   getState(): Readonly<StoreState> {
-    return this.state
+    return cloneDeep(this.state)
   }
 
   /**
@@ -42,12 +41,19 @@ export class Store {
     return cloneDeep(slice) as Record<string, JSONValue>
   }
 
-  get(path: string): unknown {
+  /**
+   * Initialise a logical store root without marking fields as touched.
+   */
+  initializeStore(storeName: string, value: JSONValue): void {
+    this.set(storeName, '/', value, false)
+  }
+
+  private getByPointer(path: string): unknown {
     const value = ptrGet(this.state, path)
     return cloneDeep(value)
   }
 
-  set(path: string, value: unknown): void {
+  private setByPointer(path: string, value: unknown): void {
     assertJsonCompatible(value)
     this.state = setImmutable(this.state, path, value)
     this.notify()
@@ -58,19 +64,19 @@ export class Store {
    * instead of requiring callers to compose `/storeRoot/{storeName}/...`.
    *
    * Store isolation: each storeName (e.g. "data", "data.error", "data.touch") is
-   * a distinct store. getForStore/setForStore only read/write that store's subtree;
+   * a distinct store. get/set only read/write that store's subtree;
    * "data.error" cannot access "data" or any other store.
    *
-   * When trackTouch is true, setForStore also writes to `${storeName}.touch` at
+   * When trackTouch is true, set also writes to `${storeName}.touch` at
    * the same logicalPath; path normalization applies (no empty segments).
    */
-  setForStore(storeName: string, logicalPath: string, value: unknown, trackTouch = true): void {
+  set(storeName: string, logicalPath: string, value: unknown, trackTouch = true): void {
     const internalPath = makeStorePath(storeName, logicalPath)
-    this.set(internalPath, value)
+    this.setByPointer(internalPath, value)
 
     if (trackTouch && !isTouchOrErrorShadowStore(storeName)) {
       const touchStoreName = `${storeName}${TOUCH_STORE_SUFFIX}`
-      this.set(makeStorePath(touchStoreName, logicalPath), true)
+      this.setByPointer(makeStorePath(touchStoreName, logicalPath), true)
     }
 
     // Notify fine-grained listeners with logical store name + path so
@@ -78,23 +84,23 @@ export class Store {
     this.notifyChange(storeName, logicalPath)
   }
 
-  getForStore(storeName: string, logicalPath: string): unknown {
+  get(storeName: string, logicalPath: string): unknown {
     const internalPath = makeStorePath(storeName, logicalPath)
-    return this.get(internalPath)
+    return this.getByPointer(internalPath)
   }
 
-  update(path: string, updater: (current: unknown) => unknown): void {
-    const current = this.get(path)
-    this.set(path, updater(current))
+  // Backward-compatible aliases for existing consumers.
+  setForStore(storeName: string, logicalPath: string, value: unknown, trackTouch = true): void {
+    this.set(storeName, logicalPath, value, trackTouch)
   }
 
-  subscribe(listener: Listener): () => void {
-    this.listeners.add(listener)
-    return () => this.listeners.delete(listener)
+  // Backward-compatible aliases for existing consumers.
+  getForStore(storeName: string, logicalPath: string): unknown {
+    return this.get(storeName, logicalPath)
   }
 
   private notify(): void {
-    this.listeners.forEach((l) => l())
+    // No coarse-grained subscription API is exposed intentionally.
   }
 
   subscribeChange(listener: StoreChangeListener): () => void {
@@ -104,12 +110,6 @@ export class Store {
 
   private notifyChange(storeName: string, logicalPath: string): void {
     this.changeListeners.forEach((l) => l(storeName, logicalPath))
-  }
-
-  replaceState(state: StoreState): void {
-    assertJsonCompatible(state)
-    this.state = state
-    this.notify()
   }
 }
 

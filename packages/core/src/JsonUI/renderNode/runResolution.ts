@@ -3,14 +3,14 @@ import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
 import { runInlineValidation } from '../validation.js'
-import type { Store } from '../../store/store.js'
-import { resolveStorePath } from '../../store/store.js'
+import type { FormStore } from '../../store/formStore.js'
+import { resolveStorePath } from '../../store/formStore.js'
 import { V_VALIDATIONS } from '../../util/contants.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
 
 const runValidationSpecsFromNode = async (
   node: JsonUINode,
-  store: Store,
+  formStore: FormStore,
   modifiers: ModifierMap,
   ctx: ModifierContext,
   componentStoreName: string | undefined,
@@ -23,14 +23,14 @@ const runValidationSpecsFromNode = async (
 
   for (const item of rawValidation) {
     if (item === null || typeof item !== 'object') continue
-    await runInlineValidation(item, store, componentStoreName, componentLogicalPath, modifiers, ctx)
+    await runInlineValidation(item, formStore, componentStoreName, componentLogicalPath, modifiers, ctx)
   }
 }
 interface RunRenderNodeResolutionArgs {
   node: JsonUINode
   modifiers: ModifierMap
   ctx: ModifierContext
-  store: Store
+  formStore: FormStore
   currentPath: string
   effectivePathModifiers?: PathModifier
   stylePlatform: StylePlatform
@@ -45,7 +45,7 @@ export const runRenderNodeResolution = async ({
   node,
   modifiers,
   ctx,
-  store,
+  formStore,
   currentPath,
   effectivePathModifiers,
   stylePlatform,
@@ -82,7 +82,7 @@ export const runRenderNodeResolution = async ({
   const resolvedComponentPath =
     componentStore && componentPath != null ? resolveStorePath(componentPath, currentPath, effectivePathModifiers, componentStore) : undefined
 
-  await runValidationSpecsFromNode(node, store, modifiers, ctx, componentStore, resolvedComponentPath)
+  await runValidationSpecsFromNode(node, formStore, modifiers, ctx, componentStore, resolvedComponentPath)
 
   return {
     state: { props, resolvedSlots },

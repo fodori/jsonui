@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
-import { Store, makeStorePath, resolveStorePath } from './store.js'
+import { describe, it, expect } from 'vitest'
+import { FormStore, makeStorePath, resolveStorePath } from './formStore.js'
 import { STORE_ROOT_PATH } from '../util/contants.js'
 
 describe('Store core API', () => {
@@ -24,71 +24,58 @@ describe('Store core API', () => {
     })
   })
 
-  describe('Store basic operations', () => {
-    it('get/set work with JSON Pointer paths and return deep clones', () => {
-      const store = new Store()
-      store.set('/a/b', { c: 1 })
-      const value = store.get('/a/b') as { c: number }
-      expect(value).toEqual({ c: 1 })
+  describe('Store state access and initialization', () => {
+    it('initializeStore writes only to the selected logical store', () => {
+      const store = new FormStore()
 
-      // Mutating the returned value must not affect internal state.
-      value.c = 2
-      expect(store.get('/a/b')).toEqual({ c: 1 })
+      store.initializeStore('data', { name: 'fred' })
+
+      expect(store.get('data', '/name')).toBe('fred')
+      expect(store.get('data.touch', '/name')).toBeUndefined()
+      expect(store.get('anotherstore', '/name')).toBeUndefined()
     })
 
-    it('update reads current value and writes transformed value', () => {
-      const store = new Store()
-      store.set('/count', 1)
-      store.update('/count', (current) => (current as number) + 1)
-      expect(store.get('/count')).toBe(2)
-    })
+    it('getState returns a defensive clone', () => {
+      const store = new FormStore()
+      store.initializeStore('data', { profile: { name: 'Alice' } })
 
-    it('subscribe is notified on set and replaceState', () => {
-      const store = new Store()
-      const listener = vi.fn()
-      const unsubscribe = store.subscribe(listener)
+      const snapshot = store.getState() as { storeRoot: { data: { profile: { name: string } } } }
+      snapshot.storeRoot.data.profile.name = 'Tampered'
 
-      store.set('/a', 1)
-      store.replaceState({})
-
-      expect(listener).toHaveBeenCalledTimes(2)
-
-      unsubscribe()
-      store.set('/b', 2)
-      expect(listener).toHaveBeenCalledTimes(2)
+      expect(store.get('data', '/profile/name')).toBe('Alice')
     })
   })
 
-  describe('setForStore / getForStore / change listeners', () => {
+  describe('set / get / change listeners', () => {
     it('isolates logical stores under STORE_ROOT_PATH and tracks touched paths', () => {
-      const store = new Store()
+      const store = new FormStore()
       const changes: Array<{ name: string; path: string }> = []
       store.subscribeChange((name, path) => {
         changes.push({ name, path })
       })
 
-      store.setForStore('data', '/user/name', 'Alice')
+      store.set('data', '/user/name', 'Alice')
 
       // Main store value
-      expect(store.getForStore('data', '/user/name')).toBe('Alice')
+      expect(store.get('data', '/user/name')).toBe('Alice')
       // Touched store value (created automatically)
-      expect(store.getForStore('data.touch', '/user/name')).toBe(true)
+      expect(store.get('data.touch', '/user/name')).toBe(true)
 
       // Change listener receives logical store name and path
       expect(changes).toEqual([{ name: 'data', path: '/user/name' }])
     })
 
     it('does not create touched entries when writing into touch/error stores', () => {
-      const store = new Store()
-      store.setForStore('data.touch', '/user/name', true)
-      expect(store.getForStore('data.touch.touch', '/user/name')).toBeUndefined()
+      const store = new FormStore()
+      store.set('data.touch', '/user/name', true)
+      expect(store.get('data.touch.touch', '/user/name')).toBeUndefined()
     })
   })
 
   describe('getLogicalStoresMap', () => {
     it('returns the same shape as JsonUI defaultValues (no storeRoot wrapper)', () => {
-      const store = new Store()
-      store.setForStore('data', '/x', 1)
+      const store = new FormStore()
+      store.set('data', '/x', 1)
       const logical = store.getLogicalStoresMap()
       expect(logical.data).toEqual({ x: 1 })
       expect((logical as Record<string, unknown>)['data.touch']).toEqual({ x: true })
