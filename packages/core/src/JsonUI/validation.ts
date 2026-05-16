@@ -18,6 +18,19 @@ const getInlineAjv = (): Ajv => {
   return inlineAjv
 }
 
+const stringifyValidationError = (error: unknown): string => {
+  if (typeof error === 'string') return error
+  if (typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string') {
+    return error.message
+  }
+
+  try {
+    return String(error)
+  } catch {
+    return 'error'
+  }
+}
+
 export const buildValidationRegistry = (rules?: ValidationRule[]): ValidationRegistry => {
   const registry: ValidationRegistry = {}
   if (!rules || rules.length === 0) return registry
@@ -88,17 +101,7 @@ export const runInlineValidation = async (
       const expr = jsonata(spec.jsonataDef)
       result = await expr.evaluate(value)
     } catch (e) {
-      if (typeof e === 'string') {
-        result = e
-      } else if (typeof e === 'object' && e !== null && 'message' in e && typeof e.message === 'string') {
-        result = e.message
-      } else {
-        try {
-          result = String(e)
-        } catch {
-          result = 'error'
-        }
-      }
+      result = stringifyValidationError(e)
     }
 
     const hasError = result !== null && result !== undefined && result !== '' && result !== true

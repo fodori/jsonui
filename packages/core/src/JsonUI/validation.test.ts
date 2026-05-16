@@ -144,6 +144,33 @@ describe('JsonUI validation helpers', () => {
         expect(formStore.get('data.error', '/value')).toBe('[translated:TOO_LOW]')
       })
 
+      it('uses the JSONata result as error when errorMessage is omitted', async () => {
+        const formStore = new FormStore()
+        formStore.set('data', '/score', 5)
+
+        const spec: InlineValidationSpec = {
+          jsonataDef: '$ < 10 ? "too low" : null',
+        }
+
+        await runInlineValidation(spec, 'data', '/score', noopModifiers, makeCtx(formStore))
+        expect(formStore.get('data.error', '/score')).toBe('too low')
+      })
+
+      it('uses the caught JSONata error when errorMessage is omitted', async () => {
+        const formStore = new FormStore()
+        formStore.set('data', '/score', 'abc')
+
+        const spec: InlineValidationSpec = {
+          jsonataDef: '$ > 20',
+        }
+
+        await runInlineValidation(spec, 'data', '/score', noopModifiers, makeCtx(formStore))
+
+        const error = formStore.get('data.error', '/score')
+        expect(typeof error).toBe('string')
+        expect(String(error).length).toBeGreaterThan(0)
+      })
+
       it('skips validation when neither schema nor jsonataDef is present', async () => {
         const store = new FormStore()
         store.set('data', '/value', 5)
