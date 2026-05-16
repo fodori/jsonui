@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@jsonui/react": "0.10.0",
+    "@jsonui/react": "0.10.2",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "web-vitals": "^5.2.0"
