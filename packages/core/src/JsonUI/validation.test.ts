@@ -43,7 +43,7 @@ describe('JsonUI validation helpers', () => {
           schema: { type: 'number', minimum: 18 },
         }
 
-        await runInlineValidation(spec, formStore, 'data', '/user/age', noopModifiers, makeCtx(formStore))
+        await runInlineValidation(spec, 'data', '/user/age', noopModifiers, makeCtx(formStore))
 
         const error = formStore.get('data.error', '/user/age')
         expect(typeof error).toBe('string')
@@ -56,11 +56,11 @@ describe('JsonUI validation helpers', () => {
         const spec: InlineValidationSpec = {
           schema: { type: 'number', minimum: 18 },
         }
-        await runInlineValidation(spec, formStore, 'data', '/user/age', noopModifiers, makeCtx(formStore))
+        await runInlineValidation(spec, 'data', '/user/age', noopModifiers, makeCtx(formStore))
         expect(formStore.get('data.error', '/user/age')).toBeDefined()
 
         formStore.set('data', '/user/age', 20)
-        await runInlineValidation(spec, formStore, 'data', '/user/age', noopModifiers, makeCtx(formStore))
+        await runInlineValidation(spec, 'data', '/user/age', noopModifiers, makeCtx(formStore))
         expect(formStore.get('data.error', '/user/age')).toBeNull()
       })
     })
@@ -74,7 +74,7 @@ describe('JsonUI validation helpers', () => {
           errorMessage: 'Should be at least 10',
         }
 
-        await runInlineValidation(spec, formStore, 'data', '/score', noopModifiers, makeCtx(formStore))
+        await runInlineValidation(spec, 'data', '/score', noopModifiers, makeCtx(formStore))
 
         const error = formStore.get('data.error', '/score')
         expect(error).toBe('Should be at least 10')
@@ -88,11 +88,11 @@ describe('JsonUI validation helpers', () => {
           errorMessage: 'Should be at least 10',
         }
 
-        await runInlineValidation(spec, formStore, 'data', '/score', noopModifiers, makeCtx(formStore))
+        await runInlineValidation(spec, 'data', '/score', noopModifiers, makeCtx(formStore))
         expect(formStore.get('data.error', '/score')).toBe('Should be at least 10')
 
         formStore.set('data', '/score', 15)
-        await runInlineValidation(spec, formStore, 'data', '/score', noopModifiers, makeCtx(formStore))
+        await runInlineValidation(spec, 'data', '/score', noopModifiers, makeCtx(formStore))
         expect(formStore.get('data.error', '/score')).toBeNull()
       })
 
@@ -105,12 +105,12 @@ describe('JsonUI validation helpers', () => {
 
         // First run with failing value to set an error
         formStore.set('data', '/value', 5)
-        await runInlineValidation(spec, formStore, 'data', '/value', noopModifiers, makeCtx(formStore))
+        await runInlineValidation(spec, 'data', '/value', noopModifiers, makeCtx(formStore))
         expect(formStore.get('data.error', '/value')).toBe('Should be greater than 10')
 
         // Now run with passing value (expr returns true) — error should be cleared
         formStore.set('data', '/value', 15)
-        await runInlineValidation(spec, formStore, 'data', '/value', noopModifiers, makeCtx(formStore))
+        await runInlineValidation(spec, 'data', '/value', noopModifiers, makeCtx(formStore))
         expect(formStore.get('data.error', '/value')).toBeNull()
       })
 
@@ -122,7 +122,7 @@ describe('JsonUI validation helpers', () => {
           errorMessage: 'Should be greater than 10',
         }
 
-        await runInlineValidation(spec, formStore, 'data', '/value', noopModifiers, makeCtx(formStore))
+        await runInlineValidation(spec, 'data', '/value', noopModifiers, makeCtx(formStore))
         expect(formStore.get('data.error', '/value')).toBe('Should be greater than 10')
       })
 
@@ -140,7 +140,7 @@ describe('JsonUI validation helpers', () => {
         }
 
         const ctx: ModifierContext = { formStore, currentPath: '/' }
-        await runInlineValidation(spec, formStore, 'data', '/value', mockModifiers, ctx)
+        await runInlineValidation(spec, 'data', '/value', mockModifiers, ctx)
         expect(formStore.get('data.error', '/value')).toBe('[translated:TOO_LOW]')
       })
 
@@ -149,7 +149,7 @@ describe('JsonUI validation helpers', () => {
         store.set('data', '/value', 5)
         const spec: InlineValidationSpec = {}
 
-        await runInlineValidation(spec, store, 'data', '/value', noopModifiers, makeCtx(store))
+        await runInlineValidation(spec, 'data', '/value', noopModifiers, makeCtx(store))
         expect(store.get('data.error', '/value')).toBeUndefined()
       })
     })

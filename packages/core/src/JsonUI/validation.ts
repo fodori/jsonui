@@ -1,7 +1,7 @@
 import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
 import ajvErrors from 'ajv-errors'
-import { FormStore } from '../store/formStore.js'
+import type { FormStore } from '../store/formStore.js'
 import { ERROR_STORE_SUFFIX } from '../util/contants.js'
 import { InlineValidationSpec, ModifierContext, ModifierMap, ValidationRegistry, ValidationRule } from '../util/types.js'
 import { resolveModifier } from './resolveModifier.js'
@@ -52,12 +52,12 @@ export const buildValidationRegistry = (rules?: ValidationRule[]): ValidationReg
  */
 export const runInlineValidation = async (
   spec: InlineValidationSpec,
-  formStore: FormStore,
   componentStoreName: string,
   componentLogicalPath: string,
   modifiers: ModifierMap,
   ctx: ModifierContext
 ): Promise<void> => {
+  const { formStore } = ctx
   const errorStoreName = `${componentStoreName}${ERROR_STORE_SUFFIX}`
   const value = formStore.get(componentStoreName, componentLogicalPath)
 

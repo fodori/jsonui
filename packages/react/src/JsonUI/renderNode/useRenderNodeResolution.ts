@@ -101,7 +101,6 @@ export const useRenderNodeResolution = ({
           node,
           modifiers,
           ctx,
-          formStore,
           currentPath,
           effectivePathModifiers,
           stylePlatform,
