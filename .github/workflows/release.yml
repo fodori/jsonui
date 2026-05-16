@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Build libraries
+        run: yarn build:libs
+
       - name: Lint
         run: yarn lint
 
@@ -35,9 +38,6 @@ jobs:
 
       - name: Unit tests
         run: yarn test
-
-      - name: Build libraries
-        run: yarn build:libs
 
       - name: Publish to npm
         run: |
