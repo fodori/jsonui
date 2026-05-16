@@ -19,8 +19,10 @@ const config: StorybookConfig = {
     const coreSrc = path.join(repoRoot, 'packages/core/src/index.ts')
 
     const alias = Array.isArray(prevAlias)
-      ? [...prevAlias, { find: '@jsonui/react' as const, replacement: reactSrc }, { find: '@jsonui/core' as const, replacement: coreSrc }]
+      ? // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        [...prevAlias, { find: '@jsonui/react' as const, replacement: reactSrc }, { find: '@jsonui/core' as const, replacement: coreSrc }]
       : {
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           ...(typeof prevAlias === 'object' && prevAlias !== null ? prevAlias : {}),
           '@jsonui/react': reactSrc,
           '@jsonui/core': coreSrc,

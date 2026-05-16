@@ -41,6 +41,7 @@ export default function Layout() {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {

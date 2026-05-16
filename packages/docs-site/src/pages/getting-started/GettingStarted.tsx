@@ -9,6 +9,7 @@ function App() {
   const [content, setContent] = useState('')
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     void fetch(markupFile)
       .then((res) => res.text())
       .then((md) => {
