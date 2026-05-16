@@ -24,7 +24,7 @@ type ListBranchNode = JsonUINode & {
   [PATH_MODIFIERS_KEY]?: ModifierContext['pathModifiers']
 }
 
-export const computeRenderNodeSlotChildren = (args: {
+interface ComputeRenderNodeSlotChildrenArgs {
   node: JsonUINode
   resolvedSlots: Record<string, unknown> | undefined
   effectivePathModifiers?: ModifierContext['pathModifiers']
@@ -39,27 +39,27 @@ export const computeRenderNodeSlotChildren = (args: {
   defaultLanguage: string | undefined
   activeLanguage: string | undefined
   renderNested: NestedRenderNode
-}): {
+}
+
+export const computeRenderNodeSlotChildren = ({
+  node,
+  resolvedSlots,
+  effectivePathModifiers,
+  pathModifiers,
+  currentPath,
+  formStore,
+  components,
+  modifiers,
+  actions,
+  validators,
+  translations,
+  defaultLanguage,
+  activeLanguage,
+  renderNested,
+}: ComputeRenderNodeSlotChildrenArgs): {
   mainChildren: React.ReactNode
   multiChildSlots: Record<string, React.ReactNode>
 } => {
-  const {
-    node,
-    resolvedSlots,
-    effectivePathModifiers,
-    pathModifiers,
-    currentPath,
-    formStore,
-    components,
-    modifiers,
-    actions,
-    validators,
-    translations,
-    defaultLanguage,
-    activeLanguage,
-    renderNested,
-  } = args
-
   const nestedPropsBase = {
     components,
     modifiers,
