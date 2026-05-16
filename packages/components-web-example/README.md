@@ -1,19 +1,24 @@
-# JSONUI component example
+# JsonUI Components Web Example
 
-This is a component example for JsonUI, please check the usage in [jsonui.org](https://jsonui.org)
+This package demonstrates how to register and use custom web components with JsonUI.
 
-This is a Json markup language to define User Interface as a canvas where you can draw with Json definition.
+Use this example when you want to:
 
-When you change the Json definition, the interface immediately reflects on what you defined/changed.
+- map custom React components to `$comp` names
+- test component props with JSON model definitions
+- validate behavior in Storybook
 
-This is just an example of how you can define custom components and use it in jsonui.
+## Run
 
-Enjoy
+```bash
+yarn workspace @jsonui/components-web-example storybook
+```
 
-## How works
+## Notes
 
-`yarn storybook`
+- JsonUI model behavior (simplification, inline validation, JSONata usage) is documented in the docs-site pages.
+- This package focuses on component mapping and rendering behavior.
 
-## LICENSE [MIT](LICENSE)
+## License
 
-Copyright (c) 2022 Istvan Fodor.
+[MIT](LICENSE)

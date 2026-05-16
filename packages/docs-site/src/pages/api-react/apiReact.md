@@ -1,77 +1,115 @@
-## Props
+## JsonUI Props
 
-### model: _any_
+### `model: Json`
 
-The `model` is the most important property. It contains the UI definitions and the business logic, usually a JSON structure or object structure which can come from an API response or a predefined JSON file for example.
+Required. The JSON definition to render.
 
-### defaultValues: _Record<string, object>_
+### `components?: ComponentMap`
 
-If the JsonUI needs to initialise data, this is what the JsonUI is working on.
-The `defaultValues` should be the name of the store and the data of it. For example, if the name of the store is a `questionnaire` and the initial data of a profile.
+Optional component overrides/additions. Custom components are merged with built-in components.
 
-```js
+### `modifiers?: ModifierMap`
+
+Optional handlers referenced by `$modifier`.
+
+### `actions?: ActionMap`
+
+Optional handlers referenced by `$action`.
+
+### `initialFormStore?: FormStore`
+
+Optional pre-initialized store instance. Use this when store lifecycle is managed outside of `JsonUI`.
+
+### `defaultValues?: Record<string, JSONObject>`
+
+Optional initial values per logical store.
+
+```tsx
 <JsonUI
-  model={...}
-  defaultValues={{ questionnaire:{ profile:{ firstName:'John', lastName:'Down' }}}}
+  model={model}
+  defaultValues={{
+    data: { profile: { firstName: 'John', lastName: 'Doe' } },
+    ui: { isSidebarOpen: true },
+  }}
 />
 ```
 
-It will be able to access with this example:
+Behavior notes:
 
-```json
-{
-  "$comp": "Input",
-  "value": {
-    "$modifier": "get",
-    "store": "questionnaire",
-    "path": "/profile/firstName"
-  }
+- Each top-level key is a store name.
+- Initialization does not mark fields as touched.
+- Error and touch data are managed in shadow stores (`<store>.error`, `<store>.touch`).
+
+### `id?: string`
+
+Optional form identifier, returned in `onStateExport`.
+
+### `onStateExport?: ({ id?: string, formState: JSONValue }) => void`
+
+Optional callback for exporting current logical stores. It is called on unmount and when `model`, `defaultValues`, or `id` changes.
+
+### `defaultLanguage?: string`
+
+Baseline language key for translation modifier usage (`$modifier: "t"`). Defaults to `"en"`.
+
+### `activeLanguage?: string`
+
+Current UI language key for translations. If not set, `defaultLanguage` is used.
+
+### `platform?: "web" | "native"`
+
+Style resolution target. Defaults to `"web"`.
+
+## Registration Examples
+
+### Custom action
+
+```tsx
+const SaveAction = async ({ value }, context) => {
+  console.log('saving', value)
+  console.log('component props', context.componentProps)
 }
-```
 
-### components: _Record<string, React.ReactType>_
-
-This is the way to add more components. For example to add MUI Switch component:
-
-```js
-import Switch from '@mui/material/Switch'
-
-const MySwitch = (...props) => <Switch {...props} />
-const model = {
-  $comp: 'Switch',
-  checked: {
-    $modifier: 'get',
-    store: 'data',
-    path: 'subscribe',
-  },
-  onChange: {
-    $action: 'set',
-    store: 'data',
-    path: 'subscribe',
-  },
-}
-
-return <JsonUI model={model} components={{ Switch: MySwitch }} />
-```
-
-### functions: _Record<string, () => any>_
-
-This is the way to add more functions. For example:
-
-```js
-import Button from '@mui/material/Button'
-
-const MyFunction = () => {
-  console.log('Hello World')
-}
 const model = {
   $comp: 'Button',
-  onClick: { $action: 'MyFunction' },
+  $children: 'Save',
+  onClick: { $action: 'SaveAction', value: 42 },
 }
 
-return <JsonUI model={model} functions={{ MyFunction }} components={{ Button }} />
+<JsonUI model={model} actions={{ SaveAction }} />
 ```
 
-#### onStateExport: ({ id?: string, formState: JSONValue}) => void
+### Custom modifier
 
-When the JsonUI react component need to re-render to show a new form, need to save the previous state if it is not finished. Use id comes from JsonUI id property. Use it, to make sure it's export on the right time. Example in the storybook stories.
+```tsx
+const LabelModifier = ({ key }) => `value:${key}`
+
+const model = {
+  $comp: 'Text',
+  $children: { $modifier: 'LabelModifier', key: 'age' },
+}
+
+<JsonUI model={model} modifiers={{ LabelModifier }} />
+```
+
+## Built-in Components
+
+`@jsonui/react` includes these built-ins (just example, the best practice is to rewrite all and create own design language system):
+
+- `View`
+- `Text`
+- `Button`
+- `Edit`
+- `Fragment`
+- `Image`
+- `Slider`
+- `FormLayout`
+- `SubmitButton`
+- `StoreDebugger`
+- `_Undefined` fallback component
+
+## Operational Notes
+
+- For standard forms, prefer model-level simplification (`store` + `path`) instead of manual `value` and `onChange` wiring.
+- Keep `defaultValues` close to domain boundaries (for example `data`, `ui`, `references`) to keep models clean.
+- Use `initialFormStore` only when you need explicit store ownership across multiple `JsonUI` mounts.

@@ -1,76 +1,126 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { ChangeEventHandler, ReactNode } from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
 import jsonata from 'jsonata'
+import { modifiers, actions } from '@jsonui/core'
+import { JsonUI, builtinComponents, useControlledInputValue } from '@jsonui/react'
 
-import { JsonUI } from '../index'
-
-const JsonUIStory = {
-  title: 'Multi Child',
-  component: JsonUI,
-} as ComponentMeta<typeof JsonUI>
-
-const EditMultiChild = (props: any) => {
-  const handleChange = (event: any) => {
-    props?.onChange(event.target.value)
-  }
-  const { fieldErrors, validation, value, $childLabel, $childHelperText, onChange, children, ...ownProps } = props
+const EditMultiChild = (props: Record<string, unknown>) => {
+  const { fieldErrors, validation, value, childLabel, childHelperText, onChange, children, ...ownProps } = props
+  const handleChange = onChange as ChangeEventHandler<HTMLInputElement> | undefined
+  const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string, handleChange)
   let error = !!fieldErrors
-  let helperText = $childHelperText
+  let helperText: ReactNode = childHelperText as ReactNode
   if (error && fieldErrors) {
-    helperText = fieldErrors && Array.isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors
+    helperText = (Array.isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors) as ReactNode
   }
-  if (validation && value && validation.jsonataDef) {
+  if (validation && inputValue && (validation as { jsonataDef?: string }).jsonataDef) {
     let isValid = true
     try {
-      const expression = jsonata(validation.jsonataDef)
-      isValid = expression.evaluate(value)
+      const expression = jsonata((validation as { jsonataDef: string }).jsonataDef)
+      const result = expression.evaluate(inputValue) as unknown
+      if (result && typeof result === 'object' && 'then' in result && typeof (result as { then: unknown }).then === 'function') {
+        isValid = false
+      } else {
+        isValid = Boolean(result)
+      }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('jsonata error', validation.jsonataDef, err)
+      console.error('jsonata error', (validation as { jsonataDef?: string }).jsonataDef, err)
       isValid = false
     }
     if (!isValid) {
       error = true
-      helperText = validation.fieldErrors && Array.isArray(validation.fieldErrors) ? validation.fieldErrors.join(', ') : validation.fieldErrors
+      const ve = (validation as { fieldErrors?: unknown }).fieldErrors
+      helperText = (ve && Array.isArray(ve) ? ve.join(', ') : ve) as ReactNode
     }
   }
   return (
     <>
-      <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{$childLabel}</div>
-      <p>{children}</p>
-      <input {...ownProps} value={value || ''} onChange={handleChange} />
+      <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{childLabel as ReactNode}</div>
+      <p>{children as ReactNode}</p>
+      <input {...ownProps} value={inputValue || ''} onChange={inputOnChange} ref={inputRef} />
       <div style={{ fontSize: 10, color: error ? 'red' : undefined }}>{helperText}</div>
     </>
   )
 }
 
-const Template: ComponentStory<typeof JsonUI> = (args) => <JsonUI {...args} components={{ EditMultiChild }} />
+const meta = {
+  title: 'JsonUI/Multi Child',
+  component: JsonUI,
+} satisfies Meta<typeof JsonUI>
 
-export const MultiChild = Template.bind({})
-MultiChild.args = {
-  model: [
-    {
-      $comp: 'EditMultiChild',
-      value: { $modifier: 'get', store: 'data', path: 'firstname' },
-      $children: { $comp: 'Text', $children: 'simple text', style: { textAlign: 'left', fontSize: 20, margin: 5, color: 'green' } },
-      $childLabel: { $comp: 'Text', $children: 'This is a label', style: { textAlign: 'left', fontSize: 20, margin: 5, color: 'red' } },
-      $childHelperText: { $comp: 'Text', $children: 'Thi is a Helper Text', style: { textAlign: 'left', fontSize: 10, margin: 5 } },
-      onChange: { $action: 'set', store: 'data', path: 'firstname' },
-    },
-    {
-      $comp: 'Button',
-      $children: 'Click',
-    },
-  ],
-  components: { EditMultiChild },
-}
+export default meta
 
-MultiChild.argTypes = {
-  model: {
-    control: {
-      type: 'object',
+type Story = StoryObj<typeof meta>
+
+export const MultiChild: Story = {
+  args: {
+    model: {
+      $comp: 'Fragment',
+      $children: [
+        {
+          $comp: 'Text',
+          $children: 'EditMultiChild',
+          style: { marginBottom: 8, fontSize: 20 },
+        },
+        {
+          $comp: 'EditMultiChild',
+          value: { $modifier: 'get', store: 'data', path: 'firstname' },
+          onChange: { $action: 'set', store: 'data', path: 'firstname' },
+          $childLabel: [1, 2, 3, 4, 5].map((n) => ({
+            $comp: 'Text',
+            $children: `This is a $childLabel ${n}`,
+            style: {
+              textAlign: 'left',
+              fontSize: 16,
+              margin: 5,
+              color: 'red',
+            },
+          })),
+          $children: [1, 2, 3, 4, 5].map((n) => ({
+            $comp: 'Text',
+            $children: `This is a $children ${n}`,
+            style: {
+              textAlign: 'left',
+              fontSize: 14,
+              margin: 5,
+              color: 'green',
+            },
+          })),
+          $childHelperText: [1, 2, 3, 4, 5].map((n) => ({
+            $comp: 'Text',
+            $children: `This is a $childHelperText ${n}`,
+            style: { textAlign: 'left', fontSize: 10, margin: 5 },
+          })),
+        },
+        {
+          $comp: 'StoreDebugger',
+          data: {
+            $modifier: 'get',
+            store: 'data',
+            path: '/',
+          },
+          error: {
+            $modifier: 'get',
+            store: 'data',
+            path: '/',
+            type: 'ERROR',
+          },
+          touched: {
+            $modifier: 'get',
+            store: 'data',
+            path: '/',
+            type: 'TOUCH',
+          },
+        },
+      ],
+    },
+    components: { ...builtinComponents, EditMultiChild },
+    modifiers,
+    actions,
+    defaultValues: {
+      data: {
+        firstname: 'John',
+      },
     },
   },
 }
-
-export default JsonUIStory

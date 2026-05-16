@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/components-web-example",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "type": "module",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
@@ -32,7 +32,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./dist; rollup -c",
-    "lint": "eslint src --ext .jsx,.js,.tsx,.ts",
+    "lint": "eslint src",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "jest"
@@ -40,62 +40,52 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@fontsource/roboto": "^5.2.8",
-    "@jsonui/react": "^0.9.0",
-    "@mui/icons-material": "^7.3.5",
-    "@mui/material": "^7.3.5",
-    "typescript": "^5.9.3"
+    "@fontsource/roboto": "^5.2.10",
+    "@jsonui/react": "0.10.0",
+    "@mui/icons-material": "^7.3.10",
+    "@mui/material": "^7.3.10"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.5",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
-    "@emotion/jest": "^11.9.1",
-    "@rollup/plugin-commonjs": "^29.0.0",
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@emotion/jest": "^11.14.2",
+    "@rollup/plugin-commonjs": "^29.0.2",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
-    "@storybook/react-vite": "^10.0.7",
+    "@storybook/react": "^10.3.5",
+    "@storybook/react-vite": "^10.3.5",
     "@storybook/testing-library": "^0.2.2",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.0",
+    "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^30.0.0",
-    "@types/lodash": "^4.17.20",
-    "@types/node": "^24.10.1",
-    "@types/react": "^19.2.6",
+    "@types/lodash": "^4.17.24",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
-    "babel-jest": "^27.5.1",
-    "babel-loader": "^8.2.3",
-    "eslint": "^8.2.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "eslint-plugin-storybook": "^0.5.7",
-    "husky": "^9.1.7",
-    "jest": "^30.2.0",
-    "lint-staged": "^16.2.6",
-    "prettier": "^3.6.2",
-    "react-test-renderer": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "babel-jest": "^30.3.0",
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
+    "prettier": "^3.8.3",
+    "react-test-renderer": "^19.2.5",
     "redux-devtools": "^3.7.0",
-    "rollup": "^4.53.2",
+    "rollup": "^4.60.2",
     "rollup-plugin-copy": "^3.5.0",
-    "rollup-plugin-dts": "^6.2.3",
-    "rollup-plugin-visualizer": "^6.0.5",
-    "storybook": "^10.0.7",
-    "ts-jest": "^29.4.5",
+    "rollup-plugin-dts": "^6.4.1",
+    "rollup-plugin-visualizer": "^7.0.1",
+    "storybook": "^10.3.5",
     "ts-node": "^10.9.2",
-    "vite": "^7.2.2"
+    "typescript": "^6.0.3",
+    "vite": "^8.0.9"
   },
   "peerDependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
   },
   "browserslist": {
     "production": [
@@ -108,6 +98,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "gitHead": "4b5f090fb92c7004f68c900fd9c6c9f02cdc2542"
+  }
 }

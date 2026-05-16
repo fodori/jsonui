@@ -5,27 +5,59 @@
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "license": "MIT",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "resolutions": {
-    "@types/react": "^19.2.3",
-    "@types/react-dom": "^19.2.2"
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3"
   },
   "scripts": {
-    "buildweb": "yarn workspace @jsonui/core run build; yarn workspace @jsonui/react run build;",
+    "build:libs": "yarn workspace @jsonui/core run build && yarn workspace @jsonui/react run build",
+    "build": "yarn build:libs && yarn workspace @jsonui/playground run build",
+    "buildweb": "yarn build:libs",
+    "type-check": "yarn workspace @jsonui/core run type-check && yarn workspace @jsonui/react run type-check",
+    "test": "yarn workspace @jsonui/core run test && yarn workspace @jsonui/react run test",
+    "test:watch": "yarn workspace @jsonui/core run test:watch",
     "startTestReact": "yarn workspace jsonui-test-react run start",
-    "publish": "yarn lerna publish from-package",
-    "bootstrap": "yarn lerna bootstrap",
-    "copyDocs": "yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
+    "storybook": "yarn workspace @jsonui/playground run storybook",
+    "storybook:react": "yarn workspace @jsonui/react run storybook",
+    "build-storybook": "yarn workspace @jsonui/playground run build-storybook",
+    "build-storybook:react": "yarn workspace @jsonui/react run build-storybook",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "pre-push": "yarn lint && yarn type-check && yarn test",
+    "release:verify": "yarn build:libs && yarn type-check && yarn test && yarn lint && yarn format:check",
+    "copyDocs": "VITE_BASE_PATH=/jsonui/ yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3",
-    "lerna": "^4.0.0",
-    "microbundle": "^0.14.2"
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-storybook": "^10.3.5",
+    "gh-pages": "^6.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.0"
   },
   "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,mts,cts}": "eslint --fix",
+    "*.{json,md,css,yml,yaml}": "prettier --write"
   }
 }

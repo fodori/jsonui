@@ -1,6 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { JsonUI } from '@jsonui/react'
+import { JsonUI, builtinComponents } from '@jsonui/react'
 import { Slider as MUISlider } from '../index'
 
 const SliderStory = {
@@ -11,19 +11,26 @@ const SliderStory = {
 const Template: ComponentStory<typeof React.Component> = () => (
   <div style={{ display: 'flex', gridGap: 10, flexDirection: 'column' }}>
     <JsonUI
-      components={{ MUISlider }}
-      model={[
-        {
-          $comp: 'MUISlider',
-          name: 'age',
-          value: { $modifier: 'get', store: 'anotherstore', path: '/age' },
-          onChange: { $action: 'set', store: 'anotherstore', path: '/age' },
-        },
-        {
-          $comp: 'Text',
-          $children: { $modifier: 'get', store: 'anotherstore', path: '/age' },
-        },
-      ]}
+      components={{ ...builtinComponents, MUISlider }}
+      defaultValues={{ anotherstore: { age: 30 } }}
+      model={{
+        $comp: 'Fragment',
+        $children: [
+          {
+            $comp: 'MUISlider',
+            name: 'age',
+            min: 0,
+            max: 100,
+            step: 1,
+            value: { $modifier: 'get', store: 'anotherstore', path: '/age' },
+            onChange: { $action: 'set', store: 'anotherstore', path: '/age' },
+          },
+          {
+            $comp: 'Text',
+            $children: { $modifier: 'get', store: 'anotherstore', path: '/age' },
+          },
+        ],
+      }}
     />
   </div>
 )

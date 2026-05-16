@@ -13,89 +13,92 @@ const Template: ComponentStory<typeof React.Component> = () => (
   <div style={{ display: 'flex', gridGap: 10, flexDirection: 'column' }}>
     <JsonUI
       components={{ MUIIcon }}
-      model={[
-        {
-          $comp: 'View',
-          style: {
-            flexDirection: 'row',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
+      model={{
+        $comp: 'View',
+        $children: [
+          {
+            $comp: 'View',
+            style: {
+              flexDirection: 'row',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+            },
+            $children: [
+              {
+                $comp: 'Text',
+                $children: 'Material Icon "Home"',
+              },
+              {
+                $comp: 'MUIIcon',
+                color: 'primary',
+                name: 'home',
+              },
+            ],
           },
-          $children: [
-            {
-              $comp: 'Text',
-              $children: 'Material Icon "Home"',
+          {
+            $comp: 'View',
+            style: {
+              flexDirection: 'row',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-start',
             },
-            {
-              $comp: 'MUIIcon',
-              color: 'primary',
-              name: 'home',
-            },
-          ],
-        },
-        {
-          $comp: 'View',
-          style: {
-            flexDirection: 'row',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
+            $children: [
+              {
+                $comp: 'Text',
+                $children: 'Material Icon "delete-outlined"',
+              },
+              {
+                $comp: 'MUIIcon',
+                color: 'secondary',
+                name: 'delete-outlined',
+              },
+            ],
           },
-          $children: [
-            {
-              $comp: 'Text',
-              $children: 'Material Icon "delete-outlined"',
+          {
+            $comp: 'View',
+            style: {
+              flexDirection: 'row',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-start',
             },
-            {
-              $comp: 'MUIIcon',
-              color: 'secondary',
-              name: 'delete-outlined',
-            },
-          ],
-        },
-        {
-          $comp: 'View',
-          style: {
-            flexDirection: 'row',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
+            $children: [
+              {
+                $comp: 'Text',
+                $children: 'FontAwesome Icon "facebook"',
+              },
+              {
+                $comp: 'MUIIcon',
+                type: 'FontAwesome',
+                name: 'facebook',
+              },
+            ],
           },
-          $children: [
-            {
-              $comp: 'Text',
-              $children: 'FontAwesome Icon "facebook"',
+          {
+            $comp: 'View',
+            style: {
+              flexDirection: 'row',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-start',
             },
-            {
-              $comp: 'MUIIcon',
-              type: 'FontAwesome',
-              name: 'facebook',
-            },
-          ],
-        },
-        {
-          $comp: 'View',
-          style: {
-            flexDirection: 'row',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
+            $children: [
+              {
+                $comp: 'Text',
+                $children: 'FontAwesome Icon "home"',
+              },
+              {
+                $comp: 'MUIIcon',
+                type: 'FontAwesome',
+                color: 'success',
+                name: 'home',
+              },
+            ],
           },
-          $children: [
-            {
-              $comp: 'Text',
-              $children: 'FontAwesome Icon "home"',
-            },
-            {
-              $comp: 'MUIIcon',
-              type: 'FontAwesome',
-              color: 'success',
-              name: 'home',
-            },
-          ],
-        },
-      ]}
+        ],
+      }}
     />
   </div>
 )

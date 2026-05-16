@@ -1,8 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
-import json from '@rollup/plugin-json'
 import { visualizer } from 'rollup-plugin-visualizer'
 import dts from 'rollup-plugin-dts'
 
@@ -31,40 +29,23 @@ export default [
         requireReturnsDefault: 'auto',
       }),
       typescript({
-        tsconfig: './tsconfig.json',
+        tsconfig: './tsconfig.rollup.json',
         declaration: false,
         declarationMap: false,
       }),
-      json(),
       visualizer(),
     ],
     external: (id) => {
-      // Externalize all node_modules - don't bundle any dependencies
       if (/node_modules/.test(id)) {
         return true
       }
-      // Also externalize these specific packages
-      return ['react', 'react-dom', 'lodash', 'redux', 'tslib'].some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
+      return id === 'tslib' || id.startsWith('tslib/')
     },
   },
   {
     input: 'src/index.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    plugins: [dts({ tsconfig: './tsconfig.json' })],
-    external: [
-      'react',
-      'react-dom',
-      'lodash',
-      'redux',
-      'ajv',
-      'ajv-errors',
-      'ajv-formats',
-      'immer',
-      'jsonata',
-      'jsonpointer',
-      'key-value-replace',
-      'traverse',
-      'tslib',
-    ],
+    plugins: [dts({ tsconfig: './tsconfig.build.json' })],
+    external: ['ajv', 'ajv-errors', 'ajv-formats', 'jsonata', 'tslib'],
   },
 ]

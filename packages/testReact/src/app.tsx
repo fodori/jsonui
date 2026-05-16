@@ -1,90 +1,57 @@
-import React, { useRef, useState } from 'react'
-
-import JsonUI, { JSONValue } from '@jsonui/react'
-
-const forms = {
-  form1: {
-    $comp: 'Edit',
-    value: { $modifier: 'get', store: 'data', path: 'firstname' },
-    label: 'Form 1',
-    onChange: {
-      $action: 'set',
-      store: 'data',
-      path: 'firstname',
-    },
-  },
-  form2: [
-    {
-      $comp: 'Edit',
-      value: { $modifier: 'get', store: 'data', path: 'firstname' },
-      label: 'Form 2',
-      onChange: {
-        $action: 'set',
-        store: 'data',
-        path: 'firstname',
-      },
-      style: {
-        border: '3px solid green',
-        '@media (min-width: 420px)': {
-          border: '3px solid red',
-        },
-      },
-    },
-    {
-      $comp: 'Edit',
-      value: { $modifier: 'get', store: 'data', path: 'firstname', jsonataDef: "$ ? $uppercase($): 'empty'" },
-      label: 'Full uppercase',
-      disabled: true,
-    },
-  ],
-  form3: {
-    $comp: 'Edit',
-    value: { $modifier: 'get', store: 'data', path: 'firstname' },
-    label: 'Form 3',
-    onChange: {
-      $action: 'set',
-      store: 'data',
-      path: 'firstname',
-    },
-  },
-}
+import { useCallback, useMemo, useRef, useState } from 'react'
+import { JSONObject, JsonUI, JsonUINode, OnStateExportProps, actions, builtinComponents, modifiers } from '@jsonui/react'
+import forms from './forms.json' with { type: 'json' }
 
 type Keys = 'form1' | 'form2' | 'form3'
 
+const EMPTY_DEFAULT_VALUES: Record<string, JSONObject> = {
+  data: { firstname: '' },
+}
+
+function savedSnapshotToDefaultValues(saved: unknown): Record<string, JSONObject> {
+  if (saved === null || typeof saved !== 'object' || Array.isArray(saved)) {
+    return EMPTY_DEFAULT_VALUES
+  }
+  const cloned = JSON.parse(JSON.stringify(saved)) as Record<string, JSONObject>
+  return Object.keys(cloned).length > 0 ? cloned : EMPTY_DEFAULT_VALUES
+}
+
 const App = () => {
   const [actualKey, setActualKey] = useState<Keys>('form1')
-
-  const [defaultValues, setDefaultValues] = useState<Record<Keys, JSONValue | undefined>>({
+  const [savedByForm, setSavedByForm] = useState<Record<Keys, unknown>>({
     form1: undefined,
     form2: undefined,
     form3: undefined,
   })
-
-  const getFormState = useRef<(() => any) | undefined>(undefined)
-
-  const getActualDefaultValue = () => {
-    if (getFormState.current) {
-      return getFormState.current()
-    }
-    return undefined
-  }
+  const lastExportRef = useRef<unknown>(undefined)
 
   const formSwitch = (key: Keys) => () => {
-    const defaultValue = getActualDefaultValue()
-    setDefaultValues({ ...defaultValues, [actualKey]: defaultValue })
     setActualKey(key)
   }
-  const model = forms[`${actualKey}`]
-  const defaultValue = defaultValues[`${actualKey}`] || {
-    data: {
-      firstname: '',
-    },
-  }
+
+  const model = (forms as Record<Keys, JsonUINode>)[actualKey]
+
+  const defaultValues = useMemo(() => savedSnapshotToDefaultValues(savedByForm[actualKey]), [savedByForm, actualKey])
+
+  const onStateExport = useCallback(({ id, formState }: OnStateExportProps) => {
+    lastExportRef.current = formState
+    if (id !== 'form1' && id !== 'form2' && id !== 'form3') return
+    const key = id
+    const next = JSON.parse(JSON.stringify(formState)) as unknown
+    setSavedByForm((prev) => {
+      // Avoid setState when unchanged: JsonUI re-runs this export whenever `defaultValues`
+      // / `stores` change; feeding a new snapshot back recreates the store and retriggers export (infinite loop).
+      if (JSON.stringify(prev[key]) === JSON.stringify(next)) {
+        return prev
+      }
+      return { ...prev, [key]: next }
+    })
+  }, [])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', alignContent: 'space-around', gap: 10 }}>
       <button type="button" onClick={formSwitch('form1')}>
-        Switch to From1
+        Switch to Form1
       </button>
       <button type="button" onClick={formSwitch('form2')}>
         Switch to Form2
@@ -92,10 +59,19 @@ const App = () => {
       <button type="button" onClick={formSwitch('form3')}>
         Switch to Form3
       </button>
-      <button type="button" onClick={() => console.log('actualValue: ', getActualDefaultValue())}>
+      <button type="button" onClick={() => console.log('last exported formState:', lastExportRef.current)}>
         Console log actual state
       </button>
-      <JsonUI model={model as any} getFormState={getFormState} defaultValues={defaultValue as any} />
+      <JsonUI
+        key={actualKey}
+        id={actualKey}
+        model={model}
+        onStateExport={onStateExport}
+        defaultValues={defaultValues}
+        components={builtinComponents}
+        modifiers={modifiers}
+        actions={actions}
+      />
     </div>
   )
 }
