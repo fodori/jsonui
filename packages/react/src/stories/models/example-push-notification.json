@@ -2,7 +2,7 @@
   "$comp": "View",
   "style": { "marginTop": 10, "backgroundColor": "orange" },
   "$children": [
-    { "$comp": "Text", "$children": "JsonUI test page v0.1", "style": { "textAlign": "center", "fontSize": 30, "margin": 5 } },
+    { "$comp": "Text", "$children": "List", "style": { "textAlign": "center", "fontSize": 30, "margin": 5 } },
     {
       "$comp": "Image",
       "style": { "width": 10, "height": 10 },

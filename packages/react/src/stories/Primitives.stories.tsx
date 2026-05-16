@@ -3,7 +3,7 @@ import { modifiers, actions } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '@jsonui/react'
 
 const meta = {
-  title: 'JsonUI/PrimitivesTest',
+  title: 'JsonUI/Primitives',
   component: JsonUI,
   args: {
     components: builtinComponents,
@@ -16,7 +16,7 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const PrimitivesTest: Story = {
+export const Primitives: Story = {
   args: {
     model: {
       $comp: 'Fragment',

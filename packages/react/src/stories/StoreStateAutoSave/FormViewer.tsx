@@ -49,13 +49,13 @@ const FormViewer = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', alignContent: 'space-around', gap: 10 }}>
       <button type="button" onClick={formSwitch('form1')}>
-        Switch to Form1
+        Switch to Form 1
       </button>
       <button type="button" onClick={formSwitch('form2')}>
-        Switch to Form2
+        Switch to Form 2
       </button>
       <button type="button" onClick={formSwitch('form3')}>
-        Switch to Form3
+        Switch to Form 3
       </button>
       <JsonUI
         key={actualKey}

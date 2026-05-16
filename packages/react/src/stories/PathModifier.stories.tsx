@@ -3,7 +3,7 @@ import { modifiers, actions } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '@jsonui/react'
 
 const meta = {
-  title: 'JsonUI/PathModifierTest',
+  title: 'JsonUI/Path Modifier',
   component: JsonUI,
   args: {
     components: builtinComponents,
@@ -14,7 +14,7 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const PathModifierTest: Story = {
+export const PathModifier: Story = {
   args: {
     model: {
       $comp: 'Fragment',
@@ -31,7 +31,7 @@ export const PathModifierTest: Story = {
             {
               $comp: 'Edit',
               value: { $modifier: 'get', store: 'data', path: 'test1' },
-              label: 'Edit test 1',
+              label: 'Edit relative test1 in /this/is/a/root/for/form/../relative1',
               onChange: {
                 $action: 'set',
                 store: 'data',
@@ -39,7 +39,7 @@ export const PathModifierTest: Story = {
                 jsonataDef: '$',
               },
               $pathModifiers: {
-                data: { path: 'hhh' },
+                data: { path: 'relative1' },
               },
             },
             {
@@ -55,7 +55,7 @@ export const PathModifierTest: Story = {
         {
           $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: 'test2' },
-          label: 'Edit test 2',
+          label: 'Edit relative test2 in /this/is/a/root/for/form/bbb',
           onChange: {
             $action: 'set',
             store: 'data',
@@ -69,13 +69,13 @@ export const PathModifierTest: Story = {
         {
           $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: '/test4' },
-          label: 'Edit test root',
+          label: 'Edit absolute /test4',
           onChange: { $action: 'set', store: 'data', path: '/test4' },
         },
         {
           $comp: 'Edit',
           value: { $modifier: 'get', store: 'data', path: 'test3' },
-          label: 'Edit test 3',
+          label: 'Edit relative test3 in root',
           onChange: {
             $action: 'set',
             store: 'data',
@@ -88,7 +88,7 @@ export const PathModifierTest: Story = {
           $children: {
             $modifier: 'get',
             store: 'data',
-            path: '/this/is/a/root/for/hhh/test1',
+            path: '/this/is/a/root/for/relative1/test1',
           },
         },
         {
@@ -116,7 +116,7 @@ export const PathModifierTest: Story = {
     defaultValues: {
       data: {
         age: 'Test12',
-        this: { is: { a: { root: { for: { hhh: {} } } } } },
+        this: { is: { a: { root: { for: { relative1: {} } } } } },
         test1: 'Test13',
         test2: 'Test2',
         test3: 'Test3',

@@ -44,7 +44,7 @@ const EditMultiChild = (props: Record<string, unknown>) => {
 }
 
 const meta = {
-  title: 'JsonUI/MultiChildTest',
+  title: 'JsonUI/Multi Child',
   component: JsonUI,
 } satisfies Meta<typeof JsonUI>
 
@@ -52,55 +52,45 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const MultiChildTest: Story = {
+export const MultiChild: Story = {
   args: {
     model: {
       $comp: 'Fragment',
       $children: [
         {
           $comp: 'Text',
-          $children: 'Fragment child 1 (spacer)',
-          style: { marginBottom: 8, color: '#666' },
+          $children: 'EditMultiChild',
+          style: { marginBottom: 8, fontSize: 20 },
         },
         {
           $comp: 'EditMultiChild',
           value: { $modifier: 'get', store: 'data', path: 'firstname' },
           onChange: { $action: 'set', store: 'data', path: 'firstname' },
-          $children: [1, 2, 3, 4, 5].map((n) => ({
-            $comp: 'Text',
-            $children: `simple text ${n}`,
-            style: {
-              textAlign: 'left',
-              fontSize: 20,
-              margin: 5,
-              color: 'green',
-            },
-          })),
           $childLabel: [1, 2, 3, 4, 5].map((n) => ({
             $comp: 'Text',
-            $children: `This is a label ${n}`,
+            $children: `This is a $childLabel ${n}`,
             style: {
               textAlign: 'left',
-              fontSize: 20,
+              fontSize: 16,
               margin: 5,
               color: 'red',
             },
           })),
+          $children: [1, 2, 3, 4, 5].map((n) => ({
+            $comp: 'Text',
+            $children: `This is a $children ${n}`,
+            style: {
+              textAlign: 'left',
+              fontSize: 14,
+              margin: 5,
+              color: 'green',
+            },
+          })),
           $childHelperText: [1, 2, 3, 4, 5].map((n) => ({
             $comp: 'Text',
-            $children: `Helper line ${n}`,
+            $children: `This is a $childHelperText ${n}`,
             style: { textAlign: 'left', fontSize: 10, margin: 5 },
           })),
-        },
-        {
-          $comp: 'Text',
-          $children: 'Fragment child 3 (spacer)',
-          style: { marginBottom: 8, color: '#666' },
-        },
-        {
-          $comp: 'Text',
-          $children: 'Fragment child 4 (spacer)',
-          style: { marginBottom: 8, color: '#666' },
         },
         {
           $comp: 'StoreDebugger',

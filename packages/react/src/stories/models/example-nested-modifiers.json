@@ -7,60 +7,6 @@
   },
   "$children": [
     {
-      "$comp": "Text",
-      "$children": "Responsive demo — resize the window to see padding and font size change by breakpoint (base → sm → md → lg).",
-      "style": {
-        "base": {
-          "padding": 8,
-          "fontSize": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/sliderValue"
-          },
-          "color": "#555",
-          "marginBottom": 12
-        },
-        "sm": {
-          "padding": 12,
-          "fontSize": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/sliderValue"
-          }
-        },
-        "md": {
-          "padding": 16,
-          "fontSize": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/sliderValue"
-          }
-        },
-        "lg": {
-          "padding": 20,
-          "fontSize": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/sliderValue"
-          }
-        }
-      }
-    },
-    {
-      "$comp": "Text",
-      "$children": "Responsive demo — resize the window to see padding and font size change by breakpoint (base → sm → md → lg).",
-      "style": {
-        "padding": 8,
-        "fontSize": {
-          "$modifier": "get",
-          "store": "data",
-          "path": "/sliderValue"
-        },
-        "color": "#555",
-        "marginBottom": 12
-      }
-    },
-    {
       "$comp": "FormLayout",
       "style": {
         "display": "flex",
@@ -69,7 +15,7 @@
       },
       "$childTop": {
         "$comp": "Text",
-        "$children": "ChildTop test",
+        "$children": "Validation and touch test",
         "style": {
           "fontSize": 16,
           "fontWeight": "bold"
@@ -77,61 +23,16 @@
       },
       "$children": [
         {
-          "$comp": "Text",
-          "$children": "Slider demo",
-          "style": {
-            "fontSize": 12,
-            "color": "#666",
-            "marginBottom": 4
-          }
-        },
-        {
-          "$comp": "Slider",
-          "value": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/sliderValue"
-          },
-          "onChange": {
-            "$action": "set",
-            "store": "data",
-            "path": "/sliderValue"
-          },
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "style": {
-            "width": "100%"
-          }
-        },
-        {
-          "$comp": "Text",
-          "style": {
-            "fontSize": 12,
-            "color": "#333",
-            "marginBottom": 12
-          },
-          "$children": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/sliderValue",
-            "jsonataDef": "'Slider value: ' & $"
-          }
-        },
-        {
           "$comp": "Edit",
-          "value": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/capitalized",
-            "jsonataDef": "($ != null and $ != '') ? $uppercase($) : ''"
-          },
+          "store": "data",
+          "path": "/capitalized",
           "onChange": {
             "$action": "set",
             "store": "data",
+            "jsonataDef": "($ != null and $ != '') ? $uppercase($) : ''",
             "path": "/capitalized"
           },
-          "placeholder": "Type lowercase...",
+          "label": "Type lowercase... will be uppercase",
           "style": {
             "padding": 8,
             "border": "1px solid #ccc"
@@ -140,28 +41,31 @@
         {
           "$comp": "Edit",
           "id": "111",
-          "value": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/score"
-          },
-          "onChange": {
-            "$action": "set",
-            "store": "data",
-            "path": "/score"
-          },
-          "placeholder": "Just Number allowed",
+          "store": "data",
+          "path": "/score",
+          "label": "Just Number allowed, with global validation",
           "style": {
             "padding": 8,
             "border": "1px solid #ccc"
           }
         },
         {
+          "$comp": "Text",
+          "$children": {
+            "$modifier": "get",
+            "store": "data",
+            "path": "/score",
+            "jsonataDef": "($ != null and $ != '') ? ('Score: ' & $) : 'Enter a score'"
+          },
+          "style": {
+            "color": "#333"
+          }
+        },
+        {
           "$comp": "Edit",
           "store": "data",
           "path": "/simplifiedField",
-          "label": "Simplified field",
-          "placeholder": "just 0/1 local validation simplified, absolute path",
+          "label": "Binary only, with local validation",
           "helperText": "Value, onChange, error, fieldTouched are added by the engine.",
           "style": {
             "padding": 8,
@@ -183,6 +87,7 @@
           "$comp": "Edit",
           "store": "data",
           "path": "score2",
+          "label": "Binary only, relative path, local validation",
           "$validations": [
             {
               "schema": {
@@ -194,22 +99,9 @@
               }
             }
           ],
-          "placeholder": "Binary score (0/1 only) relative path",
           "style": {
             "padding": 8,
             "border": "1px solid #ccc"
-          }
-        },
-        {
-          "$comp": "Text",
-          "$children": {
-            "$modifier": "get",
-            "store": "data",
-            "path": "/score",
-            "jsonataDef": "($ != null and $ != '') ? ('Score: ' & $) : 'Enter a score'"
-          },
-          "style": {
-            "color": "#333"
           }
         },
         {
@@ -226,6 +118,14 @@
               "style": {
                 "fontSize": 14,
                 "fontWeight": "bold",
+                "marginBottom": 8
+              }
+            },
+            {
+              "$comp": "Text",
+              "$children": "Name min length 1, Score number only (validated with schema)",
+              "style": {
+                "fontSize": 14,
                 "marginBottom": 8
               }
             },

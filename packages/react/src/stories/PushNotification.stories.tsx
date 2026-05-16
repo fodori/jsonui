@@ -3,7 +3,7 @@ import { useContext, useMemo } from 'react'
 import { JsonUI, builtinComponents, MessageHandler, MessageHandlerContext } from '@jsonui/react'
 import { modifiers, actions } from '@jsonui/core'
 import type { JsonUINode } from '@jsonui/core'
-import modelJson from './models/example-table.json' with { type: 'json' }
+import modelJson from './models/example-push-notification.json' with { type: 'json' }
 
 const model = modelJson as JsonUINode
 
@@ -15,17 +15,17 @@ const MessageSender = () => {
       onClick={() => {
         const updateDefaultValueHandler = messageHandler?.get()
         if (updateDefaultValueHandler) {
-          updateDefaultValueHandler({ store: 'data', path: 'level1/testList/1', value: `${Math.random() * 100}` })
+          updateDefaultValueHandler({ store: 'data', path: 'level1/testList/2', value: `${Math.random() * 100}` })
         }
       }}
     >
-      Randomize list item 1
+      Change level1/testList/2 value to random number
     </button>
   )
 }
 
 const meta = {
-  title: 'JsonUI/PartialValueUpdateTest',
+  title: 'JsonUI/Push Notification',
   component: JsonUI,
 } satisfies Meta<typeof JsonUI>
 
@@ -33,7 +33,7 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const PartialValueUpdateTest: Story = {
+export const PushNotification: Story = {
   render: (args) => {
     const value = useMemo(() => new MessageHandler(), [])
     return (
@@ -51,7 +51,7 @@ export const PartialValueUpdateTest: Story = {
     defaultValues: {
       data: {
         level1: {
-          testList: ['oneeee5', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'a11', 'a12', 'a13', 'a14'],
+          testList: ['item 0.', 'item 1.', 'item 2.', 'item 3.'],
         },
       },
     },

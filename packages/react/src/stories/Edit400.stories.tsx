@@ -55,7 +55,7 @@ const listModel = {
 }
 
 const meta: Meta<JsonUIStoryArgs> = {
-  title: 'JsonUI/PerformanceInputListTest2',
+  title: 'JsonUI/Edit 400',
   component: JsonUI,
   args: {
     components: builtinComponents,
@@ -68,7 +68,7 @@ export default meta
 
 type Story = StoryObj<JsonUIStoryArgs>
 
-export const PerformanceInputListTest2: Story = {
+export const Edit400: Story = {
   args: {
     model: listModel,
     iteration: 400,
@@ -78,7 +78,7 @@ export const PerformanceInputListTest2: Story = {
   },
   render: ({ iteration, ...args }) => (
     <>
-      <p>{iteration}</p>
+      <p>{iteration} input field and $listItem and render performance test with separate editing test</p>
       <JsonUI {...args} defaultValues={{ data: { list: Array(iteration).fill('a', 0) } }} />
     </>
   ),

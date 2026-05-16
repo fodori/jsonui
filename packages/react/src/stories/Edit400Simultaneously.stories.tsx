@@ -24,8 +24,8 @@ const listModel = {
         $children: [
           {
             $comp: 'Edit',
-            value: { $modifier: 'get', store: 'data', path: '/name' },
-            onChange: { $action: 'set', store: 'data', path: '/name' },
+            value: { $modifier: 'get', store: 'data', path: '/firstName' },
+            onChange: { $action: 'set', store: 'data', path: '/firstName' },
             style: { width: 50, height: 20 },
           },
         ],
@@ -55,7 +55,7 @@ const listModel = {
 }
 
 const meta: Meta<JsonUIStoryArgs> = {
-  title: 'JsonUI/PerformanceInputListTest1',
+  title: 'JsonUI/Edit 400 Simultaneously',
   component: JsonUI,
   args: {
     components: builtinComponents,
@@ -68,7 +68,7 @@ export default meta
 
 type Story = StoryObj<JsonUIStoryArgs>
 
-export const PerformanceInputListTest1: Story = {
+export const Edit400Simultaneously: Story = {
   args: {
     model: listModel,
     iteration: 400,
@@ -78,8 +78,8 @@ export const PerformanceInputListTest1: Story = {
   },
   render: ({ iteration, ...args }) => (
     <>
-      <p>{iteration}</p>
-      <JsonUI {...args} defaultValues={{ data: { list: Array(iteration).fill('a', 0) } }} />
+      <p>{iteration} input field and $listItem and render performance test with simultaneous editing test</p>
+      <JsonUI {...args} defaultValues={{ data: { firstName: '', list: Array(iteration).fill('a', 0) } }} />
     </>
   ),
 }

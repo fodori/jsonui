@@ -28,31 +28,11 @@ const boxModel = {
         ],
       },
     },
-    {
-      $comp: 'StoreDebugger',
-      data: {
-        $modifier: 'get',
-        store: 'data',
-        path: '/',
-      },
-      error: {
-        $modifier: 'get',
-        store: 'data',
-        path: '/',
-        type: 'ERROR',
-      },
-      touched: {
-        $modifier: 'get',
-        store: 'data',
-        path: '/',
-        type: 'TOUCH',
-      },
-    },
   ],
 }
 
 const meta = {
-  title: 'JsonUI/PerformanceBoxesTest',
+  title: 'JsonUI/Boxes 400',
   component: JsonUI,
   args: {
     components: builtinComponents,
@@ -68,14 +48,14 @@ type Story = StoryObj<typeof meta>
 
 const BOX_COUNT = 400
 
-export const PerformanceBoxesTest: Story = {
+export const Boxes400: Story = {
   args: {
     ...meta.args,
     model: boxModel,
   },
   render: (args) => (
     <>
-      <p>{BOX_COUNT} boxes</p>
+      <p>{BOX_COUNT} boxes $listItem and render performance test </p>
       <JsonUI
         model={args.model}
         components={args.components}
