@@ -55,6 +55,7 @@ import {
 } from './JsonUI/index.js'
 import type { JsonUIProps, RenderNodeProps, ChangeDefaultValueFunc, ChangeDefaultValueFuncProp } from './JsonUI/index.js'
 import { useControlledInputValue } from './hooks/useControlledInputValue.js'
+import { ComponentMap } from './componentMap.js'
 
 export {
   ACTION_KEY,
@@ -113,6 +114,7 @@ export type {
   RenderNodeProps,
   ChangeDefaultValueFunc,
   ChangeDefaultValueFuncProp,
+  ComponentMap,
 }
 
 export default JsonUI
