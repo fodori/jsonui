@@ -2,6 +2,7 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "baseUrl": "./src/",
+    "ignoreDeprecations": "6.0",
     "jsx": "react-jsx",
     "module": "ESNext",
     "sourceMap": true,

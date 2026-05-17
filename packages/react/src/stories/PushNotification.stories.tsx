@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useContext, useMemo } from 'react'
-import { JsonUI, builtinComponents, MessageHandler, MessageHandlerContext } from '@jsonui/react'
+import { JsonUI, builtinComponents, MessageHandler, MessageHandlerContext } from '../index.js'
 import { modifiers, actions } from '@jsonui/core'
 import type { JsonUINode } from '@jsonui/core'
 import modelJson from './models/example-push-notification.json' with { type: 'json' }
