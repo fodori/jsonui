@@ -41,6 +41,7 @@ jobs:
 
       - name: Publish to npm
         run: |
+          npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
           (cd packages/core && npm publish --access public)
           (cd packages/react && npm publish --access public)
         env:
