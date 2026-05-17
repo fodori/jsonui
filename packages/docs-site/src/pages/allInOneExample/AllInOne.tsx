@@ -20,9 +20,7 @@ function AllInOne() {
         <JsonUI
           model={model}
           modifiers={modifiers}
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           actions={{ ...actions, axios }}
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           components={{ Button, TextField, Checkbox, Icon, Slider } as unknown as ComponentMap}
         />
       </Paper>
