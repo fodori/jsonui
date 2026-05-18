@@ -33,7 +33,7 @@ const stringifyValidationError = (error: unknown): string => {
 
 export const buildValidationRegistry = (rules?: ValidationRule[]): ValidationRegistry => {
   const registry: ValidationRegistry = {}
-  if (!rules || rules.length === 0) return registry
+  if (!Array.isArray(rules) || rules.length === 0) return registry
 
   const ajv = new Ajv({ allErrors: true, strict: false })
   // TODO: check test how looks like in jsonui
@@ -42,9 +42,18 @@ export const buildValidationRegistry = (rules?: ValidationRule[]): ValidationReg
 
   for (const rule of rules) {
     if (rule.schema === undefined || rule.schema === null || !rule.store || !rule.path) continue
-    const validate = ajv.compile(rule.schema)
-    const byStore = registry[rule.store] ?? (registry[rule.store] = {})
-    const list = byStore[rule.path] ?? (byStore[rule.path] = [])
+
+    const schema = (rule as Partial<ValidationRule>).schema
+    const store = (rule as Partial<ValidationRule>).store
+    const path = (rule as Partial<ValidationRule>).path
+
+    if (schema === undefined || schema === null) continue
+    if (typeof store !== 'string' || store.length === 0) continue
+    if (typeof path !== 'string' || path.length === 0) continue
+
+    const validate = ajv.compile(schema)
+    const byStore = registry[store] ?? (registry[store] = {})
+    const list = byStore[path] ?? (byStore[path] = [])
     list.push(validate)
   }
 

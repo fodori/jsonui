@@ -9,6 +9,20 @@ import { buildInfraPropsForComponent, applyInputErrorFromValueBinding } from './
 import { computeRenderNodeSlotChildren } from './renderNode/computeSlotChildren.js'
 import { builtinComponents } from '../components/index.js'
 
+const sanitizePathModifiers = (value: unknown): Record<string, { path: string }> | undefined => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined
+
+  const sanitized: Record<string, { path: string }> = {}
+  for (const [storeName, spec] of Object.entries(value as Record<string, unknown>)) {
+    if (!spec || typeof spec !== 'object' || Array.isArray(spec)) continue
+    const rawPath = (spec as { path?: unknown }).path
+    if (typeof rawPath !== 'string' || rawPath.length === 0) continue
+    sanitized[storeName] = { path: rawPath }
+  }
+
+  return Object.keys(sanitized).length > 0 ? sanitized : undefined
+}
+
 const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
   const {
     node: origNode,
@@ -33,7 +47,7 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
   const componentPath = typeof p === 'string' ? p : undefined
 
   const styleConfig = useStyleConfig()
-  const ownPathModifiers = getOwnPathModifiers(node)
+  const ownPathModifiers = useMemo(() => sanitizePathModifiers(getOwnPathModifiers(node)), [node])
 
   const effectivePathModifiers = useMemo(
     () =>
@@ -63,6 +77,9 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
 
   const renderNested = useCallback((p: RenderNodeProps) => <RenderNode {...p} />, [])
 
+  if (typeof origNode !== 'object') {
+    return null
+  }
   if (resolveError) {
     console.error('[JsonUI] resolveModifier error:', resolveError)
     return <div style={{ padding: 8, color: '#c00', fontSize: 12 }}>Error: {resolveError.message}</div>
@@ -129,6 +146,10 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
     ...infraProps,
     ...multiChildSlots,
     ...eventProps,
+  }
+
+  if (mergedProps.style != null && (typeof mergedProps.style !== 'object' || Array.isArray(mergedProps.style))) {
+    delete mergedProps.style
   }
 
   if (components[compName] === undefined) {

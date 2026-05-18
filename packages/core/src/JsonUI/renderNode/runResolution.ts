@@ -72,12 +72,16 @@ export const runRenderNodeResolution = async ({
     }
   }
 
-  if (props.style != null && typeof props.style === 'object') {
-    const resolved = resolveStyle(props.style, {
-      platform: stylePlatform,
-      breakpoint: styleBreakpoint,
-    })
-    props.style = resolved ?? props.style
+  if (props.style != null) {
+    if (typeof props.style !== 'object' || Array.isArray(props.style)) {
+      delete props.style
+    } else {
+      const resolved = resolveStyle(props.style, {
+        platform: stylePlatform,
+        breakpoint: styleBreakpoint,
+      })
+      props.style = resolved ?? props.style
+    }
   }
 
   const resolvedComponentPath =

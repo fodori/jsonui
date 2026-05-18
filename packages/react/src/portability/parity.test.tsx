@@ -1,9 +1,119 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { describe, it, expect, vi } from 'vitest'
 import { act, createElement } from 'react'
 import { createRoot } from 'react-dom/client'
 import { computeListSliceRange } from '@jsonui/core'
 import { JsonUI } from '../JsonUI/JsonUI.js'
 import type { JsonUINode, OnStateExportProps } from '@jsonui/core'
+
+const renderJsonUINoThrow = async (model: JsonUINode): Promise<unknown> => {
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+  const root = createRoot(container)
+
+  let thrown: unknown
+  try {
+    await act(async () => {
+      root.render(createElement(JsonUI, { model }))
+    })
+  } catch (error) {
+    thrown = error
+  }
+
+  await act(async () => {
+    root.unmount()
+  })
+  document.body.removeChild(container)
+  return thrown
+}
+
+const malformedModels: Array<{ name: string; model: JsonUINode }> = [
+  { name: 'null model', model: null as any },
+  { name: 'string model', model: 'not-an-object' as any },
+  { name: 'number model', model: 123 as any },
+  { name: 'array root model', model: [] as any },
+  { name: 'empty object without $comp', model: {} },
+  { name: '$comp missing but has props', model: { value: 'x', onClick: { $action: 'set' } } },
+  { name: '$comp null', model: { $comp: null } },
+  { name: '$comp number', model: { $comp: 99 } },
+  { name: '$comp object', model: { $comp: { name: 'View' } } },
+  { name: '$comp array', model: { $comp: ['View'] } },
+  { name: 'unknown component name', model: { $comp: 'NoSuchComponent' } },
+  { name: '$children object without $comp', model: { $comp: 'View', $children: { foo: 'bar' } } },
+  { name: '$children deeply mixed array', model: { $comp: 'View', $children: [1, true, null, { x: 1 }, [{ y: 2 }]] } },
+  { name: 'style is string', model: { $comp: 'View', style: 'bad' } },
+  { name: 'style is array', model: { $comp: 'View', style: [] } },
+  { name: 'style is number', model: { $comp: 'View', style: 42 } },
+  { name: 'onClick is primitive', model: { $comp: 'Button', onClick: 'noop' } },
+  {
+    name: 'onChange mixed action array',
+    model: { $comp: 'Edit', onChange: ['x', 1, null, { $action: 'set', store: 'data', path: '/name' }] },
+  },
+  { name: 'value malformed modifier payload', model: { $comp: 'Edit', value: { $modifier: 1, store: 12, path: null } } },
+  { name: 'onChange malformed action payload', model: { $comp: 'Edit', onChange: { $action: { name: 'set' }, store: [], path: {} } } },
+  {
+    name: 'pathModifiers null store spec',
+    model: { $comp: 'View', $pathModifiers: { data: null }, $children: { $comp: 'Text', $children: 'x' } },
+  },
+  {
+    name: 'pathModifiers non-object root',
+    model: { $comp: 'View', $pathModifiers: 22, $children: { $comp: 'Text', $children: 'x' } },
+  },
+  {
+    name: 'malformed $translate as array',
+    model: { $comp: 'View', $translate: [] },
+  },
+  {
+    name: 'malformed $translate table values',
+    model: { $comp: 'View', $translate: { en: 'bad-shape', hu: 12 } },
+  },
+  {
+    name: 'invalid $validations non-array',
+    model: { $comp: 'View', $validations: { store: 'data' } },
+  },
+  {
+    name: 'invalid $validations rule entries',
+    model: { $comp: 'View', $validations: [null, 12, 'x', { path: 1 }] },
+  },
+  {
+    name: 'list model missing usable path modifiers',
+    model: {
+      $comp: 'View',
+      $isList: true,
+      $listItem: { $comp: 'Text', $children: 'item' },
+      $pathModifiers: {},
+    },
+  },
+  {
+    name: 'list model with non-object path modifier entry',
+    model: {
+      $comp: 'View',
+      $isList: true,
+      $listItem: { $comp: 'Text', $children: 'item' },
+      $pathModifiers: { data: 1 },
+    },
+  },
+  {
+    name: 'list model with null list item',
+    model: {
+      $comp: 'View',
+      $isList: true,
+      $listItem: null,
+      $pathModifiers: { data: { path: '/rows' } },
+    },
+  },
+  {
+    name: 'slot list with malformed modifier shape',
+    model: {
+      $comp: 'View',
+      $childLabel: {
+        $isList: true,
+        $listItem: { $comp: 'Text', $children: 'label' },
+        $pathModifiers: { data: { wrong: true } },
+      },
+    },
+  },
+]
 
 describe('portability parity (main JsonUI)', () => {
   it('list pagination matches main defaults (full range when unset)', () => {
@@ -93,7 +203,7 @@ describe('portability parity (main JsonUI)', () => {
       $isList: true,
       $listItem: { $comp: 'Text', $children: 'item' },
       $pathModifiers: {},
-    } as unknown as JsonUINode
+    }
 
     let thrown: unknown
     try {
@@ -110,5 +220,10 @@ describe('portability parity (main JsonUI)', () => {
       root.unmount()
     })
     document.body.removeChild(container)
+  })
+
+  it.each(malformedModels)('does not crash for malformed model: $name', async ({ model }) => {
+    const thrown = await renderJsonUINoThrow(model)
+    expect(thrown).toBeUndefined()
   })
 })

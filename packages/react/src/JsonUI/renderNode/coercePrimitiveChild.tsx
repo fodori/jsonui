@@ -12,6 +12,11 @@ export const coercePrimitiveChild = (value: unknown): React.ReactNode => {
     if (MODIFIER_KEY in obj) {
       return undefined
     }
+    try {
+      return JSON.stringify(value)
+    } catch {
+      return '[invalid]'
+    }
   }
   return value as React.ReactNode
 }

@@ -59,8 +59,20 @@ export const JsonUI = ({
 
   const formStore: FormStore = useFormStore(initialFormStore, defaultValues)
   const validationRegistry: ValidationRegistry = useMemo(() => {
-    const validations = modelRecord?.[V_VALIDATIONS] as ValidationRule[] | undefined
-    return buildValidationRegistry(validations ?? [])
+    const rawValidations = modelRecord?.[V_VALIDATIONS]
+    const validations: ValidationRule[] = Array.isArray(rawValidations)
+      ? rawValidations.filter(
+          (rule): rule is ValidationRule =>
+            isRecord(rule) &&
+            typeof rule.store === 'string' &&
+            rule.store.length > 0 &&
+            typeof rule.path === 'string' &&
+            rule.path.length > 0 &&
+            rule.schema !== undefined &&
+            rule.schema !== null
+        )
+      : []
+    return buildValidationRegistry(validations)
   }, [modelRecord])
 
   const allComponents = useMemo(() => {
