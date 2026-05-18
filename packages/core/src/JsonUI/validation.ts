@@ -155,7 +155,7 @@ export const runValidationsForPath = (registry: ValidationRegistry, formStore: F
   // Example: action path '/a/b/c' should trigger validators registered for
   // '/', '/a', '/a/b', and '/a/b/c'.
   for (const [rulePath, validators] of Object.entries(storeValidators)) {
-    if (!validators) continue
+    if (!Array.isArray(validators) || validators.length === 0) continue
     if (!isPathPrefix(rulePath, path)) continue
 
     // Track existing error paths under this rule so we can clear them.
@@ -170,7 +170,7 @@ export const runValidationsForPath = (registry: ValidationRegistry, formStore: F
       if (!valid && validate.errors) {
         for (const err of validate.errors) {
           if (!err.message) continue
-          const instancePath = err.instancePath
+          const instancePath = typeof err.instancePath === 'string' ? err.instancePath : ''
           // instancePath is relative to rulePath, e.g. '/0/score'
           let targetPath: string
           if (rulePath === '' || rulePath === '/') {

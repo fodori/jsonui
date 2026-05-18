@@ -18,6 +18,7 @@ import { builtinComponents } from '../components/index.js'
 import { RenderNode } from './RenderNode.js'
 import { StyleProvider } from '../style/StyleContext.js'
 import { MessageReceiver } from './MessageReceiver.js'
+import { isRecord } from '../utils/isRecord.js'
 
 export interface JsonUIProps {
   model: JsonUINode
@@ -54,26 +55,32 @@ export const JsonUI = ({
   id,
   onStateExport,
 }: JsonUIProps): React.ReactElement | null => {
+  const modelRecord = isRecord(model) ? model : undefined
+
   const formStore: FormStore = useFormStore(initialFormStore, defaultValues)
   const validationRegistry: ValidationRegistry = useMemo(() => {
-    const validations = (model as unknown as Record<string, unknown>)[V_VALIDATIONS] as ValidationRule[] | undefined
+    const validations = modelRecord?.[V_VALIDATIONS] as ValidationRule[] | undefined
     return buildValidationRegistry(validations ?? [])
-  }, [model])
-  const allComponents = useMemo(() => (Object.keys(components).length > 0 ? { ...builtinComponents, ...components } : builtinComponents), [components])
+  }, [modelRecord])
+
+  const allComponents = useMemo(() => {
+    if (!isRecord(components)) return builtinComponents
+    return Object.keys(components).length > 0 ? { ...builtinComponents, ...components } : builtinComponents
+  }, [components])
 
   const resolvedLanguage = activeLanguage ?? defaultLanguage
 
   // could we move the translation into a modifier?
   const translations: TranslationsMap = useMemo(() => {
-    const raw = (model as unknown as { $translate?: unknown }).$translate
-    if (!raw || typeof raw !== 'object') return {}
+    const raw = modelRecord?.$translate
+    if (!isRecord(raw)) return {}
 
     const map: TranslationsMap = {}
 
     // New shape: { langCode: { key: value, ... }, ... }
-    for (const [lang, table] of Object.entries(raw as Record<string, unknown>)) {
-      if (!table || typeof table !== 'object') continue
-      for (const [key, val] of Object.entries(table as Record<string, unknown>)) {
+    for (const [lang, table] of Object.entries(raw)) {
+      if (!isRecord(table)) continue
+      for (const [key, val] of Object.entries(table)) {
         if (typeof val !== 'string' || !key) continue
         const entry = (map[key] ??= {})
         entry[lang] = val
@@ -81,7 +88,7 @@ export const JsonUI = ({
     }
 
     return map
-  }, [model])
+  }, [modelRecord])
 
   const idRef = useRef(id)
   useEffect(() => {

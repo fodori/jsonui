@@ -135,4 +135,36 @@ describe('JsonUI Edit input binding', () => {
     })
     document.body.removeChild(container)
   })
+
+  it('does not crash when defaultValues is malformed at runtime', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    const model: JsonUINode = {
+      $comp: 'View',
+      $children: 'ok',
+    }
+
+    let thrown: unknown
+    try {
+      await act(async () => {
+        root.render(
+          createElement(JsonUI, {
+            model,
+            defaultValues: [] as unknown as Record<string, never>,
+          })
+        )
+      })
+    } catch (error) {
+      thrown = error
+    }
+
+    expect(thrown).toBeUndefined()
+
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
 })

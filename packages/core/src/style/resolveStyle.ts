@@ -7,7 +7,7 @@ import type { CanonicalStyle, ResponsiveStyle, StyleInput, BreakpointKey, Resolv
 import { BREAKPOINT_ORDER } from './types.js'
 
 const isResponsiveStyle = (style: StyleInput): style is ResponsiveStyle => {
-  if (typeof style !== 'object') return false
+  if (typeof style !== 'object' || Array.isArray(style)) return false
   const keys = Object.keys(style)
   return keys.some((k) => BREAKPOINT_ORDER.includes(k as BreakpointKey))
 }
@@ -22,7 +22,7 @@ const mergeResponsive = (responsive: ResponsiveStyle, currentBreakpoint: Breakpo
   for (let i = 0; i <= idx; i++) {
     const key = BREAKPOINT_ORDER[i]
     const block = responsive[key]
-    if (block && typeof block === 'object') {
+    if (block && typeof block === 'object' && !Array.isArray(block)) {
       Object.assign(merged, block)
     }
   }

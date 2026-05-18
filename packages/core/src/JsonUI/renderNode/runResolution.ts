@@ -7,6 +7,10 @@ import { resolveStorePath } from '../../store/formStore.js'
 import { V_VALIDATIONS } from '../../util/contants.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
 
+const isRecord = (value: unknown): value is Record<string, unknown> => {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
 const runValidationSpecsFromNode = async (
   node: JsonUINode,
   modifiers: ModifierMap,
@@ -14,7 +18,7 @@ const runValidationSpecsFromNode = async (
   componentStoreName: string | undefined,
   componentLogicalPath: string | undefined
 ): Promise<void> => {
-  const rawValidation = (node as Record<string, unknown>)[V_VALIDATIONS] as unknown[] | undefined
+  const rawValidation = isRecord(node) ? (node[V_VALIDATIONS] as unknown[] | undefined) : undefined
 
   if (!rawValidation || !Array.isArray(rawValidation) || rawValidation.length === 0) return
   if (!componentStoreName || componentLogicalPath == null) return
@@ -55,8 +59,9 @@ export const runRenderNodeResolution = async ({
   const props: Record<string, unknown> = {}
   const deps: StorePathDependency[] = []
   const resolvedSlots: Record<string, unknown> = {}
+  const nodeEntries = isRecord(node) ? Object.entries(node) : []
 
-  for (const [key, value] of Object.entries(node)) {
+  for (const [key, value] of nodeEntries) {
     if (key.startsWith('$child') || !key.startsWith('$')) {
       collectGetModifierDependencies(value, currentPath, deps, effectivePathModifiers)
       if (key.startsWith('$child')) {

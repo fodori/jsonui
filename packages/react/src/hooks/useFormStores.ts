@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { FormStore } from '@jsonui/core'
 import type { JSONObject } from '@jsonui/core'
+import { isRecord } from '../utils/isRecord.js'
 /**
  * Single-root store hook.
  *
@@ -12,9 +13,9 @@ export const useFormStore = (initialStore?: FormStore, defaultValues?: Record<st
   return useMemo(() => {
     const formStore = initialStore ?? new FormStore()
 
-    if (defaultValues) {
+    if (isRecord(defaultValues)) {
       for (const [name, data] of Object.entries(defaultValues)) {
-        if (!name || name.length === 0) continue
+        if (typeof name !== 'string' || name.length === 0) continue
         // Initialise logical stores without marking them as "touched" –
         // touched tracking is for user interactions, not default values.
         formStore.setForStore(name, '/', data, false)

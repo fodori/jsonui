@@ -23,7 +23,8 @@ export const resolveAction = (value: unknown, actions: ActionMap, modifiers: Mod
 
     return async (e: unknown) => {
       // TODO: research, why componentProps need
-      const resolvedParams: Record<string, unknown> = { ...componentProps, ...params }
+      const safeComponentProps = typeof componentProps === 'object' ? componentProps : {}
+      const resolvedParams: Record<string, unknown> = { ...safeComponentProps, ...params }
       // Case 1: value from event (input onChange) – only when the model
       // did NOT define a value explicitly.
       if (!hasExplicitValue && e != null && typeof e === 'object' && 'target' in e) {
@@ -39,8 +40,8 @@ export const resolveAction = (value: unknown, actions: ActionMap, modifiers: Mod
       if (result instanceof Promise) await result
 
       // Run validations for this store/path if configured
-      const storeName = resolvedParams.store as string | undefined
-      const rawPath = resolvedParams.path as string | undefined
+      const storeName = typeof resolvedParams.store === 'string' ? resolvedParams.store : undefined
+      const rawPath = typeof resolvedParams.path === 'string' ? resolvedParams.path : undefined
       if (validators && storeName && rawPath) {
         // Resolve to logical path so validations work with lists, pathModifiers,
         // and relative paths (e.g. "score" inside /players/0).

@@ -44,6 +44,7 @@ import {
   V_VALIDATIONS,
 } from './util/contants.js'
 import { normalizePath } from './util/json-pointer.js'
+import { isRecord } from './util/helpers.js'
 
 export {
   ACTION_KEY,
@@ -74,6 +75,7 @@ export {
   V_COMP,
   V_VALIDATIONS,
   buildValidationRegistry,
+  isRecord,
 }
 
 export type {

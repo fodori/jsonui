@@ -27,11 +27,14 @@ const hasAnyTouched = (value: unknown): boolean => {
 }
 
 export const createGetModifier = (formStore: FormStore) => {
-  return async (params: Record<string, unknown>, ctx: ModifierContext): Promise<unknown> => {
-    const storeName = params.store as string
-    const path = params.path as string
-    const type = params.type as string | undefined
-    const jsonataDef = params.jsonataDef as string | undefined
+  return async (params: Record<string, unknown> | undefined, ctx: ModifierContext): Promise<unknown> => {
+    const storeName = !!params?.store && typeof params.store === 'string' ? params.store : ''
+    const path = !!params?.path && typeof params.path === 'string' ? params.path : '/'
+    const type = !!params?.type && typeof params.type === 'string' ? params.type : undefined
+    const jsonataDef = params?.jsonataDef as string | undefined
+
+    if (storeName.length === 0) return undefined
+
     const resolvedStoreName = type === 'ERROR' ? `${storeName}${ERROR_STORE_SUFFIX}` : type === 'TOUCH' ? `${storeName}${TOUCH_STORE_SUFFIX}` : storeName
 
     // Path modifiers are keyed by the logical/base store (e.g. "data"),

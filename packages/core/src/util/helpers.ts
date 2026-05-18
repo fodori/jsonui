@@ -2,6 +2,10 @@
  * Shared helpers for function handlers.
  */
 
+export const isRecord = (value: unknown): value is Record<string, unknown> => {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
 export const hasAnyError = (value: unknown): boolean => {
   if (value === null || value === undefined) return false
   if (Array.isArray(value)) {

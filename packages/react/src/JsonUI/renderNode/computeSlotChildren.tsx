@@ -15,6 +15,7 @@ import type { JsonUINode, ActionMap, ModifierMap, TranslationsMap, FormStore, Va
 import type { ComponentMap } from '../../componentMap.js'
 import type { RenderNodeProps } from './types.js'
 import { coercePrimitiveChild } from './coercePrimitiveChild.js'
+import { isRecord } from '../../utils/isRecord.js'
 
 export type NestedRenderNode = (props: RenderNodeProps) => React.ReactElement | null
 
@@ -86,19 +87,31 @@ export const computeRenderNodeSlotChildren = ({
 
   const renderListFromConfig = (listConfig: ListBranchNode): React.ReactNode => {
     const listItem = listConfig[LIST_ITEM]
-    const listPathModifiers = listConfig[PATH_MODIFIERS_KEY]
+    const listPathModifiersRaw = listConfig[PATH_MODIFIERS_KEY]
+    const listPathModifiers = isRecord(listPathModifiersRaw) ? listPathModifiersRaw : undefined
 
-    const effKeys = effectivePathModifiers !== undefined ? Object.keys(effectivePathModifiers) : []
+    const effectivePathModifiersSafe = isRecord(effectivePathModifiers) ? effectivePathModifiers : undefined
+
+    const effKeys = effectivePathModifiersSafe !== undefined ? Object.keys(effectivePathModifiersSafe) : []
     const listPm = listPathModifiers ?? {}
     const storeName = effKeys.find((k) => Object.prototype.hasOwnProperty.call(listPm, k)) ?? Object.keys(listPm)[0]
 
+    if (typeof storeName !== 'string' || storeName.length === 0) return null
+
+    const effectiveStorePath = effectivePathModifiersSafe?.[storeName]?.path
+    const listStoreModifier = listPathModifiers?.[storeName]
+    const listStorePath = isRecord(listStoreModifier) && typeof listStoreModifier.path === 'string' ? listStoreModifier.path : undefined
+
     const baseListPath =
-      storeName && effectivePathModifiers?.[storeName]
-        ? effectivePathModifiers[storeName].path
-        : storeName && listPathModifiers?.[storeName]?.path
-          ? resolveStorePath(listPathModifiers[storeName].path, currentPath, pathModifiers, storeName)
+      typeof effectiveStorePath === 'string' && effectiveStorePath.length > 0
+        ? effectiveStorePath
+        : typeof listStorePath === 'string' && listStorePath.length > 0
+          ? resolveStorePath(listStorePath, currentPath, pathModifiers, storeName)
           : undefined
-    const listData = storeName && baseListPath != null && baseListPath !== '' ? (formStore.getForStore(storeName, baseListPath) as unknown[]) : []
+
+    if (baseListPath == null || baseListPath === '') return null
+
+    const listData = formStore.getForStore(storeName, baseListPath)
 
     if (!Array.isArray(listData)) return null
 
@@ -115,10 +128,10 @@ export const computeRenderNodeSlotChildren = ({
       const itemPathModifiers =
         storeName && baseListPath
           ? {
-              ...(effectivePathModifiers ?? {}),
+              ...(effectivePathModifiersSafe ?? {}),
               [storeName]: { path: `${baseListPath}/${i}` },
             }
-          : effectivePathModifiers
+          : effectivePathModifiersSafe
       return (
         <React.Fragment key={i}>
           {renderNested({
