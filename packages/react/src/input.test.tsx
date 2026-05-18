@@ -87,7 +87,7 @@ describe('JsonUI Edit input binding', () => {
       return createElement('h1', null, `Renders: ${renderCounter.current}`)
     }
 
-    const NewEdit: ComponentType<Record<string, unknown>> = (props) => createElement('div', null, createElement(Edit, props), createElement(Counter))
+    const NewEdit: ComponentType = (props) => createElement('div', null, createElement(Edit, props), createElement(Counter))
 
     const container = document.createElement('div')
     document.body.appendChild(container)

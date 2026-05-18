@@ -93,8 +93,8 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
   const compName = node[V_COMP]
   if (!compName) return null
 
-  const fallbackUndefined = components._Undefined ?? (builtinComponents as Record<string, React.ComponentType<unknown>>)._Undefined
-  const Comp = components[compName] ?? fallbackUndefined
+  const fallbackUndefined = components._Undefined ?? (builtinComponents as Record<string, React.ComponentType>)._Undefined
+  const Comp = (components[compName] ?? fallbackUndefined) as React.ComponentType<any>
 
   const infraProps = buildInfraPropsForComponent({
     compName,
