@@ -6,6 +6,9 @@
   "license": "MIT",
   "private": true,
   "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": ">=22"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -16,7 +19,7 @@
   },
   "scripts": {
     "build:libs": "yarn workspace @jsonui/core run build && yarn workspace @jsonui/react run build",
-    "build": "yarn build:libs && yarn workspace @jsonui/playground run build",
+    "build": "yarn build:libs && yarn workspace @jsonui/functions-example run build && yarn workspace @jsonui/components-web-example run build",
     "buildweb": "yarn build:libs",
     "type-check": "yarn workspace @jsonui/core run type-check && yarn workspace @jsonui/react run type-check",
     "test": "yarn workspace @jsonui/core run test && yarn workspace @jsonui/react run test",
@@ -33,7 +36,7 @@
     "prepare": "husky",
     "pre-push": "yarn lint && yarn type-check && yarn test",
     "release:verify": "yarn build:libs && yarn type-check && yarn test && yarn lint && yarn format:check",
-    "copyDocs": "VITE_BASE_PATH=/jsonui/ yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
+    "copyDocs": "VITE_BASE_PATH=/ yarn workspace docs-site run build; rm -rf ./docs/*; cp -R ./packages/docs-site/build/* ./docs/; git checkout -- docs/CNAME"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

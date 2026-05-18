@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*'
 
 jobs:
   release:
@@ -21,11 +19,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
           cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Build libraries
+        run: yarn build
 
       - name: Lint
         run: yarn lint
@@ -36,39 +37,13 @@ jobs:
       - name: Unit tests
         run: yarn test
 
-      - name: Build libraries
-        run: yarn build:libs
-
       - name: Publish to npm
         run: |
-          yarn workspace @jsonui/core run npm-publish
-          yarn workspace @jsonui/react run npm-publish
+          npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+          (cd packages/core && npm publish --access public)
+          (cd packages/react && npm publish --access public)
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Build and deploy docs
+      - name: Build docs
         run: yarn copyDocs
-        env:
-          VITE_BASE_PATH: /jsonui/
-
-      - name: Deploy docs to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          cname: jsonui.org
-
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Release of JSONUI ${{ github.ref }}
-
-            Changes in this release:
-            - See commit history for details
-          draft: false
-          prerelease: false

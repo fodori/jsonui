@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { JsonUI, builtinComponents } from '@jsonui/react'
+import { JsonUI, builtinComponents } from '../../index.js'
 import { modifiers, actions, type JSONObject } from '@jsonui/core'
 import forms from './forms.json' with { type: 'json' }
 

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import type { JsonUINode, JSONObject } from '@jsonui/core'
 import { modifiers, actions } from '@jsonui/core'
-import { JsonUI, builtinComponents } from '@jsonui/react'
+import { JsonUI, builtinComponents } from '../index.js'
 import modelJson from './models/example-nested-modifiers.json' with { type: 'json' }
 import defaultValuesJson from './models/example-nested-defaultValues.json' with { type: 'json' }
 
