@@ -79,7 +79,7 @@ git add \
   "$ROOT/packages/docs-site/package.json" \
   "$ROOT/packages/testReact/package.json"
 
-git commit -m "chore: release $TAG"
+git commit -m "release $TAG"
 git tag "$TAG"
 
 echo ""
