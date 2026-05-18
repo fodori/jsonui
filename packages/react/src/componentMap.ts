@@ -1,3 +1,3 @@
 import type { ComponentType } from 'react'
 
-export type ComponentMap = Record<string, ComponentType | undefined>
+export type ComponentMap = Record<string, ComponentType<any> | undefined>
