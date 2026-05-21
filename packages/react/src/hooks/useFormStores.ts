@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-import { FormStore } from '@jsonui/core'
-import type { JSONObject } from '@jsonui/core'
+import { FormStore, JSONParams } from '@jsonui/core'
 import { isRecord } from '../utils/isRecord.js'
 /**
  * Single-root store hook.
@@ -9,7 +8,7 @@ import { isRecord } from '../utils/isRecord.js'
  * - defaultValues: Record<storeName, JSON> where each value is a JSON object
  *   representing that logical store's root.
  */
-export const useFormStore = (initialStore?: FormStore, defaultValues?: Record<string, JSONObject>): FormStore => {
+export const useFormStore = (initialStore?: FormStore, defaultValues?: JSONParams): FormStore => {
   return useMemo(() => {
     const formStore = initialStore ?? new FormStore()
 

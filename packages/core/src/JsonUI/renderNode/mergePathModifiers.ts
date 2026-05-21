@@ -3,7 +3,7 @@ import { resolveStorePath } from '../../store/formStore.js'
 import { PATH_MODIFIERS_KEY } from '../../util/contants.js'
 
 export const getOwnPathModifiers = (node: JsonUINode): PathModifier | undefined => {
-  return (node as Record<string, unknown>)[PATH_MODIFIERS_KEY] as PathModifier | undefined
+  return node[PATH_MODIFIERS_KEY] as PathModifier | undefined
 }
 
 export const mergeEffectivePathModifiers = ({

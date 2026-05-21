@@ -2,7 +2,9 @@
  * Shared helpers for function handlers.
  */
 
-export const isRecord = (value: unknown): value is Record<string, unknown> => {
+import { JSONParams } from './types'
+
+export const isRecord = (value: unknown): value is JSONParams => {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
 }
 
@@ -12,7 +14,7 @@ export const hasAnyError = (value: unknown): boolean => {
     return value.some((v) => hasAnyError(v))
   }
   if (typeof value === 'object') {
-    return Object.values(value as Record<string, unknown>).some((v) => hasAnyError(v))
+    return Object.values(value as JSONParams).some((v) => hasAnyError(v))
   }
   // Any non-null / non-undefined primitive counts as "has error".
   return true
@@ -25,7 +27,7 @@ export const hasAnyTouched = (value: unknown): boolean => {
     return value.some((v) => hasAnyTouched(v))
   }
   if (typeof value === 'object') {
-    return Object.values(value as Record<string, unknown>).some((v) => hasAnyTouched(v))
+    return Object.values(value as JSONParams).some((v) => hasAnyTouched(v))
   }
   return false
 }
@@ -55,7 +57,7 @@ export const assertJsonCompatible = (value: unknown, seen = new WeakSet()): void
   if (Array.isArray(value)) {
     for (const item of value as unknown[]) assertJsonCompatible(item, seen)
   } else {
-    for (const v of Object.values(value as Record<string, unknown>)) assertJsonCompatible(v, seen)
+    for (const v of Object.values(value as JSONParams)) assertJsonCompatible(v, seen)
   }
 
   seen.delete(obj)
@@ -83,8 +85,8 @@ export const cloneDeep = <T>(value: T): T => {
     return (value as unknown[]).map((item) => cloneDeep(item)) as unknown as T
   }
 
-  const obj = value as Record<string, unknown>
-  const result: Record<string, unknown> = {}
+  const obj = value as JSONParams
+  const result: JSONParams = {}
   for (const key of Object.keys(obj)) {
     result[key] = cloneDeep(obj[key])
   }

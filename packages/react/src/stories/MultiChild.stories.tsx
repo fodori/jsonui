@@ -1,10 +1,10 @@
 import type { ChangeEventHandler, ReactNode } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import jsonata from 'jsonata'
-import { modifiers, actions } from '@jsonui/core'
+import { modifiers, actions, JsonUINode } from '@jsonui/core'
 import { JsonUI, builtinComponents, useControlledInputValue } from '../index.js'
 
-const EditMultiChild = (props: Record<string, unknown>) => {
+const EditMultiChild = (props: JsonUINode) => {
   const { fieldErrors, validation, value, childLabel, childHelperText, onChange, children, ...ownProps } = props
   const handleChange = onChange as ChangeEventHandler<HTMLInputElement> | undefined
   const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string, handleChange)

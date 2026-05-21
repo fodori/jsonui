@@ -7,7 +7,7 @@ interface BuildRenderNodeEventPropsArgs {
   actions: ActionMap
   formStore: FormStore
   currentPath: string
-  componentProps: Record<string, unknown>
+  componentProps: JsonUINode
   effectivePathModifiers?: ModifierContext['pathModifiers']
   validators: ValidationRegistry | undefined
   translations: TranslationsMap | undefined
@@ -27,7 +27,7 @@ export const buildRenderNodeEventProps = ({
   translations,
   defaultLanguage,
   activeLanguage,
-}: BuildRenderNodeEventPropsArgs): Record<string, unknown> => {
+}: BuildRenderNodeEventPropsArgs): JsonUINode => {
   const actionCtx: ActionContext = {
     formStore,
     currentPath,
@@ -39,7 +39,7 @@ export const buildRenderNodeEventProps = ({
     componentProps,
   }
 
-  const eventProps: Record<string, unknown> = {}
+  const eventProps: JsonUINode = {}
   for (const [key, value] of Object.entries(node)) {
     // don't delete it, it's important if we change the logic in future.
     // if (key.startsWith('$')) continue

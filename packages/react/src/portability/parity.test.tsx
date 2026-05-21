@@ -4,7 +4,7 @@ import { act, createElement } from 'react'
 import { createRoot } from 'react-dom/client'
 import { computeListSliceRange } from '@jsonui/core'
 import { JsonUI } from '../JsonUI/JsonUI.js'
-import type { JsonUINode, OnStateExportProps } from '@jsonui/core'
+import type { JSONParams, JsonUINode, OnStateExportProps } from '@jsonui/core'
 
 const renderJsonUINoThrow = async (model: JsonUINode): Promise<unknown> => {
   const container = document.createElement('div')
@@ -159,7 +159,7 @@ describe('portability parity (main JsonUI)', () => {
     const arg = onStateExport.mock.calls[0][0] as OnStateExportProps
     expect(arg.id).toBe('form-1')
     expect(arg.formState).toBeDefined()
-    expect((arg.formState as Record<string, unknown>).data).toEqual({ x: 1 })
+    expect((arg.formState as JSONParams).data).toEqual({ x: 1 })
 
     document.body.removeChild(container)
   })

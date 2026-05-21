@@ -10,9 +10,9 @@
 import { TOUCH_STORE_SUFFIX, ERROR_STORE_SUFFIX, STORE_ROOT_PATH } from '../util/contants.js'
 import { assertJsonCompatible, cloneDeep } from '../util/helpers.js'
 import { get as ptrGet, resolvePath, normalizePath, parsePath } from '../util/json-pointer.js'
-import type { JSONValue, PathModifier } from '../util/types.js'
+import type { JSONParams, PathModifier } from '../util/types.js'
 
-export type StoreState = Record<string, unknown>
+export type StoreState = JSONParams
 export type Listener = () => void
 export type StoreChangeListener = (storeName: string, logicalPath: string) => void
 
@@ -33,18 +33,18 @@ export class FormStore {
    * `{ data: {...}, "data.touch": {...}, "data.error": {...} }`.
    * Omits the internal `/storeRoot` wrapper returned by {@link getState}.
    */
-  getLogicalStoresMap(): Record<string, JSONValue> {
+  getLogicalStoresMap(): JSONParams {
     const slice = ptrGet(this.state, STORE_ROOT_PATH)
     if (slice === undefined || slice === null || typeof slice !== 'object' || Array.isArray(slice)) {
       return {}
     }
-    return cloneDeep(slice) as Record<string, JSONValue>
+    return cloneDeep(slice) as JSONParams
   }
 
   /**
    * Initialise a logical store root without marking fields as touched.
    */
-  initializeStore(storeName: string, value: JSONValue): void {
+  initializeStore(storeName: string, value: unknown): void {
     this.set(storeName, '/', value, false)
   }
 
@@ -135,17 +135,17 @@ const setImmutable = (root: StoreState, pathStr: string, value: unknown): StoreS
 
   const originalRoot = root
 
-  const cloneContainer = (container: unknown): Record<string, unknown> | unknown[] => {
+  const cloneContainer = (container: unknown): JSONParams | unknown[] => {
     if (Array.isArray(container)) {
       return (container as unknown[]).slice()
     }
     if (container && typeof container === 'object') {
-      return { ...(container as Record<string, unknown>) }
+      return { ...(container as JSONParams) }
     }
     return {}
   }
 
-  const setAt = (current: unknown, index: number): { cloned: Record<string, unknown> | unknown[]; result: unknown } => {
+  const setAt = (current: unknown, index: number): { cloned: JSONParams | unknown[]; result: unknown } => {
     const isLast = index === segments.length - 1
     const seg = segments[index]
     const container = cloneContainer(current)
@@ -168,7 +168,7 @@ const setImmutable = (root: StoreState, pathStr: string, value: unknown): StoreS
 
     // Non-last segment: ensure child container exists before descending.
     const keyForChild: string | number = seg
-    let next = Array.isArray(container) && /^\d+$/.test(seg) ? container[parseInt(seg, 10)] : (container as Record<string, unknown>)[seg]
+    let next = Array.isArray(container) && /^\d+$/.test(seg) ? container[parseInt(seg, 10)] : (container as JSONParams)[seg]
 
     if (
       next == null ||
@@ -184,7 +184,7 @@ const setImmutable = (root: StoreState, pathStr: string, value: unknown): StoreS
     if (Array.isArray(container) && /^\d+$/.test(String(keyForChild))) {
       container[parseInt(String(keyForChild), 10)] = childClone
     } else {
-      ;(container as Record<string, unknown>)[String(keyForChild)] = childClone
+      ;(container as JSONParams)[String(keyForChild)] = childClone
     }
 
     return { cloned: container, result: container }

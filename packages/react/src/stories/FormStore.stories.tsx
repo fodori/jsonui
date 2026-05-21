@@ -1,9 +1,9 @@
 import type { ChangeEvent, ReactNode } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { modifiers, actions } from '@jsonui/core'
+import { modifiers, actions, JsonUINode } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '../index.js'
 
-const RadioGroupField = (props: Record<string, unknown>) => {
+const RadioGroupField = (props: JsonUINode) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const parsed = JSON.parse(event.target.value) as unknown
     const oc = props.onChange as ((e: { target: { value: unknown } }) => void) | undefined

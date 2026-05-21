@@ -1,9 +1,9 @@
-import type { ModifierContext } from '../util/types.js'
+import type { JSONParams, ModifierContext } from '../util/types.js'
 
 /**
  * Translation function: looks up key in ctx.translations using active language.
  */
-export const t = (params: Record<string, unknown>, ctx: ModifierContext): string | undefined => {
+export const t = (params: JSONParams, ctx: ModifierContext): string | undefined => {
   const key = (params as { key?: unknown }).key as string | undefined
   if (!key) return undefined
 

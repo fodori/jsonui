@@ -20,9 +20,7 @@ import {
 import type {
   ActionMap,
   BreakpointKey,
-  JSONObject,
   JsonUINode,
-  JSONValue,
   ModifierContext,
   OnStateExportProps,
   OnStateExportType,
@@ -31,6 +29,7 @@ import type {
   ActionHandler,
   ModifierHandler,
   ActionContext,
+  JSONParams,
 } from '@jsonui/core'
 
 import {
@@ -99,9 +98,7 @@ export {
 export type {
   ActionMap,
   BreakpointKey,
-  JSONObject,
   JsonUINode,
-  JSONValue,
   ModifierContext,
   OnStateExportProps,
   OnStateExportType,
@@ -115,6 +112,7 @@ export type {
   ChangeDefaultValueFunc,
   ChangeDefaultValueFuncProp,
   ComponentMap,
+  JSONParams,
 }
 
 export default JsonUI

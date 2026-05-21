@@ -1,10 +1,10 @@
+import { JSONParams } from '@jsonui/core'
 import { createContext } from 'react'
-import type { JSONValue } from '@jsonui/core'
 
 export interface ChangeDefaultValueFuncProp {
   store: string
   path: string
-  value: JSONValue
+  value: JSONParams
 }
 
 export type ChangeDefaultValueFunc = (arg: ChangeDefaultValueFuncProp) => void

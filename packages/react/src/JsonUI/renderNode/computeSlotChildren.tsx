@@ -27,7 +27,7 @@ type ListBranchNode = JsonUINode & {
 
 interface ComputeRenderNodeSlotChildrenArgs {
   node: JsonUINode
-  resolvedSlots: Record<string, unknown> | undefined
+  resolvedSlots: JsonUINode | undefined
   effectivePathModifiers?: ModifierContext['pathModifiers']
   pathModifiers?: ModifierContext['pathModifiers']
   currentPath: string
@@ -72,11 +72,10 @@ export const computeRenderNodeSlotChildren = ({
     activeLanguage,
   }
 
-  const nodeListConfig: ListBranchNode | null = LIST_SEMAPHORE in node && (node as Record<string, unknown>)[LIST_ITEM] ? (node as ListBranchNode) : null
+  const nodeListConfig: ListBranchNode | null = LIST_SEMAPHORE in node && node[LIST_ITEM] ? (node as ListBranchNode) : null
 
   const listConfigForSlot = (slotKey: string, slotRaw: unknown): ListBranchNode | null => {
-    const p = node as Record<string, unknown>
-    if (slotKey === V_CHILDREN && LIST_SEMAPHORE in p && p[LIST_ITEM]) {
+    if (slotKey === V_CHILDREN && LIST_SEMAPHORE in node && node[LIST_ITEM]) {
       return node as ListBranchNode
     }
     if (typeof slotRaw === 'object' && slotRaw !== null && LIST_SEMAPHORE in slotRaw) {
@@ -115,12 +114,11 @@ export const computeRenderNodeSlotChildren = ({
 
     if (!Array.isArray(listData)) return null
 
-    const listCfgRaw = listConfig as Record<string, unknown>
     const { indices } = computeListSliceRange({
       realDataLength: listData.length,
-      page: listCfgRaw[LIST_PAGE],
-      itemPerPage: listCfgRaw[LIST_ITEM_PER_PAGE],
-      listLength: listCfgRaw[LIST_LENGTH],
+      page: listConfig[LIST_PAGE],
+      itemPerPage: listConfig[LIST_ITEM_PER_PAGE],
+      listLength: listConfig[LIST_LENGTH],
     })
 
     return indices.map((i) => {

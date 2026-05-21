@@ -1,7 +1,7 @@
 import type { FormStore } from '../store/formStore.js'
 import { resolveStorePath } from '../store/formStore.js'
 import { ERROR_STORE_SUFFIX, TOUCH_STORE_SUFFIX } from '../util/contants.js'
-import type { ModifierContext } from '../util/types.js'
+import type { JSONParams, ModifierContext } from '../util/types.js'
 
 const hasAnyError = (value: unknown): boolean => {
   if (value === null || value === undefined) return false
@@ -9,7 +9,7 @@ const hasAnyError = (value: unknown): boolean => {
     return value.some((v) => hasAnyError(v))
   }
   if (typeof value === 'object') {
-    return Object.values(value as Record<string, unknown>).some((v) => hasAnyError(v))
+    return Object.values(value).some((v) => hasAnyError(v))
   }
   return true
 }
@@ -21,13 +21,13 @@ const hasAnyTouched = (value: unknown): boolean => {
     return value.some((v) => hasAnyTouched(v))
   }
   if (typeof value === 'object') {
-    return Object.values(value as Record<string, unknown>).some((v) => hasAnyTouched(v))
+    return Object.values(value).some((v) => hasAnyTouched(v))
   }
   return false
 }
 
 export const createGetModifier = (formStore: FormStore) => {
-  return async (params: Record<string, unknown> | undefined, ctx: ModifierContext): Promise<unknown> => {
+  return async (params: JSONParams | undefined, ctx: ModifierContext): Promise<unknown> => {
     const storeName = !!params?.store && typeof params.store === 'string' ? params.store : ''
     const path = !!params?.path && typeof params.path === 'string' ? params.path : '/'
     const type = !!params?.type && typeof params.type === 'string' ? params.type : undefined

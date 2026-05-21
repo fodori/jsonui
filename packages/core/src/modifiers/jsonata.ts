@@ -1,4 +1,6 @@
-export async function jsonata(params: Record<string, unknown>): Promise<unknown> {
+import { JSONParams } from '../util/types'
+
+export async function jsonata(params: JSONParams): Promise<unknown> {
   const { jsonataDef, ...input } = params as {
     jsonataDef?: unknown
     [key: string]: unknown

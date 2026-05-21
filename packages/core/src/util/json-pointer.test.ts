@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { normalizePath, parsePath, get, set, resolvePath } from './json-pointer.js'
 import { JSON_SEPARATOR } from './contants.js'
+import { JSONParams } from './types.js'
 
 describe('json-pointer utilities', () => {
   describe('normalizePath', () => {
@@ -54,39 +55,39 @@ describe('json-pointer utilities', () => {
 
   describe('set', () => {
     it('creates nested objects when missing', () => {
-      const obj: Record<string, unknown> = {}
+      const obj: JSONParams = {}
       set(obj, '/a/b/c', 1)
       expect(obj).toEqual({ a: { b: { c: 1 } } })
     })
 
     it('overwrites non-object parents when descending', () => {
-      const obj: Record<string, unknown> = { a: 1 }
+      const obj: JSONParams = { a: 1 }
       set(obj, '/a/b', 2)
       expect(obj).toEqual({ a: { b: 2 } })
     })
 
     it('writes to arrays when numeric segments are used', () => {
-      const obj: Record<string, unknown> = {}
+      const obj: JSONParams = {}
       set(obj, '/items/0', 'x')
       set(obj, '/items/1', 'y')
       expect(obj).toEqual({ items: ['x', 'y'] })
     })
 
     it('treats leading-zero numeric-looking keys as object keys', () => {
-      const obj: Record<string, unknown> = {}
+      const obj: JSONParams = {}
       set(obj, '/items/01/value', 1)
       expect(obj).toEqual({ items: { '01': { value: 1 } } })
     })
 
     it('rejects unsafe prototype segments', () => {
-      const obj: Record<string, unknown> = {}
+      const obj: JSONParams = {}
       expect(() => set(obj, '/__proto__/polluted', true)).toThrow('Unsafe JSON Pointer segment')
       expect(() => set(obj, '/safe/constructor', true)).toThrow('Unsafe JSON Pointer segment')
-      expect(({} as Record<string, unknown>).polluted).toBeUndefined()
+      expect(({} as JSONParams).polluted).toBeUndefined()
     })
 
     it('rejects non-numeric final segment when writing to arrays', () => {
-      const obj: Record<string, unknown> = { items: [] }
+      const obj: JSONParams = { items: [] }
       expect(() => set(obj, '/items/foo', 'x')).toThrow('Invalid array index segment')
     })
   })

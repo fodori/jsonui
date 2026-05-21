@@ -1,6 +1,7 @@
 import { hasAnyError, hasAnyTouched } from '../util/helpers'
+import { JSONParams } from '../util/types'
 
-export const isNotTouchedOrHasError = (params: Record<string, unknown>): boolean => {
+export const isNotTouchedOrHasError = (params: JSONParams): boolean => {
   const { error, touched } = params as {
     error?: unknown
     touched?: unknown

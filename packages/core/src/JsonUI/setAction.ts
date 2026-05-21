@@ -1,9 +1,9 @@
 import type { FormStore } from '../store/formStore.js'
 import { resolveStorePath } from '../store/formStore.js'
-import { ActionContext } from '../util/types.js'
+import { ActionContext, JSONParams } from '../util/types.js'
 
 export const createSetAction = (formStore: FormStore) => {
-  return async (params: Record<string, unknown>, ctx?: Pick<ActionContext, 'currentPath' | 'pathModifiers'>): Promise<void> => {
+  return async (params: JSONParams, ctx?: Pick<ActionContext, 'currentPath' | 'pathModifiers'>): Promise<void> => {
     const storeName = params.store as string
     const path = params.path as string
     let value = params.value

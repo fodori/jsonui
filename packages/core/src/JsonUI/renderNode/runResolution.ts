@@ -1,4 +1,4 @@
-import type { JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency } from '../../util/types.js'
+import type { JSONParams, JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency } from '../../util/types.js'
 import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
@@ -7,7 +7,7 @@ import { resolveStorePath } from '../../store/formStore.js'
 import { V_VALIDATIONS } from '../../util/contants.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
 
-const isRecord = (value: unknown): value is Record<string, unknown> => {
+const isRecord = (value: unknown): value is JSONParams => {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
 }
 
@@ -56,9 +56,9 @@ export const runRenderNodeResolution = async ({
   state: ResolvedRenderNodeState
   deps: StorePathDependency[]
 }> => {
-  const props: Record<string, unknown> = {}
+  const props: JSONParams = {}
   const deps: StorePathDependency[] = []
-  const resolvedSlots: Record<string, unknown> = {}
+  const resolvedSlots: JSONParams = {}
   const nodeEntries = isRecord(node) ? Object.entries(node) : []
 
   for (const [key, value] of nodeEntries) {

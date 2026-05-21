@@ -23,7 +23,7 @@ const isSimplifiedNode = (
   path: string
 } => {
   if (typeof node !== 'object' || node === null) return false
-  const r = node as Record<string, unknown>
+  const r = node as JsonUINode
   const store = r.store
   const path = r.path
   return typeof store === 'string' && store.length > 0 && typeof path === 'string'
@@ -40,7 +40,7 @@ export const expandSimplifiedNode = (node: JsonUINode): JsonUINode => {
     return node
   }
 
-  const { store, path, ...rest } = node as Record<string, unknown>
+  const { store, path, ...rest } = node
 
   const expanded = {
     ...(node[V_COMP] === 'SubmitButton'

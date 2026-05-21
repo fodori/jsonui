@@ -3,7 +3,7 @@ import addFormats from 'ajv-formats'
 import ajvErrors from 'ajv-errors'
 import type { FormStore } from '../store/formStore.js'
 import { ERROR_STORE_SUFFIX } from '../util/contants.js'
-import { InlineValidationSpec, ModifierContext, ModifierMap, ValidationRegistry, ValidationRule } from '../util/types.js'
+import { InlineValidationSpec, JSONParams, ModifierContext, ModifierMap, ValidationRegistry, ValidationRule } from '../util/types.js'
 import { resolveModifier } from './resolveModifier.js'
 
 let inlineAjv: Ajv | null = null
@@ -155,7 +155,7 @@ export const runValidationsForPath = (registry: ValidationRegistry, formStore: F
       })
       return
     }
-    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+    for (const [k, v] of Object.entries(value as JSONParams)) {
       collectExistingPaths(basePath === '/' ? `/${k}` : `${basePath}/${k}`, v)
     }
   }

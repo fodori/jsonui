@@ -1,5 +1,5 @@
 import { MODIFIER_KEY } from '../util/contants.js'
-import type { ModifierContext, ModifierMap } from '../util/types.js'
+import type { JSONParams, ModifierContext, ModifierMap } from '../util/types.js'
 import { createGetModifier } from './getModifier.js'
 
 /**
@@ -12,9 +12,9 @@ import { createGetModifier } from './getModifier.js'
 export async function resolveModifier(value: unknown, modifiers: ModifierMap, ctx: ModifierContext): Promise<unknown> {
   // If it's a direct modifier object: { $modifier: 'x', ...params }
   if (value != null && typeof value === 'object' && MODIFIER_KEY in value) {
-    const { [MODIFIER_KEY]: mod, ...params } = value as Record<string, unknown>
+    const { [MODIFIER_KEY]: mod, ...params } = value as JSONParams
 
-    const resolvedParams: Record<string, unknown> = {}
+    const resolvedParams: JSONParams = {}
     for (const [k, v] of Object.entries(params)) {
       resolvedParams[k] = await resolveModifier(v, modifiers, ctx)
     }
@@ -35,11 +35,11 @@ export async function resolveModifier(value: unknown, modifiers: ModifierMap, ct
   // If it's a plain object without $modifier, traverse its properties
   // so nested fields like www2.bbb or payload.value get resolved.
   if (value != null && typeof value === 'object') {
-    const obj = value as Record<string, unknown>
+    const obj = value as JSONParams
     const entries = Object.entries(obj)
     if (entries.length === 0) return value
 
-    const resolvedObj: Record<string, unknown> = {}
+    const resolvedObj: JSONParams = {}
     for (const [k, v] of entries) {
       resolvedObj[k] = await resolveModifier(v, modifiers, ctx)
     }

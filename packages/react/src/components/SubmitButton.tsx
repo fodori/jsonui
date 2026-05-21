@@ -1,6 +1,7 @@
+import { JsonUINode } from '@jsonui/core'
 import React from 'react'
 
-export const SubmitButton = (props: Record<string, unknown>) => {
+export const SubmitButton = (props: JsonUINode) => {
   const { children, style, fieldErrors, fieldTouched, onClick, ...rest } = props
 
   const disabled = !fieldTouched || !!fieldErrors

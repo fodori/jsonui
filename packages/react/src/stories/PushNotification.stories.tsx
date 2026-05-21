@@ -15,7 +15,7 @@ const MessageSender = () => {
       onClick={() => {
         const updateDefaultValueHandler = messageHandler?.get()
         if (updateDefaultValueHandler) {
-          updateDefaultValueHandler({ store: 'data', path: 'level1/testList/2', value: `${Math.random() * 100}` })
+          updateDefaultValueHandler({ store: 'data', path: 'level1/testList/2', value: `${Math.random() * 100}` as any })
         }
       }}
     >

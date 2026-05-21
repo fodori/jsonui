@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { expandSimplifiedNode, getOwnPathModifiers, mergeEffectivePathModifiers, V_COMP } from '@jsonui/core'
+import { expandSimplifiedNode, getOwnPathModifiers, JsonUINode, mergeEffectivePathModifiers, V_COMP } from '@jsonui/core'
 import { useStyleConfig } from '../style/StyleContext.js'
 import type { RenderNodeProps } from './renderNode/types.js'
 export type { RenderNodeProps } from './renderNode/types.js'
@@ -13,7 +13,7 @@ const sanitizePathModifiers = (value: unknown): Record<string, { path: string }>
   if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined
 
   const sanitized: Record<string, { path: string }> = {}
-  for (const [storeName, spec] of Object.entries(value as Record<string, unknown>)) {
+  for (const [storeName, spec] of Object.entries(value)) {
     if (!spec || typeof spec !== 'object' || Array.isArray(spec)) continue
     const rawPath = (spec as { path?: unknown }).path
     if (typeof rawPath !== 'string' || rawPath.length === 0) continue
@@ -40,10 +40,10 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
 
   const node = useMemo(() => expandSimplifiedNode(origNode), [origNode])
 
-  const s = (origNode as Record<string, unknown>).store
+  const s = origNode.store
   const componentStore = typeof s === 'string' && s.length > 0 ? s : undefined
 
-  const p = (origNode as Record<string, unknown>).path
+  const p = origNode.path
   const componentPath = typeof p === 'string' ? p : undefined
 
   const styleConfig = useStyleConfig()
@@ -122,7 +122,7 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
     renderNested,
   })
 
-  const componentActionProps: Record<string, unknown> = {
+  const componentActionProps: JsonUINode = {
     ...resolvedProps,
     ...infraProps,
   }
@@ -141,7 +141,7 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
     activeLanguage,
   })
 
-  const mergedProps: Record<string, unknown> = {
+  const mergedProps: JsonUINode = {
     ...resolvedProps,
     ...infraProps,
     ...multiChildSlots,

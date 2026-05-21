@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { FormStore } from '../store/formStore.js'
 import { resolveAction } from './resolveAction.js'
+import { JsonUINode } from '../util/types.js'
 
 describe('resolveAction', () => {
   it('handles missing componentProps without throwing', async () => {
@@ -17,7 +18,7 @@ describe('resolveAction', () => {
       {
         formStore,
         currentPath: '/',
-        componentProps: undefined as unknown as Record<string, unknown>,
+        componentProps: undefined as unknown as JsonUINode,
       }
     )
 

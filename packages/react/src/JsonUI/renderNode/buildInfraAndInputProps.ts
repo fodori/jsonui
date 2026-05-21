@@ -1,4 +1,13 @@
-import { MODIFIER_KEY, ERROR_STORE_SUFFIX, type JsonUINode, type ActionMap, type ModifierMap, type FormStore, type ModifierContext } from '@jsonui/core'
+import {
+  MODIFIER_KEY,
+  ERROR_STORE_SUFFIX,
+  type JsonUINode,
+  type ActionMap,
+  type ModifierMap,
+  type FormStore,
+  type ModifierContext,
+  JSONParams,
+} from '@jsonui/core'
 
 interface BuildInfraPropsArgs {
   compName: string
@@ -16,8 +25,8 @@ export const buildInfraPropsForComponent = ({
   actions,
   currentPath,
   effectivePathModifiers,
-}: BuildInfraPropsArgs): Record<string, unknown> => {
-  const infraProps: Record<string, unknown> = {}
+}: BuildInfraPropsArgs): JsonUINode => {
+  const infraProps: JsonUINode = {}
   if (compName === 'SubmitButton') {
     infraProps.formStore = formStore
     infraProps.modifiers = modifiers
@@ -32,19 +41,19 @@ interface ApplyInputErrorArgs {
   compName: string
   node: JsonUINode
   formStore: FormStore
-  mergedProps: Record<string, unknown>
+  mergedProps: JsonUINode
 }
 
 export const applyInputErrorFromValueBinding = ({ compName, node, formStore, mergedProps }: ApplyInputErrorArgs): void => {
   if (compName !== 'Edit') return
 
-  const valueSpec = (node as Record<string, unknown>).value
-  if (!valueSpec || typeof valueSpec !== 'object' || !(MODIFIER_KEY in valueSpec) || (valueSpec as Record<string, unknown>)[MODIFIER_KEY] !== 'get') {
+  const valueSpec = node.value
+  if (!valueSpec || typeof valueSpec !== 'object' || !(MODIFIER_KEY in valueSpec) || (valueSpec as JSONParams)[MODIFIER_KEY] !== 'get') {
     return
   }
 
-  const storeName = (valueSpec as Record<string, unknown>).store as string | undefined
-  const valuePath = (valueSpec as Record<string, unknown>).path as string | undefined
+  const storeName = (valueSpec as JSONParams).store as string | undefined
+  const valuePath = (valueSpec as JSONParams).path as string | undefined
   if (!storeName || !valuePath) return
 
   const errorValue = formStore.getForStore(`${storeName}${ERROR_STORE_SUFFIX}`, valuePath)

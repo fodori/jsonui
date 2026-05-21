@@ -5,11 +5,11 @@ import type {
   ModifierMap,
   TranslationsMap,
   OnStateExportType,
-  JSONObject,
   FormStore,
   StylePlatform,
   ValidationRegistry,
   ValidationRule,
+  JSONParams,
 } from '@jsonui/core'
 import { buildValidationRegistry, V_VALIDATIONS } from '@jsonui/core'
 import type { ComponentMap } from '../componentMap.js'
@@ -30,7 +30,7 @@ export interface JsonUIProps {
   // Single root store instance (optional)
   initialFormStore?: FormStore
   // defaultValues: Record<storeName, JSON>
-  defaultValues?: Record<string, JSONObject>
+  defaultValues?: JSONParams
   id?: string
   /** Called on unmount and when model/defaultValues/id change (main JsonUI parity). */
   onStateExport?: OnStateExportType

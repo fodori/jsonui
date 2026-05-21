@@ -2,8 +2,9 @@ import React from 'react'
 import { createStore, type Store, type AnyAction } from 'redux'
 import { Provider } from 'react-redux'
 import FormViewer from './FormViewer.js'
+import { JSONParams } from '@jsonui/core'
 
-const reducer = (state: Record<string, unknown> = {}, action: AnyAction) => {
+const reducer = (state: JSONParams = {}, action: AnyAction) => {
   switch (action.type) {
     case 'SAVE_FORM': {
       return {
@@ -15,7 +16,7 @@ const reducer = (state: Record<string, unknown> = {}, action: AnyAction) => {
       return state
   }
 }
-const store: Store<Record<string, unknown>, AnyAction> = createStore(reducer)
+const store: Store<JSONParams, AnyAction> = createStore(reducer)
 
 const Main = () => {
   return (

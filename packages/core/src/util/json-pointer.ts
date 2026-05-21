@@ -7,6 +7,7 @@
  */
 
 import { JSON_SEPARATOR } from './contants'
+import { JSONParams } from './types'
 
 const DANGEROUS_KEYS = new Set(['__proto__', 'prototype', 'constructor'])
 
@@ -52,16 +53,16 @@ export const get = (obj: unknown, pathStr: string): unknown => {
   let current: unknown = obj
   for (const seg of segments) {
     if (current == null || typeof current !== 'object') return undefined
-    current = (current as Record<string, unknown>)[seg]
+    current = (current as JSONParams)[seg]
   }
   return current
 }
 
-export const set = (obj: Record<string, unknown>, pathStr: string, value: unknown): void => {
+export const set = (obj: JSONParams, pathStr: string, value: unknown): void => {
   const segments = parsePath(pathStr)
   if (segments.length === 0) return
 
-  let current: Record<string, unknown> = obj
+  let current: JSONParams = obj
   for (let i = 0; i < segments.length - 1; i++) {
     const seg = segments[i]
     if (DANGEROUS_KEYS.has(seg)) {
@@ -78,7 +79,7 @@ export const set = (obj: Record<string, unknown>, pathStr: string, value: unknow
     if (typeof next !== 'object' || next === null) {
       current[seg] = typeof nextKey === 'number' ? [] : {}
     }
-    current = current[seg] as Record<string, unknown>
+    current = current[seg] as JSONParams
   }
 
   const lastSeg = segments[segments.length - 1]

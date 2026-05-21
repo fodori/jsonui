@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import type { JsonUINode, JSONObject } from '@jsonui/core'
+import type { JSONParams, JsonUINode } from '@jsonui/core'
 import { modifiers, actions } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '../index.js'
 
@@ -162,7 +162,7 @@ const defaultValues = {
   data: {
     sliderValue: '5',
   },
-} as Record<string, JSONObject>
+} as JSONParams
 
 const meta = {
   title: 'JsonUI/Style',

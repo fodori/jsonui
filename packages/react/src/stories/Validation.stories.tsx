@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import type { JsonUINode, JSONObject, ActionContext } from '@jsonui/core'
+import type { JsonUINode, ActionContext, JSONParams } from '@jsonui/core'
 import { modifiers, actions } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '../index.js'
 import modelJson from './models/example-nested-modifiers.json' with { type: 'json' }
 import defaultValuesJson from './models/example-nested-defaultValues.json' with { type: 'json' }
 
 const model = modelJson as JsonUINode
-const defaultValues = defaultValuesJson as Record<string, JSONObject>
+const defaultValues = defaultValuesJson as JSONParams
 
-const submit = (params: Record<string, unknown>, context: ActionContext) => {
+const submit = (params: JSONParams, context: ActionContext) => {
   console.log('Submit value:', context?.componentProps?.value)
 }
 

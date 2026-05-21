@@ -9,9 +9,7 @@ import {
   ActionContext,
   ActionHandler,
   ActionMap,
-  JSONObject,
   JsonUINode,
-  JSONValue,
   ModifierContext,
   ModifierHandler,
   ModifierMap,
@@ -21,6 +19,7 @@ import {
   PathModifier,
   ValidationRule,
   ValidationRegistry,
+  JSONParams,
 } from './util/types.js'
 import { runRenderNodeResolution } from './JsonUI/renderNode/runResolution.js'
 import { resolveAction } from './JsonUI/resolveAction.js'
@@ -81,9 +80,7 @@ export {
 export type {
   ActionMap,
   BreakpointKey,
-  JSONObject,
   JsonUINode,
-  JSONValue,
   ModifierContext,
   ModifierMap,
   OnStateExportProps,
@@ -98,6 +95,7 @@ export type {
   ModifierHandler,
   ActionContext,
   PathModifier,
+  JSONParams,
 }
 
 //   type,

@@ -1,6 +1,7 @@
+import { JsonUINode } from '@jsonui/core'
 import React from 'react'
 
-export const StoreDebugger = ({ data, error, touched }: Record<string, unknown>) => {
+export const StoreDebugger = ({ data, error, touched }: JsonUINode) => {
   return (
     <div
       style={{

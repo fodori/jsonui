@@ -7,24 +7,23 @@ import { V_COMP, V_CHILDREN } from './contants.js'
 export type { FormStore as Store }
 import { type ValidateFunction } from 'ajv'
 
-export type JsonUIValue = string | number | boolean | null | JsonUINode | JsonUIValue[]
-
-// Generic JSON value / object types for store contents and defaultValues
-export type JSONValue = string | number | boolean | null | JSONObject | JSONValue[]
-
 export interface JSONObject {
-  [key: string]: JSONValue
+  [key: string]: unknown
 }
+
+export type JsonPrimitives = string | number | boolean | null
+
+export type JSONParams = Record<string, unknown>
 
 export interface JsonUINode {
   [key: string]: unknown
   [V_COMP]?: string
-  [V_CHILDREN]?: JsonUIValue
+  [V_CHILDREN]?: unknown
 }
 
-export type ModifierHandler = (params: Record<string, unknown>, context: ModifierContext) => unknown | Promise<unknown>
+export type ModifierHandler = (params: JSONParams, context: ModifierContext) => unknown | Promise<unknown>
 
-export type ActionHandler = (params: Record<string, unknown>, context: ActionContext) => void | Promise<void>
+export type ActionHandler = (params: JSONParams, context: ActionContext) => void | Promise<void>
 
 // key -> { langCode -> value }
 export type TranslationsMap = Record<string, Record<string, string> | undefined>
@@ -45,10 +44,8 @@ export interface ModifierContext {
   activeLanguage?: string
 }
 
-export type ComponentActionProps = Record<string, unknown>
-
 export interface ActionContext extends ModifierContext {
-  componentProps: ComponentActionProps
+  componentProps: JSONParams
   validators?: ValidationRegistry
 }
 
@@ -60,7 +57,7 @@ export type ActionMap = Record<string, ActionHandler | undefined>
 export interface OnStateExportProps {
   id?: string
   /** Same shape as `JsonUI` `defaultValues`: logical stores `{ data: {...}, "data.touch": {...}, ... }` (no internal `storeRoot` wrapper). */
-  formState: JSONValue
+  formState: unknown
 }
 
 export type OnStateExportType = (arg: OnStateExportProps) => void
@@ -68,8 +65,8 @@ export type OnStateExportType = (arg: OnStateExportProps) => void
 export type StorePathDependency = { store: string; path: string }
 
 export type ResolvedRenderNodeState = {
-  props: Record<string, unknown>
-  resolvedSlots: Record<string, unknown>
+  props: JSONParams
+  resolvedSlots: JSONParams
 }
 
 export interface ValidationRule {

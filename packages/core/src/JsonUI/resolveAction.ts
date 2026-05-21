@@ -1,5 +1,5 @@
 import { resolveStorePath } from '../store/formStore.js'
-import type { ActionContext, ActionMap, ModifierMap } from '../util/types.js'
+import type { ActionContext, ActionMap, JSONParams, ModifierMap } from '../util/types.js'
 import { createSetAction } from './setAction.js'
 import { resolveModifier } from './resolveModifier.js'
 import { runValidationsForPath } from './validation.js'
@@ -7,7 +7,7 @@ import { ACTION_KEY } from '../util/contants.js'
 
 export const resolveAction = (value: unknown, actions: ActionMap, modifiers: ModifierMap, ctx: ActionContext): ((e: unknown) => Promise<void>) | undefined => {
   if (value != null && typeof value === 'object' && ACTION_KEY in value) {
-    const { [ACTION_KEY]: actionName, ...params } = value as Record<string, unknown>
+    const { [ACTION_KEY]: actionName, ...params } = value as JSONParams
     const hasExplicitValue = Object.prototype.hasOwnProperty.call(value, 'value')
 
     // Extract modifiers from action ctx.
@@ -24,7 +24,7 @@ export const resolveAction = (value: unknown, actions: ActionMap, modifiers: Mod
     return async (e: unknown) => {
       // TODO: research, why componentProps need
       const safeComponentProps = typeof componentProps === 'object' ? componentProps : {}
-      const resolvedParams: Record<string, unknown> = { ...safeComponentProps, ...params }
+      const resolvedParams: JSONParams = { ...safeComponentProps, ...params }
       // Case 1: value from event (input onChange) – only when the model
       // did NOT define a value explicitly.
       if (!hasExplicitValue && e != null && typeof e === 'object' && 'target' in e) {

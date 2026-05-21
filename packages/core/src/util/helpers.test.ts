@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { assertJsonCompatible, cloneDeep, hasAnyError, hasAnyTouched } from './helpers.js'
+import { JSONParams } from './types.js'
 
 describe('hasAnyError', () => {
   it('returns false for null', () => {
@@ -162,7 +163,7 @@ describe('assertJsonCompatible', () => {
   })
 
   it('rejects circular references', () => {
-    const a: Record<string, unknown> = {}
+    const a: JSONParams = {}
     a.self = a
     expect(() => assertJsonCompatible(a)).toThrow('Circular reference')
   })

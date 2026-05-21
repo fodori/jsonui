@@ -1,34 +1,34 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { JsonUI, builtinComponents } from '../../index.js'
-import { modifiers, actions, type JSONObject } from '@jsonui/core'
+import { modifiers, actions, JSONParams } from '@jsonui/core'
 import forms from './forms.json' with { type: 'json' }
 
 type Keys = 'form1' | 'form2' | 'form3'
 
 /** Stable empty tree when no Redux snapshot exists yet. */
-const EMPTY_DEFAULT_VALUES: Record<string, JSONObject> = {
+const EMPTY_DEFAULT_VALUES: JSONParams = {
   data: { firstname: '' },
 }
 
-const savedSnapshotToDefaultValues = (saved: unknown): Record<string, JSONObject> => {
+const savedSnapshotToDefaultValues = (saved: unknown): JSONParams => {
   if (saved === null || typeof saved !== 'object' || Array.isArray(saved)) {
     return EMPTY_DEFAULT_VALUES
   }
-  const cloned = JSON.parse(JSON.stringify(saved)) as Record<string, JSONObject>
+  const cloned = JSON.parse(JSON.stringify(saved)) as JSONParams
   return Object.keys(cloned).length > 0 ? cloned : EMPTY_DEFAULT_VALUES
 }
 
 const FormViewer = () => {
   const [actualKey, setActualKey] = useState<Keys>('form1')
-  const savedLogicalStores = useSelector((state: unknown) => (state as Record<string, unknown>)[actualKey])
+  const savedLogicalStores = useSelector((state: unknown) => (state as JSONParams)[actualKey])
   const dispatch = useDispatch()
 
   const formSwitch = (key: Keys) => () => {
     setActualKey(key)
   }
 
-  const model = (forms as Record<string, unknown>)[`${actualKey}`]
+  const model = (forms as JSONParams)[`${actualKey}`]
 
   const defaultValues = useMemo(() => savedSnapshotToDefaultValues(savedLogicalStores), [savedLogicalStores])
 

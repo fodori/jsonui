@@ -3,6 +3,7 @@
  * Pure and synchronous; no dependencies.
  */
 
+import { JSONParams } from '../util/types.js'
 import type { CanonicalStyle, ResponsiveStyle, StyleInput, BreakpointKey, ResolveStyleOptions } from './types.js'
 import { BREAKPOINT_ORDER } from './types.js'
 
@@ -59,8 +60,8 @@ const parseBorder = (
  * - cursor is not supported on RN, omit
  * - numeric values kept as-is where RN expects numbers
  */
-const toNativeStyle = (canonical: CanonicalStyle): Record<string, unknown> => {
-  const out: Record<string, unknown> = {}
+const toNativeStyle = (canonical: CanonicalStyle): JSONParams => {
+  const out: JSONParams = {}
   for (const [key, value] of Object.entries(canonical)) {
     if (value === undefined) continue
     if (key === 'cursor') continue // not supported on RN
@@ -130,8 +131,8 @@ const ensureLengthUnit = (key: string, value?: string | number): string | number
  * Web: pass through with minimal changes. Normalize length props (e.g. fontSize)
  * so numeric or numeric-string values get "px" and the browser applies them.
  */
-const toWebStyle = (canonical: CanonicalStyle): Record<string, unknown> => {
-  const out: Record<string, unknown> = {}
+const toWebStyle = (canonical: CanonicalStyle): JSONParams => {
+  const out: JSONParams = {}
   for (const [key, value] of Object.entries(canonical)) {
     out[key] = ensureLengthUnit(key, value)
   }
@@ -143,7 +144,7 @@ const toWebStyle = (canonical: CanonicalStyle): Record<string, unknown> => {
  * - If style is responsive (has base/xs/sm/md/lg/xl), merge up to current breakpoint, then resolve.
  * - If no breakpoint is provided for a responsive style, only "base" is used.
  */
-export const resolveStyle = (style: StyleInput | null | undefined, options: ResolveStyleOptions): Record<string, unknown> | undefined => {
+export const resolveStyle = (style: StyleInput | null | undefined, options: ResolveStyleOptions): JSONParams | undefined => {
   if (!style || typeof style !== 'object') return undefined
 
   let canonical: CanonicalStyle

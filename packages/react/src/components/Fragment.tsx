@@ -1,5 +1,6 @@
+import { JsonUINode } from '@jsonui/core'
 import React from 'react'
 
-export const Fragment = ({ children }: Record<string, unknown>) => {
+export const Fragment = ({ children }: JsonUINode) => {
   return <>{children as React.ReactNode}</>
 }
