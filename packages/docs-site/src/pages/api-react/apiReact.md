@@ -20,7 +20,7 @@ Optional handlers referenced by `$action`.
 
 Optional pre-initialized store instance. Use this when store lifecycle is managed outside of `JsonUI`.
 
-### `defaultValues?: Record<string, JSONObject>`
+### `defaultValues?: Record<string, Json>`
 
 Optional initial values per logical store.
 
@@ -44,7 +44,7 @@ Behavior notes:
 
 Optional form identifier, returned in `onStateExport`.
 
-### `onStateExport?: ({ id?: string, formState: JSONValue }) => void`
+### `onStateExport?: ({ id?: string, formState: unknown }) => void`
 
 Optional callback for exporting current logical stores. It is called on unmount and when `model`, `defaultValues`, or `id` changes.
 
