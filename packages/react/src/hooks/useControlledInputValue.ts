@@ -18,13 +18,13 @@ export const useControlledInputValue = (
 ): {
   value: string
   onChange: ChangeEventHandler<HTMLInputElement>
-  ref: RefObject<HTMLInputElement | null>
+  ref: RefObject<HTMLInputElement | undefined | null>
 } => {
   const propValue = value
   const [localValue, setLocalValue] = useState(propValue)
   const lastValueWeSent = useRef<string | null>(null)
-  const lastPropValue = useRef<string>(propValue)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const lastPropValue = useRef<string | undefined | null>(propValue)
+  const inputRef = useRef<HTMLInputElement | undefined | null>(null)
   const selectionToRestore = useRef<{ start: number; end: number } | null>(null)
 
   useEffect(() => {
@@ -49,7 +49,8 @@ export const useControlledInputValue = (
     if (selectionToRestore.current && inputRef.current) {
       const { start, end } = selectionToRestore.current
       selectionToRestore.current = null
-      const len = inputRef.current.value.length
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const len = inputRef.current?.value?.length ?? 0
       inputRef.current.selectionStart = Math.min(start, len)
       inputRef.current.selectionEnd = Math.min(end, len)
     }
