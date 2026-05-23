@@ -18,13 +18,13 @@ export const useControlledInputValue = (
 ): {
   value: string
   onChange: ChangeEventHandler<HTMLInputElement>
-  ref: RefObject<HTMLInputElement | undefined | null>
+  ref: RefObject<HTMLInputElement | null>
 } => {
   const propValue = value
   const [localValue, setLocalValue] = useState(propValue)
   const lastValueWeSent = useRef<string | null>(null)
-  const lastPropValue = useRef<string | undefined | null>(propValue)
-  const inputRef = useRef<HTMLInputElement | undefined | null>(null)
+  const lastPropValue = useRef<string>(propValue)
+  const inputRef = useRef<HTMLInputElement>(null)
   const selectionToRestore = useRef<{ start: number; end: number } | null>(null)
 
   useEffect(() => {
