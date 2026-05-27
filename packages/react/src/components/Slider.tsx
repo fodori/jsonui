@@ -1,7 +1,7 @@
 import { JsonUINode } from '@jsonui/core'
 import React from 'react'
 
-export const Slider = ({ value, onChange, onInput, min = 0, max = 100, step = 1, style, ...rest }: JsonUINode) => {
+export const Slider = ({ value, onChange, onInput, min = 0, max = 100, step = 1, style, $ctx: _ctx, ...rest }: JsonUINode) => {
   const changeHandler = (onChange ?? onInput) as React.ChangeEventHandler<HTMLInputElement> | undefined
 
   return (

@@ -1,7 +1,7 @@
 import { JsonUINode } from '@jsonui/core'
 import React from 'react'
 
-export const FormLayout = ({ children, childTop, childBottom, style, ...rest }: JsonUINode) => {
+export const FormLayout = ({ children, childTop, childBottom, style, $ctx: _ctx, ...rest }: JsonUINode) => {
   return (
     <div
       style={{

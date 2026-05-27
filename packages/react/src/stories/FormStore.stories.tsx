@@ -1,6 +1,6 @@
 import type { ChangeEvent, ReactNode } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { modifiers, actions, JsonUINode } from '@jsonui/core'
+import { modifiers, actions, type ComponentContext, JsonUINode } from '@jsonui/core'
 import { JsonUI, builtinComponents } from '../index.js'
 
 const RadioGroupField = (props: JsonUINode) => {
@@ -9,8 +9,9 @@ const RadioGroupField = (props: JsonUINode) => {
     const oc = props.onChange as ((e: { target: { value: unknown } }) => void) | undefined
     oc?.({ target: { value: parsed } })
   }
-  const { fieldErrors, value, childLabel, childHelperText, onChange, children, options, ...ownProps } = props
+  const { value, childLabel, childHelperText, onChange, children, options, $ctx, ...ownProps } = props
   void onChange
+  const { fieldErrors } = ($ctx as ComponentContext | undefined) ?? {}
   const error = !!fieldErrors
   let helperText: ReactNode = childHelperText as ReactNode
   if (error && fieldErrors) {

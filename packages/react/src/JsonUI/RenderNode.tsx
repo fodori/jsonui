@@ -5,7 +5,7 @@ import type { RenderNodeProps } from './renderNode/types.js'
 export type { RenderNodeProps } from './renderNode/types.js'
 import { useRenderNodeResolution } from './renderNode/useRenderNodeResolution.js'
 import { buildRenderNodeEventProps } from './renderNode/buildEventProps.js'
-import { buildInfraPropsForComponent, applyInputErrorFromValueBinding } from './renderNode/buildInfraAndInputProps.js'
+import { buildComponentContext, resolveExplicitFieldErrors } from './renderNode/buildInfraAndInputProps.js'
 import { computeRenderNodeSlotChildren } from './renderNode/computeSlotChildren.js'
 import { builtinComponents } from '../components/index.js'
 
@@ -96,13 +96,27 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
   const fallbackUndefined = components._Undefined ?? (builtinComponents as Record<string, React.ComponentType<any>>)._Undefined
   const Comp = components[compName] ?? fallbackUndefined
 
-  const infraProps = buildInfraPropsForComponent({
-    compName,
+  // Extract context-specific props from resolvedProps so they don't bleed into HTML attrs
+  const {
+    fieldErrors: resolvedFieldErrors,
+    fieldTouched,
+    ...$ownResolvedProps
+  } = resolvedProps as Record<string, unknown> & {
+    fieldErrors?: unknown
+    fieldTouched?: unknown
+  }
+
+  // For the explicit binding case (value: { $modifier: 'get', ... }) resolve errors from store
+  const explicitFieldErrors = resolveExplicitFieldErrors({ node, formStore })
+
+  const $ctx = buildComponentContext({
     formStore,
     modifiers,
     actions,
     currentPath,
     effectivePathModifiers,
+    fieldErrors: resolvedFieldErrors ?? explicitFieldErrors,
+    fieldTouched,
   })
 
   const { mainChildren, multiChildSlots } = computeRenderNodeSlotChildren({
@@ -122,9 +136,10 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
     renderNested,
   })
 
+  // Keep flat resolvedProps (with fieldErrors/fieldTouched) for action context so
+  // action handlers that read componentProps still receive these values.
   const componentActionProps: JsonUINode = {
     ...resolvedProps,
-    ...infraProps,
   }
 
   const eventProps = buildRenderNodeEventProps({
@@ -142,8 +157,8 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
   })
 
   const mergedProps: JsonUINode = {
-    ...resolvedProps,
-    ...infraProps,
+    ...$ownResolvedProps,
+    $ctx,
     ...multiChildSlots,
     ...eventProps,
   }
@@ -155,13 +170,6 @@ const RenderNodeInner = (props: RenderNodeProps): React.ReactElement | null => {
   if (components[compName] === undefined) {
     mergedProps.compName = compName
   }
-
-  applyInputErrorFromValueBinding({
-    compName,
-    node,
-    formStore,
-    mergedProps,
-  })
 
   return <Comp {...mergedProps}>{mainChildren}</Comp>
 }

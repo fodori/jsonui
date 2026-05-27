@@ -20,6 +20,7 @@ import {
 import type {
   ActionMap,
   BreakpointKey,
+  ComponentContext,
   JsonUINode,
   ModifierContext,
   OnStateExportProps,
@@ -98,6 +99,7 @@ export {
 export type {
   ActionMap,
   BreakpointKey,
+  ComponentContext,
   JsonUINode,
   ModifierContext,
   OnStateExportProps,

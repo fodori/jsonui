@@ -1,7 +1,7 @@
 import { JsonUINode } from '@jsonui/core'
 import React from 'react'
 
-export const Button = ({ children, onPress, onClick, style, disabled, ...rest }: JsonUINode) => {
+export const Button = ({ children, onPress, onClick, style, disabled, $ctx: _ctx, ...rest }: JsonUINode) => {
   return (
     <button
       style={{

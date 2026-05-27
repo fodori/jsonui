@@ -9,6 +9,7 @@ import {
   ActionContext,
   ActionHandler,
   ActionMap,
+  ComponentContext,
   JsonUINode,
   ModifierContext,
   ModifierHandler,
@@ -80,6 +81,7 @@ export {
 export type {
   ActionMap,
   BreakpointKey,
+  ComponentContext,
   JsonUINode,
   ModifierContext,
   ModifierMap,

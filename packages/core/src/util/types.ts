@@ -15,10 +15,21 @@ export type JsonPrimitives = string | number | boolean | null
 
 export type JSONParams = Record<string, unknown>
 
+export interface ComponentContext {
+  actions: ActionMap
+  currentPath: string
+  fieldErrors?: unknown
+  fieldTouched?: unknown
+  formStore: FormStore
+  modifiers: ModifierMap
+  pathModifiers?: PathModifier
+}
+
 export interface JsonUINode {
   [key: string]: unknown
   [V_COMP]?: string
   [V_CHILDREN]?: unknown
+  $ctx?: ComponentContext
 }
 
 export type ModifierHandler = (params: JSONParams, context: ModifierContext) => unknown | Promise<unknown>
