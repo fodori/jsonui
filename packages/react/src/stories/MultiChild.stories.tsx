@@ -5,12 +5,12 @@ import { modifiers, actions, type ComponentContext, JsonUINode } from '@jsonui/c
 import { JsonUI, builtinComponents, useControlledInputValue } from '../index.js'
 
 const EditMultiChild = (props: JsonUINode) => {
-  const { validation, value, childLabel, childHelperText, onChange, children, $ctx, ...ownProps } = props
+  const { validation, value, $childLabel, $childHelperText, onChange, children, $ctx, ...ownProps } = props
   const handleChange = onChange as ChangeEventHandler<HTMLInputElement> | undefined
   const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string, handleChange)
   const { fieldErrors } = ($ctx as ComponentContext | undefined) ?? {}
   let error = !!fieldErrors
-  let helperText: ReactNode = childHelperText as ReactNode
+  let helperText: ReactNode = $childHelperText as ReactNode
   if (error && fieldErrors) {
     helperText = (Array.isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors) as ReactNode
   }
@@ -36,7 +36,7 @@ const EditMultiChild = (props: JsonUINode) => {
   }
   return (
     <>
-      <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{childLabel as ReactNode}</div>
+      <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{$childLabel as ReactNode}</div>
       <p>{children as ReactNode}</p>
       <input {...ownProps} value={inputValue || ''} onChange={inputOnChange} ref={inputRef} />
       <div style={{ fontSize: 10, color: error ? 'red' : undefined }}>{helperText}</div>

@@ -9,17 +9,17 @@ const RadioGroupField = (props: JsonUINode) => {
     const oc = props.onChange as ((e: { target: { value: unknown } }) => void) | undefined
     oc?.({ target: { value: parsed } })
   }
-  const { value, childLabel, childHelperText, onChange, children, options, $ctx, ...ownProps } = props
+  const { value, $childLabel, $childHelperText, onChange, children, options, $ctx, ...ownProps } = props
   void onChange
   const { fieldErrors } = ($ctx as ComponentContext | undefined) ?? {}
   const error = !!fieldErrors
-  let helperText: ReactNode = childHelperText as ReactNode
+  let helperText: ReactNode = $childHelperText as ReactNode
   if (error && fieldErrors) {
     helperText = (Array.isArray(fieldErrors) ? fieldErrors.join(', ') : fieldErrors) as ReactNode
   }
   return (
     <>
-      <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{childLabel as ReactNode}</div>
+      <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{$childLabel as ReactNode}</div>
       <p>{children as ReactNode}</p>
       {(options as unknown[]).map((i: unknown) => {
         const row = i as { value: unknown; label: string }

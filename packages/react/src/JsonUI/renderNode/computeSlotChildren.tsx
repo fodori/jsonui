@@ -214,7 +214,7 @@ export const computeRenderNodeSlotChildren = ({
         mainChildren = slotChildren
       }
     } else {
-      multiChildSlots[key.slice(1)] = slotChildren
+      multiChildSlots[key] = slotChildren
     }
   }
 

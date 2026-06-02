@@ -1,7 +1,7 @@
 import { JsonUINode } from '@jsonui/core'
 import React from 'react'
 
-export const FormLayout = ({ children, childTop, childBottom, style, $ctx: _ctx, ...rest }: JsonUINode) => {
+export const FormLayout = ({ children, $childTop, $childBottom, style, $ctx: _ctx, ...rest }: JsonUINode) => {
   return (
     <div
       style={{
@@ -15,7 +15,7 @@ export const FormLayout = ({ children, childTop, childBottom, style, $ctx: _ctx,
       }}
       {...rest}
     >
-      {childTop ? (
+      {$childTop ? (
         <div
           style={{
             borderBottom: '1px solid #eee',
@@ -23,7 +23,7 @@ export const FormLayout = ({ children, childTop, childBottom, style, $ctx: _ctx,
             marginBottom: 4,
           }}
         >
-          {childTop as React.ReactNode}
+          {$childTop as React.ReactNode}
         </div>
       ) : null}
       <form
@@ -46,7 +46,7 @@ export const FormLayout = ({ children, childTop, childBottom, style, $ctx: _ctx,
         >
           {children as React.ReactNode}
         </div>
-        {childBottom ? (
+        {$childBottom ? (
           <div
             style={{
               borderTop: '1px solid #eee',
@@ -56,7 +56,7 @@ export const FormLayout = ({ children, childTop, childBottom, style, $ctx: _ctx,
               justifyContent: 'flex-end',
             }}
           >
-            {childBottom as React.ReactNode}
+            {$childBottom as React.ReactNode}
           </div>
         ) : null}
       </form>
