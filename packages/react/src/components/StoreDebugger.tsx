@@ -18,15 +18,15 @@ export const StoreDebugger = ({ data, error, touched }: JsonUINode) => {
     >
       <div>
         <div style={{ fontWeight: 'bold', marginBottom: 4 }}>data</div>
-        <pre style={{ margin: 0 }}>{JSON.stringify(data, null, 2)}</pre>
+        <pre style={{ margin: 0, whiteSpace: 'unset' }}>{JSON.stringify(data, null, 2)}</pre>
       </div>
       <div>
         <div style={{ fontWeight: 'bold', marginBottom: 4 }}>error</div>
-        <pre style={{ margin: 0 }}>{JSON.stringify(error, null, 2)}</pre>
+        <pre style={{ margin: 0, whiteSpace: 'unset' }}>{JSON.stringify(error, null, 2)}</pre>
       </div>
       <div>
         <div style={{ fontWeight: 'bold', marginBottom: 4 }}>touched</div>
-        <pre style={{ margin: 0 }}>{JSON.stringify(touched, null, 2)}</pre>
+        <pre style={{ margin: 0, whiteSpace: 'unset' }}>{JSON.stringify(touched, null, 2)}</pre>
       </div>
     </div>
   )
