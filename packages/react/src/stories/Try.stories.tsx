@@ -48,6 +48,7 @@ const model = {
         $modifier: 'get',
         store: 'data',
         path: '/',
+        getBoolean: false,
         type: 'TOUCH',
       },
     },

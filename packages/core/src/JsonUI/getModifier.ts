@@ -31,6 +31,7 @@ export const createGetModifier = (formStore: FormStore) => {
     const storeName = !!params?.store && typeof params.store === 'string' ? params.store : ''
     const path = !!params?.path && typeof params.path === 'string' ? params.path : '/'
     const type = !!params?.type && typeof params.type === 'string' ? params.type : undefined
+    const getBoolean = params?.getBoolean !== false
     const jsonataDef = params?.jsonataDef as string | undefined
 
     if (storeName.length === 0) return undefined
@@ -49,7 +50,7 @@ export const createGetModifier = (formStore: FormStore) => {
     }
     // TODO need to test hasAnyTouched and hasAnyError
     if (type === 'TOUCH') {
-      value = hasAnyTouched(value)
+      value = getBoolean ? hasAnyTouched(value) : value
     }
 
     if (jsonataDef && value !== undefined) {

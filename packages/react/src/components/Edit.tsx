@@ -3,7 +3,7 @@ import { useControlledInputValue } from '../hooks/useControlledInputValue.js'
 import { JsonUINode } from '@jsonui/core'
 
 export const Edit = ({ value, onChange, onPress, style, $ctx, helperText, label, ...rest }: JsonUINode) => {
-  const { fieldErrors } = $ctx ?? {}
+  const { fieldErrors, fieldTouched } = $ctx ?? {}
   const handleChange = (onChange ?? onPress) as React.ChangeEventHandler<HTMLInputElement> | undefined
   const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string, handleChange)
 
@@ -22,7 +22,11 @@ export const Edit = ({ value, onChange, onPress, style, $ctx, helperText, label,
             marginTop: 12,
           }}
         >
-          {<>{label}</>}
+          {
+            <>
+              {label} {fieldTouched ? `(touched)` : ''}
+            </>
+          }
         </div>
       ) : null}
       <input ref={inputRef} style={style as React.CSSProperties} value={inputValue} onChange={inputOnChange} {...rest} />
