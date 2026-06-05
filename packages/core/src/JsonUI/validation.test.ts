@@ -242,5 +242,78 @@ describe('JsonUI validation helpers', () => {
       runValidationsForPath(registry, formStore, 'data', '/players/0/score')
       expect(formStore.get('data.error', '/players/0/score')).toBeNull()
     })
+
+    it('stores root-level AJV errors at key "/" (path /~1) instead of overwriting the error store', () => {
+      // AJV `required` errors have instancePath="" — they must NOT be stored as a plain
+      // string at "/" which would destroy all nested field errors.
+      const rules: ValidationRule[] = [
+        {
+          store: 'data',
+          path: '/',
+          schema: {
+            type: 'object',
+            required: ['name'],
+            properties: {
+              email: { type: 'string' },
+            },
+          },
+        },
+      ]
+
+      const registry = buildValidationRegistry(rules)
+      const formStore = new FormStore()
+      // email present but name absent (required)
+      formStore.set('data', '/email', 'test@example.com')
+
+      runValidationsForPath(registry, formStore, 'data', '/email')
+
+      // The error store root must be an object, not a plain string
+      const storeRoot = formStore.get('data.error', '/')
+      expect(typeof storeRoot).not.toBe('string')
+
+      // Root-level error must be accessible at "/~1" (JSON Pointer for key "/")
+      const rootKeyError = formStore.get('data.error', '/~1')
+      expect(typeof rootKeyError).toBe('string')
+      expect(String(rootKeyError).length).toBeGreaterThan(0)
+    })
+
+    it('does not corrupt the error store on consecutive runs (no A/B flickering)', () => {
+      // Regression: previously writing a plain string at "/" caused the error store to become
+      // a string. Subsequent collectExistingPaths found no sub-paths, so writes alternated
+      // between {email: "..."} and "joined required errors" on consecutive keystrokes.
+      const rules: ValidationRule[] = [
+        {
+          store: 'data',
+          path: '/',
+          schema: {
+            type: 'object',
+            required: ['name'],
+            properties: {
+              email: { type: 'string', minLength: 5 },
+            },
+          },
+        },
+      ]
+
+      const registry = buildValidationRegistry(rules)
+      const formStore = new FormStore()
+      // name absent, email too short
+      formStore.set('data', '/email', 'hi')
+
+      runValidationsForPath(registry, formStore, 'data', '/email')
+      const afterRun1 = formStore.get('data.error', '/')
+
+      formStore.set('data', '/email', 'hey')
+      runValidationsForPath(registry, formStore, 'data', '/email')
+      const afterRun2 = formStore.get('data.error', '/')
+
+      // Both runs must produce an object, never a plain string
+      expect(typeof afterRun1).not.toBe('string')
+      expect(typeof afterRun2).not.toBe('string')
+
+      // Field-level error must still be accessible after both runs
+      const emailError = formStore.get('data.error', '/email')
+      expect(typeof emailError).toBe('string')
+    })
   })
 })

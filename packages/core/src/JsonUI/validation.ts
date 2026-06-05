@@ -156,7 +156,8 @@ export const runValidationsForPath = (registry: ValidationRegistry, formStore: F
       return
     }
     for (const [k, v] of Object.entries(value as JSONParams)) {
-      collectExistingPaths(basePath === '/' ? `/${k}` : `${basePath}/${k}`, v)
+      const encodedKey = k.replace(/~/g, '~0').replace(/\//g, '~1')
+      collectExistingPaths(basePath === '/' ? `/${encodedKey}` : `${basePath}/${encodedKey}`, v)
     }
   }
 
@@ -183,7 +184,9 @@ export const runValidationsForPath = (registry: ValidationRegistry, formStore: F
           // instancePath is relative to rulePath, e.g. '/0/score'
           let targetPath: string
           if (rulePath === '' || rulePath === '/') {
-            targetPath = instancePath && instancePath.length > 0 ? instancePath : '/'
+            // When instancePath is empty, the error is at the root of the validated object.
+            // Store at '/~1' (JSON Pointer for key '/') to avoid overwriting the entire error store.
+            targetPath = instancePath && instancePath.length > 0 ? instancePath : '/~1'
           } else {
             targetPath = instancePath && instancePath.length > 0 ? `${rulePath}${instancePath}` : rulePath
           }
