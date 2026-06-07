@@ -5,7 +5,8 @@ import { JsonUINode } from '@jsonui/core'
 export const Edit = ({ value, onChange, onPress, style, $ctx, helperText, label, ...rest }: JsonUINode) => {
   const { fieldErrors, fieldTouched } = $ctx ?? {}
   const handleChange = (onChange ?? onPress) as React.ChangeEventHandler<HTMLInputElement> | undefined
-  const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string, handleChange)
+  const inputType = (rest as { type?: string }).type
+  const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string | number, handleChange, inputType)
 
   return (
     <div

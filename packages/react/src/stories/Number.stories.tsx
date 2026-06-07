@@ -6,30 +6,11 @@ import { JsonUI, builtinComponents } from '../index.js'
 const model = {
   $children: [
     {
-      label: 'Full Name',
+      label: 'Number',
       $comp: 'Edit',
-      path: '/fullName',
+      path: '/numtest',
       store: 'data',
-    },
-    {
-      label: 'Email Address',
-      $comp: 'Edit',
-      path: '/email',
-      store: 'data',
-      type: 'email',
-    },
-    {
-      helperText: 'Include country code (e.g. +1 555 000 0000)',
-      label: 'Phone Number',
-      $comp: 'Edit',
-      path: '/phone',
-      store: 'data',
-    },
-    {
-      label: 'Current Title / Role',
-      $comp: 'Edit',
-      path: '/currentTitle',
-      store: 'data',
+      type: 'number',
     },
     {
       $comp: 'StoreDebugger',
@@ -60,43 +41,21 @@ const model = {
       schema: {
         errorMessage: {
           required: {
-            currentTitle: 'Current title is required',
-            email: 'Email is required',
-            fullName: 'Full name is required',
-            phone: 'Phone is required',
+            numtest: 'Full name is required',
           },
         },
         properties: {
-          currentTitle: {
+          numtest: {
+            type: 'number',
+            minimum: 10,
+            maximum: 100,
             errorMessage: {
-              minLength: 'Current title is required',
+              minimum: 'Must be greater than 10',
+              maximum: 'Must be less than 100',
             },
-            minLength: 2,
-            type: 'string',
-          },
-          email: {
-            errorMessage: {
-              format: 'Please enter a valid email address',
-            },
-            format: 'email',
-            type: 'string',
-          },
-          fullName: {
-            errorMessage: {
-              minLength: 'Full name must be at least 2 characters',
-            },
-            minLength: 2,
-            type: 'string',
-          },
-          phone: {
-            errorMessage: {
-              minLength: 'Please enter a valid phone number',
-            },
-            minLength: 7,
-            type: 'string',
           },
         },
-        required: ['fullName', 'email', 'phone', 'currentTitle'],
+        required: ['numtest'],
         type: 'object',
       },
       store: 'data',
@@ -114,7 +73,7 @@ const submit = (params: JSONParams, context: ActionContext) => {
 }
 
 const meta = {
-  title: 'JsonUI/Try',
+  title: 'JsonUI/Number',
   component: JsonUI,
   args: {
     components: builtinComponents,
@@ -127,7 +86,7 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Try: Story = {
+export const Number: Story = {
   args: {
     model,
     defaultValues,

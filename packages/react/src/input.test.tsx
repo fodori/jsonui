@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { act, createElement, useRef, type ComponentType } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
-import type { JsonUINode } from '@jsonui/core'
+import { FormStore, type JsonUINode } from '@jsonui/core'
 import { JsonUI } from './JsonUI/JsonUI.js'
 import { builtinComponents, Edit } from './components/index.js'
 
@@ -129,6 +129,63 @@ describe('JsonUI Edit input binding', () => {
     const n0 = Number(initial.replace(/\D/g, ''))
     const n1 = Number(after.replace(/\D/g, ''))
     expect(n1).toBeGreaterThan(n0)
+
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+
+  it('Edit type="number" stores JSON numbers, keeps string display, no selection crash', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    const formStore = new FormStore()
+    const model: JsonUINode = {
+      $comp: 'Edit',
+      id: 'age',
+      name: 'age',
+      type: 'number',
+      value: { $modifier: 'get', store: 'data', path: '/age' },
+      onChange: { $action: 'set', store: 'data', path: '/age' },
+    }
+
+    await act(async () => {
+      root.render(
+        createElement(JsonUI, {
+          model,
+          initialFormStore: formStore,
+          defaultValues: { data: { age: '' } },
+        })
+      )
+    })
+
+    await flushResolutions()
+    const input = container.querySelector('input[type="number"]') as HTMLInputElement
+    expect(input).toBeTruthy()
+
+    await act(async () => {
+      fireInputChange(input, '42')
+    })
+    await flushResolutions()
+    expect(formStore.get('data', '/age')).toBe(42)
+    expect(typeof formStore.get('data', '/age')).toBe('number')
+
+    // Decimals stored as JSON numbers; raw string preserved for display.
+    await act(async () => {
+      fireInputChange(input, '42.5')
+    })
+    await flushResolutions()
+    expect(formStore.get('data', '/age')).toBe(42.5)
+    expect(input.value).toBe('42.5')
+
+    // Clearing stores null, not an empty string.
+    await act(async () => {
+      fireInputChange(input, '')
+    })
+    await flushResolutions()
+    expect(formStore.get('data', '/age')).toBeNull()
 
     await act(async () => {
       root.unmount()

@@ -8,7 +8,7 @@ export type TextFieldProps = MUITextFieldProps & {
 
 const TextField = (props: TextFieldProps) => {
   const handleChange = props.onChange as React.ChangeEventHandler<HTMLInputElement> | undefined
-  const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((props.value ?? '') as string, handleChange)
+  const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((props.value ?? '') as string | number, handleChange, props.type)
   return <MUITextField {...props} value={inputValue} onChange={inputOnChange} ref={inputRef} />
 }
 
