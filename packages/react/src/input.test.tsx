@@ -289,11 +289,13 @@ describe('JsonUI Edit input binding', () => {
       input = container.querySelector('input')
       if (input instanceof HTMLInputElement) break
     }
-    expect(input).toBeTruthy()
+    if (!(input instanceof HTMLInputElement)) {
+      throw new Error('timed out waiting for input')
+    }
 
     const messageText = (): string | undefined => {
       for (const div of container.querySelectorAll('div')) {
-        const text = div.textContent ?? ''
+        const text = div.textContent
         if (text.includes('Most historians') || text.includes('Approximate year')) return text
       }
       return undefined
@@ -371,9 +373,11 @@ describe('JsonUI Edit input binding', () => {
       inputs = container.querySelectorAll('input')
       if (inputs.length >= 2) break
     }
-    expect(inputs?.length).toBeGreaterThanOrEqual(2)
-    const yearInput = inputs![0]
-    const epicInput = inputs![1]
+    if (!inputs || inputs.length < 2) {
+      throw new Error('timed out waiting for at least 2 inputs')
+    }
+    const yearInput = inputs[0]
+    const epicInput = inputs[1]
 
     await act(async () => {
       fireInputChange(yearInput, '1200')
