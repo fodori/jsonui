@@ -54,7 +54,7 @@ import {
   Undefined,
 } from './JsonUI/index.js'
 import type { JsonUIProps, RenderNodeProps, ChangeDefaultValueFunc, ChangeDefaultValueFuncProp } from './JsonUI/index.js'
-import { useControlledInputValue } from './hooks/useControlledInputValue.js'
+import { uncontrolledInputProps, toDisplayString, parseNumber, type InputValue } from './utils/uncontrolledInput.js'
 import { ComponentMap } from './componentMap.js'
 
 export {
@@ -93,7 +93,9 @@ export {
   FormLayout,
   Slider,
   Undefined,
-  useControlledInputValue,
+  uncontrolledInputProps,
+  toDisplayString,
+  parseNumber,
 }
 
 export type {
@@ -115,6 +117,7 @@ export type {
   ChangeDefaultValueFuncProp,
   ComponentMap,
   JSONParams,
+  InputValue,
 }
 
 export default JsonUI

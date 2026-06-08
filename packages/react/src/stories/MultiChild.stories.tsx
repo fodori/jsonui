@@ -2,12 +2,13 @@ import type { ChangeEventHandler, ReactNode } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import jsonata from 'jsonata'
 import { modifiers, actions, type ComponentContext, JsonUINode } from '@jsonui/core'
-import { JsonUI, builtinComponents, useControlledInputValue } from '../index.js'
+import { JsonUI, builtinComponents, uncontrolledInputProps, toDisplayString } from '../index.js'
 
 const EditMultiChild = (props: JsonUINode) => {
   const { validation, value, $childLabel, $childHelperText, onChange, children, $ctx, ...ownProps } = props
   const handleChange = onChange as ChangeEventHandler<HTMLInputElement> | undefined
-  const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string, handleChange)
+  const inputValue = toDisplayString(value as string | number | null | undefined)
+  const { defaultValue, onChange: inputOnChange, ref: inputRef } = uncontrolledInputProps(value as string | number, handleChange)
   const { fieldErrors } = ($ctx as ComponentContext | undefined) ?? {}
   let error = !!fieldErrors
   let helperText: ReactNode = $childHelperText as ReactNode
@@ -38,7 +39,7 @@ const EditMultiChild = (props: JsonUINode) => {
     <>
       <div style={{ fontSize: 20, color: error ? 'red' : undefined }}>{$childLabel as ReactNode}</div>
       <p>{children as ReactNode}</p>
-      <input {...ownProps} value={inputValue || ''} onChange={inputOnChange} ref={inputRef} />
+      <input {...ownProps} defaultValue={defaultValue} onChange={inputOnChange} ref={inputRef} />
       <div style={{ fontSize: 10, color: error ? 'red' : undefined }}>{helperText}</div>
     </>
   )
