@@ -4,6 +4,7 @@ import { createRoot, type Root } from 'react-dom/client'
 import { FormStore, type JsonUINode } from '@jsonui/core'
 import { JsonUI } from './JsonUI/JsonUI.js'
 import { builtinComponents, Edit } from './components/index.js'
+import { uncontrolledInputProps } from './utils/uncontrolledInput.js'
 
 /** Mirrors 2jsonui `input.test.tsx`: bound `Edit`
  * (`$modifier` get + `$action` set on `data/age`)
@@ -186,6 +187,64 @@ describe('JsonUI Edit input binding', () => {
     })
     await flushResolutions()
     expect(formStore.get('data', '/age')).toBeNull()
+
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+
+  it('uncontrolled input: slow/stale store values never clobber what the user is typing', async () => {
+    // Hook-free: an uncontrolled <input> driven by uncontrolledInputProps.
+    const UncontrolledInput: ComponentType<{ value: string }> = ({ value }) => {
+      const { defaultValue, onChange, ref } = uncontrolledInputProps(value)
+      return createElement('input', { ref, defaultValue, onChange, type: 'text', id: 'unc' })
+    }
+
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    const render = async (value: string): Promise<void> => {
+      await act(async () => {
+        root.render(createElement(UncontrolledInput, { value }))
+      })
+    }
+
+    await render('')
+    const input = container.querySelector('#unc') as HTMLInputElement
+    await act(async () => {
+      input.focus()
+    })
+    expect(document.activeElement).toBe(input)
+
+    // User types faster than the slow store can echo back.
+    await act(async () => {
+      fireInputChange(input, 'a')
+    })
+    await act(async () => {
+      fireInputChange(input, 'ab')
+    })
+    await act(async () => {
+      fireInputChange(input, 'abc')
+    })
+    expect(input.value).toBe('abc')
+
+    // Slow store echoes arrive late and out of date — must NOT revert display
+    // because the field is focused (the user is still editing).
+    await render('a')
+    expect(input.value).toBe('abc')
+    await render('ab')
+    expect(input.value).toBe('abc')
+    await render('abc')
+    expect(input.value).toBe('abc')
+
+    // After blur, an external store value DOES sync into the field.
+    await act(async () => {
+      input.blur()
+    })
+    await render('xyz')
+    expect(input.value).toBe('xyz')
 
     await act(async () => {
       root.unmount()

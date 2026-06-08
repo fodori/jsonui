@@ -47,6 +47,24 @@ State is managed by a unified **Store** (logical path resolution, reactive subsc
 - **`$children` / `$child*`** — slot-based children, supports lists via `$isList` + `$listItem`
 - **`store` + `path`** — shorthand automatically expanded to `$modifier:'get'` / `$action:'set'`
 
+## Form Inputs
+
+Store-bound text/number inputs (e.g. built-in `Edit`) are **uncontrolled** by design: the DOM owns the text while the user types, so the caret never jumps and a slow/async store can't clobber in-flight keystrokes. The store value is written back into the field only while it is not focused.
+
+When building custom input components, use the hookless helper instead of wiring `value`/`onChange` manually:
+
+```tsx
+import { uncontrolledInputProps } from '@jsonui/react'
+
+const { defaultValue, onChange, ref } = uncontrolledInputProps(value, handleChange, type)
+// native: <input defaultValue={defaultValue} onChange={onChange} ref={ref} />
+// MUI TextField: pass ref as inputRef
+```
+
+- `type="number"` emits a real JSON number (or `null` when empty) to the store.
+- Attach `ref` to the actual `<input>` element (use `inputRef` for MUI's `TextField`).
+- Keep selects/discrete controls controlled — they have no caret to preserve.
+
 ## Build & Test
 
 ```bash

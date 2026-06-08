@@ -54,6 +54,8 @@ export function Example() {
 
 The `Edit` node uses simplification (`store` + `path`), which auto-wires value/set/error/touched bindings.
 
+Store-bound text/number inputs are **uncontrolled**: the DOM owns the text while the user types, so the caret stays put and a slow/async store can't clobber keystrokes. The store value is synced back into the field only while it is not focused. To build your own input components, use the hookless `uncontrolledInputProps(value, onChange, type)` helper (`type="number"` stores a real JSON number).
+
 ## Core Model Concepts
 
 ### Components and Slots
@@ -103,6 +105,11 @@ Important `JsonUI` props:
 - `defaultLanguage`
 - `activeLanguage`
 - `platform`
+
+Helpers for custom input components:
+
+- `uncontrolledInputProps(value, onChange?, type?)` — props for an uncontrolled, caret-stable, slow-store-safe input
+- `toDisplayString(value)` / `parseNumber(raw)` — value/number conversions
 
 ## Documentation
 

@@ -1,12 +1,12 @@
 import React from 'react'
-import { useControlledInputValue } from '../hooks/useControlledInputValue.js'
+import { uncontrolledInputProps, type InputValue } from '../utils/uncontrolledInput.js'
 import { JsonUINode } from '@jsonui/core'
 
 export const Edit = ({ value, onChange, onPress, style, $ctx, helperText, label, ...rest }: JsonUINode) => {
   const { fieldErrors, fieldTouched } = $ctx ?? {}
   const handleChange = (onChange ?? onPress) as React.ChangeEventHandler<HTMLInputElement> | undefined
   const inputType = (rest as { type?: string }).type
-  const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((value ?? '') as string | number, handleChange, inputType)
+  const { defaultValue, onChange: inputOnChange, ref: inputRef } = uncontrolledInputProps(value as InputValue, handleChange, inputType)
 
   return (
     <div
@@ -30,7 +30,7 @@ export const Edit = ({ value, onChange, onPress, style, $ctx, helperText, label,
           }
         </div>
       ) : null}
-      <input ref={inputRef} style={style as React.CSSProperties} value={inputValue} onChange={inputOnChange} {...rest} />
+      <input {...rest} ref={inputRef} style={style as React.CSSProperties} defaultValue={defaultValue} onChange={inputOnChange} />
       {fieldErrors || helperText ? (
         <div
           style={{

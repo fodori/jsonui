@@ -1,15 +1,29 @@
 import React from 'react'
-import MUITextField, { TextFieldProps as MUITextFieldProps } from '@mui/material/TextField'
-import { useControlledInputValue } from '@jsonui/react'
+import MUITextField, { type TextFieldProps as MUITextFieldProps } from '@mui/material/TextField'
 
-export type TextFieldProps = MUITextFieldProps & {
-  onChange: (value: any) => void
+import { uncontrolledInputProps, type InputValue } from '../utils/uncontrolledInput.js'
+
+export type TextFieldProps = Omit<MUITextFieldProps, 'value' | 'onChange' | 'defaultValue'> & {
+  value?: InputValue
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
-const TextField = (props: TextFieldProps) => {
-  const handleChange = props.onChange as React.ChangeEventHandler<HTMLInputElement> | undefined
-  const { value: inputValue, onChange: inputOnChange, ref: inputRef } = useControlledInputValue((props.value ?? '') as string | number, handleChange, props.type)
-  return <MUITextField {...props} value={inputValue} onChange={inputOnChange} ref={inputRef} />
+const TextField = ({ value, onChange, select, type, ...props }: TextFieldProps) => {
+  if (select) {
+    return (
+      <MUITextField
+        {...props}
+        type={type}
+        select
+        value={value ?? ''}
+        onChange={onChange}
+      />
+    )
+  }
+
+  const { defaultValue, onChange: inputOnChange, ref: inputRef } = uncontrolledInputProps(value, onChange, type)
+
+  return <MUITextField {...props} type={type} defaultValue={defaultValue} onChange={inputOnChange} inputRef={inputRef} />
 }
 
 export default TextField

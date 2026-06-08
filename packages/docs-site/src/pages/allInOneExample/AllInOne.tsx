@@ -1,5 +1,5 @@
 import React from 'react'
-import { actions, JsonUI, modifiers, type ComponentMap } from '@jsonui/react'
+import { actions, JsonUI, modifiers } from '@jsonui/react'
 import { axios } from '@jsonui/functions-example'
 import { Button, TextField, Checkbox, Icon, Slider } from '@jsonui/components-web-example'
 import '@jsonui/components-web-example/dist/style.css'
@@ -17,12 +17,7 @@ function AllInOne() {
   return (
     <Stack spacing={2} direction="column" sx={{ width: '100%' }}>
       <Paper elevation={3} sx={{ p: 1 }}>
-        <JsonUI
-          model={model}
-          modifiers={modifiers}
-          actions={{ ...actions, axios }}
-          components={{ Button, TextField, Checkbox, Icon, Slider } as unknown as ComponentMap}
-        />
+        <JsonUI model={model} modifiers={modifiers} actions={{ ...actions, axios }} components={{ Button, TextField, Checkbox, Icon, Slider }} />
       </Paper>
       <Paper elevation={3} sx={{ p: 1 }}>
         <ErrorBoundary>

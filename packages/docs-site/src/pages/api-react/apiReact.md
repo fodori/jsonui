@@ -108,6 +108,32 @@ const model = {
 - `StoreDebugger`
 - `_Undefined` fallback component
 
+## Form Inputs
+
+Store-bound text and number inputs (such as the built-in `Edit`) are **uncontrolled** by design. The DOM owns the text while the user types, so:
+
+- the caret never jumps to the end while editing in the middle of the value,
+- a slow or async store can't overwrite in-flight keystrokes,
+- the store value is written back into the field only while it is **not focused** (external resets, transforms, other-field updates, and normalization after editing ends).
+
+### `uncontrolledInputProps(value, onChange?, type?)`
+
+A hookless helper for building your own input components. It returns props for an uncontrolled input instead of a controlled `value`:
+
+```tsx
+import { uncontrolledInputProps } from '@jsonui/react'
+
+const MyInput = ({ value, onChange, type }) => {
+  const { defaultValue, onChange: handleChange, ref } = uncontrolledInputProps(value, onChange, type)
+  return <input type={type} defaultValue={defaultValue} onChange={handleChange} ref={ref} />
+}
+```
+
+- Attach `ref` to the real `<input>` element. For MUI's `TextField`, pass it as `inputRef`.
+- When `type === 'number'`, the value written to the store is a real JSON `number` (or `null` when empty), not a string.
+- Selects and other discrete controls have no caret to preserve, so keep them controlled (`value`).
+- Helpers `toDisplayString(value)` and `parseNumber(raw)` are exported for the same conversions.
+
 ## Operational Notes
 
 - For standard forms, prefer model-level simplification (`store` + `path`) instead of manual `value` and `onChange` wiring.

@@ -72,6 +72,19 @@ const submit = (params: JSONParams, context: ActionContext) => {
   console.log('Submit value:', context?.componentProps?.value)
 }
 
+const SLOW_SET_DELAY_MS = 600
+
+/**
+ * Emulates a slow component / laggy store: every `set` is delayed before the
+ * value round-trips back into the input. This is the realistic condition that
+ * stresses the controlled-input cursor restore and numeric coercion logic —
+ * type fast and the displayed value (and caret) must not jump or reset.
+ */
+const slowSet = async (params: JSONParams, context: ActionContext): Promise<void> => {
+  await new Promise((resolve) => setTimeout(resolve, SLOW_SET_DELAY_MS))
+  await actions.set?.(params, context)
+}
+
 const meta = {
   title: 'JsonUI/Number',
   component: JsonUI,
@@ -93,4 +106,23 @@ export const Number: Story = {
     defaultLanguage: 'en',
     activeLanguage: 'hu',
   },
+}
+
+export const NumberSlow: Story = {
+  args: {
+    model,
+    defaultValues,
+    defaultLanguage: 'en',
+    activeLanguage: 'hu',
+    actions: { ...actions, submit, set: slowSet },
+  },
+  render: (args) => (
+    <>
+      <p>
+        Slow store ({SLOW_SET_DELAY_MS}ms per write): the value round-trips back late, so the cursor must stay put and the
+        number must persist as a JSON number.
+      </p>
+      <JsonUI {...args} />
+    </>
+  ),
 }
