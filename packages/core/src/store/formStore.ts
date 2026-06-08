@@ -70,7 +70,7 @@ export class FormStore {
    * When trackTouch is true, set also writes to `${storeName}.touch` at
    * the same logicalPath; path normalization applies (no empty segments).
    */
-  set(storeName: string, logicalPath: string, value: unknown, trackTouch = true): void {
+  set(storeName: string, logicalPath: string, value: unknown, trackTouch = true, notify = true): void {
     const internalPath = makeStorePath(storeName, logicalPath)
     this.setByPointer(internalPath, value)
 
@@ -81,7 +81,9 @@ export class FormStore {
 
     // Notify fine-grained listeners with logical store name + path so
     // JsonUI can re-resolve only components that depend on this slice.
-    this.notifyChange(storeName, logicalPath)
+    if (notify) {
+      this.notifyChange(storeName, logicalPath)
+    }
   }
 
   get(storeName: string, logicalPath: string): unknown {

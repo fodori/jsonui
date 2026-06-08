@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, type RefObject } from 'react'
 import {
   runRenderNodeResolution,
   isPathPrefix,
+  ERROR_STORE_SUFFIX,
+  TOUCH_STORE_SUFFIX,
   type JsonUINode,
   type ModifierContext,
   type ModifierMap,
@@ -13,6 +15,9 @@ import {
   type StylePlatform,
   type BreakpointKey,
 } from '@jsonui/core'
+
+const isShadowStore = (storeName: string): boolean =>
+  storeName.endsWith(ERROR_STORE_SUFFIX) || storeName.endsWith(TOUCH_STORE_SUFFIX)
 
 interface UseRenderNodeResolutionArgs {
   node: JsonUINode
@@ -35,7 +40,7 @@ interface UseRenderNodeResolutionResult {
   resolvedState: ResolvedRenderNodeState | null
   resolveError: Error | null
   dependenciesRef: RefObject<StorePathDependency[]>
-  runResolutionRef: RefObject<() => void>
+  runResolutionRef: RefObject<(options?: { skipInlineValidation?: boolean }) => void>
 }
 
 export const useRenderNodeResolution = ({
@@ -57,7 +62,7 @@ export const useRenderNodeResolution = ({
   const [resolveError, setResolveError] = useState<Error | null>(null)
 
   const dependenciesRef = useRef<StorePathDependency[]>([])
-  const runResolutionRef = useRef<() => void>(() => {})
+  const runResolutionRef = useRef<(options?: { skipInlineValidation?: boolean }) => void>(() => {})
   const resolutionVersionRef = useRef(0)
 
   useEffect(() => {
@@ -68,7 +73,7 @@ export const useRenderNodeResolution = ({
             for (const dep of deps) {
               if (dep.store !== changedStore) continue
               if (isPathPrefix(dep.path, changedPath) || isPathPrefix(changedPath, dep.path)) {
-                runResolutionRef.current()
+                runResolutionRef.current({ skipInlineValidation: isShadowStore(changedStore) })
                 break
               }
             }
@@ -83,7 +88,6 @@ export const useRenderNodeResolution = ({
   useEffect(() => {
     let cancelled = false
     setResolveError(null)
-    const version = ++resolutionVersionRef.current
 
     const ctx: ModifierContext = {
       formStore,
@@ -95,7 +99,7 @@ export const useRenderNodeResolution = ({
       activeLanguage,
     }
 
-    const run = async () => {
+    const run = async (version: number, skipInlineValidation = false) => {
       try {
         const { state, deps } = await runRenderNodeResolution({
           node,
@@ -107,6 +111,7 @@ export const useRenderNodeResolution = ({
           styleBreakpoint,
           componentStore,
           componentPath,
+          skipInlineValidation,
         })
 
         if (!cancelled && resolutionVersionRef.current === version) {
@@ -125,10 +130,13 @@ export const useRenderNodeResolution = ({
       }
     }
 
-    runResolutionRef.current = () => {
-      void run()
+    runResolutionRef.current = (options) => {
+      const version = ++resolutionVersionRef.current
+      void run(version, options?.skipInlineValidation)
     }
-    void run()
+
+    const version = ++resolutionVersionRef.current
+    void run(version, false)
 
     return () => {
       cancelled = true

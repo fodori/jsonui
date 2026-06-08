@@ -61,6 +61,86 @@ export const buildValidationRegistry = (rules?: ValidationRule[]): ValidationReg
 }
 
 /**
+ * Evaluate a single inline validation spec and return its error message, if any.
+ * Does not write to the error store.
+ */
+export const evaluateInlineValidation = async (
+  spec: InlineValidationSpec,
+  value: unknown,
+  modifiers: ModifierMap,
+  ctx: ModifierContext
+): Promise<string | null> => {
+  if (spec.schema != null) {
+    const ajv = getInlineAjv()
+    const validate = ajv.compile(spec.schema)
+    const messages: string[] = []
+    const valid = validate(value)
+    if (!valid && validate.errors) {
+      for (const err of validate.errors) {
+        if (err.message) messages.push(err.message)
+      }
+    }
+    return messages.length > 0 ? messages.join('; ') : null
+  }
+
+  if (spec.jsonataDef != null) {
+    let result: unknown
+    try {
+      const jsonata = (await import('jsonata')).default
+      const expr = jsonata(spec.jsonataDef)
+      result = await expr.evaluate(value)
+    } catch (e) {
+      result = stringifyValidationError(e)
+    }
+
+    const hasError = result !== null && result !== undefined && result !== '' && result !== true
+    if (!hasError) return null
+    return spec.errorMessage ? String(await resolveModifier(spec.errorMessage, modifiers, ctx)) : String(result)
+  }
+
+  return null
+}
+
+const writeInlineValidationError = (
+  formStore: FormStore,
+  errorStoreName: string,
+  componentLogicalPath: string,
+  newError: string | null,
+  notify: boolean
+): void => {
+  const currentError = formStore.get(errorStoreName, componentLogicalPath)
+  if ((currentError ?? null) === newError) return
+  formStore.set(errorStoreName, componentLogicalPath, newError, false, notify)
+}
+
+/**
+ * Run all inline validation specs for a field, aggregate messages, and write once.
+ */
+export const runInlineValidations = async (
+  specs: InlineValidationSpec[],
+  componentStoreName: string,
+  componentLogicalPath: string,
+  modifiers: ModifierMap,
+  ctx: ModifierContext,
+  options?: { notify?: boolean }
+): Promise<void> => {
+  const { formStore } = ctx
+  const errorStoreName = `${componentStoreName}${ERROR_STORE_SUFFIX}`
+  const value = formStore.get(componentStoreName, componentLogicalPath)
+  const notify = options?.notify !== false
+  const messages: string[] = []
+
+  for (const spec of specs) {
+    if (typeof spec !== 'object') continue
+    const message = await evaluateInlineValidation(spec, value, modifiers, ctx)
+    if (message) messages.push(message)
+  }
+
+  const newError: string | null = messages.length > 0 ? messages.join('; ') : null
+  writeInlineValidationError(formStore, errorStoreName, componentLogicalPath, newError, notify)
+}
+
+/**
  * Run a single inline (field-level) validation spec against the current store state.
  *
  * The component's own store name and resolved logical path are passed in directly —
@@ -77,52 +157,15 @@ export const runInlineValidation = async (
   componentStoreName: string,
   componentLogicalPath: string,
   modifiers: ModifierMap,
-  ctx: ModifierContext
+  ctx: ModifierContext,
+  options?: { notify?: boolean }
 ): Promise<void> => {
   const { formStore } = ctx
   const errorStoreName = `${componentStoreName}${ERROR_STORE_SUFFIX}`
   const value = formStore.get(componentStoreName, componentLogicalPath)
-
-  if (spec.schema != null) {
-    const ajv = getInlineAjv()
-    const validate = ajv.compile(spec.schema)
-    const messages: string[] = []
-    const valid = validate(value)
-    //TODO: need to outsource validation to separate function and test it
-    if (!valid && validate.errors) {
-      for (const err of validate.errors) {
-        if (err.message) messages.push(err.message)
-      }
-    }
-
-    const newError: string | null = messages.length > 0 ? messages.join('; ') : null
-    const currentError = formStore.get(errorStoreName, componentLogicalPath)
-    if ((currentError ?? null) !== newError) {
-      formStore.set(errorStoreName, componentLogicalPath, newError, false)
-    }
-    return
-  }
-
-  if (spec.jsonataDef != null) {
-    let result: unknown
-    try {
-      const jsonata = (await import('jsonata')).default
-      const expr = jsonata(spec.jsonataDef)
-      result = await expr.evaluate(value)
-    } catch (e) {
-      result = stringifyValidationError(e)
-    }
-
-    const hasError = result !== null && result !== undefined && result !== '' && result !== true
-
-    const newError: string | null = hasError ? (spec.errorMessage ? String(await resolveModifier(spec.errorMessage, modifiers, ctx)) : String(result)) : null
-
-    const currentError = formStore.get(errorStoreName, componentLogicalPath)
-    if ((currentError ?? null) !== newError) {
-      formStore.set(errorStoreName, componentLogicalPath, newError, false)
-    }
-    return
-  }
+  const notify = options?.notify !== false
+  const newError = await evaluateInlineValidation(spec, value, modifiers, ctx)
+  writeInlineValidationError(formStore, errorStoreName, componentLogicalPath, newError, notify)
 }
 
 // Runs all validators whose rule path matches the changed path prefix for the given store.

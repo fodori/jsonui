@@ -252,6 +252,158 @@ describe('JsonUI Edit input binding', () => {
     document.body.removeChild(container)
   })
 
+  it('schema + jsonataDef validation shows stable error while typing (no helper/error flicker)', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    const model: JsonUINode = {
+      $comp: 'Edit',
+      helperText: 'Approximate year (BCE).',
+      path: '/trojanWarYear',
+      store: 'data',
+      type: 'number',
+      $validations: [
+        { schema: { type: 'number' } },
+        {
+          jsonataDef: "$ >= 1150 and $ <= 1250 ? null : 'Most historians date it around 1200 BCE (1150-1250 BCE)'",
+        },
+      ],
+    }
+
+    const formStore = new FormStore()
+
+    await act(async () => {
+      root.render(
+        createElement(JsonUI, {
+          model,
+          initialFormStore: formStore,
+        })
+      )
+    })
+
+    const deadline = Date.now() + 5000
+    let input: HTMLInputElement | null = null
+    while (Date.now() < deadline) {
+      await flushResolutions()
+      input = container.querySelector('input')
+      if (input instanceof HTMLInputElement) break
+    }
+    expect(input).toBeTruthy()
+
+    const messageText = (): string | undefined => {
+      for (const div of container.querySelectorAll('div')) {
+        const text = div.textContent ?? ''
+        if (text.includes('Most historians') || text.includes('Approximate year')) return text
+      }
+      return undefined
+    }
+
+    for (const digit of ['1', '12', '120']) {
+      await act(async () => {
+        input.focus()
+        fireInputChange(input, digit)
+      })
+      await flushResolutions()
+      await flushResolutions()
+      expect(messageText()).toBe('Most historians date it around 1200 BCE (1150-1250 BCE)')
+    }
+
+    await act(async () => {
+      input.focus()
+      fireInputChange(input, '1200')
+    })
+    await flushResolutions()
+    await flushResolutions()
+    expect(messageText()).toBe('Approximate year (BCE).')
+
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+
+  it('jsonataDef inline validation does not restore cleared value on another field edit', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    const model: JsonUINode = {
+      $comp: 'View',
+      $children: [
+        {
+          $comp: 'Edit',
+          label: 'Year',
+          path: '/trojanWarYear',
+          store: 'data',
+          type: 'number',
+          $validations: [
+            { schema: { type: 'number' } },
+            {
+              jsonataDef: "$ >= 1150 and $ <= 1250 ? null : 'Most historians date it around 1200 BCE (1150-1250 BCE)'",
+            },
+          ],
+        },
+        {
+          $comp: 'Edit',
+          label: 'Epic',
+          path: '/homerEpic',
+          store: 'data',
+        },
+      ],
+    }
+
+    const formStore = new FormStore()
+
+    await act(async () => {
+      root.render(
+        createElement(JsonUI, {
+          model,
+          initialFormStore: formStore,
+        })
+      )
+    })
+
+    const deadline = Date.now() + 5000
+    let inputs: NodeListOf<HTMLInputElement> | undefined
+    while (Date.now() < deadline) {
+      await flushResolutions()
+      inputs = container.querySelectorAll('input')
+      if (inputs.length >= 2) break
+    }
+    expect(inputs?.length).toBeGreaterThanOrEqual(2)
+    const yearInput = inputs![0]
+    const epicInput = inputs![1]
+
+    await act(async () => {
+      fireInputChange(yearInput, '1200')
+    })
+    await flushResolutions()
+
+    await act(async () => {
+      fireInputChange(yearInput, '')
+    })
+    await flushResolutions()
+    expect(formStore.get('data', '/trojanWarYear')).toBeNull()
+    expect(yearInput.value).toBe('')
+
+    await act(async () => {
+      epicInput.focus()
+      fireInputChange(epicInput, 'iliad')
+    })
+    await flushResolutions()
+    await flushResolutions()
+
+    expect(formStore.get('data', '/trojanWarYear')).toBeNull()
+    expect(yearInput.value).toBe('')
+    expect(formStore.get('data', '/homerEpic')).toBe('iliad')
+
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+
   it('does not crash when defaultValues is malformed at runtime', async () => {
     const container = document.createElement('div')
     document.body.appendChild(container)

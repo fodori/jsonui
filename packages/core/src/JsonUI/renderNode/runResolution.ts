@@ -1,8 +1,8 @@
-import type { JSONParams, JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency } from '../../util/types.js'
+import type { JSONParams, JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency , InlineValidationSpec } from '../../util/types.js'
 import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
-import { runInlineValidation } from '../validation.js'
+import { runInlineValidations } from '../validation.js'
 import { resolveStorePath } from '../../store/formStore.js'
 import { V_VALIDATIONS } from '../../util/contants.js'
 import { collectGetModifierDependencies } from './collectGetDeps.js'
@@ -23,10 +23,11 @@ const runValidationSpecsFromNode = async (
   if (!rawValidation || !Array.isArray(rawValidation) || rawValidation.length === 0) return
   if (!componentStoreName || componentLogicalPath == null) return
 
-  for (const item of rawValidation) {
-    if (item === null || typeof item !== 'object') continue
-    await runInlineValidation(item, componentStoreName, componentLogicalPath, modifiers, ctx)
-  }
+  const specs = rawValidation.filter((item): item is InlineValidationSpec => item !== null && typeof item === 'object')
+  if (specs.length === 0) return
+
+  // Silent write: fieldErrors are resolved in the same pass right after validation.
+  await runInlineValidations(specs, componentStoreName, componentLogicalPath, modifiers, ctx, { notify: false })
 }
 interface RunRenderNodeResolutionArgs {
   node: JsonUINode
@@ -40,6 +41,8 @@ interface RunRenderNodeResolutionArgs {
   componentStore?: string
   /** Logical path from the simplified component's own `path` prop, if any. */
   componentPath?: string
+  /** When true, skip inline validation (e.g. re-resolve after error/touch store updates). */
+  skipInlineValidation?: boolean
 }
 
 export const runRenderNodeResolution = async ({
@@ -52,6 +55,7 @@ export const runRenderNodeResolution = async ({
   styleBreakpoint,
   componentStore,
   componentPath,
+  skipInlineValidation = false,
 }: RunRenderNodeResolutionArgs): Promise<{
   state: ResolvedRenderNodeState
   deps: StorePathDependency[]
@@ -60,6 +64,13 @@ export const runRenderNodeResolution = async ({
   const deps: StorePathDependency[] = []
   const resolvedSlots: JSONParams = {}
   const nodeEntries = isRecord(node) ? Object.entries(node) : []
+
+  const resolvedComponentPath =
+    componentStore && componentPath != null ? resolveStorePath(componentPath, currentPath, effectivePathModifiers, componentStore) : undefined
+
+  if (!skipInlineValidation) {
+    await runValidationSpecsFromNode(node, modifiers, ctx, componentStore, resolvedComponentPath)
+  }
 
   for (const [key, value] of nodeEntries) {
     if (key.startsWith('$child') || !key.startsWith('$')) {
@@ -83,11 +94,6 @@ export const runRenderNodeResolution = async ({
       props.style = resolved ?? props.style
     }
   }
-
-  const resolvedComponentPath =
-    componentStore && componentPath != null ? resolveStorePath(componentPath, currentPath, effectivePathModifiers, componentStore) : undefined
-
-  await runValidationSpecsFromNode(node, modifiers, ctx, componentStore, resolvedComponentPath)
 
   return {
     state: { props, resolvedSlots },

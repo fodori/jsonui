@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { buildValidationRegistry, runInlineValidation, runValidationsForPath } from './validation.js'
+import { describe, it, expect, vi } from 'vitest'
+import { buildValidationRegistry, runInlineValidation, runInlineValidations, runValidationsForPath } from './validation.js'
 import { FormStore } from '../store/formStore.js'
 import { InlineValidationSpec, ModifierContext, ModifierMap, ValidationRule } from '../util/types.js'
 
@@ -178,6 +178,49 @@ describe('JsonUI validation helpers', () => {
 
         await runInlineValidation(spec, 'data', '/value', noopModifiers, makeCtx(store))
         expect(store.get('data.error', '/value')).toBeUndefined()
+      })
+    })
+
+    describe('runInlineValidations (aggregated)', () => {
+      it('writes all failing spec messages in a single store update', async () => {
+        const formStore = new FormStore()
+        formStore.set('data', '/year', 5)
+        const notifySpy = vi.fn()
+        formStore.subscribeChange(notifySpy)
+
+        await runInlineValidations(
+          [
+            { schema: { type: 'number' } },
+            { jsonataDef: "$ >= 1150 and $ <= 1250 ? null : 'Out of range'" },
+          ],
+          'data',
+          '/year',
+          noopModifiers,
+          makeCtx(formStore)
+        )
+
+        expect(formStore.get('data.error', '/year')).toBe('Out of range')
+        expect(notifySpy).toHaveBeenCalledTimes(1)
+        expect(notifySpy).toHaveBeenCalledWith('data.error', '/year')
+      })
+
+      it('can suppress notify so resolution can read fieldErrors in the same pass', async () => {
+        const formStore = new FormStore()
+        formStore.set('data', '/year', 5)
+        const notifySpy = vi.fn()
+        formStore.subscribeChange(notifySpy)
+
+        await runInlineValidations(
+          [{ jsonataDef: "$ >= 1150 ? null : 'Too low'" }],
+          'data',
+          '/year',
+          noopModifiers,
+          makeCtx(formStore),
+          { notify: false }
+        )
+
+        expect(formStore.get('data.error', '/year')).toBe('Too low')
+        expect(notifySpy).not.toHaveBeenCalled()
       })
     })
   })
