@@ -40,6 +40,8 @@ export default defineConfig({
     'process.env': {},
   },
   assetsInclude: ['**/*.md'],
+  // Markdown is imported with `?raw` so it is inlined into JS — avoids GitHub Pages/Jekyll
+  // treating hashed `.md` assets as Liquid templates (e.g. `defaultValues={{ ... }}`).
   build: {
     outDir: 'build',
     sourcemap: true,

@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react'
 import Typography from '@mui/material/Typography'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
@@ -10,19 +9,9 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import markupFile from './apiReact.md'
+import markup from './apiReact.md?raw'
 
-function App() {
-  const [content, setContent] = useState('')
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    void fetch(markupFile)
-      .then((res) => res.text())
-      .then((md) => {
-        setContent(md)
-      })
-  }, [])
+const ApiReact = () => {
   return (
     <>
       <Typography variant="h3" sx={{ marginBottom: 4 }}>
@@ -116,10 +105,10 @@ function App() {
         </TableContainer>
       </Paper>
       <ReactMarkdown rehypePlugins={[rehypeHighlight]} remarkPlugins={[remarkGfm]}>
-        {content}
+        {markup}
       </ReactMarkdown>
     </>
   )
 }
 
-export default App
+export default ApiReact

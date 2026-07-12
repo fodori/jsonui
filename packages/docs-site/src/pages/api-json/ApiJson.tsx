@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from 'react'
 import Typography from '@mui/material/Typography'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import remarkGfm from 'remark-gfm'
-import markupFile from './apiJson.md'
+import markup from './apiJson.md?raw'
 
-function App() {
-  const [content, setContent] = useState('')
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    void fetch(markupFile)
-      .then((res) => res.text())
-      .then((md) => {
-        setContent(md)
-      })
-  }, [])
+const ApiJson = () => {
   return (
     <>
       <Typography variant="h3" sx={{ marginBottom: 4 }}>
         Json API Reference
       </Typography>
       <ReactMarkdown rehypePlugins={[rehypeHighlight]} remarkPlugins={[remarkGfm]}>
-        {content}
+        {markup}
       </ReactMarkdown>
     </>
   )
 }
 
-export default App
+export default ApiJson
