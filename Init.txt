@@ -86,5 +86,4 @@ yarn add ~/Documents/gitHub/jsonui/packages/react/jsonui-react-v0.8.0.tgz
 
 
 release with new github action:
-git tag v1.0.0
-git push origin v1.0.0
+git tag v0.10.22 && git push origin v0.10.22
