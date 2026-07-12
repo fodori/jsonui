@@ -139,3 +139,66 @@ describe('computeRenderNodeSlotChildren – $child* prop naming', () => {
     document.body.removeChild(container)
   })
 })
+
+describe('computeRenderNodeSlotChildren – $listItem shapes', () => {
+  it('renders object $listItem once per list entry', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    const model: JsonUINode = {
+      $comp: 'View',
+      $isList: true,
+      $pathModifiers: { data: { path: '/rows' } },
+      $listItem: { $comp: 'Text', $children: 'row' },
+    }
+
+    await act(async () => {
+      root.render(
+        createElement(JsonUI, {
+          model,
+          defaultValues: { data: { rows: ['a', 'b', 'c'] } },
+        })
+      )
+    })
+
+    expect(container.textContent).toBe('rowrowrow')
+
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+
+  it('renders array $listItem (same shapes as $children) once per list entry', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    const model: JsonUINode = {
+      $comp: 'View',
+      $isList: true,
+      $pathModifiers: { data: { path: '/rows' } },
+      $listItem: [
+        { $comp: 'Text', $children: 'A' },
+        { $comp: 'Text', $children: 'B' },
+      ],
+    }
+
+    await act(async () => {
+      root.render(
+        createElement(JsonUI, {
+          model,
+          defaultValues: { data: { rows: [1, 2] } },
+        })
+      )
+    })
+
+    expect(container.textContent).toBe('ABAB')
+
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+})

@@ -211,6 +211,8 @@ JSONata inline validation semantics:
 
 Use `$isList`, `$pathModifiers`, and `$listItem` for collection rendering.
 
+`$listItem` accepts the same shapes as `$children`: a single node, or an array of nodes (and primitives).
+
 ```json
 {
   "$comp": "Fragment",
@@ -223,6 +225,22 @@ Use `$isList`, `$pathModifiers`, and `$listItem` for collection rendering.
     "store": "data",
     "path": "name"
   }
+}
+```
+
+Array form (multiple nodes per list row):
+
+```json
+{
+  "$comp": "View",
+  "$isList": true,
+  "$pathModifiers": {
+    "data": { "path": "/users/list" }
+  },
+  "$listItem": [
+    { "$comp": "Edit", "store": "data", "path": "name" },
+    { "$comp": "Edit", "store": "data", "path": "email" }
+  ]
 }
 ```
 

@@ -44,7 +44,7 @@ State is managed by a unified **Store** (logical path resolution, reactive subsc
 - **`$comp`** — names the React component to render
 - **`$modifier`** — a function called at render time to compute a prop value (e.g. read from store, translate)
 - **`$action`** — a function called when an event fires (e.g. write to store, navigate)
-- **`$children` / `$child*`** — slot-based children, supports lists via `$isList` + `$listItem`
+- **`$children` / `$child*`** — slot-based children, supports lists via `$isList` + `$listItem` (`$listItem` accepts a single node or an array, same as `$children`)
 - **`store` + `path`** — shorthand automatically expanded to `$modifier:'get'` / `$action:'set'`
 
 ## Form Inputs

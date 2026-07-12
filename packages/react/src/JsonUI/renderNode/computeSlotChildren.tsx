@@ -21,7 +21,8 @@ export type NestedRenderNode = (props: RenderNodeProps) => React.ReactElement | 
 
 type ListBranchNode = JsonUINode & {
   [LIST_SEMAPHORE]: boolean
-  [LIST_ITEM]: JsonUINode
+  /** Single node or array of nodes — same shapes as `$children`. */
+  [LIST_ITEM]: JsonUINode | JsonUINode[]
   [PATH_MODIFIERS_KEY]?: ModifierContext['pathModifiers']
 }
 
@@ -84,6 +85,29 @@ export const computeRenderNodeSlotChildren = ({
     return null
   }
 
+  const renderListItemTemplate = (
+    listItem: unknown,
+    itemPath: string,
+    itemPathModifiers: ModifierContext['pathModifiers'] | undefined
+  ): React.ReactNode => {
+    if (Array.isArray(listItem)) {
+      return listItem.map((child, childIndex) => (
+        <React.Fragment key={childIndex}>{renderListItemTemplate(child, itemPath, itemPathModifiers)}</React.Fragment>
+      ))
+    }
+
+    if (listItem && typeof listItem === 'object' && V_COMP in listItem) {
+      return renderNested({
+        node: listItem as JsonUINode,
+        ...nestedPropsBase,
+        currentPath: itemPath,
+        pathModifiers: itemPathModifiers,
+      })
+    }
+
+    return coercePrimitiveChild(listItem)
+  }
+
   const renderListFromConfig = (listConfig: ListBranchNode): React.ReactNode => {
     const listItem = listConfig[LIST_ITEM]
     const listPathModifiersRaw = listConfig[PATH_MODIFIERS_KEY]
@@ -131,14 +155,7 @@ export const computeRenderNodeSlotChildren = ({
             }
           : effectivePathModifiersSafe
       return (
-        <React.Fragment key={i}>
-          {renderNested({
-            node: listItem,
-            ...nestedPropsBase,
-            currentPath: itemPath,
-            pathModifiers: itemPathModifiers,
-          })}
-        </React.Fragment>
+        <React.Fragment key={i}>{renderListItemTemplate(listItem, itemPath, itemPathModifiers)}</React.Fragment>
       )
     })
   }
