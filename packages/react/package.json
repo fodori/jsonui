@@ -1,6 +1,6 @@
 {
   "name": "@jsonui/react",
-  "version": "0.10.23",
+  "version": "0.10.24",
   "type": "module",
   "author": "Istvan Fodor <fodori@jsonui.org>",
   "contributors": [],
@@ -50,7 +50,7 @@
     "all": "clear && yarn test && yarn lint && yarn type-check && yarn build"
   },
   "dependencies": {
-    "@jsonui/core": "0.10.23"
+    "@jsonui/core": "0.10.24"
   },
   "peerDependencies": {
     "react": "^18 || ^19",
