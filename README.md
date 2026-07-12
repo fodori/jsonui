@@ -1,6 +1,6 @@
 # JSONUI
 
-JSONUI is a JSON-based UI runtime for React ecosystems.
+JSONUI is a JSON-based UI runtime for React (web). React Native support is planned to return soon (package temporarily removed from the monorepo).
 
 A single JSON model can define:
 

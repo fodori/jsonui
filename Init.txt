@@ -74,19 +74,9 @@ yarn workspace @jsonui/components-web-example run build;
 yarn workspace @jsonui/functions-example run build;
 yarn workspace docs-site run build;
 yarn copyDocs;
-yarn lerna version --no-private
-# commit and push everything
-npm login
-yarn lerna publish from-package
 
 ###### END publish new version, from main repo
 
-yarn lerna add @mui/material --scope=@jsonui/comp-mui
-yarn lerna add @emotion/react  --scope=@jsonui/comp-mui
-yarn lerna add @emotion/styled --scope=@jsonui/comp-mui
-yarn lerna add @fontsource/roboto --scope=@jsonui/comp-mui
-yarn lerna add @mui/icons-material --scope=@jsonui/comp-mui
- 
 
 ## to test the build, before publish
 # in /react folder

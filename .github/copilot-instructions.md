@@ -2,7 +2,7 @@
 
 ## Project Summary
 
-**JSONUI** is a JSON-based UI markup language that renders React (and React Native) components from a plain JSON model. The key idea: define your entire UI — layout, components, state bindings, event handlers — in JSON. When the JSON changes, the UI immediately reflects it.
+**JSONUI** is a JSON-based UI markup language that renders React components from a plain JSON model. The key idea: define your entire UI — layout, components, state bindings, event handlers — in JSON. When the JSON changes, the UI immediately reflects it. React Native support is planned to return soon (package temporarily removed from the monorepo).
 
 It is designed for use cases like **remote-controlled UIs**, **form generators**, and **data-driven screens** where the UI definition can be loaded, changed, or replaced at runtime.
 

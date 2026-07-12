@@ -85,8 +85,18 @@ Effective behavior:
 
 - `value` is auto-bound with `$modifier: "get"`
 - `onChange` is auto-bound with `$action: "set"`
-- `fieldErrors` is auto-bound to the error shadow store (`type: "ERROR"`)
-- `fieldTouched` is auto-bound to the touch shadow store (`type: "TOUCH"`)
+- `$ctx.fieldErrors` is auto-bound to the error shadow store (`type: "ERROR"`)
+- `$ctx.fieldTouched` is auto-bound to the touch shadow store (`type: "TOUCH"`)
+
+All resolved binding values and infra helpers are delivered through `$ctx` (`ComponentContext`):
+
+```ts
+const MyField = (props: JsonUINode) => {
+  const { $ctx, ...htmlProps } = props
+  const { fieldErrors, fieldTouched, formStore, actions, modifiers, currentPath } = $ctx ?? {}
+  // ... render using htmlProps only
+}
+```
 
 This is the recommended way to model form fields.
 
@@ -201,6 +211,8 @@ JSONata inline validation semantics:
 
 Use `$isList`, `$pathModifiers`, and `$listItem` for collection rendering.
 
+`$listItem` accepts the same shapes as `$children`: a single node, or an array of nodes (and primitives).
+
 ```json
 {
   "$comp": "Fragment",
@@ -213,6 +225,22 @@ Use `$isList`, `$pathModifiers`, and `$listItem` for collection rendering.
     "store": "data",
     "path": "name"
   }
+}
+```
+
+Array form (multiple nodes per list row):
+
+```json
+{
+  "$comp": "View",
+  "$isList": true,
+  "$pathModifiers": {
+    "data": { "path": "/users/list" }
+  },
+  "$listItem": [
+    { "$comp": "Edit", "store": "data", "path": "name" },
+    { "$comp": "Edit", "store": "data", "path": "email" }
+  ]
 }
 ```
 

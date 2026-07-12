@@ -19,7 +19,8 @@ function App() {
         JsonUI is a JSON-based, data-driven UI runtime.
         <br />
         The UI model defines component tree, data bindings, validation rules, and event behavior in one place. When the model changes, rendered UI follows
-        immediately. JsonUI is available in <b>react</b> and <b>react-native</b> environments.
+        immediately. JsonUI is available for <b>React</b> (web). A <b>React Native</b> package is planned to return soon
+        (temporarily removed from the monorepo).
       </Typography>
       <div style={{ textAlign: 'center', marginTop: 20, marginBottom: 10 }}>
         <FullSizeConceptImg src={conceptImage} alt="concept" />

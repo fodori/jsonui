@@ -58,7 +58,7 @@ Current UI language key for translations. If not set, `defaultLanguage` is used.
 
 ### `platform?: "web" | "native"`
 
-Style resolution target. Defaults to `"web"`.
+Style resolution target. Defaults to `"web"`. The `"native"` option is reserved for upcoming React Native support (package temporarily removed; planned to return soon).
 
 ## Registration Examples
 

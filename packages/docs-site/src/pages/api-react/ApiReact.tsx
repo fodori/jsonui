@@ -94,7 +94,10 @@ function App() {
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">platform</TableCell>
                 <TableCell align="left">{'"web" | "native"'}</TableCell>
-                <TableCell align="left">Style resolution target platform. Default is `web`.</TableCell>
+                <TableCell align="left">
+                  Style resolution target. Default is `web`. `"native"` is reserved for upcoming React Native support (temporarily removed; planned to return
+                  soon).
+                </TableCell>
               </TableRow>
               <TableRow hover tabIndex={-1}>
                 <TableCell align="left">onStateExport</TableCell>
