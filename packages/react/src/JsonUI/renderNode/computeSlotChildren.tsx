@@ -85,15 +85,9 @@ export const computeRenderNodeSlotChildren = ({
     return null
   }
 
-  const renderListItemTemplate = (
-    listItem: unknown,
-    itemPath: string,
-    itemPathModifiers: ModifierContext['pathModifiers'] | undefined
-  ): React.ReactNode => {
+  const renderListItemTemplate = (listItem: unknown, itemPath: string, itemPathModifiers: ModifierContext['pathModifiers'] | undefined): React.ReactNode => {
     if (Array.isArray(listItem)) {
-      return listItem.map((child, childIndex) => (
-        <React.Fragment key={childIndex}>{renderListItemTemplate(child, itemPath, itemPathModifiers)}</React.Fragment>
-      ))
+      return listItem.map((child, childIndex) => <React.Fragment key={childIndex}>{renderListItemTemplate(child, itemPath, itemPathModifiers)}</React.Fragment>)
     }
 
     if (listItem && typeof listItem === 'object' && V_COMP in listItem) {
@@ -154,9 +148,7 @@ export const computeRenderNodeSlotChildren = ({
               [storeName]: { path: `${baseListPath}/${i}` },
             }
           : effectivePathModifiersSafe
-      return (
-        <React.Fragment key={i}>{renderListItemTemplate(listItem, itemPath, itemPathModifiers)}</React.Fragment>
-      )
+      return <React.Fragment key={i}>{renderListItemTemplate(listItem, itemPath, itemPathModifiers)}</React.Fragment>
     })
   }
 

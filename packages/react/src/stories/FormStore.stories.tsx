@@ -10,7 +10,6 @@ const RadioGroupField = (props: JsonUINode) => {
     oc?.({ target: { value: parsed } })
   }
   const { value, $childLabel, $childHelperText, onChange, children, options, $ctx, ...ownProps } = props
-  void onChange
   const { fieldErrors } = ($ctx as ComponentContext | undefined) ?? {}
   const error = !!fieldErrors
   let helperText: ReactNode = $childHelperText as ReactNode

@@ -119,8 +119,7 @@ export const NumberSlow: Story = {
   render: (args) => (
     <>
       <p>
-        Slow store ({SLOW_SET_DELAY_MS}ms per write): the value round-trips back late, so the cursor must stay put and the
-        number must persist as a JSON number.
+        Slow store ({SLOW_SET_DELAY_MS}ms per write): the value round-trips back late, so the cursor must stay put and the number must persist as a JSON number.
       </p>
       <JsonUI {...args} />
     </>

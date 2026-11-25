@@ -189,10 +189,7 @@ describe('JsonUI validation helpers', () => {
         formStore.subscribeChange(notifySpy)
 
         await runInlineValidations(
-          [
-            { schema: { type: 'number' } },
-            { jsonataDef: "$ >= 1150 and $ <= 1250 ? null : 'Out of range'" },
-          ],
+          [{ schema: { type: 'number' } }, { jsonataDef: "$ >= 1150 and $ <= 1250 ? null : 'Out of range'" }],
           'data',
           '/year',
           noopModifiers,
@@ -210,14 +207,7 @@ describe('JsonUI validation helpers', () => {
         const notifySpy = vi.fn()
         formStore.subscribeChange(notifySpy)
 
-        await runInlineValidations(
-          [{ jsonataDef: "$ >= 1150 ? null : 'Too low'" }],
-          'data',
-          '/year',
-          noopModifiers,
-          makeCtx(formStore),
-          { notify: false }
-        )
+        await runInlineValidations([{ jsonataDef: "$ >= 1150 ? null : 'Too low'" }], 'data', '/year', noopModifiers, makeCtx(formStore), { notify: false })
 
         expect(formStore.get('data.error', '/year')).toBe('Too low')
         expect(notifySpy).not.toHaveBeenCalled()

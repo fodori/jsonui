@@ -14,8 +14,8 @@
     "apps/*"
   ],
   "resolutions": {
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3"
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0"
   },
   "scripts": {
     "build:libs": "yarn workspace @jsonui/core run build && yarn workspace @jsonui/react run build",
@@ -39,25 +39,25 @@
     "copyDocs": "VITE_BASE_PATH=/ yarn workspace docs-site run build; rm -rf ./docs/*; cp -a ./packages/docs-site/build/. ./docs/; touch ./docs/.nojekyll; git checkout -- docs/CNAME"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "eslint": "^9.39.4",
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-storybook": "^10.3.5",
+    "eslint-plugin-storybook": "^10.6.7",
     "gh-pages": "^6.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "prettier": "^3.8.3",
+    "prettier": "^3.10.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.0"
+    "typescript-eslint": "^8.72.2"
   },
   "dependencies": {
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "lint-staged": {
     "*.{ts,tsx,mts,cts}": "eslint --fix",

@@ -55,13 +55,7 @@ export const ObjectListItem: Story = {
   render: (args) => (
     <>
       <p>$listItem as object — one template node per list entry</p>
-      <JsonUI
-        model={args.model}
-        components={args.components}
-        modifiers={args.modifiers}
-        actions={args.actions}
-        defaultValues={args.defaultValues}
-      />
+      <JsonUI model={args.model} components={args.components} modifiers={args.modifiers} actions={args.actions} defaultValues={args.defaultValues} />
     </>
   ),
 }
@@ -111,13 +105,7 @@ export const ArrayListItem: Story = {
   render: (args) => (
     <>
       <p>$listItem as array — multiple template nodes per list entry (parity with $children)</p>
-      <JsonUI
-        model={args.model}
-        components={args.components}
-        modifiers={args.modifiers}
-        actions={args.actions}
-        defaultValues={args.defaultValues}
-      />
+      <JsonUI model={args.model} components={args.components} modifiers={args.modifiers} actions={args.actions} defaultValues={args.defaultValues} />
     </>
   ),
 }

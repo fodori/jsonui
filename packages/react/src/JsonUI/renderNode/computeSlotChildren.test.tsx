@@ -33,7 +33,9 @@ describe('computeRenderNodeSlotChildren – $child* prop naming', () => {
     expect(receivedProps['$childLabel']).toBe('My Label')
     expect(receivedProps['childLabel']).toBeUndefined()
 
-    await act(async () => { root.unmount() })
+    await act(async () => {
+      root.unmount()
+    })
     document.body.removeChild(container)
   })
 
@@ -65,7 +67,9 @@ describe('computeRenderNodeSlotChildren – $child* prop naming', () => {
     expect(receivedProps['$childHelperText']).toBe('Help text')
     expect(receivedProps['childHelperText']).toBeUndefined()
 
-    await act(async () => { root.unmount() })
+    await act(async () => {
+      root.unmount()
+    })
     document.body.removeChild(container)
   })
 
@@ -104,7 +108,9 @@ describe('computeRenderNodeSlotChildren – $child* prop naming', () => {
     expect(receivedProps['childHelperText']).toBeUndefined()
     expect(receivedProps['childFooter']).toBeUndefined()
 
-    await act(async () => { root.unmount() })
+    await act(async () => {
+      root.unmount()
+    })
     document.body.removeChild(container)
   })
 
@@ -135,7 +141,9 @@ describe('computeRenderNodeSlotChildren – $child* prop naming', () => {
 
     expect(receivedChildren).toBe('Hello world')
 
-    await act(async () => { root.unmount() })
+    await act(async () => {
+      root.unmount()
+    })
     document.body.removeChild(container)
   })
 })

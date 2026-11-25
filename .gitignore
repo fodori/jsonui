@@ -5,3 +5,4 @@ dist
 lerna-debug.log
 stats.html
 .DS_Store
+dependency-update-report/*

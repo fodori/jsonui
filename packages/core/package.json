@@ -50,25 +50,25 @@
     "ajv": "^8.18.0",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
-    "jsonata": "^2.1.0"
+    "jsonata": "^2.2.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "@rollup/plugin-commonjs": "^29.0.2",
+    "@eslint/js": "^9.39.5",
+    "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-typescript": "^12.3.0",
-    "eslint": "^9.39.4",
+    "@rollup/plugin-typescript": "^12.3.1",
+    "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import": "^2.32.0",
-    "prettier": "^3.8.3",
-    "rollup": "^4.60.2",
-    "rollup-plugin-dts": "^6.4.1",
-    "rollup-plugin-visualizer": "^7.0.1",
+    "prettier": "^3.10.0",
+    "rollup": "^4.68.2",
+    "rollup-plugin-dts": "^6.5.1",
+    "rollup-plugin-visualizer": "^7.1.3",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.0",
-    "vite": "^8.0.9",
-    "vitest": "^4.1.5"
+    "typescript-eslint": "^8.72.2",
+    "vite": "^8.3.8",
+    "vitest": "^4.1.12"
   },
   "gitHead": "5401b3d4900ca3032c108d6db00e8a819f4b28e9"
 }

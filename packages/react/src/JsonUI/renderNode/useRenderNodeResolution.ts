@@ -16,8 +16,7 @@ import {
   type BreakpointKey,
 } from '@jsonui/core'
 
-const isShadowStore = (storeName: string): boolean =>
-  storeName.endsWith(ERROR_STORE_SUFFIX) || storeName.endsWith(TOUCH_STORE_SUFFIX)
+const isShadowStore = (storeName: string): boolean => storeName.endsWith(ERROR_STORE_SUFFIX) || storeName.endsWith(TOUCH_STORE_SUFFIX)
 
 interface UseRenderNodeResolutionArgs {
   node: JsonUINode

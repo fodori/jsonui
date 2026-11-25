@@ -1,4 +1,13 @@
-import type { JSONParams, JsonUINode, ModifierContext, ModifierMap, PathModifier, ResolvedRenderNodeState, StorePathDependency , InlineValidationSpec } from '../../util/types.js'
+import type {
+  JSONParams,
+  JsonUINode,
+  ModifierContext,
+  ModifierMap,
+  PathModifier,
+  ResolvedRenderNodeState,
+  StorePathDependency,
+  InlineValidationSpec,
+} from '../../util/types.js'
 import { resolveModifier } from '../resolveModifier.js'
 import { resolveStyle } from '../../style/resolveStyle.js'
 import type { StylePlatform, BreakpointKey } from '../../style/types.js'
